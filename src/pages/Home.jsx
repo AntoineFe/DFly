@@ -5,13 +5,15 @@ import Cartouche from '../components/Cartouche'
 import SectionLabel from '../components/SectionLabel'
 import DflyMonogram from '../components/DflyMonogram'
 
+const BASE = import.meta.env.BASE_URL
+
 const IMG = {
   hero:       'https://images.unsplash.com/photo-1519741497674-611481863552?w=2400&q=85',
-  wedding1:   '/images/079_DSC7618.jpeg',
-  wedding2:   '/images/411_7R44813.jpeg',
+  wedding1:   `${BASE}images/079_DSC7618.jpeg`,
+  wedding2:   `${BASE}images/411_7R44813.jpeg`,
   wedding3:   'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=85',
-  realestate:  '/images/_DSC4497-HDR.jpeg',
-  realestate2: '/images/073_7R44153.jpeg',
+  realestate:  `${BASE}images/_DSC4497-HDR.jpeg`,
+  realestate2: `${BASE}images/073_7R44153.jpeg`,
   stage:      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
   event:      'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
   family:     'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=85',
@@ -40,7 +42,7 @@ export default function Home({ lang, setLang }) {
         </div>
 
         <div className="hero-cartouche-wrap" style={{ position: 'relative', zIndex: 2, padding: '80px 0' }}>
-          <Cartouche color="rgba(243,237,226,0.85)" width={620} height={620}>
+          <Cartouche color="rgba(243,237,226,0.85)" width={620} height={620} className="cartouche-hero">
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85, marginBottom: 28 }}>
               <span>{t('Depuis', 'Since')}</span>
               <DflyMonogram size={44} color="rgba(243,237,226,0.95)" />

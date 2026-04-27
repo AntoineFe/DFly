@@ -125,9 +125,20 @@
 
   /* Cartouche hero: scale down to fit screen */
   .hero-cartouche-wrap { padding: 0 !important; }
-  .hero-cartouche-wrap > div {
-    width: 85vw !important;
-    height: 85vw !important;
+  .cartouche-hero {
+    width: 88vw !important;
+    height: 115vw !important;
+    max-height: 85dvh !important;
+  }
+  .cartouche-hero .cartouche-inner {
+    padding: 36px 28px !important;
+  }
+
+  /* Mobile menu panel: scrollable so it never overflows the screen */
+  .mobile-menu-panel {
+    max-height: calc(100dvh - 64px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   /* Grids → single column */

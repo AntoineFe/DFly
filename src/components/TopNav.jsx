@@ -132,7 +132,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
 
       {/* Mobile menu panel */}
       {menuOpen && (
-        <nav style={{
+        <nav className="mobile-menu-panel" style={{
           background: 'var(--bg)',
           borderTop: '1px solid var(--line)',
           padding: '32px var(--gutter) 48px',

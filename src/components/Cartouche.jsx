@@ -1,7 +1,7 @@
-export default function Cartouche({ children, color = 'currentColor', width = 560, height = 720 }) {
+export default function Cartouche({ children, color = 'currentColor', width = 560, height = 720, className = '' }) {
   const w = width, h = height
   return (
-    <div style={{ position: 'relative', width: w, height: h, maxWidth: '90vw' }}>
+    <div className={`cartouche-frame ${className}`} style={{ position: 'relative', width: w, height: h, maxWidth: '90vw' }}>
       <svg viewBox={`0 0 ${w} ${h}`} width="100%" height="100%"
         style={{ position: 'absolute', inset: 0 }} preserveAspectRatio="none">
         <path
@@ -13,7 +13,7 @@ export default function Cartouche({ children, color = 'currentColor', width = 56
           fill="none" stroke={color} strokeWidth="0.6" opacity="0.35"
         />
       </svg>
-      <div style={{
+      <div className="cartouche-inner" style={{
         position: 'relative', width: '100%', height: '100%',
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
