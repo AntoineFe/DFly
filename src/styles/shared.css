@@ -31,8 +31,8 @@
 
   /* Type */
   --serif: 'Cormorant Garamond', 'Cormorant', 'EB Garamond', Georgia, serif;
-  --serif-display: 'Cormorant Garamond', 'Cormorant', Georgia, serif;
-  --script: 'Italiana', 'Cormorant Garamond', serif; /* fallback */
+  --serif-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --script: 'Italiana', 'Cormorant Garamond', serif;
   --calligraphy: 'Petit Formal Script', 'Cormorant Garamond', cursive;
   --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   --mono: 'JetBrains Mono', ui-monospace, monospace;
@@ -48,26 +48,7 @@
   --section-y: clamp(80px, 10vw, 160px);
 
   /* Grain */
-  --grain-opacity: 0.07;
-}
-
-/* Dark / sage theme variants applied via [data-theme] on <body> */
-body[data-theme="sage"] {
-  /* "Nuit" — deep night blue */
-  --bg: #1f2a35;
-  --bg-alt: #25313d;
-  --bg-deep: #14202b;
-  --fg: #ece5d6;
-  --fg-muted: #b8bfc8;
-  --line: #4a4339;
-}
-body[data-theme="dark"] {
-  --bg: #1a1814;
-  --bg-alt: #221f1a;
-  --bg-deep: #0e0d0a;
-  --fg: #ece5d6;
-  --fg-muted: #a39a86;
-  --line: #3a342a;
+  --grain-opacity: 0;
 }
 
 * { box-sizing: border-box; }
