@@ -50,7 +50,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
       color: menuOpen ? 'var(--fg)' : tone,
     }}>
       {/* Main bar */}
-      <div style={{
+      <div className="topnav-bar" style={{
         maxWidth: 'var(--maxw)', margin: '0 auto', padding: '16px var(--gutter)',
         display: 'grid', gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center', gap: 24,
@@ -120,7 +120,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
             style={{
               background: 'none', border: 'none', cursor: 'pointer',
               padding: '8px 4px', color: menuOpen ? 'var(--fg)' : tone,
-              display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'center',
+              flexDirection: 'column', gap: 5, alignItems: 'center',
             }}
           >
             <span style={{ display: 'block', width: 22, height: 1.5, background: 'currentColor', transition: 'transform .25s ease, opacity .25s ease', transform: menuOpen ? 'translateY(6.5px) rotate(45deg)' : 'none' }} />

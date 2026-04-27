@@ -32,14 +32,14 @@ export default function Home({ lang, setLang }) {
         <img src={IMG.hero} alt="" className="cine" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.55) saturate(0.85) contrast(1.05)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,22,18,0.55) 0%, rgba(20,22,18,0.25) 40%, rgba(20,22,18,0.7) 100%)' }} />
 
-        <div style={{ position: 'absolute', top: 110, left: 'var(--gutter)', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85 }}>
+        <div className="hero-corner-label" style={{ position: 'absolute', top: 110, left: 'var(--gutter)', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85 }}>
           {t('Photographie & Vidéo', 'Photography & Film')}
         </div>
-        <div style={{ position: 'absolute', top: 110, right: 'var(--gutter)', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85 }}>
+        <div className="hero-corner-label" style={{ position: 'absolute', top: 110, right: 'var(--gutter)', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85 }}>
           {t('Provence Alpes Côte d\'Azur — Depuis 2023', 'Provence Alpes Côte d\'Azur — Since 2023')}
         </div>
 
-        <div style={{ position: 'relative', zIndex: 2, padding: '80px 0' }}>
+        <div className="hero-cartouche-wrap" style={{ position: 'relative', zIndex: 2, padding: '80px 0' }}>
           <Cartouche color="rgba(243,237,226,0.85)" width={620} height={620}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85, marginBottom: 28 }}>
               <span>{t('Depuis', 'Since')}</span>

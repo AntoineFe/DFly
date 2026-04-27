@@ -115,6 +115,21 @@
   .nav-links.open { display: flex; }
   .nav-hamburger { display: flex; }
 
+  /* Header bar: 2 columns on mobile (logo | lang+hamburger) */
+  .topnav-bar {
+    grid-template-columns: 1fr auto !important;
+  }
+
+  /* Hero corner labels hidden on mobile */
+  .hero-corner-label { display: none; }
+
+  /* Cartouche hero: scale down to fit screen */
+  .hero-cartouche-wrap { padding: 0 !important; }
+  .hero-cartouche-wrap > div {
+    width: 85vw !important;
+    height: 85vw !important;
+  }
+
   /* Grids → single column */
   .grid-2,
   .grid-3,
