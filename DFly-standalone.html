@@ -1,0 +1,1890 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DFly — Photographie &amp; Vidéo · Provence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&family=Italiana&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<style>
+/* DFly — Design tokens & global styles */
+
+:root {
+  /* Palette — ivory / sage / charcoal */
+  --ivory: #f3ede2;
+  --ivory-deep: #ebe3d4;
+  --ivory-soft: #f8f4ec;
+  --paper: #faf6ee;
+
+  /* Ink — deep night blue. Refined, photographic, not a green. */
+  --sage: #1f2a35;       /* deep night blue (kept var name for compat) */
+  --sage-deep: #14202b;
+  --sage-soft: #4a5664;
+  --sage-mist: #cfd5dc;
+
+  --ink: #1c1a16;
+  --ink-soft: #2a2722;
+  --rule: #c9bfaa;
+  --rule-soft: #ddd2bb;
+
+  --gold: #a48a5d;       /* used VERY sparingly */
+
+  /* Surface bindings (overridden by theme tweak) */
+  --bg: var(--ivory);
+  --bg-alt: var(--ivory-soft);
+  --bg-deep: var(--sage);
+  --fg: var(--ink);
+  --fg-muted: #5b554b;
+  --fg-on-deep: var(--ivory);
+  --line: var(--rule);
+
+  /* Type */
+  --serif: 'Cormorant Garamond', 'Cormorant', 'EB Garamond', Georgia, serif;
+  --serif-display: 'Cormorant Garamond', 'Cormorant', Georgia, serif;
+  --script: 'Italiana', 'Cormorant Garamond', serif; /* fallback */
+  --calligraphy: 'Petit Formal Script', 'Cormorant Garamond', cursive;
+  --sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Tracking */
+  --tracking-wide: 0.32em;
+  --tracking-mid: 0.18em;
+  --tracking-tight: 0.04em;
+
+  /* Layout */
+  --maxw: 1440px;
+  --gutter: clamp(20px, 4vw, 64px);
+  --section-y: clamp(80px, 10vw, 160px);
+
+  /* Grain */
+  --grain-opacity: 0.07;
+}
+
+/* Dark / sage theme variants applied via [data-theme] on <body> */
+body[data-theme="sage"] {
+  /* "Nuit" — deep night blue */
+  --bg: #1f2a35;
+  --bg-alt: #25313d;
+  --bg-deep: #14202b;
+  --fg: #ece5d6;
+  --fg-muted: #b8bfc8;
+  --line: #4a4339;
+}
+body[data-theme="dark"] {
+  --bg: #1a1814;
+  --bg-alt: #221f1a;
+  --bg-deep: #0e0d0a;
+  --fg: #ece5d6;
+  --fg-muted: #a39a86;
+  --line: #3a342a;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Grain overlay — covers viewport, controlled by --grain-opacity */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/></svg>");
+  opacity: var(--grain-opacity);
+  mix-blend-mode: multiply;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+
+/* Utility scaffolds */
+.container {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/* Section labels — small caps numbered */
+.section-label {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--fg-muted);
+}
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Display heading */
+.display {
+  font-family: var(--serif-display);
+  font-weight: 400;
+  font-size: clamp(48px, 8vw, 128px);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+.display em {
+  font-style: italic;
+  font-family: var(--serif-display);
+  font-weight: 300;
+}
+
+/* Editorial body */
+.lede {
+  font-family: var(--serif);
+  font-size: clamp(19px, 1.6vw, 24px);
+  line-height: 1.55;
+  font-weight: 300;
+  color: var(--fg);
+}
+
+.body-sans {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--fg-muted);
+  font-weight: 400;
+}
+
+/* Buttons */
+.btn {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  padding: 14px 26px;
+  border: 1px solid currentColor;
+  display: inline-block;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background .25s ease, color .25s ease;
+}
+.btn:hover { background: var(--fg); color: var(--bg); }
+.btn-solid {
+  background: var(--fg);
+  color: var(--bg);
+}
+.btn-solid:hover { background: transparent; color: var(--fg); }
+
+/* Hairlines */
+.hr {
+  height: 1px;
+  background: var(--line);
+  border: none;
+  margin: 0;
+}
+
+/* Number index */
+.num {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--fg-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Image placeholder treatment - cinematic */
+.cine {
+  filter: contrast(1.02) saturate(0.85);
+}
+
+</style>
+</head>
+<body data-theme="ivory">
+<div id="root"></div>
+<script type="text/babel">
+
+// tweaks-panel.jsx
+// Reusable Tweaks shell + form-control helpers.
+//
+// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
+// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
+// individual prototypes don't re-roll it. Ships a consistent set of controls so you
+// don't hand-draw <input type="range">, segmented radios, steppers, etc.
+//
+// Usage (in an HTML file that loads React + Babel):
+//
+//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+//     "primaryColor": "#D97757",
+//     "fontSize": 16,
+//     "density": "regular",
+//     "dark": false
+//   }/*EDITMODE-END*/;
+//
+//   function App() {
+//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+//     return (
+//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
+//         Hello
+//         <TweaksPanel>
+//           <TweakSection label="Typography" />
+//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
+//                        onChange={(v) => setTweak('fontSize', v)} />
+//           <TweakRadio  label="Density" value={t.density}
+//                        options={['compact', 'regular', 'comfy']}
+//                        onChange={(v) => setTweak('density', v)} />
+//           <TweakSection label="Theme" />
+//           <TweakColor  label="Primary" value={t.primaryColor}
+//                        onChange={(v) => setTweak('primaryColor', v)} />
+//           <TweakToggle label="Dark mode" value={t.dark}
+//                        onChange={(v) => setTweak('dark', v)} />
+//         </TweaksPanel>
+//       </div>
+//     );
+//   }
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+
+  .twk-field{appearance:none;width:100%;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
+    overflow-wrap:anywhere}
+
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+
+  .twk-num{display:flex;align-items:center;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+`;
+
+// ── useTweaks ───────────────────────────────────────────────────────────────
+// Single source of truth for tweak values. setTweak persists via the host
+// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  // Accepts either setTweak('key', value) or setTweak({ key: value, ... }) so a
+  // useState-style call doesn't write a "[object Object]" key into the persisted
+  // JSON block.
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+  }, []);
+  return [values, setTweak];
+}
+
+// ── TweaksPanel ─────────────────────────────────────────────────────────────
+// Floating shell. Registers the protocol listener BEFORE announcing
+// availability — if the announce ran first, the host's activate could land
+// before our handler exists and the toolbar toggle would silently no-op.
+// The close button posts __edit_mode_dismissed so the host's toolbar toggle
+// flips off in lockstep; the host echoes __deactivate_edit_mode back which
+// is what actually hides the panel.
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', clampToViewport);
+      return () => window.removeEventListener('resize', clampToViewport);
+    }
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel"
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+// ── Layout helpers ──────────────────────────────────────────────────────────
+
+function TweakSection({ label, children }) {
+  return (
+    <>
+      <div className="twk-sect">{label}</div>
+      {children}
+    </>
+  );
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return (
+    <TweakRow label={label} value={`${value}${unit}`}>
+      <input type="range" className="twk-slider" min={min} max={max} step={step}
+             value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </TweakRow>
+  );
+}
+
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value}
+              onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  // The active value is read by pointer-move handlers attached for the lifetime
+  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+                      width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => {
+          const v = typeof o === 'object' ? o.value : o;
+          const l = typeof o === 'object' ? o.label : o;
+          return <option key={v} value={v}>{l}</option>;
+        })}
+      </select>
+    </TweakRow>
+  );
+}
+
+function TweakText({ label, value, placeholder, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+             onChange={(e) => onChange(e.target.value)} />
+    </TweakRow>
+  );
+}
+
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({ x: 0, val: 0 });
+  const onScrubStart = (e) => {
+    e.preventDefault();
+    startRef.current = { x: e.clientX, val: value };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = (ev) => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step}
+             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+
+function TweakColor({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <input type="color" className="twk-swatch" value={value}
+             onChange={(e) => onChange(e.target.value)} />
+    </div>
+  );
+}
+
+function TweakButton({ label, onClick, secondary = false }) {
+  return (
+    <button type="button" className={secondary ? 'twk-btn secondary' : 'twk-btn'}
+            onClick={onClick}>{label}</button>
+  );
+}
+
+Object.assign(window, {
+  useTweaks, TweaksPanel, TweakSection, TweakRow,
+  TweakSlider, TweakToggle, TweakRadio, TweakSelect,
+  TweakText, TweakNumber, TweakColor, TweakButton,
+});
+
+// DFly — Shared components
+// Exposed on window for cross-script use.
+
+const { useState, useEffect, useRef } = React;
+
+// ─────────────────────────────────────────────────────────────────
+// Monogram — the "D" stylized as a drone (echo of the business card).
+// Two propellers above the D, simple, refined.
+// ─────────────────────────────────────────────────────────────────
+function DflyMonogram({ size = 56, color = "currentColor", stroke = 1.6 }) {
+  // Real logo from the business card. CSS filter inverts to white when needed.
+  const isLight = color !== "currentColor" && (
+    color.includes("ivory") || color.includes("243,237,226") || color === "white" || color === "#fff"
+  );
+  return (
+    <img
+      src="data:image/png;base64,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"
+      alt="DFly"
+      style={{
+        width: size,
+        height: size,
+        objectFit: "contain",
+        display: "block",
+        filter: isLight ? "invert(1) brightness(1.05)" : "none",
+      }}
+    />
+  );
+}
+
+// Wordmark — display style for hero cartouche
+function DflyWordmark({ tagline = true, color = "currentColor" }) {
+  return (
+    <div style={{ textAlign: "center", color }}>
+      <div style={{
+        fontFamily: "var(--serif-display)",
+        fontSize: "clamp(72px, 9vw, 140px)",
+        lineHeight: 0.9,
+        letterSpacing: "0.01em",
+        fontWeight: 400,
+      }}>
+        D<span style={{ fontStyle: "italic", fontWeight: 300 }}>Fly</span>
+      </div>
+      {tagline && (
+        <div style={{
+          fontFamily: "var(--sans)",
+          fontSize: 11,
+          letterSpacing: "0.5em",
+          textTransform: "uppercase",
+          marginTop: 18,
+          paddingLeft: "0.5em",
+        }}>
+          Photographie · Vidéo
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Cartouche — the elegant arched frame (Ladies & Gentleman echo)
+// Used around the hero wordmark.
+// ─────────────────────────────────────────────────────────────────
+function Cartouche({ children, color = "currentColor", width = 560, height = 720 }) {
+  return (
+    <div style={{ position: "relative", width, height, maxWidth: "90vw" }}>
+      <svg
+        viewBox={`0 0 ${width} ${height}`}
+        width="100%"
+        height="100%"
+        style={{ position: "absolute", inset: 0 }}
+        preserveAspectRatio="none"
+      >
+        <path
+          d={`M ${width/2} 8
+              C ${width*0.25} 8, 8 ${height*0.08}, 8 ${height*0.18}
+              L 8 ${height - 60}
+              C 8 ${height - 20}, 40 ${height - 8}, ${width/2} ${height - 8}
+              C ${width - 40} ${height - 8}, ${width - 8} ${height - 20}, ${width - 8} ${height - 60}
+              L ${width - 8} ${height*0.18}
+              C ${width - 8} ${height*0.08}, ${width*0.75} 8, ${width/2} 8 Z`}
+          fill="none"
+          stroke={color}
+          strokeWidth="1"
+          opacity="0.55"
+        />
+        {/* Inner double line */}
+        <path
+          d={`M ${width/2} 18
+              C ${width*0.27} 18, 18 ${height*0.09}, 18 ${height*0.19}
+              L 18 ${height - 62}
+              C 18 ${height - 26}, 46 ${height - 18}, ${width/2} ${height - 18}
+              C ${width - 46} ${height - 18}, ${width - 18} ${height - 26}, ${width - 18} ${height - 62}
+              L ${width - 18} ${height*0.19}
+              C ${width - 18} ${height*0.09}, ${width*0.73} 18, ${width/2} 18 Z`}
+          fill="none"
+          stroke={color}
+          strokeWidth="0.6"
+          opacity="0.35"
+        />
+      </svg>
+      <div style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "60px 40px",
+        textAlign: "center",
+      }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Top navigation
+// ─────────────────────────────────────────────────────────────────
+function TopNav({ active = "home", scheme = "light", lang = "FR", setLang }) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const links = [
+    { id: "home", label: lang === "FR" ? "Accueil" : "Home", href: "DFly.html" },
+    { id: "wedding", label: lang === "FR" ? "Mariage" : "Wedding", href: "Mariage.html" },
+    { id: "real-estate", label: lang === "FR" ? "Immobilier" : "Real Estate", href: "#" },
+    { id: "stage", label: lang === "FR" ? "Spectacle" : "Stage", href: "#" },
+    { id: "events", label: lang === "FR" ? "Événements" : "Events", href: "#" },
+    { id: "family", label: lang === "FR" ? "Famille" : "Family", href: "#" },
+  ];
+
+  const isOverHero = scheme === "over-hero" && !scrolled;
+  const tone = isOverHero ? "rgba(243,237,226,0.95)" : "var(--fg)";
+  const bg = isOverHero ? "transparent" : "var(--bg)";
+  const border = isOverHero ? "rgba(243,237,226,0.18)" : "var(--line)";
+
+  return (
+    <header style={{
+      position: "fixed",
+      top: 0, left: 0, right: 0,
+      zIndex: 100,
+      background: bg,
+      backdropFilter: scrolled ? "blur(10px)" : "none",
+      borderBottom: `1px solid ${border}`,
+      transition: "background .35s ease, border-color .35s ease",
+      color: tone,
+    }}>
+      <div style={{
+        maxWidth: "var(--maxw)",
+        margin: "0 auto",
+        padding: "16px var(--gutter)",
+        display: "grid",
+        gridTemplateColumns: "1fr auto 1fr",
+        alignItems: "center",
+        gap: 24,
+      }}>
+        {/* Left: monogram + name */}
+        <a href="DFly.html" style={{ display: "flex", alignItems: "center", gap: 14, color: tone }}>
+          <DflyMonogram size={32} color={tone} stroke={1.2} />
+          <div>
+            <div style={{
+              fontFamily: "var(--serif-display)",
+              fontSize: 24,
+              lineHeight: 1,
+              letterSpacing: "0.01em",
+            }}>D<span style={{ fontStyle: "italic", fontWeight: 300 }}>Fly</span></div>
+            <div style={{
+              fontFamily: "var(--sans)",
+              fontSize: 8.5,
+              letterSpacing: "0.36em",
+              textTransform: "uppercase",
+              marginTop: 3,
+              opacity: 0.75,
+            }}>Photographie · Vidéo</div>
+          </div>
+        </a>
+
+        {/* Center: links */}
+        <nav style={{
+          display: "flex",
+          gap: 28,
+          alignItems: "center",
+          fontFamily: "var(--sans)",
+          fontSize: 11,
+          letterSpacing: "0.28em",
+          textTransform: "uppercase",
+        }}>
+          {links.map((l, i) => (
+            <a key={l.id} href={l.href} style={{
+              color: tone,
+              opacity: active === l.id ? 1 : 0.72,
+              borderBottom: active === l.id ? `1px solid ${tone}` : "1px solid transparent",
+              paddingBottom: 4,
+              transition: "opacity .2s ease, border-color .2s ease",
+            }}>{l.label}</a>
+          ))}
+        </nav>
+
+        {/* Right: lang + contact */}
+        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 18 }}>
+          <div style={{
+            fontFamily: "var(--sans)",
+            fontSize: 11,
+            letterSpacing: "0.24em",
+            display: "flex",
+            gap: 10,
+          }}>
+            <button
+              onClick={() => setLang && setLang("FR")}
+              style={{
+                background: "none", border: "none", padding: 0,
+                color: tone, opacity: lang === "FR" ? 1 : 0.5,
+                cursor: "pointer", fontFamily: "inherit", fontSize: "inherit", letterSpacing: "inherit",
+              }}>FR</button>
+            <span style={{ opacity: 0.4 }}>·</span>
+            <button
+              onClick={() => setLang && setLang("EN")}
+              style={{
+                background: "none", border: "none", padding: 0,
+                color: tone, opacity: lang === "EN" ? 1 : 0.5,
+                cursor: "pointer", fontFamily: "inherit", fontSize: "inherit", letterSpacing: "inherit",
+              }}>EN</button>
+          </div>
+          <a href="#contact" style={{
+            fontFamily: "var(--sans)",
+            fontSize: 10.5,
+            letterSpacing: "0.32em",
+            textTransform: "uppercase",
+            border: `1px solid ${tone}`,
+            padding: "10px 18px",
+            color: tone,
+          }}>{lang === "FR" ? "Contact" : "Contact"}</a>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Footer
+// ─────────────────────────────────────────────────────────────────
+function Footer({ lang = "FR" }) {
+  const t = (fr, en) => lang === "FR" ? fr : en;
+  return (
+    <footer style={{
+      background: "var(--bg-deep)",
+      color: "var(--fg-on-deep)",
+      paddingTop: 100,
+      paddingBottom: 40,
+    }}>
+      <div className="container">
+        <div style={{
+          textAlign: "center",
+          paddingBottom: 80,
+          borderBottom: "1px solid rgba(243,237,226,0.18)",
+        }}>
+          <DflyMonogram size={48} color="rgba(243,237,226,0.9)" stroke={1.2} />
+          <div style={{
+            fontFamily: "var(--serif-display)",
+            fontSize: "clamp(40px, 5vw, 64px)",
+            fontStyle: "italic",
+            fontWeight: 300,
+            marginTop: 24,
+            letterSpacing: "0.01em",
+          }}>
+            {t("Parlons de votre projet", "Let's talk about your project")}
+          </div>
+          <div style={{
+            fontFamily: "var(--sans)",
+            fontSize: 12,
+            letterSpacing: "0.32em",
+            textTransform: "uppercase",
+            marginTop: 16,
+            opacity: 0.7,
+          }}>
+            {t("Réponse sous 48 heures", "Reply within 48 hours")}
+          </div>
+        </div>
+
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1.2fr 1fr 1fr 1fr",
+          gap: 60,
+          paddingTop: 80,
+          paddingBottom: 80,
+        }}>
+          <div>
+            <div style={{ fontFamily: "var(--serif-display)", fontSize: 32, marginBottom: 18 }}>
+              D<span style={{ fontStyle: "italic", fontWeight: 300 }}>Fly</span>
+            </div>
+            <p style={{
+              fontFamily: "var(--serif)",
+              fontSize: 15,
+              lineHeight: 1.7,
+              color: "rgba(243,237,226,0.75)",
+              fontStyle: "italic",
+              fontWeight: 300,
+              maxWidth: 320,
+            }}>
+              {t(
+                "Antoine & Rémi Ferrera. Père et fils, photographes et vidéastes basés en Provence.",
+                "Antoine & Rémi Ferrera. Father and son — photographers and filmmakers based in Provence."
+              )}
+            </p>
+          </div>
+
+          <div>
+            <div className="eyebrow" style={{ opacity: 0.6, marginBottom: 18 }}>Antoine</div>
+            <div style={{ fontFamily: "var(--serif)", fontSize: 16, lineHeight: 1.8 }}>
+              06 07 72 09 40<br />
+              <a href="mailto:antoine.ferrera@dfly.fr" style={{ borderBottom: "1px solid rgba(243,237,226,0.4)" }}>
+                antoine.ferrera@dfly.fr
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <div className="eyebrow" style={{ opacity: 0.6, marginBottom: 18 }}>Rémi</div>
+            <div style={{ fontFamily: "var(--serif)", fontSize: 16, lineHeight: 1.8 }}>
+              06 95 40 27 00<br />
+              <a href="mailto:remi.ferrera@dfly.fr" style={{ borderBottom: "1px solid rgba(243,237,226,0.4)" }}>
+                remi.ferrera@dfly.fr
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <div className="eyebrow" style={{ opacity: 0.6, marginBottom: 18 }}>{t("Suivre", "Follow")}</div>
+            <div style={{ fontFamily: "var(--serif)", fontSize: 16, lineHeight: 1.8 }}>
+              <a href="#" style={{ display: "block" }}>Instagram</a>
+              <a href="#" style={{ display: "block" }}>Vimeo</a>
+              <a href="#" style={{ display: "block" }}>Pinterest</a>
+            </div>
+          </div>
+        </div>
+
+        <div style={{
+          display: "flex",
+          justifyContent: "space-between",
+          fontFamily: "var(--sans)",
+          fontSize: 10.5,
+          letterSpacing: "0.24em",
+          textTransform: "uppercase",
+          opacity: 0.55,
+        }}>
+          <span>© {new Date().getFullYear()} DFly — Tous droits réservés</span>
+          <span>Pilote drone certifié · DGAC</span>
+          <span>dfly.fr</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Section header — numbered, editorial
+// ─────────────────────────────────────────────────────────────────
+function SectionLabel({ num, label, align = "left" }) {
+  return (
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      gap: 14,
+      flexWrap: "nowrap",
+      whiteSpace: "nowrap",
+      justifyContent: align === "center" ? "center" : "flex-start",
+      fontFamily: "var(--sans)",
+      fontSize: 11,
+      letterSpacing: "0.36em",
+      textTransform: "uppercase",
+      color: "var(--fg-muted)",
+    }}>
+      <span style={{ fontFamily: "var(--serif)", fontStyle: "italic", letterSpacing: "0.02em", textTransform: "none", fontSize: 14 }}>— {num}</span>
+      <span>{label}</span>
+    </div>
+  );
+}
+
+Object.assign(window, {
+  DflyMonogram, DflyWordmark, Cartouche,
+  TopNav, Footer, SectionLabel,
+});
+
+// Home page — DFly
+const { useState, useEffect } = React;
+
+// Curated Unsplash images coherent with sage/ivory mood + Provence wedding feel
+const IMG = {
+  hero: "https://images.unsplash.com/photo-1519741497674-611481863552?w=2400&q=85", // bride & groom in field
+  heroAlt: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=2400&q=85",
+  wedding1: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1600&q=85",
+  wedding2: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1600&q=85",
+  wedding3: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=85",
+  realestate: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=85",
+  realestate2: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1600&q=85",
+  stage: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85",
+  event: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85",
+  family: "https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=85",
+  drone: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=2400&q=85", // aerial provence
+  duo: "https://images.unsplash.com/photo-1554080353-a576cf803bda?w=1600&q=85",
+  detail: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600&q=85",
+  ceremony: "https://images.unsplash.com/photo-1519741497674-611481863552?w=2000&q=85",
+};
+
+function Home({ lang, setLang }) {
+  const t = (fr, en) => lang === "FR" ? fr : en;
+
+  return (
+    <div>
+      <TopNav active="home" scheme="over-hero" lang={lang} setLang={setLang} />
+
+      {/* HERO */}
+      <section style={{
+        position: "relative",
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+        color: "var(--ivory)",
+      }}>
+        <img
+          src={IMG.hero}
+          alt=""
+          className="cine"
+          style={{
+            position: "absolute", inset: 0,
+            width: "100%", height: "100%",
+            objectFit: "cover",
+            filter: "brightness(0.55) saturate(0.85) contrast(1.05)",
+          }}
+        />
+        {/* gradient overlay */}
+        <div style={{
+          position: "absolute", inset: 0,
+          background: "linear-gradient(180deg, rgba(20,22,18,0.55) 0%, rgba(20,22,18,0.25) 40%, rgba(20,22,18,0.7) 100%)",
+        }} />
+
+        {/* corner labels */}
+        <div style={{
+          position: "absolute",
+          top: 110, left: "var(--gutter)",
+          fontFamily: "var(--sans)", fontSize: 11,
+          letterSpacing: "0.4em", textTransform: "uppercase",
+          opacity: 0.85,
+        }}>
+          {t("Photographie & Vidéo", "Photography & Film")}
+        </div>
+        <div style={{
+          position: "absolute",
+          top: 110, right: "var(--gutter)",
+          fontFamily: "var(--sans)", fontSize: 11,
+          letterSpacing: "0.4em", textTransform: "uppercase",
+          opacity: 0.85,
+        }}>
+          {t("Provence — Depuis 2023", "Provence — Since 2023")}
+        </div>
+
+        <div style={{ position: "relative", zIndex: 2, padding: "80px 0" }}>
+          <Cartouche color="rgba(243,237,226,0.85)" width={620} height={620}>
+            {/* Top mark */}
+            <div style={{
+              display: "flex", alignItems: "center", gap: 16,
+              fontFamily: "var(--sans)", fontSize: 10,
+              letterSpacing: "0.4em", textTransform: "uppercase",
+              opacity: 0.85, marginBottom: 28,
+            }}>
+              <span>{t("Depuis", "Since")}</span>
+              <DflyMonogram size={44} color="rgba(243,237,226,0.95)" stroke={1.1} />
+              <span>2023</span>
+            </div>
+
+            <div style={{
+              fontFamily: "var(--serif-display)",
+              fontSize: "clamp(80px, 10vw, 152px)",
+              lineHeight: 0.88,
+              letterSpacing: "0.005em",
+              fontWeight: 400,
+            }}>
+              D<span style={{ fontStyle: "italic", fontWeight: 300 }}>Fly</span>
+            </div>
+
+            <div style={{
+              fontFamily: "var(--serif)",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "clamp(20px, 1.8vw, 26px)",
+              marginTop: 24,
+              opacity: 0.92,
+            }}>
+              {t("Antoine & Rémi Ferrera", "Antoine & Rémi Ferrera")}
+            </div>
+
+            <div style={{ width: 60, height: 1, background: "rgba(243,237,226,0.5)", margin: "32px auto" }} />
+
+            <div style={{
+              fontFamily: "var(--serif)",
+              fontSize: "clamp(15px, 1.1vw, 17px)",
+              lineHeight: 1.7,
+              maxWidth: 360,
+              fontWeight: 300,
+              opacity: 0.9,
+            }}>
+              {t(
+                "Photographes et vidéastes.\nPrestations photo et vidéo pour particuliers et professionnels.",
+                "Photographers and filmmakers.\nPhoto and film services for individuals and professionals."
+              )}
+            </div>
+          </Cartouche>
+        </div>
+
+        {/* bottom scroll cue */}
+        <div style={{
+          position: "absolute",
+          bottom: 32,
+          left: "50%",
+          transform: "translateX(-50%)",
+          fontFamily: "var(--sans)",
+          fontSize: 10,
+          letterSpacing: "0.4em",
+          textTransform: "uppercase",
+          opacity: 0.7,
+          textAlign: "center",
+        }}>
+          <div style={{ marginBottom: 10 }}>{t("Découvrir", "Scroll")}</div>
+          <div style={{ width: 1, height: 36, background: "currentColor", margin: "0 auto", opacity: 0.6 }} />
+        </div>
+      </section>
+
+      {/* ── INTRO / MANIFESTO ── */}
+      <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
+        <div className="container">
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <SectionLabel num="I" label={t("Bonjour", "Hello")} align="center" />
+            <div style={{
+              textAlign: "center",
+              marginTop: 48,
+              fontFamily: "var(--serif-display)",
+              fontSize: "clamp(34px, 4vw, 58px)",
+              lineHeight: 1.18,
+              fontWeight: 400,
+              color: "var(--fg)",
+              letterSpacing: "-0.005em",
+              textWrap: "pretty",
+            }}>
+              {t(
+                <>Nous sommes <em style={{ fontStyle: "italic", fontWeight: 300 }}>Antoine</em> et <em style={{ fontStyle: "italic", fontWeight: 300 }}>Rémi</em>, père et fils.<br/><span style={{ display: "inline-block", marginTop: 24, fontSize: "0.5em", fontStyle: "italic", fontWeight: 300, color: "var(--fg-muted)", lineHeight: 1.55 }}>Nous réalisons des prestations photo & vidéo depuis trois ans pour les particuliers comme pour les professionnels.</span></>,
+                <>We are <em style={{ fontStyle: "italic", fontWeight: 300 }}>Antoine</em> and <em style={{ fontStyle: "italic", fontWeight: 300 }}>Rémi</em>, father and son.<br/><span style={{ display: "inline-block", marginTop: 24, fontSize: "0.5em", fontStyle: "italic", fontWeight: 300, color: "var(--fg-muted)", lineHeight: 1.55 }}>For three years we have been delivering photo & film services for individuals as well as professionals.</span></>
+              )}
+            </div>
+            <div style={{
+              textAlign: "center", maxWidth: 640, margin: "48px auto 0",
+              fontFamily: "var(--serif)",
+              fontSize: 22, lineHeight: 1.7,
+              fontWeight: 300, fontStyle: "italic",
+              color: "var(--fg-muted)",
+            }}>
+              {t(
+                "Nous savons diriger quand c'est nécessaire (portrait, immobilier, mise en scène), et rester discrets quand il faut capturer des moments naturels. C'est ce mélange qui définit notre façon de travailler.",
+                "We know how to direct when needed (portraits, real estate, staged scenes), and stay discreet when natural moments need to be captured. That blend defines the way we work."
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── DOMAINS — editorial alternating layout ── */}
+      <section style={{ background: "var(--bg-alt)", paddingTop: "var(--section-y)", paddingBottom: "var(--section-y)" }}>
+        <div className="container">
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "baseline",
+            marginBottom: 80, flexWrap: "wrap", gap: 24,
+          }}>
+            <SectionLabel num="II" label={t("Nos domaines", "Our work")} />
+            <div style={{
+              fontFamily: "var(--serif)", fontStyle: "italic",
+              fontSize: "clamp(24px, 2.4vw, 36px)",
+              fontWeight: 300, color: "var(--fg)",
+              maxWidth: 520, textAlign: "right",
+            }}>
+              {t("Nous intervenons sur plusieurs types de projets, avec la même exigence de qualité.", "We work across many kinds of projects, with the same standard of quality.")}
+            </div>
+          </div>
+
+          <DomainRow
+            num="01"
+            title={t("Mariage", "Wedding")}
+            subtitle={t("Raconter votre journée pour en garder la mémoire", "Telling your story to preserve the memory")}
+            body={t(
+              "Nous intervenons sur les mariages, le plus souvent à deux selon le projet, afin d’offrir deux points de vue complémentaires : l’un en front, l’autre en back, pour une couverture plus complète et plus riche de la journée. Nous restons présents sans nous imposer, en accordant une attention particulière aux émotions et aux interactions, pour restituer les moments de joie, de partage et d’intimité tels qu’ils se vivent.",
+              "We cover weddings, most often as a duo depending on the project, to offer two complementary viewpoints — one in front, the other in back — for a fuller and richer record of the day. We remain present without imposing ourselves, paying close attention to the emotions and interactions, to capture the moments of joy, sharing and intimacy as they unfold."
+            )}
+            keywords={[]}
+            keywordsEn={[]}
+            lang={lang}
+            href="Mariage.html"
+            image={IMG.wedding1}
+            imageAlt={IMG.wedding2}
+            reverse={false}
+          />
+
+          <DomainRow
+            num="02"
+            title={t("Immobilier", "Real Estate")}
+            subtitle={t("Le soin du détail, des lignes et de la lumière", "Care for detail, lines and light")}
+            body={t(
+              "Une maison se photographie comme un portrait : il faut comprendre ses proportions, attendre la bonne heure, choisir l'angle qui ne ment pas. Vues au sol et aériennes, intérieurs traités avec une exigence de magazine.",
+              "A house is photographed like a portrait: you must understand its proportions, wait for the right hour, choose the angle that doesn't lie. Ground and aerial views, interiors treated with magazine standards."
+            )}
+            keywords={["Lignes", "Lumière", "Proportions", "Détail"]}
+            keywordsEn={["Lines", "Light", "Proportions", "Detail"]}
+            lang={lang}
+            image={IMG.realestate}
+            imageAlt={IMG.realestate2}
+            reverse={true}
+          />
+
+          <DomainRow
+            num="03"
+            title={t("Spectacle", "Stage")}
+            subtitle={t("Captation vivante, multi-caméra", "Live capture, multi-camera")}
+            body={t(
+              "Concerts, théâtre, danse. Nous travaillons en discrétion totale, plusieurs caméras, sans gêner les artistes ni la salle. Montage sensible au rythme de la scène.",
+              "Concerts, theatre, dance. We work in total discretion, multiple cameras, without disturbing the artists or the room. Editing sensitive to the rhythm of the stage."
+            )}
+            keywords={["Multi-caméra", "Direct", "Rythme", "Discrétion"]}
+            keywordsEn={["Multi-camera", "Live", "Rhythm", "Discretion"]}
+            lang={lang}
+            image={IMG.stage}
+            imageAlt={IMG.event}
+            reverse={false}
+          />
+
+          <DomainRow
+            num="04"
+            title={t("Événement professionnel", "Corporate event")}
+            subtitle={t("Témoigner, valoriser, transmettre", "Witness, value, transmit")}
+            body={t(
+              "Lancements, séminaires, inaugurations. Une équipe efficace et invisible qui livre photos et vidéos courtes prêtes à diffuser, en respectant votre identité visuelle.",
+              "Launches, seminars, inaugurations. An efficient and invisible team that delivers ready-to-share photos and short videos, respecting your visual identity."
+            )}
+            keywords={["Efficace", "Invisible", "Brandé", "Réactif"]}
+            keywordsEn={["Efficient", "Invisible", "Branded", "Responsive"]}
+            lang={lang}
+            image={IMG.event}
+            imageAlt={IMG.stage}
+            reverse={true}
+          />
+
+          <DomainRow
+            num="05"
+            title={t("Famille", "Family")}
+            subtitle={t("Ce que l'on oublie, ce que l'on garde", "What we forget, what we keep")}
+            body={t(
+              "Séances en extérieur, à la maison, sans direction. Nous laissons les enfants être enfants. Vous gardez ce que personne ne vous offrirait : la vérité d'un instant.",
+              "Outdoor sessions, at home, without direction. We let children be children. You keep what no one else could give you: the truth of a moment."
+            )}
+            keywords={["Naturel", "Tendresse", "Enfance", "Présent"]}
+            keywordsEn={["Natural", "Tenderness", "Childhood", "Present"]}
+            lang={lang}
+            image={IMG.family}
+            imageAlt={IMG.detail}
+            reverse={false}
+            isLast={true}
+          />
+        </div>
+      </section>
+
+      {/* ── CRAFT — what we do, in detail ── */}
+      <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
+        <div className="container">
+          <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
+            <SectionLabel num="III" label={t("Le savoir-faire", "The craft")} align="center" />
+            <h2 style={{
+              fontFamily: "var(--serif-display)",
+              fontSize: "clamp(40px, 5vw, 72px)",
+              lineHeight: 1.05,
+              fontWeight: 400,
+              margin: "40px 0 0",
+              letterSpacing: "-0.01em",
+              color: "var(--fg)",
+            }}>
+              {t(<>De la prise de vue<br /><em style={{ fontStyle: "italic", fontWeight: 300 }}>au tirage final</em></>,
+                 <>From the shot<br /><em style={{ fontStyle: "italic", fontWeight: 300 }}>to the final print</em></>)}
+            </h2>
+          </div>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, 1fr)",
+            gap: 0,
+            marginTop: 100,
+            borderTop: "1px solid var(--line)",
+          }}>
+            {[
+              { num: "01", fr: "Photographie", en: "Photography",
+                fr_d: "Argentique en sensibilité, numérique en exigence. Boîtiers plein-format, optiques fixes, lumière naturelle privilégiée.",
+                en_d: "Film in sensitivity, digital in demand. Full-frame bodies, prime lenses, natural light favored." },
+              { num: "02", fr: "Vidéo & captation", en: "Film & capture",
+                fr_d: "Caméras cinéma, son en direct, deux à trois axes simultanés. Le mariage filmé comme un long-métrage court.",
+                en_d: "Cinema cameras, live sound, two to three simultaneous axes. The wedding filmed like a short feature." },
+              { num: "03", fr: "Post-traitement & retouche", en: "Post-processing & retouching",
+                fr_d: "Chaque image relue, recadrée si nécessaire, calibrée. Aucun filtre. Une cohérence d'ambiance sur l'ensemble de la livraison.",
+                en_d: "Every image reviewed, cropped if needed, calibrated. No filters. A coherent mood across the entire delivery." },
+              { num: "04", fr: "Montage & color grading", en: "Editing & color grading",
+                fr_d: "Le montage est un récit. Le color grading lui donne sa température. Nous travaillons en LUTs sur mesure, scène par scène.",
+                en_d: "The edit is a story. The grade gives it its temperature. We work with custom LUTs, scene by scene." },
+              { num: "05", fr: "Télépilotage drone", en: "Drone piloting",
+                fr_d: "Pilotes certifiés DGAC. Le drone n'est pas une attraction, c'est un cinquième regard — utilisé quand il sert le récit.",
+                en_d: "DGAC-certified pilots. The drone is not an attraction — it's a fifth gaze, used when it serves the story." },
+              { num: "06", fr: "Livraison & tirages", en: "Delivery & prints",
+                fr_d: "Galerie privée, fichiers HD, livre photo en option. Pour les clients qui le souhaitent, tirages baryté en édition limitée.",
+                en_d: "Private gallery, HD files, optional photo book. For those who want it, limited-edition baryta prints." },
+            ].map((c, i) => (
+              <div key={i} style={{
+                padding: "48px 56px",
+                borderRight: i % 2 === 0 ? "1px solid var(--line)" : "none",
+                borderBottom: i < 4 ? "1px solid var(--line)" : "none",
+              }}>
+                <div style={{
+                  fontFamily: "var(--serif)", fontStyle: "italic",
+                  fontSize: 14, color: "var(--fg-muted)",
+                  marginBottom: 16,
+                }}>— {c.num}</div>
+                <div style={{
+                  fontFamily: "var(--serif-display)",
+                  fontSize: 28, lineHeight: 1.15,
+                  fontWeight: 400,
+                  color: "var(--fg)",
+                  marginBottom: 18,
+                }}>{t(c.fr, c.en)}</div>
+                <div style={{
+                  fontFamily: "var(--serif)",
+                  fontSize: 15.5, lineHeight: 1.65,
+                  color: "var(--fg-muted)",
+                  fontWeight: 300,
+                  maxWidth: 460,
+                }}>{t(c.fr_d, c.en_d)}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── DRONE — discreet section, image-led ── */}
+      <section style={{
+        background: "var(--bg-deep)",
+        color: "var(--fg-on-deep)",
+        padding: "var(--section-y) 0",
+      }}>
+        <div className="container">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1.4fr",
+            gap: 80,
+            alignItems: "center",
+          }}>
+            <div>
+              <SectionLabel num="IV" label={t("Vue du ciel", "Aerial view")} />
+              <h2 style={{
+                fontFamily: "var(--serif-display)",
+                fontSize: "clamp(40px, 4.5vw, 64px)",
+                lineHeight: 1.05,
+                fontWeight: 400,
+                margin: "32px 0 28px",
+                color: "var(--fg-on-deep)",
+              }}>
+                {t(
+                  <>Un cinquième regard,<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>quand il sert le récit.</em></>,
+                  <>A fifth gaze,<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>when it serves the story.</em></>
+                )}
+              </h2>
+              <p style={{
+                fontFamily: "var(--serif)",
+                fontSize: 17, lineHeight: 1.7,
+                fontWeight: 300,
+                opacity: 0.85,
+                maxWidth: 460,
+              }}>
+                {t(
+                  "Notre nom est dans le ciel : DFly. Mais nous ne sortons le drone que lorsque la scène le demande — un château vu d'en haut, une plage à l'aube, une procession dans les vignes. Pilotes certifiés DGAC, vols autorisés en zone S2/S3.",
+                  "Our name is in the sky: DFly. But we only fly when the scene calls for it — a château from above, a beach at dawn, a procession through the vineyards. DGAC-certified pilots, authorized flights in S2/S3 zones."
+                )}
+              </p>
+              <div style={{
+                marginTop: 40, display: "flex", gap: 32,
+                fontFamily: "var(--sans)", fontSize: 11,
+                letterSpacing: "0.32em", textTransform: "uppercase",
+                opacity: 0.7,
+              }}>
+                <span>DGAC certifié</span>
+                <span>·</span>
+                <span>Assuré professionnel</span>
+                <span>·</span>
+                <span>4K · 6K</span>
+              </div>
+            </div>
+
+            <div style={{ position: "relative" }}>
+              <img
+                src={IMG.drone}
+                alt=""
+                className="cine"
+                style={{
+                  width: "100%",
+                  aspectRatio: "4/5",
+                  objectFit: "cover",
+                  filter: "saturate(0.85) contrast(1.05)",
+                }}
+              />
+              <div style={{
+                position: "absolute",
+                bottom: -30, left: -30,
+                background: "var(--bg-deep)",
+                padding: "20px 28px",
+                borderTop: "1px solid rgba(243,237,226,0.18)",
+                borderRight: "1px solid rgba(243,237,226,0.18)",
+              }}>
+                <div style={{
+                  fontFamily: "var(--sans)", fontSize: 10,
+                  letterSpacing: "0.36em", textTransform: "uppercase",
+                  opacity: 0.6, marginBottom: 6,
+                }}>{t("Domaine de", "Domaine de")}</div>
+                <div style={{
+                  fontFamily: "var(--serif)",
+                  fontStyle: "italic", fontSize: 22,
+                  fontWeight: 300,
+                }}>la Roque-Forcade · Lubéron</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── VALUES manifesto ── */}
+      <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
+        <div className="container">
+          <SectionLabel num="V" label={t("Ce qui nous tient", "What holds us")} align="center" />
+          <div style={{
+            margin: "60px auto 0",
+            maxWidth: 1100,
+            textAlign: "center",
+          }}>
+            <div style={{
+              fontFamily: "var(--serif-display)",
+              fontSize: "clamp(36px, 4.5vw, 64px)",
+              lineHeight: 1.18,
+              fontWeight: 400,
+              fontStyle: "italic",
+              color: "var(--fg)",
+              textWrap: "balance",
+            }}>
+              {t(
+                <>«&nbsp;Nous ne fabriquons pas de souvenirs.<br/>Nous attendons qu'ils arrivent,<br/>et nous sommes là.&nbsp;»</>,
+                <>"We do not manufacture memories.<br/>We wait for them to come,<br/>and we are there."</>
+              )}
+            </div>
+            <div style={{
+              fontFamily: "var(--sans)", fontSize: 11,
+              letterSpacing: "0.36em", textTransform: "uppercase",
+              marginTop: 36, color: "var(--fg-muted)",
+            }}>
+              — Antoine & Rémi
+            </div>
+          </div>
+
+          <div style={{
+            marginTop: 120,
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: 0,
+            borderTop: "1px solid var(--line)",
+            borderBottom: "1px solid var(--line)",
+          }}>
+            {[
+              { fr: "Sensibilité", en: "Sensitivity",
+                fr_d: "Voir l'émotion avant qu'elle ne se nomme. Comprendre les regards.",
+                en_d: "See emotion before it names itself. Understand the gaze." },
+              { fr: "Discrétion", en: "Discretion",
+                fr_d: "Disparaître pour mieux capter. Personne ne se souvient de nous, tout le monde se souvient des images.",
+                en_d: "Disappear to capture better. No one remembers us, everyone remembers the images." },
+              { fr: "Esprit de famille", en: "Family spirit",
+                fr_d: "Père et fils, nous filmons les autres familles avec ce que nous savons des nôtres.",
+                en_d: "Father and son, we film other families with what we know of our own." },
+              { fr: "Spontanéité", en: "Spontaneity",
+                fr_d: "Aucune scène rejouée. La lumière qui tombe, le rire qui part, le geste qui ne reviendra pas.",
+                en_d: "No replayed scenes. The light falling, the laugh escaping, the gesture that won't return." },
+            ].map((v, i) => (
+              <div key={i} style={{
+                padding: "56px 36px",
+                borderRight: i < 3 ? "1px solid var(--line)" : "none",
+                textAlign: "center",
+              }}>
+                <div style={{
+                  fontFamily: "var(--serif-display)",
+                  fontStyle: "italic",
+                  fontSize: 32,
+                  fontWeight: 300,
+                  color: "var(--fg)",
+                  marginBottom: 24,
+                }}>{t(v.fr, v.en)}</div>
+                <div style={{
+                  fontFamily: "var(--serif)",
+                  fontSize: 14.5, lineHeight: 1.65,
+                  color: "var(--fg-muted)",
+                  fontWeight: 300,
+                  maxWidth: 240, margin: "0 auto",
+                }}>{t(v.fr_d, v.en_d)}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── DUO ── */}
+      <section style={{ background: "var(--bg-alt)", padding: "var(--section-y) 0" }}>
+        <div className="container">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: 100,
+            alignItems: "center",
+          }}>
+            <div style={{ position: "relative" }}>
+              <img
+                src={IMG.duo}
+                alt=""
+                className="cine"
+                style={{
+                  width: "100%",
+                  aspectRatio: "4/5",
+                  objectFit: "cover",
+                  filter: "saturate(0.85) contrast(1.02)",
+                }}
+              />
+              <div style={{
+                position: "absolute",
+                top: 24, left: 24,
+                fontFamily: "var(--serif)",
+                fontStyle: "italic",
+                fontSize: 16,
+                color: "var(--ivory)",
+                fontWeight: 300,
+                letterSpacing: "0.02em",
+                textShadow: "0 1px 8px rgba(0,0,0,0.4)",
+              }}>Antoine & Rémi</div>
+            </div>
+
+            <div>
+              <SectionLabel num="VI" label={t("Père & fils", "Father & son")} />
+              <h2 style={{
+                fontFamily: "var(--serif-display)",
+                fontSize: "clamp(36px, 4vw, 56px)",
+                lineHeight: 1.08,
+                fontWeight: 400,
+                margin: "32px 0 32px",
+                color: "var(--fg)",
+              }}>
+                {t(
+                  <>Deux regards.<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>Une même famille.</em></>,
+                  <>Two gazes.<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>One family.</em></>
+                )}
+              </h2>
+              <p style={{
+                fontFamily: "var(--serif)",
+                fontSize: 17, lineHeight: 1.75,
+                fontWeight: 300,
+                color: "var(--fg)",
+                marginBottom: 22,
+              }}>
+                {t(
+                  "Antoine photographie depuis trente ans. Rémi est arrivé plus récemment, apportant la vidéo et le drone. Aujourd'hui, nous sommes tous deux photographes et vidéastes — c'est devenu notre métier commun.",
+                  "Antoine has been photographing for thirty years. Rémi arrived more recently, bringing film and the drone. Today, we are both photographers and filmmakers — it has become our shared craft."
+                )}
+              </p>
+              <p style={{
+                fontFamily: "var(--serif)",
+                fontStyle: "italic",
+                fontSize: 16, lineHeight: 1.7,
+                fontWeight: 300,
+                color: "var(--fg-muted)",
+                maxWidth: 460,
+              }}>
+                {t(
+                  "Sur un mariage, nous sommes deux : un photographe et un vidéaste. Sur un événement plus large, nous savons monter une équipe. Toujours dans la même grammaire.",
+                  "At a wedding, we are two: a photographer and a filmmaker. For larger events, we can build a team. Always in the same grammar."
+                )}
+              </p>
+
+              <div style={{
+                marginTop: 48, display: "flex", gap: 56,
+                paddingTop: 32, borderTop: "1px solid var(--line)",
+              }}>
+                <div>
+                  <div style={{
+                    fontFamily: "var(--serif-display)", fontSize: 36, fontStyle: "italic",
+                    fontWeight: 300, color: "var(--fg)",
+                  }}>30+</div>
+                  <div style={{
+                    fontFamily: "var(--sans)", fontSize: 10,
+                    letterSpacing: "0.32em", textTransform: "uppercase",
+                    color: "var(--fg-muted)", marginTop: 6,
+                  }}>{t("Mariages filmés", "Weddings filmed")}</div>
+                </div>
+                <div>
+                  <div style={{
+                    fontFamily: "var(--serif-display)", fontSize: 36, fontStyle: "italic",
+                    fontWeight: 300, color: "var(--fg)",
+                  }}>3</div>
+                  <div style={{
+                    fontFamily: "var(--sans)", fontSize: 10,
+                    letterSpacing: "0.32em", textTransform: "uppercase",
+                    color: "var(--fg-muted)", marginTop: 6,
+                  }}>{t("Ans à deux", "Years together")}</div>
+                </div>
+                <div>
+                  <div style={{
+                    fontFamily: "var(--serif-display)", fontSize: 36, fontStyle: "italic",
+                    fontWeight: 300, color: "var(--fg)",
+                  }}>Provence</div>
+                  <div style={{
+                    fontFamily: "var(--sans)", fontSize: 10,
+                    letterSpacing: "0.32em", textTransform: "uppercase",
+                    color: "var(--fg-muted)", marginTop: 6,
+                  }}>{t("Et au-delà", "And beyond")}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TESTIMONIAL ── */}
+      <section style={{ padding: "calc(var(--section-y) * 0.9) 0", background: "var(--bg)" }}>
+        <div className="container">
+          <div style={{ maxWidth: 920, margin: "0 auto", textAlign: "center" }}>
+            <div style={{
+              fontFamily: "var(--serif-display)", fontSize: 64,
+              fontStyle: "italic", fontWeight: 300,
+              color: "var(--fg-muted)", lineHeight: 0.5,
+              marginBottom: 24,
+            }}>“</div>
+            <p style={{
+              fontFamily: "var(--serif)",
+              fontStyle: "italic",
+              fontSize: "clamp(22px, 2.4vw, 32px)",
+              lineHeight: 1.45,
+              fontWeight: 300,
+              color: "var(--fg)",
+              textWrap: "pretty",
+            }}>
+              {t(
+                "Nous avions peur d'un mariage envahi par les caméras. Antoine et Rémi ont été invisibles toute la journée. Le film qu'ils nous ont rendu — nous le regardons encore, deux ans plus tard, et nous pleurons à chaque fois.",
+                "We were afraid of a wedding invaded by cameras. Antoine and Rémi were invisible all day. The film they gave us — we still watch it, two years later, and we cry every time."
+              )}
+            </p>
+            <div style={{
+              fontFamily: "var(--sans)", fontSize: 11,
+              letterSpacing: "0.36em", textTransform: "uppercase",
+              marginTop: 36, color: "var(--fg-muted)",
+            }}>
+              — Camille & Étienne · {t("Mariage à Gordes", "Wedding in Gordes")}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer lang={lang} />
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Domain row — alternating editorial layout
+// ─────────────────────────────────────────────────────────────────
+function DomainRow({ num, title, subtitle, body, keywords, keywordsEn, lang, image, imageAlt, reverse, isLast, href }) {
+  const t = (fr, en) => lang === "FR" ? fr : en;
+  const kw = lang === "FR" ? keywords : keywordsEn;
+
+  const text = (
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", padding: reverse ? "0 0 0 40px" : "0 40px 0 0" }}>
+      <div style={{
+        fontFamily: "var(--serif)", fontStyle: "italic",
+        fontSize: 16, color: "var(--fg-muted)",
+        letterSpacing: "0.04em",
+      }}>— {num}</div>
+      <h3 style={{
+        fontFamily: "var(--serif-display)",
+        fontSize: "clamp(48px, 6vw, 96px)",
+        lineHeight: 0.95,
+        fontWeight: 400,
+        margin: "16px 0 18px",
+        letterSpacing: "-0.005em",
+        color: "var(--fg)",
+      }}>{title}</h3>
+      <div style={{
+        fontFamily: "var(--serif)", fontStyle: "italic",
+        fontSize: "clamp(18px, 1.5vw, 22px)",
+        fontWeight: 300, color: "var(--fg-muted)",
+        marginBottom: 32, maxWidth: 460,
+      }}>{subtitle}</div>
+      <p style={{
+        fontFamily: "var(--serif)",
+        fontSize: 16.5, lineHeight: 1.7,
+        fontWeight: 300, color: "var(--fg)",
+        maxWidth: 480, marginBottom: 36,
+      }}>{body}</p>
+      {kw && kw.length > 0 && (
+      <div style={{
+        display: "flex", flexWrap: "wrap", gap: 0,
+        marginBottom: 36, borderTop: "1px solid var(--line)",
+      }}>
+        {kw.map((k, i) => (
+          <div key={i} style={{
+            fontFamily: "var(--sans)", fontSize: 10.5,
+            letterSpacing: "0.32em", textTransform: "uppercase",
+            color: "var(--fg-muted)",
+            padding: "14px 20px 14px 0",
+            borderBottom: "1px solid var(--line)",
+            flex: "0 0 auto",
+            marginRight: i < kw.length - 1 ? 0 : 0,
+          }}>{k}{i < kw.length - 1 && <span style={{ marginLeft: 20, opacity: 0.4 }}>·</span>}</div>
+        ))}
+      </div>
+      )}
+      <a href={href || "#"} style={{
+        fontFamily: "var(--sans)", fontSize: 11,
+        letterSpacing: "0.4em", textTransform: "uppercase",
+        color: "var(--fg)",
+        borderBottom: "1px solid var(--fg)",
+        paddingBottom: 8, display: "inline-block", alignSelf: "flex-start",
+      }}>
+        {t("Voir le travail", "See the work")} &nbsp;→
+      </a>
+    </div>
+  );
+
+  const visual = (
+    <div style={{ position: "relative" }}>
+      <img
+        src={image}
+        alt=""
+        className="cine"
+        style={{
+          width: "100%",
+          aspectRatio: "4/5",
+          objectFit: "cover",
+          filter: "saturate(0.85) contrast(1.02)",
+        }}
+      />
+      <img
+        src={imageAlt}
+        alt=""
+        className="cine"
+        style={{
+          position: "absolute",
+          width: "55%",
+          aspectRatio: "1/1",
+          objectFit: "cover",
+          bottom: -50,
+          [reverse ? "left" : "right"]: -40,
+          border: "8px solid var(--bg-alt)",
+          filter: "saturate(0.85) contrast(1.02)",
+          zIndex: 2,
+        }}
+      />
+    </div>
+  );
+
+  return (
+    <div style={{
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 60,
+      paddingTop: 80,
+      paddingBottom: isLast ? 80 : 120,
+      borderBottom: isLast ? "none" : "1px solid var(--line)",
+      alignItems: "stretch",
+    }}>
+      {reverse ? <>{visual}{text}</> : <>{text}{visual}</>}
+    </div>
+  );
+}
+
+window.Home = Home;
+
+
+const TWEAK_DEFAULTS = { "palette": "ivory", "typo": "playfair", "grain": 0 };
+
+function App() {
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [lang, setLang] = React.useState("FR");
+
+  React.useEffect(() => {
+    document.body.setAttribute("data-theme", tweaks.palette);
+    document.documentElement.style.setProperty("--grain-opacity", String(tweaks.grain));
+    const typoMap = {
+      cormorant: "'Cormorant Garamond', 'Cormorant', Georgia, serif",
+      italiana:  "'Italiana', 'Cormorant Garamond', serif",
+      playfair:  "'Playfair Display', 'Cormorant Garamond', serif",
+    };
+    document.documentElement.style.setProperty("--serif-display", typoMap[tweaks.typo] || typoMap.cormorant);
+  }, [tweaks]);
+
+  React.useEffect(() => {
+    if (!document.getElementById("dfly-extra-fonts")) {
+      const link = document.createElement("link");
+      link.id = "dfly-extra-fonts";
+      link.rel = "stylesheet";
+      link.href = "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap";
+      document.head.appendChild(link);
+    }
+  }, []);
+
+  return (
+    <>
+      <Home lang={lang} setLang={setLang} />
+      <TweaksPanel title="Tweaks · DFly">
+        <TweakSection title="Palette">
+          <TweakRadio value={tweaks.palette} onChange={(v) => setTweak("palette", v)}
+            options={[{ value: "ivory", label: "Ivoire" }, { value: "sage", label: "Encre" }, { value: "dark", label: "Sombre" }]} />
+        </TweakSection>
+        <TweakSection title="Typographie principale">
+          <TweakRadio value={tweaks.typo} onChange={(v) => setTweak("typo", v)}
+            options={[{ value: "cormorant", label: "Cormorant" }, { value: "italiana", label: "Italiana" }, { value: "playfair", label: "Playfair" }]} />
+        </TweakSection>
+        <TweakSection title="Grain photo">
+          <TweakSlider value={tweaks.grain} min={0} max={0.18} step={0.01}
+            onChange={(v) => setTweak("grain", v)} format={(v) => `${Math.round(v * 100)}%`} />
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
+</script>
+</body>
+</html>
