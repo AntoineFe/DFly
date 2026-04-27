@@ -7,11 +7,11 @@ import DflyMonogram from '../components/DflyMonogram'
 
 const IMG = {
   hero:       'https://images.unsplash.com/photo-1519741497674-611481863552?w=2400&q=85',
-  wedding1:   'https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1600&q=85',
-  wedding2:   'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1600&q=85',
+  wedding1:   '/public/images/079_DSC7618.jpeg',
+  wedding2:   '/public/images/411_7R44813.jpeg',
   wedding3:   'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=85',
-  realestate: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1600&q=85',
-  realestate2:'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=1600&q=85',
+  realestate:  '/public/images/_DSC4497-HDR.jpeg',
+  realestate2: '/public/images/073_7R44153.jpeg',
   stage:      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
   event:      'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
   family:     'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=85',
@@ -36,7 +36,7 @@ export default function Home({ lang, setLang }) {
           {t('Photographie & Vidéo', 'Photography & Film')}
         </div>
         <div style={{ position: 'absolute', top: 110, right: 'var(--gutter)', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85 }}>
-          {t('Provence — Depuis 2023', 'Provence — Since 2023')}
+          {t('Provence Alpes Côte d\'Azur — Depuis 2023', 'Provence Alpes Côte d\'Azur — Since 2023')}
         </div>
 
         <div style={{ position: 'relative', zIndex: 2, padding: '80px 0' }}>
@@ -53,10 +53,10 @@ export default function Home({ lang, setLang }) {
               Antoine & Rémi Ferrera
             </div>
             <div style={{ width: 60, height: 1, background: 'rgba(243,237,226,0.5)', margin: '32px auto' }} />
-            <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(15px,1.1vw,17px)', lineHeight: 1.7, maxWidth: 360, fontWeight: 300, opacity: 0.9 }}>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(15px,1.1vw,17px)', lineHeight: 1.7, maxWidth: 360, fontWeight: 300, opacity: 0.9, whiteSpace: 'pre-line' }}>
               {t(
-                'Photographes et vidéastes.\nPrestations photo et vidéo pour particuliers et professionnels.',
-                'Photographers and filmmakers.\nPhoto and film services for individuals and professionals.'
+                'Prestations photo et vidéo\npour particuliers et professionnels.',
+                'Photo and film services\nfor individuals and professionals.'
               )}
             </div>
           </Cartouche>
@@ -75,14 +75,14 @@ export default function Home({ lang, setLang }) {
             <SectionLabel num="I" label={t('Bonjour', 'Hello')} align="center" />
             <div style={{ textAlign: 'center', marginTop: 48, fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,4vw,58px)', lineHeight: 1.18, fontWeight: 400, color: 'var(--fg)', letterSpacing: '-0.005em' }}>
               {t(
-                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Nous sommes Antoine et Rémi</em>, père et fils.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Nous réalisons des prestations photo & vidéo depuis trois ans pour les particuliers comme pour les professionnels.</span></>,
+                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Nous sommes Antoine et Rémi</em>, père et fils.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Nous réalisons des prestations photo & vidéo depuis plusieurs années pour les particuliers comme pour les professionnels.</span></>,
                 <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>We are Antoine and Rémi</em>, father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>For three years we have been delivering photo & film services for individuals and professionals.</span></>
               )}
             </div>
-            <div style={{ textAlign: 'center', maxWidth: 640, margin: '48px auto 0', fontFamily: 'var(--serif)', fontSize: 22, lineHeight: 1.7, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)' }}>
+            <div style={{ textAlign: 'center', maxWidth: 640, margin: '48px auto 0', fontFamily: 'var(--serif)', fontSize: 22, lineHeight: 1.7, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
               {t(
-                'Nous savons diriger quand c\'est nécessaire (portrait, immobilier, mise en scène), et rester discrets quand il faut capturer des moments naturels. C\'est ce mélange qui définit notre façon de travailler.',
-                'We know how to direct when needed (portraits, real estate, staged scenes), and stay discreet when natural moments need to be captured. That blend defines the way we work.'
+                'Nous savons diriger quand c\'est nécessaire (portrait, immobilier, mise en scène), et rester discrets quand il faut capturer des moments naturels.\nC\'est ce mélange qui définit notre façon de travailler.',
+                'We know how to direct when needed (portraits, real estate, staged scenes), and stay discreet when natural moments need to be captured.\nThat blend defines the way we work.'
               )}
             </div>
           </div>
@@ -101,10 +101,10 @@ export default function Home({ lang, setLang }) {
 
           <DomainRow num="01" lang={lang}
             title={t('Mariage', 'Wedding')}
-            subtitle={t('Raconter votre journée pour en garder la mémoire', 'Telling your story to preserve the memory')}
+            subtitle={t('Raconter votre journée pour en garder la mémoire', 'Capturing your day to preserve your memories')}
             body={t(
-              'Nous intervenons sur les mariages, le plus souvent à deux selon le projet, afin d\'offrir deux points de vue complémentaires : l\'un en front, l\'autre en back, pour une couverture plus complète et plus riche de la journée. Nous restons présents sans nous imposer, en accordant une attention particulière aux émotions et aux interactions, pour restituer les moments de joie, de partage et d\'intimité tels qu\'ils se vivent.',
-              'We cover weddings, most often as a duo, to offer two complementary viewpoints — one in front, the other in back — for a fuller and richer record of the day.'
+              'Nous intervenons sur les mariages, le plus souvent à deux selon le projet, afin d\'offrir deux points de vue complémentaires et une couverture plus complète de la journée. Nous restons présents sans nous imposer, en accordant une attention particulière aux émotions, aux regards et aux échanges, pour restituer les moments de joie, de partage et d\'intimité tels qu\'ils se vivent.',
+              'We work on weddings, most often as a duo depending on the project, in order to offer two complementary viewpoints and a more complete coverage of the day. We remain present without imposing ourselves, paying close attention to emotions, interactions and exchanges, to faithfully capture moments of joy, sharing and intimacy as they naturally unfold.',
             )}
             keywords={[]} href="/mariage"
             image={IMG.wedding1} imageAlt={IMG.wedding2} reverse={false}

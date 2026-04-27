@@ -4,7 +4,7 @@ export default function DflyMonogram({ size = 56, color = 'currentColor' }) {
   )
   return (
     <img
-      src="/assets/dfly-logo.png"
+      src="./assets/dfly-logo.png"
       alt="DFly"
       style={{
         width: size, height: size,
