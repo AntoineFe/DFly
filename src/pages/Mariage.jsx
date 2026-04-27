@@ -123,12 +123,7 @@ function Mariage({ lang, setLang }) {
       {/* INTRO MANIFESTO */}
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
         <div className="container">
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.5fr",
-            gap: 100,
-            alignItems: "start",
-          }}>
+          <div className="grid-manifesto">
             <div style={{ position: "sticky", top: 120 }}>
               <SectionLabel num="I" label={t("Notre approche", "Our approach")} />
             </div>
@@ -198,11 +193,7 @@ function Mariage({ lang, setLang }) {
             </h2>
           </div>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 60,
-          }}>
+          <div className="grid-two-mediums">
             {/* Photo */}
             <div>
               <img src={W_IMG.bride} alt=""
@@ -241,7 +232,7 @@ function Mariage({ lang, setLang }) {
             </div>
 
             {/* Video */}
-            <div style={{ paddingTop: 100 }}>
+            <div className="medium-offset" style={{ paddingTop: 100 }}>
               <img src={W_IMG.couple} alt=""
                 style={{
                   width: "100%", aspectRatio: "4/5", objectFit: "cover",
@@ -298,12 +289,7 @@ function Mariage({ lang, setLang }) {
         </div>
 
         <div style={{ width: "100%", padding: "0 var(--gutter)" }}>
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(12, 1fr)",
-            gridAutoRows: "120px",
-            gap: 16,
-          }}>
+          <div className="grid-gallery">
             <GridImg src={W_IMG.ceremony} cols="span 7" rows="span 4" />
             <GridImg src={W_IMG.bouquet} cols="span 5" rows="span 3" />
             <GridImg src={W_IMG.preparation} cols="span 5" rows="span 3" />
@@ -338,7 +324,7 @@ function Mariage({ lang, setLang }) {
 
           <div style={{ maxWidth: 920, margin: "0 auto" }}>
             {[
-              { time: "06h30", fr: "Préparatifs", en: "Preparations",
+              { time: "06h30", fr: "Préparatifs",  en: "Preparations",
                 fr_d: "Les premiers gestes, la robe accrochée à la fenêtre, les mains qui tremblent un peu. Nous arrivons en silence.",
                 en_d: "The first gestures, the dress hanging by the window, hands trembling slightly. We arrive in silence." },
               { time: "11h00", fr: "First look", en: "First look",
@@ -357,14 +343,10 @@ function Mariage({ lang, setLang }) {
                 fr_d: "Lumières basses, son chaud. Nous restons jusqu'à ce que la piste se vide — c'est souvent là que se passent les images les plus tendres.",
                 en_d: "Low lights, warm sound. We stay until the floor empties — that's often where the most tender images are made." },
             ].map((step, i) => (
-              <div key={i} style={{
-                display: "grid",
-                gridTemplateColumns: "120px 1fr",
-                gap: 40,
+              <div key={i} className="grid-timeline-row" style={{
                 padding: "32px 0",
                 borderTop: "1px solid var(--line)",
                 borderBottom: i === 5 ? "1px solid var(--line)" : "none",
-                alignItems: "start",
               }}>
                 <div>
                   <div style={{
@@ -508,12 +490,7 @@ function Mariage({ lang, setLang }) {
             </p>
           </div>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 0,
-            border: "1px solid var(--line)",
-          }}>
+          <div className="grid-collections">
             {[
               {
                 name: t("Photographie", "Photography"),
@@ -622,12 +599,7 @@ function Mariage({ lang, setLang }) {
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg-deep)", color: "var(--fg-on-deep)" }}>
         <div className="container">
           <SectionLabel num="VII" label={t("Ce qu'ils en disent", "What they say")} align="center" />
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: 80,
-            marginTop: 80,
-          }}>
+          <div className="grid-testimonials" style={{ marginTop: 80 }}>
             {[
               {
                 fr: "Nous avions peur d'un mariage envahi par les caméras. Antoine et Rémi ont été invisibles toute la journée. Le film qu'ils nous ont rendu — nous le regardons encore, deux ans plus tard.",
@@ -667,12 +639,7 @@ function Mariage({ lang, setLang }) {
       {/* CONTACT */}
       <section id="contact" style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
         <div className="container">
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1.2fr",
-            gap: 100,
-            alignItems: "start",
-          }}>
+          <div className="grid-contact">
             <div>
               <SectionLabel num="VIII" label={t("Écrire", "Write")} />
               <h2 style={{
@@ -701,7 +668,7 @@ function Mariage({ lang, setLang }) {
                 <div className="eyebrow" style={{ color: "var(--fg-muted)", marginBottom: 18 }}>
                   {t("Joignables directement", "Reach us directly")}
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 32 }}>
+                <div className="grid-contact-info">
                   <div>
                     <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 8 }}>Antoine</div>
                     <div style={{ fontFamily: "var(--serif)", fontSize: 15, lineHeight: 1.7, color: "var(--fg-muted)" }}>
@@ -727,8 +694,7 @@ function Mariage({ lang, setLang }) {
               <FormRow label={t("E-mail", "Email")} placeholder="vous@exemple.fr" type="email" />
               <FormRow label={t("Date du mariage", "Wedding date")} placeholder={t("12 juin 2026", "June 12, 2026")} />
               <FormRow label={t("Lieu", "Place")} placeholder={t("Domaine en Lubéron", "Estate in the Luberon")} />
-              <div style={{
-                display: "grid", gridTemplateColumns: "200px 1fr", gap: 24,
+              <div className="form-row" style={{
                 padding: "20px 0", borderBottom: "1px solid var(--line)",
               }}>
                 <label style={{
@@ -778,8 +744,7 @@ function GridImg({ src, cols, rows }) {
 
 function FormRow({ label, placeholder, type = "text" }) {
   return (
-    <div style={{
-      display: "grid", gridTemplateColumns: "200px 1fr", gap: 24,
+    <div className="form-row" style={{
       padding: "20px 0", borderBottom: "1px solid var(--line)",
       alignItems: "center",
     }}>

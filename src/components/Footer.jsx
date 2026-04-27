@@ -19,7 +19,7 @@ export default function Footer({ lang = 'FR' }) {
         </div>
 
         {/* Colonnes */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr 1fr 1fr', gap: 60, paddingTop: 80, paddingBottom: 80 }}>
+        <div className="grid-footer" style={{ paddingTop: 80, paddingBottom: 80 }}>
           <div>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 32, marginBottom: 18 }}>
               D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
@@ -63,7 +63,7 @@ export default function Footer({ lang = 'FR' }) {
         </div>
 
         {/* Bas de page */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.55 }}>
+        <div className="footer-bottom" style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.55 }}>
           <span>© {new Date().getFullYear()} DFly — Tous droits réservés</span>
           <span>Pilote drone certifié · DGAC</span>
           <span>dfly.fr</span>

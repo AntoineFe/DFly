@@ -7,11 +7,11 @@ import DflyMonogram from '../components/DflyMonogram'
 
 const IMG = {
   hero:       'https://images.unsplash.com/photo-1519741497674-611481863552?w=2400&q=85',
-  wedding1:   '/public/images/079_DSC7618.jpeg',
-  wedding2:   '/public/images/411_7R44813.jpeg',
+  wedding1:   '/images/079_DSC7618.jpeg',
+  wedding2:   '/images/411_7R44813.jpeg',
   wedding3:   'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=85',
-  realestate:  '/public/images/_DSC4497-HDR.jpeg',
-  realestate2: '/public/images/073_7R44153.jpeg',
+  realestate:  '/images/_DSC4497-HDR.jpeg',
+  realestate2: '/images/073_7R44153.jpeg',
   stage:      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
   event:      'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
   family:     'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=85',
@@ -92,7 +92,7 @@ export default function Home({ lang, setLang }) {
       {/* ── DOMAINES ── */}
       <section style={{ background: 'var(--bg-alt)', paddingTop: 'var(--section-y)', paddingBottom: 'var(--section-y)' }}>
         <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 80, flexWrap: 'wrap', gap: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 80, flexWrap: 'wrap', gap: 24, rowGap: 16 }}>
             <SectionLabel num="II" label={t('Nos domaines', 'Our work')} />
             <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(24px,2.4vw,36px)', fontWeight: 300, color: 'var(--fg)', maxWidth: 520, textAlign: 'right' }}>
               {t('Nous intervenons sur plusieurs types de projets, avec la même exigence de qualité.', 'We work across many kinds of projects, with the same standard of quality.')}
@@ -165,7 +165,7 @@ export default function Home({ lang, setLang }) {
               {t(<>De la prise de vue<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>au tirage final</em></>, <>From the shot<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>to the final print</em></>)}
             </h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 0, marginTop: 100, borderTop: '1px solid var(--line)' }}>
+          <div className="grid-craft" style={{ marginTop: 100 }}>
             {[
               { num: '01', fr: 'Photographie',          en: 'Photography',          fr_d: 'Argentique en sensibilité, numérique en exigence. Boîtiers plein-format, optiques fixes, lumière naturelle privilégiée.',                                 en_d: 'Film in sensitivity, digital in demand. Full-frame bodies, prime lenses, natural light favored.' },
               { num: '02', fr: 'Vidéo & captation',     en: 'Film & capture',       fr_d: 'Caméras cinéma, son en direct, deux à trois axes simultanés. Le mariage filmé comme un long-métrage court.',                                                en_d: 'Cinema cameras, live sound, two to three simultaneous axes. The wedding filmed like a short feature.' },
@@ -187,7 +187,7 @@ export default function Home({ lang, setLang }) {
       {/* ── DRONE ── */}
       <section style={{ background: 'var(--bg-deep)', color: 'var(--fg-on-deep)', padding: 'var(--section-y) 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 80, alignItems: 'center' }}>
+          <div className="grid-drone">
             <div>
               <SectionLabel num="IV" label={t('Vue du ciel', 'Aerial view')} />
               <h2 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(40px,4.5vw,64px)', lineHeight: 1.05, fontWeight: 400, margin: '32px 0 28px', color: 'var(--fg-on-deep)' }}>
@@ -227,7 +227,7 @@ export default function Home({ lang, setLang }) {
             </div>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase', marginTop: 36, color: 'var(--fg-muted)' }}>— Antoine & Rémi</div>
           </div>
-          <div style={{ marginTop: 120, display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 0, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
+          <div className="grid-4" style={{ marginTop: 120, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
             {[
               { fr: 'Sensibilité',      en: 'Sensitivity',    fr_d: 'Voir l\'émotion avant qu\'elle ne se nomme. Comprendre les regards.',                                               en_d: 'See emotion before it names itself. Understand the gaze.' },
               { fr: 'Discrétion',       en: 'Discretion',     fr_d: 'Disparaître pour mieux capter. Personne ne se souvient de nous, tout le monde se souvient des images.',             en_d: 'Disappear to capture better. No one remembers us, everyone remembers the images.' },
@@ -246,7 +246,7 @@ export default function Home({ lang, setLang }) {
       {/* ── DUO ── */}
       <section style={{ background: 'var(--bg-alt)', padding: 'var(--section-y) 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 100, alignItems: 'center' }}>
+          <div className="grid-duo">
             <div style={{ position: 'relative' }}>
               <img src={IMG.duo} alt="" className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
               <div style={{ position: 'absolute', top: 24, left: 24, fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--ivory)', fontWeight: 300, textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
@@ -270,7 +270,7 @@ export default function Home({ lang, setLang }) {
                   'At a wedding, we are two: a photographer and a filmmaker. For larger events, we can build a team. Always in the same grammar.'
                 )}
               </p>
-              <div style={{ marginTop: 48, display: 'flex', gap: 56, paddingTop: 32, borderTop: '1px solid var(--line)' }}>
+              <div className="duo-stats" style={{ marginTop: 48, display: 'flex', gap: 56, paddingTop: 32, borderTop: '1px solid var(--line)' }}>
                 {[
                   { val: '30+',    fr: 'Mariages filmés', en: 'Weddings filmed' },
                   { val: '3',      fr: 'Ans à deux',      en: 'Years together'  },
@@ -315,7 +315,7 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
   const t = (fr, en) => lang === 'FR' ? fr : en
 
   const text = (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: reverse ? '0 0 0 40px' : '0 40px 0 0' }}>
+    <div className="domain-text" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: reverse ? '0 0 0 40px' : '0 40px 0 0' }}>
       <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--fg-muted)', letterSpacing: '0.04em' }}>— {num}</div>
       <h3 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(48px,6vw,96px)', lineHeight: 0.95, fontWeight: 400, margin: '16px 0 18px', letterSpacing: '-0.005em' }}>{title}</h3>
       <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(18px,1.5vw,22px)', fontWeight: 300, color: 'var(--fg-muted)', marginBottom: 32, maxWidth: 460 }}>{subtitle}</div>
@@ -336,14 +336,14 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
   )
 
   const visual = (
-    <div style={{ position: 'relative' }}>
+    <div className="domain-visual" style={{ position: 'relative' }}>
       <img src={image} alt="" className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-      <img src={imageAlt} alt="" className="cine" style={{ position: 'absolute', width: '55%', aspectRatio: '1/1', objectFit: 'cover', bottom: -50, [reverse ? 'left' : 'right']: -40, border: '8px solid var(--bg-alt)', filter: 'saturate(0.85) contrast(1.02)', zIndex: 2 }} />
+      <img src={imageAlt} alt="" className={`cine domain-thumb${reverse ? ' domain-thumb-reverse' : ''}`} style={{ position: 'absolute', width: '55%', aspectRatio: '1/1', objectFit: 'cover', bottom: -50, [reverse ? 'left' : 'right']: -40, border: '8px solid var(--bg-alt)', filter: 'saturate(0.85) contrast(1.02)', zIndex: 2 }} />
     </div>
   )
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 60, paddingTop: 80, paddingBottom: isLast ? 80 : 120, borderBottom: isLast ? 'none' : '1px solid var(--line)', alignItems: 'stretch' }}>
+    <div className="grid-domain" style={{ paddingTop: 80, paddingBottom: isLast ? 80 : 120, borderBottom: isLast ? 'none' : '1px solid var(--line)' }}>
       {reverse ? <>{visual}{text}</> : <>{text}{visual}</>}
     </div>
   )
