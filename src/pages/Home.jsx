@@ -102,8 +102,8 @@ export default function Home({ lang, setLang }) {
             title={t('Mariage', 'Wedding')}
             subtitle={t('Raconter votre journée pour en garder la mémoire', 'Capturing your day to preserve your memories')}
             body={t(
-              'Nous intervenons sur les mariages, le plus souvent à deux selon le projet, afin d\'offrir deux points de vue complémentaires et une couverture plus complète de la journée. Nous restons présents sans nous imposer, en accordant une attention particulière aux émotions, aux regards et aux échanges, pour restituer les moments de joie, de partage et d\'intimité tels qu\'ils se vivent.',
-              'We work on weddings, most often as a duo depending on the project, in order to offer two complementary viewpoints and a more complete coverage of the day. We remain present without imposing ourselves, paying close attention to emotions, interactions and exchanges, to faithfully capture moments of joy, sharing and intimacy as they naturally unfold.',
+              'Le jour de votre mariage, vous ne verrez pas votre mariée arriver. Vous ne verrez pas vos parents se regarder pendant les vœux. Nous, si.',
+              'On your wedding day, you won\'t see your bride walk in. You won\'t see your parents\' faces during the vows. We will.',
             )}
             keywords={[]} href="/mariage"
             image={IMG.wedding1} imageAlt={IMG.wedding2} reverse={false}
