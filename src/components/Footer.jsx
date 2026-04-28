@@ -24,7 +24,7 @@ export default function Footer({ lang = 'FR' }) {
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 32, marginBottom: 18 }}>
               D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
             </div>
-            <p style={{ fontFamily: 'var(--serif)', fontSize: 15, lineHeight: 1.7, color: 'rgba(243,237,226,0.75)', fontStyle: 'italic', fontWeight: 300, maxWidth: 320 }}>
+            <p style={{ fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.7, color: 'rgba(243,237,226,0.75)', fontStyle: 'italic', fontWeight: 300, maxWidth: 320 }}>
               {t(
                 'Antoine & Rémi Ferrera. Père et fils, photographes et vidéastes basés en Provence.',
                 'Antoine & Rémi Ferrera. Father and son — photographers and filmmakers based in Provence.'
@@ -34,7 +34,7 @@ export default function Footer({ lang = 'FR' }) {
 
           <div>
             <div className="eyebrow" style={{ opacity: 0.6, marginBottom: 18 }}>Antoine</div>
-            <div style={{ fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.8 }}>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.8 }}>
               06 07 72 09 40<br />
               <a href="mailto:antoine.ferrera@dfly.fr" style={{ borderBottom: '1px solid rgba(243,237,226,0.4)' }}>
                 antoine.ferrera@dfly.fr
@@ -44,7 +44,7 @@ export default function Footer({ lang = 'FR' }) {
 
           <div>
             <div className="eyebrow" style={{ opacity: 0.6, marginBottom: 18 }}>Rémi</div>
-            <div style={{ fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.8 }}>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.8 }}>
               06 95 40 27 00<br />
               <a href="mailto:remi.ferrera@dfly.fr" style={{ borderBottom: '1px solid rgba(243,237,226,0.4)' }}>
                 remi.ferrera@dfly.fr
@@ -54,7 +54,7 @@ export default function Footer({ lang = 'FR' }) {
 
           <div>
             <div className="eyebrow" style={{ opacity: 0.6, marginBottom: 18 }}>{t('Suivre', 'Follow')}</div>
-            <div style={{ fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.8 }}>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.8 }}>
               <a href="#" style={{ display: 'block' }}>Instagram</a>
               <a href="#" style={{ display: 'block' }}>Vimeo</a>
               <a href="#" style={{ display: 'block' }}>Pinterest</a>

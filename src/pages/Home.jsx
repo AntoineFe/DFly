@@ -55,7 +55,7 @@ export default function Home({ lang, setLang }) {
               Antoine & Rémi Ferrera
             </div>
             <div style={{ width: 60, height: 1, background: 'rgba(243,237,226,0.5)', margin: '32px auto' }} />
-            <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(15px,1.1vw,17px)', lineHeight: 1.7, maxWidth: 360, fontWeight: 300, opacity: 0.9, whiteSpace: 'pre-line' }}>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(17px,1.3vw,20px)', lineHeight: 1.7, maxWidth: 360, fontWeight: 300, opacity: 0.9, whiteSpace: 'pre-line' }}>
               {t(
                 'Prestations photo et vidéo\nPour particuliers et professionnels',
                 'Photo and film services\nFor individuals and professionals'
@@ -81,7 +81,7 @@ export default function Home({ lang, setLang }) {
                 <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>We are Antoine and Rémi</em>, father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>We deliver photo & film services for individuals and professionals.</span></>
               )}
             </div>
-            <div style={{ textAlign: 'center', maxWidth: 640, margin: '48px auto 0', fontFamily: 'var(--serif)', fontSize: 22, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
+            <div style={{ textAlign: 'center', maxWidth: 640, margin: '48px auto 0', fontFamily: 'var(--serif)', fontSize: 25, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
               {t(
                 'Nous adaptons notre approche à la situation : discrets pour capter l\’émotion sur le vif, présents quand l\’image doit être composée. Selon le projet, nous intervenons à deux.',
                 'We adapt our approach to each situation: discreet to capture emotions as they happen, and present when the image needs to be composed. Depending on the project, we often work as a duo.'
@@ -179,7 +179,7 @@ export default function Home({ lang, setLang }) {
               <div key={i} style={{ padding: '48px 56px', borderRight: i % 2 === 0 ? '1px solid var(--line)' : 'none', borderBottom: i < 4 ? '1px solid var(--line)' : 'none' }}>
                 <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 14, color: 'var(--fg-muted)', marginBottom: 16 }}>— {c.num}</div>
                 <div style={{ fontFamily: 'var(--serif-display)', fontSize: 28, lineHeight: 1.15, fontWeight: 400, marginBottom: 18 }}>{t(c.fr, c.en)}</div>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: 15.5, lineHeight: 1.65, color: 'var(--fg-muted)', fontWeight: 300, maxWidth: 460 }}>{t(c.fr_d, c.en_d)}</div>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.65, color: 'var(--fg-muted)', fontWeight: 300, maxWidth: 460 }}>{t(c.fr_d, c.en_d)}</div>
               </div>
             ))}
           </div>
@@ -195,7 +195,7 @@ export default function Home({ lang, setLang }) {
               <h2 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(40px,4.5vw,64px)', lineHeight: 1.05, fontWeight: 400, margin: '32px 0 28px', color: 'var(--fg-on-deep)' }}>
                 {t(<>Un cinquième regard,<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>quand il sert le récit.</em></>, <>A fifth gaze,<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>when it serves the story.</em></>)}
               </h2>
-              <p style={{ fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.7, fontWeight: 300, opacity: 0.85, maxWidth: 460 }}>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.7, fontWeight: 300, opacity: 0.85, maxWidth: 460 }}>
                 {t(
                   'Notre nom est dans le ciel : DFly. Mais nous ne sortons le drone que lorsque la scène le demande — un château vu d\'en haut, une plage à l\'aube, une procession dans les vignes. Pilotes certifiés DGAC, vols autorisés en zone S2/S3.',
                   'Our name is in the sky: DFly. But we only fly when the scene calls for it. DGAC-certified pilots, authorized flights in S2/S3 zones.'
@@ -238,7 +238,7 @@ export default function Home({ lang, setLang }) {
             ].map((v, i) => (
               <div key={i} style={{ padding: '56px 36px', borderRight: i < 3 ? '1px solid var(--line)' : 'none', textAlign: 'center' }}>
                 <div style={{ fontFamily: 'var(--serif-display)', fontStyle: 'italic', fontSize: 32, fontWeight: 300, marginBottom: 24 }}>{t(v.fr, v.en)}</div>
-                <div style={{ fontFamily: 'var(--serif)', fontSize: 14.5, lineHeight: 1.65, color: 'var(--fg-muted)', fontWeight: 300, maxWidth: 240, margin: '0 auto' }}>{t(v.fr_d, v.en_d)}</div>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.65, color: 'var(--fg-muted)', fontWeight: 300, maxWidth: 240, margin: '0 auto' }}>{t(v.fr_d, v.en_d)}</div>
               </div>
             ))}
           </div>
@@ -260,13 +260,13 @@ export default function Home({ lang, setLang }) {
               <h2 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(36px,4vw,56px)', lineHeight: 1.08, fontWeight: 400, margin: '32px 0 32px' }}>
                 {t(<>Deux regards.<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Une même famille.</em></>, <>Two gazes.<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>One family.</em></>)}
               </h2>
-              <p style={{ fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.75, fontWeight: 300, marginBottom: 22 }}>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.75, fontWeight: 300, marginBottom: 22 }}>
                 {t(
                   'Antoine photographie depuis trente ans. Rémi est arrivé plus récemment, apportant la vidéo et le drone. Aujourd\'hui, nous sommes tous deux photographes et vidéastes — c\'est devenu notre métier commun.',
                   'Antoine has been photographing for thirty years. Rémi arrived more recently, bringing film and the drone. Today, we are both photographers and filmmakers — it has become our shared craft.'
                 )}
               </p>
-              <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, lineHeight: 1.7, fontWeight: 300, color: 'var(--fg-muted)', maxWidth: 460 }}>
+              <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 18, lineHeight: 1.7, fontWeight: 300, color: 'var(--fg-muted)', maxWidth: 460 }}>
                 {t(
                   'Sur un mariage, nous sommes deux : un photographe et un vidéaste. Sur un événement plus large, nous savons monter une équipe. Toujours dans la même grammaire.',
                   'At a wedding, we are two: a photographer and a filmmaker. For larger events, we can build a team. Always in the same grammar.'
@@ -294,7 +294,7 @@ export default function Home({ lang, setLang }) {
         <div className="container">
           <div style={{ maxWidth: 920, margin: '0 auto', textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 64, fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 0.5, marginBottom: 24 }}>"</div>
-            <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(22px,2.4vw,32px)', lineHeight: 1.45, fontWeight: 300 }}>
+            <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(25px,2.6vw,35px)', lineHeight: 1.45, fontWeight: 300 }}>
               {t(
                 'Nous avions peur d\'un mariage envahi par les caméras. Antoine et Rémi ont été invisibles toute la journée. Le film qu\'ils nous ont rendu — nous le regardons encore, deux ans plus tard, et nous pleurons à chaque fois.',
                 'We were afraid of a wedding invaded by cameras. Antoine and Rémi were invisible all day. The film they gave us — we still watch it, two years later, and we cry every time.'
@@ -320,8 +320,8 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
     <div className="domain-text" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: reverse ? '0 0 0 40px' : '0 40px 0 0' }}>
       <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--fg-muted)', letterSpacing: '0.04em' }}>— {num}</div>
       <h3 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(48px,6vw,96px)', lineHeight: 0.95, fontWeight: 400, margin: '16px 0 18px', letterSpacing: '-0.005em' }}>{title}</h3>
-      <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(18px,1.5vw,22px)', fontWeight: 300, color: 'var(--fg-muted)', marginBottom: 32, maxWidth: 460 }}>{subtitle}</div>
-      <p style={{ fontFamily: 'var(--serif)', fontSize: 16.5, lineHeight: 1.7, fontWeight: 300, maxWidth: 480, marginBottom: 36 }}>{body}</p>
+      <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(20px,1.7vw,24px)', fontWeight: 300, color: 'var(--fg-muted)', marginBottom: 32, maxWidth: 460 }}>{subtitle}</div>
+      <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.7, fontWeight: 300, maxWidth: 480, marginBottom: 36 }}>{body}</p>
       {keywords.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, marginBottom: 36, borderTop: '1px solid var(--line)' }}>
           {keywords.map((k, i) => (

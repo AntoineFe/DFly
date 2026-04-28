@@ -106,7 +106,7 @@ function Mariage({ lang, setLang }) {
               <p style={{
                 fontFamily: "var(--serif)",
                 fontStyle: "italic",
-                fontSize: 19, lineHeight: 1.6,
+                fontSize: 21, lineHeight: 1.6,
                 fontWeight: 300,
                 opacity: 0.92,
               }}>
@@ -145,7 +145,7 @@ function Mariage({ lang, setLang }) {
               </p>
               <p style={{
                 fontFamily: "var(--serif)",
-                fontSize: 17, lineHeight: 1.75,
+                fontSize: 19, lineHeight: 1.75,
                 fontWeight: 300,
                 color: "var(--fg-muted)",
                 maxWidth: 620,
@@ -158,7 +158,7 @@ function Mariage({ lang, setLang }) {
               </p>
               <p style={{
                 fontFamily: "var(--serif)",
-                fontSize: 17, lineHeight: 1.75,
+                fontSize: 19, lineHeight: 1.75,
                 fontWeight: 300,
                 color: "var(--fg-muted)",
                 maxWidth: 620,
@@ -209,7 +209,7 @@ function Mariage({ lang, setLang }) {
                   marginBottom: 18, color: "var(--fg)",
                 }}>{t("Photographie", "Photography")}</div>
                 <p style={{
-                  fontFamily: "var(--serif)", fontSize: 16, lineHeight: 1.7,
+                  fontFamily: "var(--serif)", fontSize: 18, lineHeight: 1.7,
                   fontWeight: 300, color: "var(--fg-muted)", maxWidth: 480,
                 }}>
                   {t(
@@ -246,7 +246,7 @@ function Mariage({ lang, setLang }) {
                   marginBottom: 18, color: "var(--fg)",
                 }}>{t("Vidéo & captation", "Film & capture")}</div>
                 <p style={{
-                  fontFamily: "var(--serif)", fontSize: 16, lineHeight: 1.7,
+                  fontFamily: "var(--serif)", fontSize: 18, lineHeight: 1.7,
                   fontWeight: 300, color: "var(--fg-muted)", maxWidth: 480,
                 }}>
                   {t(
@@ -363,7 +363,7 @@ function Mariage({ lang, setLang }) {
                   }}>{t(step.fr, step.en)}</div>
                   <div style={{
                     fontFamily: "var(--serif)",
-                    fontSize: 16, lineHeight: 1.65,
+                    fontSize: 18, lineHeight: 1.65,
                     fontWeight: 300, fontStyle: "italic",
                     color: "var(--fg-muted)",
                     maxWidth: 620,
@@ -552,7 +552,7 @@ function Mariage({ lang, setLang }) {
                 }}>{p.name}</div>
                 <div style={{
                   fontFamily: "var(--serif)", fontStyle: "italic",
-                  fontSize: 15, fontWeight: 300,
+                  fontSize: 17, fontWeight: 300,
                   color: "var(--fg-muted)", marginBottom: 36, lineHeight: 1.5,
                 }}>{p.desc}</div>
 
@@ -564,7 +564,7 @@ function Mariage({ lang, setLang }) {
                     <li key={j} style={{
                       padding: "14px 0",
                       borderBottom: "1px solid var(--line)",
-                      fontFamily: "var(--serif)", fontSize: 15,
+                      fontFamily: "var(--serif)", fontSize: 17,
                       color: "var(--fg)", fontWeight: 300,
                       display: "flex", alignItems: "baseline", gap: 12,
                     }}>
@@ -620,7 +620,7 @@ function Mariage({ lang, setLang }) {
                 }}>“</div>
                 <p style={{
                   fontFamily: "var(--serif)", fontStyle: "italic",
-                  fontSize: 21, lineHeight: 1.5, fontWeight: 300,
+                  fontSize: 24, lineHeight: 1.5, fontWeight: 300,
                   textWrap: "pretty",
                 }}>{t(q.fr, q.en)}</p>
                 <div style={{
@@ -655,7 +655,7 @@ function Mariage({ lang, setLang }) {
                 )}
               </h2>
               <p style={{
-                fontFamily: "var(--serif)", fontSize: 17,
+                fontFamily: "var(--serif)", fontSize: 19,
                 lineHeight: 1.7, fontWeight: 300, color: "var(--fg-muted)",
                 marginBottom: 40, maxWidth: 440,
               }}>
@@ -671,13 +671,13 @@ function Mariage({ lang, setLang }) {
                 <div className="grid-contact-info">
                   <div>
                     <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 8 }}>Antoine</div>
-                    <div style={{ fontFamily: "var(--serif)", fontSize: 15, lineHeight: 1.7, color: "var(--fg-muted)" }}>
+                    <div style={{ fontFamily: "var(--serif)", fontSize: 17, lineHeight: 1.7, color: "var(--fg-muted)" }}>
                       06 07 72 09 40<br/>antoine.ferrera@dfly.fr
                     </div>
                   </div>
                   <div>
                     <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 8 }}>Rémi</div>
-                    <div style={{ fontFamily: "var(--serif)", fontSize: 15, lineHeight: 1.7, color: "var(--fg-muted)" }}>
+                    <div style={{ fontFamily: "var(--serif)", fontSize: 17, lineHeight: 1.7, color: "var(--fg-muted)" }}>
                       06 95 40 27 00<br/>remi.ferrera@dfly.fr
                     </div>
                   </div>
