@@ -30,7 +30,7 @@
   --line: var(--rule);
 
   /* Type */
-  --serif: Georgia, 'Cormorant Garamond', 'Cormorant', 'EB Garamond',  serif;
+  --serif: 'Cormorant Garamond', 'Cormorant', 'EB Garamond', Georgia, serif;
   --serif-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
   --script: 'Italiana', 'Cormorant Garamond', serif;
   --calligraphy: 'Petit Formal Script', 'Cormorant Garamond', cursive;
