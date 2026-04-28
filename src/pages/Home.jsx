@@ -57,8 +57,8 @@ export default function Home({ lang, setLang }) {
             <div style={{ width: 60, height: 1, background: 'rgba(243,237,226,0.5)', margin: '32px auto' }} />
             <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(15px,1.1vw,17px)', lineHeight: 1.7, maxWidth: 360, fontWeight: 300, opacity: 0.9, whiteSpace: 'pre-line' }}>
               {t(
-                'Prestations photo et vidéo\npour particuliers et professionnels.',
-                'Photo and film services\nfor individuals and professionals.'
+                'Prestations photo et vidéo\nPour particuliers et professionnels',
+                'Photo and film services\nFor individuals and professionals'
               )}
             </div>
           </Cartouche>
@@ -77,14 +77,14 @@ export default function Home({ lang, setLang }) {
             <SectionLabel num="I" label={t('Bonjour', 'Hello')} align="center" />
             <div style={{ textAlign: 'center', marginTop: 48, fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,4vw,58px)', lineHeight: 1.18, fontWeight: 400, color: 'var(--fg)', letterSpacing: '-0.005em' }}>
               {t(
-                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Nous sommes Antoine et Rémi</em>, père et fils.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Nous réalisons des prestations photo & vidéo depuis plusieurs années pour les particuliers comme pour les professionnels.</span></>,
-                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>We are Antoine and Rémi</em>, father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>For three years we have been delivering photo & film services for individuals and professionals.</span></>
+                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Nous sommes Antoine et Rémi</em>, père et fils.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Nous réalisons des prestations photo & vidéo pour les particuliers et les professionnels.</span></>,
+                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>We are Antoine and Rémi</em>, father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>We deliver photo & film services for individuals and professionals.</span></>
               )}
             </div>
-            <div style={{ textAlign: 'center', maxWidth: 640, margin: '48px auto 0', fontFamily: 'var(--serif)', fontSize: 22, lineHeight: 1.7, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
+            <div style={{ textAlign: 'center', maxWidth: 640, margin: '48px auto 0', fontFamily: 'var(--serif)', fontSize: 22, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
               {t(
-                'Nous savons diriger quand c\'est nécessaire (portrait, immobilier, mise en scène), et rester discrets quand il faut capturer des moments naturels.\nC\'est ce mélange qui définit notre façon de travailler.',
-                'We know how to direct when needed (portraits, real estate, staged scenes), and stay discreet when natural moments need to be captured.\nThat blend defines the way we work.'
+                'Nous adaptons notre approche à la situation : discrets pour capter l\’émotion sur le vif, présents quand l\’image doit être composée. Selon le projet, nous intervenons à deux.',
+                'We adapt our approach to each situation: discreet to capture emotions as they happen, and present when the image needs to be composed. Depending on the project, we often work as a duo.'
               )}
             </div>
           </div>
