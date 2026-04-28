@@ -94,11 +94,8 @@ export default function Home({ lang, setLang }) {
       {/* ── DOMAINES ── */}
       <section style={{ background: 'var(--bg-alt)', paddingTop: 'var(--section-y)', paddingBottom: 'var(--section-y)' }}>
         <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 80, flexWrap: 'wrap', gap: 24, rowGap: 16 }}>
+          <div style={{ marginBottom: 48 }}>
             <SectionLabel num="II" label={t('Nos domaines', 'Our work')} />
-            <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(24px,2.4vw,36px)', fontWeight: 300, color: 'var(--fg)', maxWidth: 520, textAlign: 'right' }}>
-              {t('Nous intervenons sur plusieurs types de projets, avec la même exigence de qualité.', 'We work across many kinds of projects, with the same standard of quality.')}
-            </div>
           </div>
 
           <DomainRow num="01" lang={lang}
@@ -167,7 +164,7 @@ export default function Home({ lang, setLang }) {
               {t(<>De la prise de vue<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>au tirage final</em></>, <>From the shot<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>to the final print</em></>)}
             </h2>
           </div>
-          <div className="grid-craft" style={{ marginTop: 100 }}>
+          <div className="grid-craft" style={{ marginTop: 56 }}>
             {[
               { num: '01', fr: 'Photographie',          en: 'Photography',          fr_d: 'Argentique en sensibilité, numérique en exigence. Boîtiers plein-format, optiques fixes, lumière naturelle privilégiée.',                                 en_d: 'Film in sensitivity, digital in demand. Full-frame bodies, prime lenses, natural light favored.' },
               { num: '02', fr: 'Vidéo & captation',     en: 'Film & capture',       fr_d: 'Caméras cinéma, son en direct, deux à trois axes simultanés. Le mariage filmé comme un long-métrage court.',                                                en_d: 'Cinema cameras, live sound, two to three simultaneous axes. The wedding filmed like a short feature.' },
@@ -220,7 +217,7 @@ export default function Home({ lang, setLang }) {
       <section style={{ padding: 'var(--section-y) 0', background: 'var(--bg)' }}>
         <div className="container">
           <SectionLabel num="V" label={t('Ce qui nous tient', 'What holds us')} align="center" />
-          <div style={{ margin: '60px auto 0', maxWidth: 1100, textAlign: 'center' }}>
+          <div style={{ margin: '40px auto 0', maxWidth: 1100, textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(36px,4.5vw,64px)', lineHeight: 1.18, fontWeight: 400, fontStyle: 'italic', color: 'var(--fg)' }}>
               {t(
                 <>&laquo;&nbsp;Nous ne fabriquons pas de souvenirs.<br />Nous attendons qu'ils arrivent,<br />et nous sommes là.&nbsp;&raquo;</>,
@@ -229,14 +226,14 @@ export default function Home({ lang, setLang }) {
             </div>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase', marginTop: 36, color: 'var(--fg-muted)' }}>— Antoine & Rémi</div>
           </div>
-          <div className="grid-4" style={{ marginTop: 120, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
+          <div className="grid-4" style={{ marginTop: 64, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
             {[
               { fr: 'Sensibilité',      en: 'Sensitivity',    fr_d: 'Voir l\'émotion avant qu\'elle ne se nomme. Comprendre les regards.',                                               en_d: 'See emotion before it names itself. Understand the gaze.' },
               { fr: 'Discrétion',       en: 'Discretion',     fr_d: 'Disparaître pour mieux capter. Personne ne se souvient de nous, tout le monde se souvient des images.',             en_d: 'Disappear to capture better. No one remembers us, everyone remembers the images.' },
               { fr: 'Esprit de famille',en: 'Family spirit',  fr_d: 'Père et fils, nous filmons les autres familles avec ce que nous savons des nôtres.',                                en_d: 'Father and son, we film other families with what we know of our own.' },
               { fr: 'Spontanéité',      en: 'Spontaneity',    fr_d: 'Aucune scène rejouée. La lumière qui tombe, le rire qui part, le geste qui ne reviendra pas.',                     en_d: 'No replayed scenes. The light falling, the laugh escaping, the gesture that won\'t return.' },
             ].map((v, i) => (
-              <div key={i} style={{ padding: '56px 36px', borderRight: i < 3 ? '1px solid var(--line)' : 'none', textAlign: 'center' }}>
+              <div key={i} style={{ padding: '40px 36px', borderRight: i < 3 ? '1px solid var(--line)' : 'none', textAlign: 'center' }}>
                 <div style={{ fontFamily: 'var(--serif-display)', fontStyle: 'italic', fontSize: 32, fontWeight: 300, marginBottom: 24 }}>{t(v.fr, v.en)}</div>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.65, color: 'var(--fg-muted)', fontWeight: 300, maxWidth: 240, margin: '0 auto' }}>{t(v.fr_d, v.en_d)}</div>
               </div>
@@ -345,7 +342,7 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
   )
 
   return (
-    <div className="grid-domain" style={{ paddingTop: 80, paddingBottom: isLast ? 80 : 120, borderBottom: isLast ? 'none' : '1px solid var(--line)' }}>
+    <div className="grid-domain" style={{ paddingTop: 56, paddingBottom: isLast ? 56 : 80, borderBottom: isLast ? 'none' : '1px solid var(--line)' }}>
       {reverse ? <>{visual}{text}</> : <>{text}{visual}</>}
     </div>
   )

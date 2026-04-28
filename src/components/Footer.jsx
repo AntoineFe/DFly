@@ -8,7 +8,7 @@ export default function Footer({ lang = 'FR' }) {
       <div className="container">
 
         {/* CTA */}
-        <div style={{ textAlign: 'center', paddingBottom: 80, borderBottom: '1px solid rgba(243,237,226,0.18)' }}>
+        <div style={{ textAlign: 'center', paddingBottom: 56, borderBottom: '1px solid rgba(243,237,226,0.18)' }}>
           <DflyMonogram size={48} color="rgba(243,237,226,0.9)" />
           <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(40px,5vw,64px)', fontStyle: 'italic', fontWeight: 300, marginTop: 24, letterSpacing: '0.01em' }}>
             {t('Parlons de votre projet', "Let's talk about your project")}
@@ -19,7 +19,7 @@ export default function Footer({ lang = 'FR' }) {
         </div>
 
         {/* Colonnes */}
-        <div className="grid-footer" style={{ paddingTop: 80, paddingBottom: 80 }}>
+        <div className="grid-footer" style={{ paddingTop: 56, paddingBottom: 56 }}>
           <div>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 32, marginBottom: 18 }}>
               D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>

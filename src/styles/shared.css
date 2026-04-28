@@ -45,7 +45,7 @@
   /* Layout */
   --maxw: 1440px;
   --gutter: clamp(20px, 4vw, 64px);
-  --section-y: clamp(80px, 10vw, 160px);
+  --section-y: clamp(56px, 7vw, 110px);
 
   /* Grain */
   --grain-opacity: 0;
