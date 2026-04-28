@@ -201,8 +201,8 @@ export default function Home({ lang, setLang }) {
                   'Our name is in the sky: DFly. But we only fly when the scene calls for it. DGAC-certified pilots, authorized flights in S2/S3 zones.'
                 )}
               </p>
-              <div style={{ marginTop: 40, display: 'flex', gap: 32, fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em', textTransform: 'uppercase', opacity: 0.7 }}>
-                <span>DGAC certifié</span><span>·</span><span>Assuré professionnel</span><span>·</span><span>4K · 6K</span>
+              <div style={{ marginTop: 40, display: 'flex', flexWrap: 'wrap', gap: 12, rowGap: 8, fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em', textTransform: 'uppercase', opacity: 0.7 }}>
+                <span>DGAC certifié</span><span style={{ opacity: 0.4 }}>·</span><span>Assuré professionnel</span><span style={{ opacity: 0.4 }}>·</span><span>4K · 6K</span>
               </div>
             </div>
             <div style={{ position: 'relative' }}>

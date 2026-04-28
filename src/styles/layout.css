@@ -194,11 +194,8 @@
   /* Drone: image first */
   .grid-drone > *:last-child { order: -1; }
 
-  /* Drone floating label: adjust position */
-  .drone-label {
-    bottom: -20px !important;
-    left: 0 !important;
-  }
+  /* Drone floating label: trop large sur mobile → masqué */
+  .drone-label { display: none !important; }
 
   /* Duo: image first by default (visual is first child) */
   .duo-stats {
