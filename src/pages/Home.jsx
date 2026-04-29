@@ -13,7 +13,7 @@ const IMG = {
   wedding2:    `${BASE}images/411_7R44813.jpeg`,
   realestate1: `${BASE}images/_DSC4497-HDR.jpeg`,
   realestate2: `${BASE}images/073_7R44153.jpeg`,
-  business1:   `${BASE}images/YUN_0172.jpg`,
+  business1:   `${BASE}images/_A7R3274.jpeg`,
   business2:   'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
   event1:      'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
   event2:      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
