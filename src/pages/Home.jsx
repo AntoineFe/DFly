@@ -101,7 +101,7 @@ export default function Home({ lang, setLang }) {
 
           <DomainRow num="01" lang={lang}
             title={t('Mariage', 'Wedding')}
-            subtitle={t('Raconter votre journée pour en garder la mémoire', 'Capturing your day to preserve your memories')}
+            subtitle={t('Votre journée, vos souvenirs.', 'Your day, your memories.')}
             body={t(
               'Vous vivez votre mariage de l\'intérieur — portés par l\'émotion, entourés de ceux que vous aimez. Certains regards, certains sourires, vous ne les verrez qu\'après, sur les images. C\'est exactement notre rôle.',
               'You live your wedding from the inside — carried by emotion, surrounded by those you love. Some glances, some smiles, you will only see them afterwards, in the images. That is exactly our role.',
