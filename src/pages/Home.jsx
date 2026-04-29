@@ -8,18 +8,19 @@ import DflyMonogram from '../components/DflyMonogram'
 const BASE = import.meta.env.BASE_URL
 
 const IMG = {
-  hero:       'https://images.unsplash.com/photo-1519741497674-611481863552?w=2400&q=85',
-  wedding1:   `${BASE}images/079_DSC7618.jpeg`,
-  wedding2:   `${BASE}images/411_7R44813.jpeg`,
-  wedding3:   'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=85',
-  realestate:  `${BASE}images/_DSC4497-HDR.jpeg`,
+  hero:        'https://images.unsplash.com/photo-1519741497674-611481863552?w=2400&q=85',
+  wedding1:    `${BASE}images/079_DSC7618.jpeg`,
+  wedding2:    `${BASE}images/411_7R44813.jpeg`,
+  realestate1: `${BASE}images/_DSC4497-HDR.jpeg`,
   realestate2: `${BASE}images/073_7R44153.jpeg`,
-  stage:      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
-  event:      'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
-  family:     'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=85',
-  drone:      'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=2400&q=85',
-  duo:        'https://images.unsplash.com/photo-1554080353-a576cf803bda?w=1600&q=85',
-  detail:     'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600&q=85',
+  business1:   'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
+  business2:   'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
+  event1:      'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
+  event2:      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
+  portrait1:   'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1600&q=85',
+  portrait2:   'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600&q=85',
+  drone:       'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=2400&q=85',
+  duo:         'https://images.unsplash.com/photo-1554080353-a576cf803bda?w=1600&q=85',
 }
 
 export default function Home({ lang, setLang }) {
@@ -117,7 +118,7 @@ export default function Home({ lang, setLang }) {
               'From the individual home to new developments, every property has an hour, an angle, a light that suits it. Ground and aerial views, interiors and exteriors treated with a magazine standard.'
             )}
             keywords={[]}
-            image={IMG.realestate} imageAlt={IMG.realestate2} reverse={true}
+            image={IMG.realestate1} imageAlt={IMG.realestate2} reverse={true}
           />
 
           <DomainRow num="03" lang={lang}
@@ -128,7 +129,7 @@ export default function Home({ lang, setLang }) {
               'Craftsmen, builders, estates, retailers. Photos and videos that show your work — for your social media, print, and tenders.'
             )}
             keywords={[]}
-            image={IMG.stage} imageAlt={IMG.event} reverse={false}
+            image={IMG.business1} imageAlt={IMG.business2} reverse={false}
           />
 
           <DomainRow num="04" lang={lang}
@@ -139,7 +140,7 @@ export default function Home({ lang, setLang }) {
               'Fashion shows, graduations, concerts, festivals, performances. Every event has its rhythm, its emotion, its decisive moment. Our role is to capture them.'
             )}
             keywords={[]}
-            image={IMG.event} imageAlt={IMG.stage} reverse={true}
+            image={IMG.event1} imageAlt={IMG.event2} reverse={true}
           />
 
           <DomainRow num="05" lang={lang}
@@ -150,7 +151,7 @@ export default function Home({ lang, setLang }) {
               'Outdoor sessions, at home, without imposing anything. Portfolios, couples, families with children. We let things happen — you keep the truth of a moment.'
             )}
             keywords={[]}
-            image={IMG.family} imageAlt={IMG.detail} reverse={false} isLast
+            image={IMG.portrait1} imageAlt={IMG.portrait2} reverse={false} isLast
           />
         </div>
       </section>
