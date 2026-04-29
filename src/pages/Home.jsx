@@ -13,7 +13,7 @@ const IMG = {
   wedding2:    `${BASE}images/411_7R44813.jpeg`,
   realestate1: `${BASE}images/_DSC4497-HDR.jpeg`,
   realestate2: `${BASE}images/073_7R44153.jpeg`,
-  business1:   'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
+  business1:   `${BASE}images/YUN_0172.jpg`,
   business2:   'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
   event1:      'https://images.unsplash.com/photo-1511578314322-379afb476865?w=1600&q=85',
   event2:      'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=1600&q=85',
@@ -47,7 +47,7 @@ export default function Home({ lang, setLang }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85, marginBottom: 28 }}>
               <span>{t('Depuis', 'Since')}</span>
               <DflyMonogram size={44} color="rgba(243,237,226,0.95)" />
-              <span>2023</span>
+              <span>2020</span>
             </div>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(80px,10vw,152px)', lineHeight: 0.88, letterSpacing: '0.005em', fontWeight: 400 }}>
               D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
