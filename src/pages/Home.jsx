@@ -75,13 +75,13 @@ export default function Home({ lang, setLang }) {
         <div className="container">
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <SectionLabel num="I" label={t('Bonjour', 'Hello')} align="center" />
-            <div style={{ textAlign: 'center', marginTop: 48, fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,4vw,58px)', lineHeight: 1.18, fontWeight: 400, color: 'var(--fg)', letterSpacing: '-0.005em' }}>
+            <div style={{ textAlign: 'center', marginTop: 28, fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,4vw,58px)', lineHeight: 1.18, fontWeight: 400, color: 'var(--fg)', letterSpacing: '-0.005em' }}>
               {t(
                 <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Nous sommes Antoine et Rémi</em>, père et fils.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Nous réalisons des prestations photo & vidéo pour les particuliers et les professionnels.</span></>,
                 <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>We are Antoine and Rémi</em>, father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>We deliver photo & film services for individuals and professionals.</span></>
               )}
             </div>
-            <div style={{ textAlign: 'center', maxWidth: 640, margin: '48px auto 0', fontFamily: 'var(--serif)', fontSize: 25, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
+            <div style={{ textAlign: 'center', maxWidth: 640, margin: '28px auto 0', fontFamily: 'var(--serif)', fontSize: 25, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
               {t(
                 'Nous adaptons notre approche à la situation : discrets pour capter l\’émotion sur le vif, présents quand l\’image doit être composée. Selon le projet, nous intervenons à deux.',
                 'We adapt our approach to each situation: discreet to capture emotions as they happen, and present when the image needs to be composed. Depending on the project, we often work as a duo.'
@@ -94,7 +94,7 @@ export default function Home({ lang, setLang }) {
       {/* ── DOMAINES ── */}
       <section style={{ background: 'var(--bg-alt)', paddingTop: 'var(--section-y)', paddingBottom: 'var(--section-y)' }}>
         <div className="container">
-          <div style={{ marginBottom: 48 }}>
+          <div style={{ marginBottom: 32 }}>
             <SectionLabel num="II" label={t('Nos domaines', 'Our work')} />
           </div>
 
@@ -164,7 +164,7 @@ export default function Home({ lang, setLang }) {
               {t(<>De la prise de vue<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>au tirage final</em></>, <>From the shot<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>to the final print</em></>)}
             </h2>
           </div>
-          <div className="grid-craft" style={{ marginTop: 56 }}>
+          <div className="grid-craft" style={{ marginTop: 36 }}>
             {[
               { num: '01', fr: 'Photographie',          en: 'Photography',          fr_d: 'Argentique en sensibilité, numérique en exigence. Boîtiers plein-format, optiques fixes, lumière naturelle privilégiée.',                                 en_d: 'Film in sensitivity, digital in demand. Full-frame bodies, prime lenses, natural light favored.' },
               { num: '02', fr: 'Vidéo & captation',     en: 'Film & capture',       fr_d: 'Caméras cinéma, son en direct, deux à trois axes simultanés. Le mariage filmé comme un long-métrage court.',                                                en_d: 'Cinema cameras, live sound, two to three simultaneous axes. The wedding filmed like a short feature.' },
@@ -173,7 +173,7 @@ export default function Home({ lang, setLang }) {
               { num: '05', fr: 'Télépilotage drone',    en: 'Drone piloting',       fr_d: 'Pilotes certifiés DGAC. Le drone n\'est pas une attraction, c\'est un cinquième regard — utilisé quand il sert le récit.',                                   en_d: 'DGAC-certified pilots. The drone is not an attraction — it\'s a fifth gaze, used when it serves the story.' },
               { num: '06', fr: 'Livraison & tirages',   en: 'Delivery & prints',    fr_d: 'Galerie privée, fichiers HD, livre photo en option. Pour les clients qui le souhaitent, tirages baryté en édition limitée.',                                  en_d: 'Private gallery, HD files, optional photo book. Limited-edition baryta prints for those who want them.' },
             ].map((c, i) => (
-              <div key={i} style={{ padding: '48px 56px', borderRight: i % 2 === 0 ? '1px solid var(--line)' : 'none', borderBottom: i < 4 ? '1px solid var(--line)' : 'none' }}>
+              <div key={i} style={{ padding: '36px 48px', borderRight: i % 2 === 0 ? '1px solid var(--line)' : 'none', borderBottom: i < 4 ? '1px solid var(--line)' : 'none' }}>
                 <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 14, color: 'var(--fg-muted)', marginBottom: 16 }}>— {c.num}</div>
                 <div style={{ fontFamily: 'var(--serif-display)', fontSize: 28, lineHeight: 1.15, fontWeight: 400, marginBottom: 18 }}>{t(c.fr, c.en)}</div>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.65, color: 'var(--fg-muted)', fontWeight: 300, maxWidth: 460 }}>{t(c.fr_d, c.en_d)}</div>
@@ -217,7 +217,7 @@ export default function Home({ lang, setLang }) {
       <section style={{ padding: 'var(--section-y) 0', background: 'var(--bg)' }}>
         <div className="container">
           <SectionLabel num="V" label={t('Ce qui nous tient', 'What holds us')} align="center" />
-          <div style={{ margin: '40px auto 0', maxWidth: 1100, textAlign: 'center' }}>
+          <div style={{ margin: '24px auto 0', maxWidth: 1100, textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(36px,4.5vw,64px)', lineHeight: 1.18, fontWeight: 400, fontStyle: 'italic', color: 'var(--fg)' }}>
               {t(
                 <>&laquo;&nbsp;Nous ne fabriquons pas de souvenirs.<br />Nous attendons qu'ils arrivent,<br />et nous sommes là.&nbsp;&raquo;</>,
@@ -226,14 +226,14 @@ export default function Home({ lang, setLang }) {
             </div>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase', marginTop: 36, color: 'var(--fg-muted)' }}>— Antoine & Rémi</div>
           </div>
-          <div className="grid-4" style={{ marginTop: 64, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
+          <div className="grid-4" style={{ marginTop: 40, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
             {[
               { fr: 'Sensibilité',      en: 'Sensitivity',    fr_d: 'Voir l\'émotion avant qu\'elle ne se nomme. Comprendre les regards.',                                               en_d: 'See emotion before it names itself. Understand the gaze.' },
               { fr: 'Discrétion',       en: 'Discretion',     fr_d: 'Disparaître pour mieux capter. Personne ne se souvient de nous, tout le monde se souvient des images.',             en_d: 'Disappear to capture better. No one remembers us, everyone remembers the images.' },
               { fr: 'Esprit de famille',en: 'Family spirit',  fr_d: 'Père et fils, nous filmons les autres familles avec ce que nous savons des nôtres.',                                en_d: 'Father and son, we film other families with what we know of our own.' },
               { fr: 'Spontanéité',      en: 'Spontaneity',    fr_d: 'Aucune scène rejouée. La lumière qui tombe, le rire qui part, le geste qui ne reviendra pas.',                     en_d: 'No replayed scenes. The light falling, the laugh escaping, the gesture that won\'t return.' },
             ].map((v, i) => (
-              <div key={i} style={{ padding: '40px 36px', borderRight: i < 3 ? '1px solid var(--line)' : 'none', textAlign: 'center' }}>
+              <div key={i} style={{ padding: '28px 36px', borderRight: i < 3 ? '1px solid var(--line)' : 'none', textAlign: 'center' }}>
                 <div style={{ fontFamily: 'var(--serif-display)', fontStyle: 'italic', fontSize: 32, fontWeight: 300, marginBottom: 24 }}>{t(v.fr, v.en)}</div>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.65, color: 'var(--fg-muted)', fontWeight: 300, maxWidth: 240, margin: '0 auto' }}>{t(v.fr_d, v.en_d)}</div>
               </div>
@@ -269,7 +269,7 @@ export default function Home({ lang, setLang }) {
                   'At a wedding, we are two: a photographer and a filmmaker. For larger events, we can build a team. Always in the same grammar.'
                 )}
               </p>
-              <div className="duo-stats" style={{ marginTop: 48, display: 'flex', gap: 56, paddingTop: 32, borderTop: '1px solid var(--line)' }}>
+              <div className="duo-stats" style={{ marginTop: 28, display: 'flex', gap: 56, paddingTop: 24, borderTop: '1px solid var(--line)' }}>
                 {[
                   { val: '30+',    fr: 'Mariages filmés', en: 'Weddings filmed' },
                   { val: '3',      fr: 'Ans à deux',      en: 'Years together'  },
@@ -342,7 +342,7 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
   )
 
   return (
-    <div className="grid-domain" style={{ paddingTop: 56, paddingBottom: isLast ? 56 : 80, borderBottom: isLast ? 'none' : '1px solid var(--line)' }}>
+    <div className="grid-domain" style={{ paddingTop: 40, paddingBottom: isLast ? 40 : 60, borderBottom: isLast ? 'none' : '1px solid var(--line)' }}>
       {reverse ? <>{visual}{text}</> : <>{text}{visual}</>}
     </div>
   )
