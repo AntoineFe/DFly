@@ -121,33 +121,33 @@ export default function Home({ lang, setLang }) {
           />
 
           <DomainRow num="03" lang={lang}
-            title={t('Spectacle', 'Stage')}
-            subtitle={t('Captation vivante, multi-caméra', 'Live capture, multi-camera')}
+            title={t('Communication & Entreprise', 'Business & Brand')}
+            subtitle={t('Exister visuellement, convaincre sans forcer', 'Stand out visually, convince without forcing')}
             body={t(
-              'Concerts, théâtre, danse. Nous travaillons en discrétion totale, plusieurs caméras, sans gêner les artistes ni la salle. Montage sensible au rythme de la scène.',
-              'Concerts, theatre, dance. We work in total discretion, multiple cameras, without disturbing the artists or the room.'
+              'Artisans, constructeurs, domaines, commerçants. Des photos et vidéos qui montrent votre travail tel qu\'il mérite d\'être vu — pour vos réseaux, vos affiches, vos appels d\'offres.',
+              'Craftsmen, builders, estates, retailers. Photos and videos that show your work as it deserves to be seen — for your social media, print, and tenders.'
             )}
             keywords={[]}
             image={IMG.stage} imageAlt={IMG.event} reverse={false}
           />
 
           <DomainRow num="04" lang={lang}
-            title={t('Événement professionnel', 'Corporate event')}
-            subtitle={t('Témoigner, valoriser, transmettre', 'Witness, value, transmit')}
+            title={t('Événement & Spectacle', 'Event & Stage')}
+            subtitle={t('Captation vivante, multi-caméra', 'Live capture, multi-camera')}
             body={t(
-              'Lancements, séminaires, inaugurations. Une équipe efficace et invisible qui livre photos et vidéos courtes prêtes à diffuser, en respectant votre identité visuelle.',
-              'Launches, seminars, inaugurations. An efficient and invisible team delivering ready-to-share photos and short videos.'
+              'Défilés, remises de diplômes, concerts, festivals, spectacles. Nous travaillons en discrétion totale, plusieurs caméras si besoin, sans jamais gêner le déroulé.',
+              'Fashion shows, graduations, concerts, festivals, performances. We work in total discretion, multiple cameras when needed, never disrupting the flow.'
             )}
             keywords={[]}
             image={IMG.event} imageAlt={IMG.stage} reverse={true}
           />
 
           <DomainRow num="05" lang={lang}
-            title={t('Famille', 'Family')}
+            title={t('Portrait & Famille', 'Portrait & Family')}
             subtitle={t('Ce que l\'on oublie, ce que l\'on garde', 'What we forget, what we keep')}
             body={t(
-              'Séances en extérieur, à la maison, sans direction. Nous laissons les enfants être enfants. Vous gardez ce que personne ne vous offrirait : la vérité d\'un instant.',
-              'Outdoor sessions, at home, without direction. We let children be children. You keep the truth of a moment.'
+              'Séances en extérieur, à la maison, sans direction. Books, couples, familles avec enfants. Nous laissons les choses se passer — vous gardez la vérité d\'un instant.',
+              'Outdoor sessions, at home, without direction. Portfolios, couples, families with children. We let things happen — you keep the truth of a moment.'
             )}
             keywords={[]}
             image={IMG.family} imageAlt={IMG.detail} reverse={false} isLast
