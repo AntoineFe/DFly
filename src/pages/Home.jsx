@@ -113,8 +113,8 @@ export default function Home({ lang, setLang }) {
             title={t('Immobilier', 'Real Estate')}
             subtitle={t('Le soin du détail, des lignes et de la lumière', 'Care for detail, lines and light')}
             body={t(
-              'Une maison se photographie comme un portrait : il faut comprendre ses proportions, attendre la bonne heure, choisir l\'angle qui ne ment pas. Vues au sol et aériennes, intérieurs traités avec une exigence de magazine.',
-              'A house is photographed like a portrait: understand its proportions, wait for the right hour, choose the angle that doesn\'t lie.'
+              'De la maison individuelle au programme neuf, chaque bien a une heure, un angle, une lumière qui lui convient. Vues au sol et aériennes, intérieurs et extérieurs traités avec une exigence de magazine.',
+              'From the individual home to new developments, every property has an hour, an angle, a light that suits it. Ground and aerial views, interiors and exteriors treated with a magazine standard.'
             )}
             keywords={[]}
             image={IMG.realestate} imageAlt={IMG.realestate2} reverse={true}
@@ -122,10 +122,10 @@ export default function Home({ lang, setLang }) {
 
           <DomainRow num="03" lang={lang}
             title={t('Communication & Entreprise', 'Business & Brand')}
-            subtitle={t('Exister visuellement, convaincre sans forcer', 'Stand out visually, convince without forcing')}
+            subtitle={t('Votre travail mérite d\'être vu', 'Your work deserves to be seen')}
             body={t(
-              'Artisans, constructeurs, domaines, commerçants. Des photos et vidéos qui montrent votre travail tel qu\'il mérite d\'être vu — pour vos réseaux, vos affiches, vos appels d\'offres.',
-              'Craftsmen, builders, estates, retailers. Photos and videos that show your work as it deserves to be seen — for your social media, print, and tenders.'
+              'Artisans, constructeurs, domaines, commerçants. Des photos et vidéos qui montrent votre travail — pour vos réseaux, vos affiches, vos appels d\'offres.',
+              'Craftsmen, builders, estates, retailers. Photos and videos that show your work — for your social media, print, and tenders.'
             )}
             keywords={[]}
             image={IMG.stage} imageAlt={IMG.event} reverse={false}
@@ -135,8 +135,8 @@ export default function Home({ lang, setLang }) {
             title={t('Événement & Spectacle', 'Event & Stage')}
             subtitle={t('Captation vivante, multi-caméra', 'Live capture, multi-camera')}
             body={t(
-              'Défilés, remises de diplômes, concerts, festivals, spectacles. Nous travaillons en discrétion totale, plusieurs caméras si besoin, sans jamais gêner le déroulé.',
-              'Fashion shows, graduations, concerts, festivals, performances. We work in total discretion, multiple cameras when needed, never disrupting the flow.'
+              'Défilés, remises de diplômes, concerts, festivals, spectacles. Chaque événement a son rythme, son émotion, son moment décisif. Notre rôle est de les saisir.',
+              'Fashion shows, graduations, concerts, festivals, performances. Every event has its rhythm, its emotion, its decisive moment. Our role is to capture them.'
             )}
             keywords={[]}
             image={IMG.event} imageAlt={IMG.stage} reverse={true}
@@ -144,10 +144,10 @@ export default function Home({ lang, setLang }) {
 
           <DomainRow num="05" lang={lang}
             title={t('Portrait & Famille', 'Portrait & Family')}
-            subtitle={t('Ce que l\'on oublie, ce que l\'on garde', 'What we forget, what we keep')}
+            subtitle={t('Des images simples, vraies, durables.', 'Simple, true, lasting images.')}
             body={t(
-              'Séances en extérieur, à la maison, sans direction. Books, couples, familles avec enfants. Nous laissons les choses se passer — vous gardez la vérité d\'un instant.',
-              'Outdoor sessions, at home, without direction. Portfolios, couples, families with children. We let things happen — you keep the truth of a moment.'
+              'Séances en extérieur, à la maison, sans rien imposer. Books, couples, familles avec enfants. Nous laissons les choses se passer — vous gardez la vérité d\'un instant.',
+              'Outdoor sessions, at home, without imposing anything. Portfolios, couples, families with children. We let things happen — you keep the truth of a moment.'
             )}
             keywords={[]}
             image={IMG.family} imageAlt={IMG.detail} reverse={false} isLast
