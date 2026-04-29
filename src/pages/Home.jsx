@@ -116,7 +116,7 @@ export default function Home({ lang, setLang }) {
               'Une maison se photographie comme un portrait : il faut comprendre ses proportions, attendre la bonne heure, choisir l\'angle qui ne ment pas. Vues au sol et aériennes, intérieurs traités avec une exigence de magazine.',
               'A house is photographed like a portrait: understand its proportions, wait for the right hour, choose the angle that doesn\'t lie.'
             )}
-            keywords={t(['Lignes', 'Lumière', 'Proportions', 'Détail'], ['Lines', 'Light', 'Proportions', 'Detail'])}
+            keywords={[]}
             image={IMG.realestate} imageAlt={IMG.realestate2} reverse={true}
           />
 
@@ -127,7 +127,7 @@ export default function Home({ lang, setLang }) {
               'Concerts, théâtre, danse. Nous travaillons en discrétion totale, plusieurs caméras, sans gêner les artistes ni la salle. Montage sensible au rythme de la scène.',
               'Concerts, theatre, dance. We work in total discretion, multiple cameras, without disturbing the artists or the room.'
             )}
-            keywords={t(['Multi-caméra', 'Direct', 'Rythme', 'Discrétion'], ['Multi-camera', 'Live', 'Rhythm', 'Discretion'])}
+            keywords={[]}
             image={IMG.stage} imageAlt={IMG.event} reverse={false}
           />
 
@@ -138,7 +138,7 @@ export default function Home({ lang, setLang }) {
               'Lancements, séminaires, inaugurations. Une équipe efficace et invisible qui livre photos et vidéos courtes prêtes à diffuser, en respectant votre identité visuelle.',
               'Launches, seminars, inaugurations. An efficient and invisible team delivering ready-to-share photos and short videos.'
             )}
-            keywords={t(['Efficace', 'Invisible', 'Brandé', 'Réactif'], ['Efficient', 'Invisible', 'Branded', 'Responsive'])}
+            keywords={[]}
             image={IMG.event} imageAlt={IMG.stage} reverse={true}
           />
 
@@ -149,7 +149,7 @@ export default function Home({ lang, setLang }) {
               'Séances en extérieur, à la maison, sans direction. Nous laissons les enfants être enfants. Vous gardez ce que personne ne vous offrirait : la vérité d\'un instant.',
               'Outdoor sessions, at home, without direction. We let children be children. You keep the truth of a moment.'
             )}
-            keywords={t(['Naturel', 'Tendresse', 'Enfance', 'Présent'], ['Natural', 'Tenderness', 'Childhood', 'Present'])}
+            keywords={[]}
             image={IMG.family} imageAlt={IMG.detail} reverse={false} isLast
           />
         </div>
