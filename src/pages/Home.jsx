@@ -206,8 +206,8 @@ export default function Home({ lang, setLang }) {
             <div style={{ position: 'relative' }}>
               <img src={IMG.drone} alt="" className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.05)' }} />
               <div className="drone-label" style={{ position: 'absolute', bottom: -30, left: -30, background: 'var(--bg-deep)', padding: '20px 28px', borderTop: '1px solid rgba(243,237,226,0.18)', borderRight: '1px solid rgba(243,237,226,0.18)' }}>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', opacity: 0.6, marginBottom: 6 }}>Château</div>
-                <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, fontWeight: 300 }}>Réal d'Or · Massif des Maures</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', opacity: 0.6, marginBottom: 6 }}>Domaine</div>
+                <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, fontWeight: 300 }}>Château Réal d'Or · Massif des Maures</div>
               </div>
             </div>
           </div>
