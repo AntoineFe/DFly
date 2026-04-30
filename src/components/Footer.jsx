@@ -19,7 +19,7 @@ export default function Footer({ lang = 'FR' }) {
         </div>
 
         {/* Colonnes */}
-        <div className="grid-footer" style={{ paddingTop: 56, paddingBottom: 56, gridTemplateColumns: '1.2fr 1fr 1fr' }}>
+        <div className="grid-footer" style={{ paddingTop: 56, paddingBottom: 56 }}>
           <div>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 32, marginBottom: 18 }}>
               D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
