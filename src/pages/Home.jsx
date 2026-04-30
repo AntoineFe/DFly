@@ -195,8 +195,8 @@ export default function Home({ lang, setLang }) {
               </h2>
               <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.7, fontWeight: 300, opacity: 0.85, maxWidth: 460 }}>
                 {t(
-                  'Notre nom est dans le ciel : DFly. Mais nous ne sortons le drone que lorsque la scène le demande — un château vu d\'en haut, une plage à l\'aube, une procession dans les vignes. Pilotes certifiés DGAC, vols autorisés en zone S2/S3.',
-                  'Our name is in the sky: DFly. But we only fly when the scene calls for it. DGAC-certified pilots, authorized flights in S2/S3 zones.'
+                  'Notre nom est dans le ciel : DFly. Mais nous ne sortons le drone que lorsque la scène le demande — un château vu d\'en haut, une plage à l\'aube, une procession dans les vignes. Pilotes certifiés DGAC.',
+                  'Our name is in the sky: DFly. But we only fly when the scene calls for it — a château from above, a beach at dawn, a procession through the vines. DGAC-certified pilots.'
                 )}
               </p>
               <div style={{ marginTop: 40, display: 'flex', flexWrap: 'wrap', gap: 12, rowGap: 8, fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em', textTransform: 'uppercase', opacity: 0.7 }}>
