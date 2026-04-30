@@ -42,27 +42,25 @@ export default function Home({ lang, setLang }) {
           {t('Provence Alpes Côte d\'Azur — Depuis 2023', 'Provence Alpes Côte d\'Azur — Since 2023')}
         </div>
 
-        <div className="hero-cartouche-wrap" style={{ position: 'relative', zIndex: 2, padding: '80px 0' }}>
-          <Cartouche color="rgba(243,237,226,0.85)" width={620} height={620} className="cartouche-hero">
-            <div style={{ display: 'flex', alignItems: 'center', gap: 16, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85, marginBottom: 28 }}>
-              <span>{t('Depuis', 'Since')}</span>
-              <DflyMonogram size={44} color="rgba(243,237,226,0.95)" />
-              <span>2020</span>
-            </div>
-            <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(80px,10vw,152px)', lineHeight: 0.88, letterSpacing: '0.005em', fontWeight: 400 }}>
-              D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
-            </div>
-            <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: 'clamp(20px,1.8vw,26px)', marginTop: 24, opacity: 0.92 }}>
-              Antoine & Rémi Ferrera
-            </div>
-            <div style={{ width: 60, height: 1, background: 'rgba(243,237,226,0.5)', margin: '32px auto' }} />
-            <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(17px,1.3vw,20px)', lineHeight: 1.7, maxWidth: 360, fontWeight: 300, opacity: 0.9, whiteSpace: 'pre-line' }}>
-              {t(
-                'Prestations photo et vidéo\nPour particuliers et professionnels',
-                'Photo and film services\nFor individuals and professionals'
-              )}
-            </div>
-          </Cartouche>
+        <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', padding: '0 var(--gutter)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85, marginBottom: 28 }}>
+            <span>{t('Depuis', 'Since')}</span>
+            <DflyMonogram size={44} color="rgba(243,237,226,0.95)" />
+            <span>2020</span>
+          </div>
+          <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(80px,10vw,152px)', lineHeight: 0.88, letterSpacing: '0.005em', fontWeight: 400 }}>
+            D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
+          </div>
+          <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: 'clamp(20px,1.8vw,26px)', marginTop: 24, opacity: 0.92 }}>
+            Antoine & Rémi Ferrera
+          </div>
+          <div style={{ width: 60, height: 1, background: 'rgba(243,237,226,0.5)', margin: '32px auto' }} />
+          <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(17px,1.3vw,20px)', lineHeight: 1.7, fontWeight: 300, opacity: 0.9 }}>
+            {t(
+              'Prestations photo et vidéo · Pour particuliers et professionnels',
+              'Photo and film services · For individuals and professionals'
+            )}
+          </div>
         </div>
 
         <div style={{ position: 'absolute', bottom: 100, left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
