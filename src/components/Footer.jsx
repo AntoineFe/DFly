@@ -19,7 +19,7 @@ export default function Footer({ lang = 'FR' }) {
         </div>
 
         {/* Colonnes */}
-        <div className="grid-footer" style={{ paddingTop: 56, paddingBottom: 56 }}>
+        <div className="grid-footer" style={{ paddingTop: 56, paddingBottom: 56, gridTemplateColumns: '1.2fr 1fr 1fr' }}>
           <div>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 32, marginBottom: 18 }}>
               D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
@@ -52,14 +52,6 @@ export default function Footer({ lang = 'FR' }) {
             </div>
           </div>
 
-          <div>
-            <div className="eyebrow" style={{ opacity: 0.6, marginBottom: 18 }}>{t('Suivre', 'Follow')}</div>
-            <div style={{ fontFamily: 'var(--serif)', fontSize: 18, lineHeight: 1.8 }}>
-              <a href="#" style={{ display: 'block' }}>Instagram</a>
-              <a href="#" style={{ display: 'block' }}>Vimeo</a>
-              <a href="#" style={{ display: 'block' }}>Pinterest</a>
-            </div>
-          </div>
         </div>
 
         {/* Bas de page */}
