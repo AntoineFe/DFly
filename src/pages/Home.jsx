@@ -341,7 +341,7 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
   const text = (
     <div className="domain-text" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: reverse ? '0 0 0 40px' : '0 40px 0 0' }}>
       <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--fg-muted)', letterSpacing: '0.04em' }}>— {num}</div>
-      <h3 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(48px,6vw,96px)', lineHeight: 0.95, fontWeight: 400, margin: '16px 0 18px', letterSpacing: '-0.005em' }}>{title}</h3>
+      <h3 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,6vw,96px)', lineHeight: 0.95, fontWeight: 400, margin: '16px 0 18px', letterSpacing: '-0.005em', overflowWrap: 'break-word' }}>{title}</h3>
       <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(20px,1.7vw,24px)', fontWeight: 300, color: 'var(--fg-muted)', marginBottom: 32, maxWidth: 460 }}>{subtitle}</div>
       <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.7, fontWeight: 300, maxWidth: 480, marginBottom: 36 }}>{body}</p>
       {keywords.length > 0 && (
