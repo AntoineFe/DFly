@@ -221,18 +221,18 @@ export default function Home({ lang, setLang }) {
           <div style={{ margin: '24px auto 0', maxWidth: 1100, textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(36px,4.5vw,64px)', lineHeight: 1.18, fontWeight: 400, fontStyle: 'italic', color: 'var(--fg)' }}>
               {t(
-                <>&laquo;&nbsp;Nous ne fabriquons pas de souvenirs.<br />Nous attendons qu'ils arrivent,<br />et nous sommes là.&nbsp;&raquo;</>,
-                <>"We do not manufacture memories.<br />We wait for them to come,<br />and we are there."</>
+                <>&laquo;&nbsp;Toujours la même exigence : l'image juste.&nbsp;&raquo;</>,
+                <>"Always the same standard: the right image."</>
               )}
             </div>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase', marginTop: 36, color: 'var(--fg-muted)' }}>— Antoine & Rémi</div>
           </div>
           <div className="grid-4" style={{ marginTop: 40, borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
             {[
-              { fr: 'Sensibilité',      en: 'Sensitivity',    fr_d: 'Voir l\'émotion avant qu\'elle ne se nomme. Comprendre les regards.',                                               en_d: 'See emotion before it names itself. Understand the gaze.' },
-              { fr: 'Discrétion',       en: 'Discretion',     fr_d: 'Disparaître pour mieux capter. Personne ne se souvient de nous, tout le monde se souvient des images.',             en_d: 'Disappear to capture better. No one remembers us, everyone remembers the images.' },
-              { fr: 'Esprit de famille',en: 'Family spirit',  fr_d: 'Père et fils, nous filmons les autres familles avec ce que nous savons des nôtres.',                                en_d: 'Father and son, we film other families with what we know of our own.' },
-              { fr: 'Spontanéité',      en: 'Spontaneity',    fr_d: 'Aucune scène rejouée. La lumière qui tombe, le rire qui part, le geste qui ne reviendra pas.',                     en_d: 'No replayed scenes. The light falling, the laugh escaping, the gesture that won\'t return.' },
+              { fr: 'Exigence',         en: 'Standard',       fr_d: 'Du matériel haut de gamme, un œil formé, une attention constante aux détails. Chaque projet mérite notre meilleur.',                     en_d: 'High-end equipment, a trained eye, constant attention to detail. Every project deserves our best.' },
+              { fr: 'Adaptabilité',     en: 'Adaptability',   fr_d: 'Reportage discret sur un mariage, mise en scène soignée pour l\'immobilier, captation live pour un événement. Nous changeons de posture, pas de rigueur.', en_d: 'Discreet reportage at a wedding, careful staging for real estate, live capture for an event. We change our stance, not our rigour.' },
+              { fr: 'Sensibilité',      en: 'Sensitivity',    fr_d: 'Comprendre ce qu\'on filme avant de filmer. Que ce soit une salle de concert ou un vignoble, nous cherchons ce qui fait la vérité du lieu ou du moment.', en_d: 'Understand what we film before filming. Whether a concert hall or a vineyard, we look for what makes the truth of the place or moment.' },
+              { fr: 'Engagement',       en: 'Commitment',     fr_d: 'Père et fils, nous mettons dans chaque projet ce que nous mettrions dans le nôtre. Sans distance.',                                       en_d: 'Father and son, we bring to every project what we would bring to our own. Without distance.' },
             ].map((v, i) => (
               <div key={i} style={{ padding: '28px 36px', borderRight: i < 3 ? '1px solid var(--line)' : 'none', textAlign: 'center' }}>
                 <div style={{ fontFamily: 'var(--serif-display)', fontStyle: 'italic', fontSize: 32, fontWeight: 300, marginBottom: 24 }}>{t(v.fr, v.en)}</div>
