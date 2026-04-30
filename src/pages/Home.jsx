@@ -264,7 +264,7 @@ export default function Home({ lang, setLang }) {
                   'Antoine has been photographing since 1981. Trained in a military photo lab, cinema projectionist, then a career in electronics and IT — photography accompanied him all his life, as a demanding amateur.'
                 )}
               </p>
-              <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 18, lineHeight: 1.7, fontWeight: 300, color: 'var(--fg-muted)', maxWidth: 460 }}>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.75, fontWeight: 300, maxWidth: 460 }}>
                 {t(
                   'Après un BTS bâtiment, Rémi a exercé comme dessinateur projeteur avant de se tourner vers le drone, puis la vidéo, puis la photo. Un œil formé aux volumes, aux lignes, à la précision. Ensemble, deux regards complémentaires, une même rigueur.',
                   'After a construction degree, Rémi worked as a technical draughtsman before turning to drones, then film, then photography. An eye trained in volumes, lines and precision. Together, two complementary gazes, one shared rigour.'
