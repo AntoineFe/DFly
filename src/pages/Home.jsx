@@ -61,14 +61,12 @@ export default function Home({ lang, setLang }) {
               'Photo and film services\nFor individuals and professionals'
             )}
           </div>
-        </div>
-
-        <div className="hero-corner-label" style={{ position: 'absolute', bottom: 100, left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
           <a href="#contact" style={{
+            marginTop: 36, display: 'inline-block',
             fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em',
             textTransform: 'uppercase', border: '1px solid rgba(243,237,226,0.85)',
             padding: '14px 28px', color: 'rgba(243,237,226,0.95)',
-            display: 'inline-block', whiteSpace: 'nowrap',
+            whiteSpace: 'nowrap',
             background: 'rgba(20,22,18,0.3)', backdropFilter: 'blur(4px)',
           }}>
             {t('Demander un devis', 'Request a quote')}
