@@ -233,7 +233,7 @@ export default function Home({ lang, setLang }) {
           <div style={{ margin: '24px auto 0', maxWidth: 1100, textAlign: 'center' }}>
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(36px,4.5vw,64px)', lineHeight: 1.18, fontWeight: 400, fontStyle: 'italic', color: 'var(--fg)' }}>
               {t(
-                <>&laquo;&nbsp;Toujours la même exigence : l'image juste.&nbsp;&raquo;</>,
+                <>&laquo;&nbsp;Toujours la même exigence : l'image&nbsp;juste.&nbsp;&raquo;</>,
                 <>"Always the same standard: the right image."</>
               )}
             </div>
