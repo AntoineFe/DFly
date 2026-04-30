@@ -290,17 +290,33 @@ export default function Home({ lang, setLang }) {
       {/* ── TÉMOIGNAGE ── */}
       <section style={{ padding: 'calc(var(--section-y) * 0.9) 0', background: 'var(--bg)' }}>
         <div className="container">
-          <div style={{ maxWidth: 920, margin: '0 auto', textAlign: 'center' }}>
-            <div style={{ fontFamily: 'var(--serif-display)', fontSize: 64, fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 0.5, marginBottom: 24 }}>"</div>
-            <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(25px,2.6vw,35px)', lineHeight: 1.45, fontWeight: 300 }}>
-              {t(
-                'Nous avions peur d\'un mariage envahi par les caméras. Antoine et Rémi ont été invisibles toute la journée. Le film qu\'ils nous ont rendu — nous le regardons encore, deux ans plus tard, et nous pleurons à chaque fois.',
-                'We were afraid of a wedding invaded by cameras. Antoine and Rémi were invisible all day. The film they gave us — we still watch it, two years later, and we cry every time.'
-              )}
-            </p>
-            <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase', marginTop: 36, color: 'var(--fg-muted)' }}>
-              — Camille & Étienne · {t('Mariage à Gordes', 'Wedding in Gordes')}
-            </div>
+          <SectionLabel num="VII" label={t('Ce qu\'ils en disent', 'What they say')} align="center" />
+          <div className="grid-3" style={{ marginTop: 56 }}>
+            {[
+              {
+                fr: 'Chaque photo raconte une histoire et reflète parfaitement l\'émotion du moment. Des clichés lumineux, authentiques et d\'une qualité exceptionnelle.',
+                en: 'Every photo tells a story and perfectly captures the emotion of the moment. Luminous, authentic images of exceptional quality.',
+                who: 'Axelle C.', where: t('Septembre 2025', 'September 2025'),
+              },
+              {
+                fr: 'La gentillesse, la disponibilité, leur écoute, et bien sûr leur travail d\'une très grande qualité. Nous referons appel à eux sans hésitation pour une prochaine occasion.',
+                en: 'Their kindness, availability, attentiveness, and of course their work of very high quality. We will call on them again without hesitation.',
+                who: 'Pascale B.', where: t('Mariage · Octobre 2024', 'Wedding · October 2024'),
+              },
+              {
+                fr: 'Le choix des points de vue m\'a vraiment bluffé. Je recommande sans l\'ombre d\'une hésitation.',
+                en: 'The choice of viewpoints truly amazed me. I recommend without the slightest hesitation.',
+                who: 'Gérard B.', where: t('Immobilier · 2020', 'Real estate · 2020'),
+              },
+            ].map((q, i) => (
+              <div key={i} style={{ borderTop: '1px solid var(--line)', paddingTop: 32 }}>
+                <div style={{ fontFamily: 'var(--serif-display)', fontSize: 48, fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 0.5, marginBottom: 24 }}>"</div>
+                <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 19, lineHeight: 1.6, fontWeight: 300 }}>{t(q.fr, q.en)}</p>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase', marginTop: 24, color: 'var(--fg-muted)' }}>
+                  — {q.who} · {q.where}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
