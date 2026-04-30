@@ -232,7 +232,7 @@ export default function Home({ lang, setLang }) {
               { fr: 'Exigence',         en: 'Standard',       fr_d: 'Du matériel haut de gamme, un œil formé, une attention constante aux détails. Chaque projet mérite notre meilleur.',                     en_d: 'High-end equipment, a trained eye, constant attention to detail. Every project deserves our best.' },
               { fr: 'Adaptabilité',     en: 'Adaptability',   fr_d: 'Reportage discret sur un mariage, mise en scène soignée pour l\'immobilier, captation live pour un événement. Nous changeons de posture, pas de rigueur.', en_d: 'Discreet reportage at a wedding, careful staging for real estate, live capture for an event. We change our stance, not our rigour.' },
               { fr: 'Sensibilité',      en: 'Sensitivity',    fr_d: 'Comprendre ce qu\'on filme avant de filmer. Que ce soit une salle de concert ou un vignoble, nous cherchons ce qui fait la vérité du lieu ou du moment.', en_d: 'Understand what we film before filming. Whether a concert hall or a vineyard, we look for what makes the truth of the place or moment.' },
-              { fr: 'Engagement',       en: 'Commitment',     fr_d: 'Père et fils, nous mettons dans chaque projet ce que nous mettrions dans le nôtre. Sans distance.',                                       en_d: 'Father and son, we bring to every project what we would bring to our own. Without distance.' },
+              { fr: 'Engagement',       en: 'Commitment',     fr_d: 'Nous mettons dans chaque projet ce que nous mettrions dans le nôtre. Sans distance.',                                       en_d: 'We bring to every project what we would bring to our own. Without distance.' },
             ].map((v, i) => (
               <div key={i} style={{ padding: '28px 36px', borderRight: i < 3 ? '1px solid var(--line)' : 'none', textAlign: 'center' }}>
                 <div style={{ fontFamily: 'var(--serif-display)', fontStyle: 'italic', fontSize: 32, fontWeight: 300, marginBottom: 24 }}>{t(v.fr, v.en)}</div>
@@ -260,14 +260,14 @@ export default function Home({ lang, setLang }) {
               </h2>
               <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.75, fontWeight: 300, marginBottom: 22 }}>
                 {t(
-                  'Antoine photographie depuis trente ans. Rémi est arrivé plus récemment, apportant la vidéo et le drone. Aujourd\'hui, nous sommes tous deux photographes et vidéastes — c\'est devenu notre métier commun.',
-                  'Antoine has been photographing for thirty years. Rémi arrived more recently, bringing film and the drone. Today, we are both photographers and filmmakers — it has become our shared craft.'
+                  'Antoine photographie depuis 1981. Formé dans un labo photo militaire, projectionniste de cinéma, avant une carrière dans l\'électronique et l\'informatique — la photo l\'a accompagné toute sa vie, en amateur exigeant.',
+                  'Antoine has been photographing since 1981. Trained in a military photo lab, cinema projectionist, then a career in electronics and IT — photography accompanied him all his life, as a demanding amateur.'
                 )}
               </p>
               <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 18, lineHeight: 1.7, fontWeight: 300, color: 'var(--fg-muted)', maxWidth: 460 }}>
                 {t(
-                  'Sur un mariage, nous sommes deux : un photographe et un vidéaste. Sur un événement plus large, nous savons monter une équipe. Toujours dans la même grammaire.',
-                  'At a wedding, we are two: a photographer and a filmmaker. For larger events, we can build a team. Always in the same grammar.'
+                  'Après un BTS bâtiment, Rémi a exercé comme dessinateur projeteur avant de se tourner vers le drone, puis la vidéo, puis la photo. Un œil formé aux volumes, aux lignes, à la précision. Ensemble, deux regards complémentaires, une même rigueur.',
+                  'After a construction degree, Rémi worked as a technical draughtsman before turning to drones, then film, then photography. An eye trained in volumes, lines and precision. Together, two complementary gazes, one shared rigour.'
                 )}
               </p>
               <div className="duo-stats" style={{ marginTop: 28, display: 'flex', gap: 56, paddingTop: 24, borderTop: '1px solid var(--line)' }}>
