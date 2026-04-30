@@ -103,13 +103,13 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
             ))}
           </div>
 
-          {/* Contact — hidden on mobile (appears in mobile menu) */}
+          {/* Devis — hidden on mobile (appears in mobile menu) */}
           <a href="#contact" className="nav-links" style={{
             fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em',
             textTransform: 'uppercase', border: `1px solid ${tone}`,
             padding: '10px 18px', color: tone,
           }}>
-            Contact
+            {lang === 'FR' ? 'Demander un devis' : 'Request a quote'}
           </a>
 
           {/* Hamburger button */}
@@ -160,7 +160,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
             textTransform: 'uppercase', border: '1px solid var(--fg)',
             padding: '12px 24px', color: 'var(--fg)',
           }}>
-            Contact
+            {lang === 'FR' ? 'Demander un devis' : 'Request a quote'}
           </a>
         </nav>
       )}

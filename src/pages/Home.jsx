@@ -65,6 +65,18 @@ export default function Home({ lang, setLang }) {
           </Cartouche>
         </div>
 
+        <div style={{ position: 'absolute', bottom: 100, left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
+          <a href="#contact" style={{
+            fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em',
+            textTransform: 'uppercase', border: '1px solid rgba(243,237,226,0.85)',
+            padding: '14px 28px', color: 'rgba(243,237,226,0.95)',
+            display: 'inline-block', whiteSpace: 'nowrap',
+            background: 'rgba(20,22,18,0.3)', backdropFilter: 'blur(4px)',
+          }}>
+            {t('Demander un devis', 'Request a quote')}
+          </a>
+        </div>
+
         <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.7, textAlign: 'center' }}>
           <div style={{ marginBottom: 10 }}>{t('Découvrir', 'Scroll')}</div>
           <div style={{ width: 1, height: 36, background: 'currentColor', margin: '0 auto', opacity: 0.6 }} />
