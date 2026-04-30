@@ -26,8 +26,8 @@ export default function Footer({ lang = 'FR' }) {
             </div>
             <p style={{ fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.7, color: 'rgba(243,237,226,0.75)', fontStyle: 'italic', fontWeight: 300, maxWidth: 320 }}>
               {t(
-                'Antoine & Rémi Ferrera. Père et fils, photographes et vidéastes basés en Provence.',
-                'Antoine & Rémi Ferrera. Father and son — photographers and filmmakers based in Provence.'
+                'Antoine & Rémi Ferrera. Père et fils, photographes et vidéastes basés en Provence Alpes Côte d\'Azur.',
+                'Antoine & Rémi Ferrera. Father and son — photographers and filmmakers based in Provence Alpes Côte d\'Azur.'
               )}
             </p>
           </div>
