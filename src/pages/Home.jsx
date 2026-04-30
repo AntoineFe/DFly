@@ -278,18 +278,6 @@ export default function Home({ lang, setLang }) {
                   'After a construction degree, Rémi worked as a technical draughtsman before turning to drones, then film, then photography. An eye trained in volumes, lines and precision. Together, two complementary gazes, one shared rigour.'
                 )}
               </p>
-              <div className="duo-stats" style={{ marginTop: 28, display: 'flex', gap: 56, paddingTop: 24, borderTop: '1px solid var(--line)' }}>
-                {[
-                  { val: '30+',    fr: 'Mariages filmés', en: 'Weddings filmed' },
-                  { val: '3',      fr: 'Ans à deux',      en: 'Years together'  },
-                  { val: 'Provence', fr: 'Et au-delà',    en: 'And beyond'      },
-                ].map(s => (
-                  <div key={s.val}>
-                    <div style={{ fontFamily: 'var(--serif-display)', fontSize: 36, fontStyle: 'italic', fontWeight: 300 }}>{s.val}</div>
-                    <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginTop: 6 }}>{t(s.fr, s.en)}</div>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>
