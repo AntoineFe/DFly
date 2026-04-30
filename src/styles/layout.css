@@ -125,6 +125,12 @@
   /* Hero corner labels hidden on mobile */
   .hero-corner-label { display: none; }
 
+  /* Hero: align content to top on mobile */
+  .hero-section {
+    align-items: flex-start !important;
+    padding-top: 110px;
+  }
+
   /* Cartouche hero: scale down to fit screen */
   .hero-cartouche-wrap { padding: 0 !important; }
   .cartouche-hero {
