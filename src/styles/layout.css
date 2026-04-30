@@ -254,9 +254,30 @@
   /* Two mediums: remove offset on mobile */
   .medium-offset { padding-top: 0 !important; }
 
-  /* Section padding reduction */
+  /* Section padding — compact on mobile */
   :root {
-    --section-y: clamp(60px, 8vw, 120px);
+    --section-y: clamp(32px, 5vw, 48px);
+  }
+
+  /* Domain image: ratio paysage sur mobile pour limiter la hauteur */
+  .domain-img {
+    aspect-ratio: 4/3 !important;
+  }
+
+  /* Domain row: less vertical padding */
+  .grid-domain {
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+  }
+
+  /* Craft items: tighter */
+  .grid-craft > * {
+    padding: 24px 0 !important;
+  }
+
+  /* Testimonials grid top margin */
+  .testimonials-grid {
+    margin-top: 32px !important;
   }
 }
 

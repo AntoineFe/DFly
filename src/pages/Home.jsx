@@ -287,7 +287,7 @@ export default function Home({ lang, setLang }) {
       <section style={{ padding: 'calc(var(--section-y) * 0.9) 0', background: 'var(--bg)' }}>
         <div className="container">
           <SectionLabel num="VII" label={t('Ce qu\'ils en disent', 'What they say')} align="center" />
-          <div className="grid-3" style={{ marginTop: 56 }}>
+          <div className="grid-3 testimonials-grid" style={{ marginTop: 56 }}>
             {[
               {
                 fr: 'Chaque photo raconte une histoire et reflète parfaitement l\'émotion du moment. Des clichés lumineux, authentiques et d\'une qualité exceptionnelle.',
@@ -349,7 +349,7 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
 
   const visual = (
     <div className="domain-visual" style={{ position: 'relative' }}>
-      <img src={image} alt="" className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+      <img src={image} alt="" className="cine domain-img" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
       <img src={imageAlt} alt="" className={`cine domain-thumb${reverse ? ' domain-thumb-reverse' : ''}`} style={{ position: 'absolute', width: '55%', aspectRatio: '1/1', objectFit: 'cover', bottom: -50, [reverse ? 'left' : 'right']: -40, border: '8px solid var(--bg-alt)', filter: 'saturate(0.85) contrast(1.02)', zIndex: 2 }} />
     </div>
   )
