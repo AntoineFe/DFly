@@ -55,10 +55,10 @@ export default function Home({ lang, setLang }) {
             Antoine & Rémi Ferrera
           </div>
           <div style={{ width: 60, height: 1, background: 'rgba(243,237,226,0.5)', margin: '32px auto' }} />
-          <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(17px,1.3vw,20px)', lineHeight: 1.7, fontWeight: 300, opacity: 0.9 }}>
+          <div style={{ fontFamily: 'var(--serif)', fontSize: 'clamp(17px,1.3vw,20px)', lineHeight: 1.7, fontWeight: 300, opacity: 0.9, whiteSpace: 'pre-line' }}>
             {t(
-              'Prestations photo et vidéo · Pour particuliers et professionnels',
-              'Photo and film services · For individuals and professionals'
+              'Prestations photo et vidéo\nPour particuliers et professionnels',
+              'Photo and film services\nFor individuals and professionals'
             )}
           </div>
         </div>
