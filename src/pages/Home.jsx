@@ -63,7 +63,7 @@ export default function Home({ lang, setLang }) {
           </div>
         </div>
 
-        <div style={{ position: 'absolute', bottom: 100, left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
+        <div className="hero-corner-label" style={{ position: 'absolute', bottom: 100, left: '50%', transform: 'translateX(-50%)', zIndex: 3 }}>
           <a href="#contact" style={{
             fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em',
             textTransform: 'uppercase', border: '1px solid rgba(243,237,226,0.85)',
