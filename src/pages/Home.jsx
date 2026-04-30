@@ -19,7 +19,7 @@ const IMG = {
   event2:      `${BASE}images/DSC08533_1.jpg`,
   portrait1:   `${BASE}images/038_7R42287.jpeg`,
   portrait2:   `${BASE}images/013_DSC2027.jpg`,
-  drone:       'https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=2400&q=85',
+  drone:       `${BASE}images/YUN_0157.jpg`,
   duo:         'https://images.unsplash.com/photo-1554080353-a576cf803bda?w=1600&q=85',
 }
 
@@ -206,8 +206,8 @@ export default function Home({ lang, setLang }) {
             <div style={{ position: 'relative' }}>
               <img src={IMG.drone} alt="" className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.05)' }} />
               <div className="drone-label" style={{ position: 'absolute', bottom: -30, left: -30, background: 'var(--bg-deep)', padding: '20px 28px', borderTop: '1px solid rgba(243,237,226,0.18)', borderRight: '1px solid rgba(243,237,226,0.18)' }}>
-                <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', opacity: 0.6, marginBottom: 6 }}>Domaine de</div>
-                <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, fontWeight: 300 }}>la Roque-Forcade · Lubéron</div>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', opacity: 0.6, marginBottom: 6 }}>Château</div>
+                <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, fontWeight: 300 }}>Réal d'Or · Massif des Maures</div>
               </div>
             </div>
           </div>
