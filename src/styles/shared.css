@@ -19,6 +19,7 @@
   --rule-soft: #ddd2bb;
 
   --gold: #a48a5d;       /* used VERY sparingly */
+  --terracotta: #c0603a;
 
   /* Surface bindings (overridden by theme tweak) */
   --bg: var(--ivory);
