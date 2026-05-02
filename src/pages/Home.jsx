@@ -39,7 +39,7 @@ export default function Home({ lang, setLang }) {
           {t('Photographie & Vidéo', 'Photography & Film')}
         </div>
         <div className="hero-corner-label" style={{ position: 'absolute', top: 110, right: 'var(--gutter)', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85 }}>
-          {t('Provence Alpes Côte d\'Azur — Depuis 2023', 'Provence Alpes Côte d\'Azur — Since 2023')}
+          {t('Provence Alpes Côte d\'Azur', 'Provence Alpes Côte d\'Azur')}
         </div>
 
         <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', padding: '0 var(--gutter)' }}>
