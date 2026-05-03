@@ -148,27 +148,27 @@ function Mariage({ lang, setLang }) {
               </p>
               <p style={{
                 fontFamily: "var(--serif)",
-                fontSize: 19, lineHeight: 1.75,
+                fontSize: "clamp(18px, 1.2vw, 21px)", lineHeight: 1.75,
                 fontWeight: 300,
                 color: "var(--fg-muted)",
                 maxWidth: 620,
                 marginBottom: 24,
               }}>
                 {t(
-                  "Pas de séance posée interminable. Pas de figures imposées. Nous arrivons tôt, nous partons tard, et entre les deux nous attendons les regards qu'on n'attend pas. Le jour vous appartient. Notre travail est de le rendre visible plus tard.",
-                  "No endless posed sessions. No required choreography. We arrive early, we leave late, and between the two we wait for the looks no one expects. The day is yours. Our work is to make it visible later."
+                  "Pas de séance posée interminable. Pas de figures imposées. Nous intervenons selon le déroulé de votre journée, et composons avec ce qui se joue naturellement, à vos côtés. Le jour vous appartient. Notre rôle est d'en révéler les images.",
+                  "No endless posed sessions. No required choreography. We work with the flow of your day, composing with what unfolds naturally, by your side. The day is yours. Our role is to reveal its images."
                 )}
               </p>
               <p style={{
                 fontFamily: "var(--serif)",
-                fontSize: 19, lineHeight: 1.75,
+                fontSize: "clamp(18px, 1.2vw, 21px)", lineHeight: 1.75,
                 fontWeight: 300,
                 color: "var(--fg-muted)",
                 maxWidth: 620,
               }}>
                 {t(
-                  "Nous travaillons en silence, à deux, depuis plusieurs années. C'est cette continuité — entre nous, et entre nous et vous — qui fait la matière des images.",
-                  "We work in silence, the two of us, for years now. It is this continuity — between us, and between us and you — that gives the images their substance."
+                  "Nous travaillons ensemble depuis plusieurs années, en duo. Deux regards complémentaires, deux manières de lire la scène, pour une vision plus complète de votre journée.",
+                  "We have worked together for several years, as a duo. Two complementary perspectives, two ways of reading the scene, for a more complete vision of your day."
                 )}
               </p>
             </div>
