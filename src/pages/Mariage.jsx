@@ -105,17 +105,17 @@ function Mariage({ lang, setLang }) {
                    <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>that becomes</em><br/>memory.</>)}
               </h1>
             </div>
-            <div style={{ maxWidth: 380, paddingBottom: 24 }}>
+            <div style={{ maxWidth: 440, paddingBottom: 24 }}>
               <p style={{
                 fontFamily: "var(--serif)",
                 fontStyle: "italic",
-                fontSize: 21, lineHeight: 1.6,
+                fontSize: "clamp(19px, 1.6vw, 26px)", lineHeight: 1.6,
                 fontWeight: 300,
                 opacity: 0.92,
               }}>
                 {t(
-                  "Antoine et Rémi, père et fils. Tous deux photographes et vidéastes. Selon votre journée, nous intervenons à deux photographes, à deux caméramans, ou en duo photographe & vidéaste.",
-                  "Antoine and Rémi, father and son. Both photographers and filmmakers. Depending on your day, we work as two photographers, two camera operators, or as a photographer-filmmaker duo."
+                  "Antoine et Rémi, père et fils, photographes et vidéastes. Selon votre journée, nous intervenons en duo : deux photographes, deux vidéastes, ou photographe & vidéaste.",
+                  "Antoine and Rémi, father and son, photographers and filmmakers. Depending on your day, we work as a duo: two photographers, two filmmakers, or photographer & filmmaker."
                 )}
               </p>
             </div>
