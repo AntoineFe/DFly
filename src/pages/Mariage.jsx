@@ -105,7 +105,7 @@ function Mariage({ lang, setLang }) {
                    <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>that becomes</em><br/>memory.</>)}
               </h1>
             </div>
-            <div style={{ maxWidth: 440, paddingBottom: 24 }}>
+            <div style={{ maxWidth: 500, paddingBottom: 24 }}>
               <p style={{
                 fontFamily: "var(--serif)",
                 fontStyle: "italic",
