@@ -216,8 +216,8 @@ function Mariage({ lang, setLang }) {
                   fontWeight: 300, color: "var(--fg-muted)", maxWidth: 480,
                 }}>
                   {t(
-                    "Boîtiers plein-format, optiques fixes, lumière naturelle. Une livraison de 500 à 800 images traitées une à une, accessibles via une galerie privée et téléchargeables en haute définition.",
-                    "Full-frame bodies, prime lenses, natural light. A delivery of 500 to 800 images, individually processed, available through a private gallery and downloadable in high definition."
+                    "Boîtiers plein-format, optiques haut de gamme Sony GM, lumière maîtrisée selon les lieux. Une sélection d'images travaillées une à une. Livraison via galerie privée et coffret DFly contenant l'ensemble des fichiers en haute définition.",
+                    "Full-frame bodies, Sony GM premium lenses, light mastered to each location. A curated selection of individually processed images. Delivered via private gallery and DFly box set containing all files in high definition."
                   )}
                 </p>
                 <div style={{
@@ -227,9 +227,9 @@ function Mariage({ lang, setLang }) {
                   letterSpacing: "0.32em", textTransform: "uppercase",
                   color: "var(--fg-muted)",
                 }}>
-                  <span>500–800 images</span><span>·</span>
                   <span>Galerie privée</span><span>·</span>
-                  <span>Livre photo en option</span>
+                  <span>Clé USB bois DFly</span><span>·</span>
+                  <span>Commande de tirages en ligne</span>
                 </div>
               </div>
             </div>
