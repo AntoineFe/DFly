@@ -4,22 +4,24 @@ import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
 
 const W_IMG = {
-  hero: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=2400&q=85",
-  ceremony: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1800&q=85",
-  rings: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=85",
-  bouquet: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1400&q=85",
-  bride: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1600&q=85",
-  couple: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1800&q=85",
-  details: "https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=1600&q=85",
-  dance: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&q=85",
-  table: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1600&q=85",
-  guests: "https://images.unsplash.com/photo-1532712938310-34cb3982ef74?w=1600&q=85",
-  preparation: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=1400&q=85",
-  aerial: "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1800&q=85",
-  filmstrip1: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=900&q=85",
-  filmstrip2: "https://images.unsplash.com/photo-1519741497674-611481863552?w=900&q=85",
-  filmstrip3: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=900&q=85",
-  filmstrip4: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=900&q=85",
+  hero:        "/images/mariage/_7R41480.jpeg",
+  bride:       "/images/mariage/434_DSC8785.jpeg",
+  couple:      "/images/mariage/420b_7R41676.jpeg",
+  ceremony:    "/images/mariage/MAX_0035.jpeg",
+  bouquet:     "/images/mariage/409_7R49654.jpeg",
+  preparation: "/images/mariage/507__7R42870.jpeg",
+  dance:       "/images/mariage/467__DSC0477.jpeg",
+  details:     "/images/mariage/485__DSC0490.jpeg",
+  guests:      "/images/mariage/424_DSC8763.jpeg",
+  table:       "/images/mariage/_7R41267.jpeg",
+  aerial:      "/images/mariage/MAX_0011.jpeg",
+  filmstrip1:  "/images/mariage/_7R41266_1.jpeg",
+  filmstrip2:  "/images/mariage/_DSC7546.jpeg",
+  filmstrip3:  "/images/mariage/_DSC7838.jpeg",
+  filmstrip4:  "/images/mariage/423_7R44891_1.jpeg",
+  filmstrip5:  "/images/mariage/397_DSC0942.jpeg",
+  filmstrip6:  "/images/mariage/445_7R49749.jpeg",
+  filmstrip7:  "/images/mariage/462_7R45062.jpeg",
 };
 
 function Mariage({ lang, setLang }) {
@@ -164,8 +166,8 @@ function Mariage({ lang, setLang }) {
                 maxWidth: 620,
               }}>
                 {t(
-                  "Nous travaillons en silence, à deux, depuis trois ans. C'est cette continuité — entre nous, et entre nous et vous — qui fait la matière des images.",
-                  "We work in silence, the two of us, for three years now. It is this continuity — between us, and between us and you — that gives the images their substance."
+                  "Nous travaillons en silence, à deux, depuis plusieurs années. C'est cette continuité — entre nous, et entre nous et vous — qui fait la matière des images.",
+                  "We work in silence, the two of us, for years now. It is this continuity — between us, and between us and you — that gives the images their substance."
                 )}
               </p>
             </div>
@@ -390,14 +392,14 @@ function Mariage({ lang, setLang }) {
               color: "var(--fg)",
               maxWidth: 720,
             }}>
-              {t("« Le film d'Anaïs & Pierre »", "« Anaïs & Pierre's film »")}
+              {t("« Un film de mariage »", "« A wedding film »")}
             </h2>
             <div style={{
               fontFamily: "var(--sans)", fontSize: 11,
               letterSpacing: "0.36em", textTransform: "uppercase",
               color: "var(--fg-muted)", marginTop: 16,
             }}>
-              {t("Mariage à Lourmarin · Septembre 2025", "Wedding at Lourmarin · September 2025")}
+              {t("Côte d'Azur · Provence", "Côte d'Azur · Provence")}
             </div>
           </div>
         </div>
@@ -413,7 +415,7 @@ function Mariage({ lang, setLang }) {
             overflowX: "auto",
             padding: "0 var(--gutter)",
           }}>
-            {[W_IMG.filmstrip1, W_IMG.filmstrip2, W_IMG.filmstrip3, W_IMG.filmstrip4, W_IMG.bouquet, W_IMG.dance, W_IMG.details].map((src, i) => (
+            {[W_IMG.filmstrip1, W_IMG.filmstrip2, W_IMG.filmstrip3, W_IMG.filmstrip4, W_IMG.filmstrip5, W_IMG.filmstrip6, W_IMG.filmstrip7].map((src, i) => (
               <div key={i} style={{
                 flex: "0 0 auto",
                 width: 280, height: 200,
