@@ -74,7 +74,7 @@ function Mariage({ lang, setLang }) {
           letterSpacing: "0.4em", textTransform: "uppercase",
           opacity: 0.85,
         }}>
-          {t("Provence & au-delà", "Provence & beyond")}
+          {t('Provence Alpes Côte d\'Azur', 'Provence Alpes Côte d\'Azur')}
         </div>
 
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
