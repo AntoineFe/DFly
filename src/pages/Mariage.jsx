@@ -142,8 +142,8 @@ function Mariage({ lang, setLang }) {
                 textWrap: "pretty",
               }}>
                 {t(
-                  <>Vous nous confiez un jour qui ne se rejoue pas. Nous le racontons comme nous raconterions celui de notre <em style={{ fontStyle: "italic", fontWeight: 300 }}>propre famille</em> — avec sensibilité, à voix basse, sans rien forcer.</>,
-                  <>You entrust us with a day that won't replay. We tell it as we would tell our own <em style={{ fontStyle: "italic", fontWeight: 300 }}>family's</em> — with sensitivity, in a low voice, forcing nothing.</>
+                  <>Vous nous confiez un jour qui ne se rejoue pas. Nous le capturons en photo et en vidéo avec sensibilité, <em style={{ fontStyle: "italic", fontWeight: 300 }}>discrets quand il le faut</em>, pleinement présents aux bons moments.</>,
+                  <>You entrust us with a day that won't replay. We capture it in photo and video with sensitivity, <em style={{ fontStyle: "italic", fontWeight: 300 }}>discreet when needed</em>, fully present at the right moments.</>
                 )}
               </p>
               <p style={{
