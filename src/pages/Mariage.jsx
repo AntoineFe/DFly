@@ -239,6 +239,7 @@ function Mariage({ lang, setLang }) {
               <img src={W_IMG.couple} alt=""
                 style={{
                   width: "100%", aspectRatio: "4/5", objectFit: "cover",
+                  objectPosition: "70% center",
                   filter: "saturate(0.85) contrast(1.02)",
                 }} />
               <div style={{ padding: "32px 0 0" }}>
