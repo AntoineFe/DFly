@@ -3,25 +3,26 @@ import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
 
+const BASE = import.meta.env.BASE_URL;
 const W_IMG = {
-  hero:        "/images/mariage/_7R41480.jpeg",
-  bride:       "/images/mariage/434_DSC8785.jpeg",
-  couple:      "/images/mariage/420b_7R41676.jpeg",
-  ceremony:    "/images/mariage/MAX_0035.jpeg",
-  bouquet:     "/images/mariage/409_7R49654.jpeg",
-  preparation: "/images/mariage/507__7R42870.jpeg",
-  dance:       "/images/mariage/467__DSC0477.jpeg",
-  details:     "/images/mariage/485__DSC0490.jpeg",
-  guests:      "/images/mariage/424_DSC8763.jpeg",
-  table:       "/images/mariage/_7R41267.jpeg",
-  aerial:      "/images/mariage/MAX_0011.jpeg",
-  filmstrip1:  "/images/mariage/_7R41266_1.jpeg",
-  filmstrip2:  "/images/mariage/_DSC7546.jpeg",
-  filmstrip3:  "/images/mariage/_DSC7838.jpeg",
-  filmstrip4:  "/images/mariage/423_7R44891_1.jpeg",
-  filmstrip5:  "/images/mariage/397_DSC0942.jpeg",
-  filmstrip6:  "/images/mariage/445_7R49749.jpeg",
-  filmstrip7:  "/images/mariage/462_7R45062.jpeg",
+  hero:        `${BASE}images/mariage/_7R41480.jpeg`,
+  bride:       `${BASE}images/mariage/434_DSC8785.jpeg`,
+  couple:      `${BASE}images/mariage/420b_7R41676.jpeg`,
+  ceremony:    `${BASE}images/mariage/MAX_0035.jpeg`,
+  bouquet:     `${BASE}images/mariage/409_7R49654.jpeg`,
+  preparation: `${BASE}images/mariage/507__7R42870.jpeg`,
+  dance:       `${BASE}images/mariage/467__DSC0477.jpeg`,
+  details:     `${BASE}images/mariage/485__DSC0490.jpeg`,
+  guests:      `${BASE}images/mariage/424_DSC8763.jpeg`,
+  table:       `${BASE}images/mariage/_7R41267.jpeg`,
+  aerial:      `${BASE}images/mariage/MAX_0011.jpeg`,
+  filmstrip1:  `${BASE}images/mariage/_7R41266_1.jpeg`,
+  filmstrip2:  `${BASE}images/mariage/_DSC7546.jpeg`,
+  filmstrip3:  `${BASE}images/mariage/_DSC7838.jpeg`,
+  filmstrip4:  `${BASE}images/mariage/423_7R44891_1.jpeg`,
+  filmstrip5:  `${BASE}images/mariage/397_DSC0942.jpeg`,
+  filmstrip6:  `${BASE}images/mariage/445_7R49749.jpeg`,
+  filmstrip7:  `${BASE}images/mariage/462_7R45062.jpeg`,
 };
 
 function Mariage({ lang, setLang }) {
