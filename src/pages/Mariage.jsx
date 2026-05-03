@@ -109,7 +109,7 @@ function Mariage({ lang, setLang }) {
               <p style={{
                 fontFamily: "var(--serif)",
                 fontStyle: "italic",
-                fontSize: "clamp(19px, 1.6vw, 26px)", lineHeight: 1.6,
+                fontSize: "clamp(19px, 1.6vw, 24px)", lineHeight: 1.6,
                 fontWeight: 300,
                 opacity: 0.92,
               }}>
