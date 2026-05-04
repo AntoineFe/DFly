@@ -18,7 +18,7 @@ const IMG = {
   event1:      `${BASE}images/051_7R42448.jpg`,
   event2:      `${BASE}images/DSC08533_1.jpg`,
   portrait1:   `${BASE}images/038_7R42287.jpeg`,
-  portrait2:   `${BASE}images/_DSC2009.jpg`,
+  portrait2:   `${BASE}images/_DSC2009_1.jpg`,
   drone:       `${BASE}images/YUN_0157.jpg`,
   duo:         'https://images.unsplash.com/photo-1554080353-a576cf803bda?w=1600&q=85',
 }
