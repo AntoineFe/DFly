@@ -10,7 +10,7 @@ const W_IMG = {
   couple:      `${BASE}images/mariage/420b_7R41676.jpeg`,
   ceremony:    `${BASE}images/mariage/MAX_0035.jpeg`,
   bouquet:     `${BASE}images/mariage/409_7R49654.jpeg`,
-  preparation: `${BASE}images/mariage/507__7R42870.jpeg`,
+  preparation: `${BASE}images/mariage/090_7R43637.jpg`,
   dance:       `${BASE}images/mariage/467__DSC0477.jpeg`,
   details:     `${BASE}images/mariage/485__DSC0490.jpeg`,
   guests:      `${BASE}images/mariage/424_DSC8763.jpeg`,
@@ -296,7 +296,7 @@ function Mariage({ lang, setLang }) {
           <div className="grid-gallery">
             <GridImg src={W_IMG.ceremony} cols="span 7" rows="span 4" />
             <GridImg src={W_IMG.bouquet} cols="span 5" rows="span 3" />
-            <GridImg src={W_IMG.preparation} cols="span 5" rows="span 3" pos="top" />
+            <GridImg src={W_IMG.preparation} cols="span 5" rows="span 3" />
             <GridImg src={W_IMG.dance} cols="span 4" rows="span 3" />
             <GridImg src={W_IMG.details} cols="span 8" rows="span 3" />
             <GridImg src={W_IMG.guests} cols="span 5" rows="span 4" />
