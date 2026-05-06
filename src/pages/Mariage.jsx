@@ -296,7 +296,7 @@ function Mariage({ lang, setLang }) {
           <div className="grid-gallery">
             <GridImg src={W_IMG.ceremony} cols="span 7" rows="span 4" />
             <GridImg src={W_IMG.bouquet} cols="span 5" rows="span 3" />
-            <GridImg src={W_IMG.preparation} cols="span 5" rows="span 3" />
+            <GridImg src={W_IMG.preparation} cols="span 5" rows="span 3" pos="top" />
             <GridImg src={W_IMG.dance} cols="span 4" rows="span 3" />
             <GridImg src={W_IMG.details} cols="span 8" rows="span 3" />
             <GridImg src={W_IMG.guests} cols="span 5" rows="span 4" />
@@ -735,11 +735,12 @@ function Mariage({ lang, setLang }) {
   );
 }
 
-function GridImg({ src, cols, rows }) {
+function GridImg({ src, cols, rows, pos = "center" }) {
   return (
     <div style={{ gridColumn: cols, gridRow: rows, overflow: "hidden" }}>
       <img src={src} alt="" style={{
         width: "100%", height: "100%", objectFit: "cover",
+        objectPosition: pos,
         filter: "saturate(0.85) contrast(1.02)",
       }} />
     </div>
