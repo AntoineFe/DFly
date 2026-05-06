@@ -16,6 +16,7 @@ const W_IMG = {
   guests:      `${BASE}images/mariage/424_DSC8763.jpeg`,
   table:       `${BASE}images/mariage/_7R41267.jpeg`,
   aerial:      `${BASE}images/mariage/MAX_0011.jpeg`,
+  sortie:      `${BASE}images/mariage/171_7R42811.jpeg`,
   filmstrip1:  `${BASE}images/mariage/_7R41266_1.jpeg`,
   filmstrip2:  `${BASE}images/mariage/_DSC7546.jpeg`,
   filmstrip3:  `${BASE}images/mariage/_DSC7838.jpeg`,
@@ -299,6 +300,7 @@ function Mariage({ lang, setLang }) {
             <GridImg src={W_IMG.preparation} cols="span 5" rows="span 3" />
             <GridImg src={W_IMG.dance} cols="span 4" rows="span 5" />
             <GridImg src={W_IMG.details} cols="span 8" rows="span 3" />
+            <GridImg src={W_IMG.sortie} cols="span 8" rows="span 2" />
             <GridImg src={W_IMG.guests} cols="span 5" rows="span 4" />
             <GridImg src={W_IMG.table} cols="span 7" rows="span 4" />
             <GridImg src={W_IMG.aerial} cols="span 12" rows="span 4" />
