@@ -299,8 +299,8 @@ function Mariage({ lang, setLang }) {
             <GridImg src={W_IMG.bouquet} cols="span 5" rows="span 3" />
             <GridImg src={W_IMG.preparation} cols="span 5" rows="span 3" />
             <GridImg src={W_IMG.dance} cols="span 4" rows="span 5" />
-            <GridImg src={W_IMG.details} cols="span 8" rows="span 3" />
             <GridImg src={W_IMG.sortie} cols="span 8" rows="span 2" />
+            <GridImg src={W_IMG.details} cols="span 8" rows="span 3" />
             <GridImg src={W_IMG.guests} cols="span 5" rows="span 4" />
             <GridImg src={W_IMG.table} cols="span 7" rows="span 4" />
             <GridImg src={W_IMG.aerial} cols="span 12" rows="span 4" />
