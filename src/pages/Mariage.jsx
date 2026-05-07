@@ -299,7 +299,7 @@ function Mariage({ lang, setLang }) {
             <GridImg src={W_IMG.bouquet}     cols="span 5"  rows="span 3" />
             <GridImg src={W_IMG.preparation} cols="span 5"  rows="span 4" />
             <GridImg src={W_IMG.dance}       cols="span 4"  rows="span 6" />
-            <GridImg src={W_IMG.sortie}      cols="span 3"  rows="span 3" />
+            <GridImg src={W_IMG.sortie}      cols="span 3"  rows="span 3" zoom="120%" />
             <GridImg src={W_IMG.details}     cols="span 8"  rows="span 3" pos="center 30%" />
             <GridImg src={W_IMG.guests}      cols="span 6"  rows="span 4" />
             <GridImg src={W_IMG.table}       cols="span 6"  rows="span 4" />
@@ -737,11 +737,12 @@ function Mariage({ lang, setLang }) {
   );
 }
 
-function GridImg({ src, cols, rows, pos = "center" }) {
+function GridImg({ src, cols, rows, pos = "center", zoom = "100%" }) {
   return (
     <div style={{ gridColumn: cols, gridRow: rows, overflow: "hidden" }}>
       <img src={src} alt="" style={{
-        width: "100%", height: "100%", objectFit: "cover",
+        width: zoom, height: zoom, minWidth: "100%", minHeight: "100%",
+        objectFit: "cover",
         objectPosition: pos,
         filter: "saturate(0.85) contrast(1.02)",
       }} />
