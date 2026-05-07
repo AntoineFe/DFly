@@ -331,28 +331,25 @@ function Mariage({ lang, setLang }) {
           <div style={{ maxWidth: 920, margin: "0 auto" }}>
             {[
               { time: "06h30", fr: "Préparatifs",  en: "Preparations",
-                fr_d: "Les premiers gestes, la robe accrochée à la fenêtre, les mains qui tremblent un peu. Nous arrivons en silence.",
-                en_d: "The first gestures, the dress hanging by the window, hands trembling slightly. We arrive in silence." },
-              { time: "11h00", fr: "First look", en: "First look",
-                fr_d: "Le moment que nous ne provoquons jamais. Nous reculons et laissons le temps faire son travail.",
-                en_d: "The moment we never provoke. We step back and let time do its work." },
+                fr_d: "Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman guide, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien et ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.",
+                en_d: "In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother holds something between joy and nostalgia. The grandfather says nothing and misses nothing. Then the door opens. The father sees his daughter." },
               { time: "14h30", fr: "Cérémonie", en: "Ceremony",
-                fr_d: "Civile, religieuse, laïque — ce qui compte, ce sont les visages dans l'assistance.",
-                en_d: "Civil, religious, secular — what matters are the faces in the audience." },
+                fr_d: "Civile, religieuse, laïque — la forme change, l'essentiel reste. On regarde les visages dans l'assistance autant que les mariés.",
+                en_d: "Civil, religious, secular — the form changes, the essence remains. We watch the faces in the audience as much as the couple." },
               { time: "17h00", fr: "Cocktail & portraits", en: "Cocktail & portraits",
-                fr_d: "Les rires, les retrouvailles, les vingt minutes que nous volons aux mariés pour quelques portraits dans la lumière qui descend.",
-                en_d: "The laughter, the reunions, the twenty minutes we steal for portraits in the falling light." },
+                fr_d: "Les retrouvailles, les verres qui s'entrechoquent, les enfants qui courent. On vole vingt minutes aux mariés pour quelques portraits pendant que la lumière tient encore.",
+                en_d: "The reunions, the clinking glasses, the children running. We steal twenty minutes with the couple for portraits while the light holds." },
               { time: "20h00", fr: "Dîner", en: "Dinner",
-                fr_d: "Discours, larmes, tables qui s'animent. Nous tournons autour, nous attrapons les regards qu'on échange entre les rires.",
-                en_d: "Speeches, tears, tables coming alive. We orbit, we catch the glances exchanged between laughs." },
+                fr_d: "Les discours, les larmes qu'on retient ou pas, les tables qui s'animent. On tourne, on observe, on attend le bon moment.",
+                en_d: "The speeches, the tears held back or not, the tables coming alive. We move, we watch, we wait for the right moment." },
               { time: "23h30", fr: "Ouverture & danse", en: "First dance & beyond",
-                fr_d: "Lumières basses, son chaud. Nous restons jusqu'à ce que la piste se vide — c'est souvent là que se passent les images les plus tendres.",
-                en_d: "Low lights, warm sound. We stay until the floor empties — that's often where the most tender images are made." },
+                fr_d: "La piste se remplit, se vide, se remplit. On reste. C'est souvent à cette heure-là que les gens baissent la garde.",
+                en_d: "The floor fills, empties, fills again. We stay. It's often at this hour that people let their guard down." },
             ].map((step, i) => (
               <div key={i} className="grid-timeline-row" style={{
                 padding: "32px 0",
                 borderTop: "1px solid var(--line)",
-                borderBottom: i === 5 ? "1px solid var(--line)" : "none",
+                borderBottom: i === 4 ? "1px solid var(--line)" : "none",
               }}>
                 <div>
                   <div style={{
