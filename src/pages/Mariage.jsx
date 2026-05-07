@@ -312,7 +312,7 @@ function Mariage({ lang, setLang }) {
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
-            <SectionLabel num="IV" label={t("Le déroulé", "The day, hour by hour")} align="center" />
+            <SectionLabel num="IV" label={t("Une journée qui se raconte, de l'aube à la dernière danse", "The day, hour by hour")} align="center" />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(36px, 4.4vw, 60px)",
