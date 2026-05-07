@@ -12,7 +12,7 @@ const W_IMG = {
   bouquet:     `${BASE}images/mariage/409_7R49654.jpeg`,
   preparation: `${BASE}images/mariage/090_7R43637.jpg`,
   dance:       `${BASE}images/mariage/467__DSC0477.jpeg`,
-  details:     `${BASE}images/mariage/485__DSC0490.jpeg`,
+  details:     `${BASE}images/mariage/239_7R45173_1.jpeg`,
   guests:      `${BASE}images/mariage/424_DSC8763.jpeg`,
   table:       `${BASE}images/mariage/_7R41267.jpeg`,
   aerial:      `${BASE}images/mariage/MAX_0011.jpeg`,
@@ -300,9 +300,9 @@ function Mariage({ lang, setLang }) {
             <GridImg src={W_IMG.preparation} cols="span 5"  rows="span 4" />
             <GridImg src={W_IMG.dance}       cols="span 4"  rows="span 6" />
             <GridImg src={W_IMG.sortie}      cols="span 3"  rows="span 3" />
-            <GridImg src={W_IMG.details}     cols="span 8"  rows="span 3" />
-            <GridImg src={W_IMG.guests}      cols="span 5"  rows="span 4" />
-            <GridImg src={W_IMG.table}       cols="span 7"  rows="span 4" />
+            <GridImg src={W_IMG.details}     cols="span 8"  rows="span 3" pos="center 20%" />
+            <GridImg src={W_IMG.guests}      cols="span 6"  rows="span 4" />
+            <GridImg src={W_IMG.table}       cols="span 6"  rows="span 4" />
             <GridImg src={W_IMG.aerial}      cols="span 12" rows="span 4" pos="center 60%" />
           </div>
         </div>
