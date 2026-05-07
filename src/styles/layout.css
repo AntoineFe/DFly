@@ -231,7 +231,11 @@
   }
 
   .timeline-bg {
-    right: -30% !important;
+    height: auto !important;
+    width: 130% !important;
+    right: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%);
   }
 
   .grid-gallery {
