@@ -372,7 +372,7 @@ function Mariage({ lang, setLang }) {
                   }}>{t(step.fr, step.en)}</div>
                   <div style={{
                     fontFamily: "var(--serif)",
-                    fontSize: "clamp(20px, 2vw, 32px)", lineHeight: 1.45,
+                    fontSize: "clamp(20px, 2vw, 30px)", lineHeight: 1.3,
                     fontWeight: 300, fontStyle: "italic",
                     color: "var(--fg-muted)",
                   }}>{t(step.fr_d, step.en_d)}</div>
