@@ -322,7 +322,7 @@ function Mariage({ lang, setLang }) {
               color: "var(--fg)",
             }}>
               {t(
-                <>Une journée filmée<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>de l'aube à la dernière danse.</em></>,
+                <>Une journée immortalisée<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>de l'aube à la dernière danse.</em></>,
                 <>A day filmed<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>from dawn to the last dance.</em></>
               )}
             </h2>
