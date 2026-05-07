@@ -16,7 +16,7 @@ const W_IMG = {
   guests:      `${BASE}images/mariage/424_DSC8763.jpeg`,
   table:       `${BASE}images/mariage/_7R41267.jpeg`,
   aerial:      `${BASE}images/mariage/MAX_0011.jpeg`,
-  sortie:      `${BASE}images/mariage/200_7R44108.jpeg`,
+  sortie:      `${BASE}images/mariage/_7R44108.jpg`,
   filmstrip1:  `${BASE}images/mariage/_7R41266_1.jpeg`,
   filmstrip2:  `${BASE}images/mariage/_DSC7546.jpeg`,
   filmstrip3:  `${BASE}images/mariage/_DSC7838.jpeg`,
