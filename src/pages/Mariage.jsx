@@ -423,8 +423,7 @@ function Mariage({ lang, setLang }) {
           }}>
             {[W_IMG.filmstrip1, W_IMG.filmstrip2, W_IMG.filmstrip3, W_IMG.filmstrip4, W_IMG.filmstrip5, W_IMG.filmstrip6, W_IMG.filmstrip7].map((src, i) => (
               <div key={i} style={{
-                flex: "0 0 auto",
-                width: 280, height: 200,
+                flex: "1 0 280px", height: 200,
                 position: "relative",
               }}>
                 <img src={src} alt=""
