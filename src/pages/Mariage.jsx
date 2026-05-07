@@ -331,8 +331,8 @@ function Mariage({ lang, setLang }) {
           <div style={{ maxWidth: 920, margin: "0 auto" }}>
             {[
               { time: "09h00", fr: "Préparatifs",  en: "Preparations",
-                fr_d: "Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman guide, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien et ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.",
-                en_d: "In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother holds something between joy and nostalgia. The grandfather says nothing and misses nothing. Then the door opens. The father sees his daughter." },
+                fr_d: "Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman guide, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien mais ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.",
+                en_d: "In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother holds something between joy and nostalgia. The grandfather says nothing but misses nothing. Then the door opens. The father sees his daughter." },
               { time: "11h00", fr: "Mairie", en: "Town hall",
                 fr_d: "C'est l'étape qui change tout — devant la loi et devant le monde. La salle est joyeuse, le marié entre, puis la mariée, puis la salle vit aux paroles du maire. Des textes simples, lus à voix haute, irrévocables. Des sourires, des regards, des larmes. C'est la naissance d'une famille.",
                 en_d: "This is the step that changes everything — before the law and before the world. The room is joyful, the groom enters, then the bride, then the room comes alive with the mayor's words. Simple texts, read aloud, irrevocable. Smiles, glances, tears. A family is born." },
