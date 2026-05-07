@@ -309,7 +309,19 @@ function Mariage({ lang, setLang }) {
       </section>
 
       {/* TIMELINE — the day */}
-      <section style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)" }}>
+      <section style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)", position: "relative", overflow: "hidden" }}>
+        <img
+          src={`${BASE}images/mariage/230_7R44147.jpeg`}
+          alt=""
+          style={{
+            position: "absolute", right: 0, bottom: 0,
+            height: "100%", width: "auto",
+            objectFit: "cover", objectPosition: "right bottom",
+            opacity: 0.08,
+            filter: "grayscale(1)",
+            pointerEvents: "none",
+          }}
+        />
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
             <SectionLabel num="IV" label={t("Une journée qui se raconte, du matin à la dernière danse", "The day, hour by hour")} align="center" />
