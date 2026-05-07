@@ -440,7 +440,7 @@ function Mariage({ lang, setLang }) {
             height: 8, display: "flex", gap: 16, padding: "0 24px",
             opacity: 0.4,
           }}>
-            {Array.from({ length: 60 }).map((_, i) => (
+            {Array.from({ length: 120 }).map((_, i) => (
               <div key={i} style={{ width: 12, height: 8, background: "var(--ivory)", flexShrink: 0 }} />
             ))}
           </div>
@@ -449,7 +449,7 @@ function Mariage({ lang, setLang }) {
             height: 8, display: "flex", gap: 16, padding: "0 24px",
             opacity: 0.4,
           }}>
-            {Array.from({ length: 60 }).map((_, i) => (
+            {Array.from({ length: 120 }).map((_, i) => (
               <div key={i} style={{ width: 12, height: 8, background: "var(--ivory)", flexShrink: 0 }} />
             ))}
           </div>
