@@ -313,6 +313,7 @@ function Mariage({ lang, setLang }) {
         <img
           src={`${BASE}images/mariage/230_7R44147.jpeg`}
           alt=""
+          className="timeline-bg"
           style={{
             position: "absolute", right: 0, bottom: 0,
             height: "100%", width: "auto",

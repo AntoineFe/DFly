@@ -230,6 +230,10 @@
     gap: 8px;
   }
 
+  .timeline-bg {
+    right: -30% !important;
+  }
+
   .grid-gallery {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 160px;
