@@ -312,7 +312,7 @@ function Mariage({ lang, setLang }) {
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
-            <SectionLabel num="IV" label={t("Une journée qui se raconte, de l'aube à la dernière danse", "The day, hour by hour")} align="center" />
+            <SectionLabel num="IV" label={t("Une journée qui se raconte, du matin à la dernière danse", "The day, hour by hour")} align="center" />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(36px, 4.4vw, 60px)",
@@ -330,7 +330,7 @@ function Mariage({ lang, setLang }) {
 
           <div style={{ maxWidth: 920, margin: "0 auto" }}>
             {[
-              { time: "06h30", fr: "Préparatifs",  en: "Preparations",
+              { time: "09h00", fr: "Préparatifs",  en: "Preparations",
                 fr_d: "Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman guide, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien et ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.",
                 en_d: "In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother holds something between joy and nostalgia. The grandfather says nothing and misses nothing. Then the door opens. The father sees his daughter." },
               { time: "11h00", fr: "Mairie", en: "Town hall",
