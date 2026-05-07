@@ -333,23 +333,29 @@ function Mariage({ lang, setLang }) {
               { time: "06h30", fr: "Préparatifs",  en: "Preparations",
                 fr_d: "Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman guide, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien et ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.",
                 en_d: "In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother holds something between joy and nostalgia. The grandfather says nothing and misses nothing. Then the door opens. The father sees his daughter." },
-              { time: "14h30", fr: "Cérémonie", en: "Ceremony",
+              { time: "11h00", fr: "Mairie", en: "Town hall",
+                fr_d: "C'est l'étape qui change tout — devant la loi et devant le monde. Des textes simples, lus à voix haute, irrévocables. La salle est joyeuse, le marié entre, puis la mariée, puis la salle vit aux paroles du maire. Des sourires, des regards, des larmes. C'est la naissance d'une famille — et ces images-là, on ne peut pas les refaire.",
+                en_d: "This is the step that changes everything — before the law and before the world. Simple texts, read aloud, irrevocable. The room is joyful, the groom enters, then the bride, then the room comes alive with the mayor's words. Smiles, glances, tears. A family is born — and these images cannot be made again." },
+              { time: "14h30", fr: "Cérémonie laïque ou religieuse", en: "Ceremony",
                 fr_d: "Civile, religieuse, laïque — la forme change, l'essentiel reste. On regarde les visages dans l'assistance autant que les mariés.",
                 en_d: "Civil, religious, secular — the form changes, the essence remains. We watch the faces in the audience as much as the couple." },
-              { time: "17h00", fr: "Cocktail & portraits", en: "Cocktail & portraits",
+              { time: "17h00", fr: "Séance photo", en: "Portrait session",
+                fr_d: "Les retrouvailles, les verres qui s'entrechoquent, les enfants qui courent. On vole vingt minutes aux mariés pour quelques portraits pendant que la lumière tient encore.",
+                en_d: "The reunions, the clinking glasses, the children running. We steal twenty minutes with the couple for portraits while the light holds." },
+              { time: "18h30", fr: "Cocktail / Vin d'honneur", en: "Cocktail hour",
                 fr_d: "Les retrouvailles, les verres qui s'entrechoquent, les enfants qui courent. On vole vingt minutes aux mariés pour quelques portraits pendant que la lumière tient encore.",
                 en_d: "The reunions, the clinking glasses, the children running. We steal twenty minutes with the couple for portraits while the light holds." },
               { time: "20h00", fr: "Dîner", en: "Dinner",
                 fr_d: "Les discours, les larmes qu'on retient ou pas, les tables qui s'animent. On tourne, on observe, on attend le bon moment.",
                 en_d: "The speeches, the tears held back or not, the tables coming alive. We move, we watch, we wait for the right moment." },
-              { time: "23h30", fr: "Ouverture & danse", en: "First dance & beyond",
+              { time: "23h30", fr: "Danse", en: "Dancing",
                 fr_d: "La piste se remplit, se vide, se remplit. On reste. C'est souvent à cette heure-là que les gens baissent la garde.",
                 en_d: "The floor fills, empties, fills again. We stay. It's often at this hour that people let their guard down." },
             ].map((step, i) => (
               <div key={i} className="grid-timeline-row" style={{
                 padding: "32px 0",
                 borderTop: "1px solid var(--line)",
-                borderBottom: i === 4 ? "1px solid var(--line)" : "none",
+                borderBottom: i === 6 ? "1px solid var(--line)" : "none",
               }}>
                 <div>
                   <div style={{
