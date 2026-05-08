@@ -630,6 +630,18 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
     setSending(true);
     setError("");
 
+    const reactionLabel = {
+      oui:    "Oui, tout à fait",
+      approx: "C'est un peu au-dessus, mais je suis intéressé·e",
+      non:    "C'est au-dessus de mon budget",
+    }[state.reaction] ?? state.reaction;
+
+    const intentionLabel = {
+      reserver:  "Je souhaite réserver cette date",
+      discuter:  "Je voudrais en discuter avant de décider",
+      reflechir: "Je vais réfléchir",
+    }[state.intention] ?? state.intention;
+
     const payload = {
       prenom:      state.prenom,
       nom:         state.nom,
@@ -638,6 +650,8 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
       demandes:    state.demandes,
       simulations: allSims,
       simulation:  allSims[chosen],
+      reaction:    reactionLabel,
+      intention:   intentionLabel,
     };
 
     try {

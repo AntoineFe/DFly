@@ -27,8 +27,10 @@ $to     = filter_var($d['email'], FILTER_SANITIZE_EMAIL);
 $prenom = htmlspecialchars($d['prenom']   ?? '', ENT_QUOTES);
 $nom    = htmlspecialchars($d['nom']      ?? '', ENT_QUOTES);
 $tel    = htmlspecialchars($d['tel']      ?? '', ENT_QUOTES);
-$demandes = $d['demandes'] ?? '';
-$sims   = $d['simulations'] ?? [$d['simulation'] ?? []];
+$demandes  = $d['demandes']  ?? '';
+$reaction  = $d['reaction']  ?? '';
+$intention = $d['intention'] ?? '';
+$sims      = $d['simulations'] ?? [$d['simulation'] ?? []];
 
 // ── Corps du mail ─────────────────────────────────────────────────────────────
 $body  = "Bonjour {$prenom},\n\n";
@@ -66,6 +68,14 @@ foreach ($sims as $i => $sim) {
         $cost = number_format((float) $travel['cost'], 0, ',', ' ');
         $body .= "Déplacement  : {$km} km A/R -> {$cost} € + péages\n";
     }
+}
+
+if ($reaction || $intention) {
+    $body .= "\n" . str_repeat("-", 40) . "\n";
+    $body .= "RÉACTION & DÉCISION\n";
+    $body .= str_repeat("-", 40) . "\n\n";
+    if ($reaction)  $body .= "Budget        : " . htmlspecialchars($reaction,  ENT_QUOTES) . "\n";
+    if ($intention) $body .= "Intention     : " . htmlspecialchars($intention, ENT_QUOTES) . "\n";
 }
 
 if ($demandes) {
