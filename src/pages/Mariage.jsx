@@ -62,7 +62,7 @@ function Mariage({ lang, setLang }) {
         }} />
 
         {/* Top corner labels */}
-        <div style={{
+        <div className="hero-corner-label" style={{
           position: "absolute", top: 110, left: "var(--gutter)",
           fontFamily: "var(--sans)", fontSize: 11,
           letterSpacing: "0.4em", textTransform: "uppercase",
