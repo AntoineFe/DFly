@@ -589,13 +589,15 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore }) {
   );
 }
 
-function StepContact({ state, set, simulations, onSubmit }) {
+function StepContact({ state, set, simulations, travel, onSubmit }) {
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
   const allSims = [...simulations, {
     format: formatLabel(state),
     moments: momentsSummary(state.moments),
     price: calcPrice(state).ttc,
+    travel,
   }];
 
   const [chosen, setChosen] = useState(allSims.length - 1);
@@ -603,8 +605,34 @@ function StepContact({ state, set, simulations, onSubmit }) {
   async function handleSubmit(e) {
     e.preventDefault();
     setSending(true);
-    await new Promise(r => setTimeout(r, 600));
-    onSubmit(allSims[chosen]);
+    setError("");
+
+    const payload = {
+      prenom:     state.prenom,
+      nom:        state.nom,
+      email:      state.email,
+      tel:        state.tel,
+      demandes:   state.demandes,
+      simulation: allSims[chosen],
+    };
+
+    try {
+      const res = await fetch("/send-devis.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        onSubmit();
+      } else {
+        setError("L'envoi a échoué. Veuillez réessayer ou nous écrire directement à contact@dfly.fr");
+      }
+    } catch {
+      setError("L'envoi a échoué. Veuillez réessayer ou nous écrire directement à contact@dfly.fr");
+    } finally {
+      setSending(false);
+    }
   }
 
   return (
@@ -675,6 +703,9 @@ function StepContact({ state, set, simulations, onSubmit }) {
         >
           {sending ? "Envoi en cours…" : "Envoyer ma demande"}
         </button>
+        {error && (
+          <p style={{ color: "red", fontSize: 13, marginTop: 12, textAlign: "center" }}>{error}</p>
+        )}
         <p style={{ textAlign: "center", fontSize: 13, color: "var(--fg-muted)", marginTop: 12 }}>
           Nous vous répondons sous 48h.
         </p>
@@ -781,7 +812,7 @@ export default function DevisFunnel() {
     setStep(0);
   }
 
-  function handleSubmit(chosenSim) {
+  function handleSubmit() {
     setSubmitted(true);
   }
 
@@ -813,7 +844,7 @@ export default function DevisFunnel() {
     <StepDrone    key="drone"     state={state} set={set} />,
     <StepDemandes key="demandes"  state={state} set={set} />,
     <StepEstimation key="estim"   state={state} set={set} travel={travel} travelLoading={travelLoading} onExplore={handleExplore} />,
-    <StepContact  key="contact"   state={state} set={set} simulations={simulations} onSubmit={handleSubmit} />,
+    <StepContact  key="contact"   state={state} set={set} simulations={simulations} travel={travel} onSubmit={handleSubmit} />,
   ];
 
   return (
