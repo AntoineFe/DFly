@@ -669,22 +669,9 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
     setSending(true);
     setError("");
 
-    // Labels always in French for the email (read by Antoine/Rémi)
-    const reactionLabel = {
-      oui:    "Oui, tout à fait",
-      approx: "C'est un peu au-dessus, mais je suis intéressé·e",
-      non:    "C'est au-dessus de mon budget",
-    }[state.reaction] ?? state.reaction;
-
-    const intentionLabel = {
-      reserver:  "Je souhaite réserver cette date",
-      discuter:  "Je voudrais en discuter avant de décider",
-      reflechir: "Je vais réfléchir",
-    }[state.intention] ?? state.intention;
-
-    const allSimsFR = [...simulations, {
-      format:  formatLabel(state, "FR"),
-      moments: momentsSummary(state.moments, "FR"),
+    const allSimsEmail = [...simulations, {
+      format:  formatLabel(state, lang),
+      moments: momentsSummary(state.moments, lang),
       price:   calcPrice(state).ttc,
       travel,
     }];
@@ -695,11 +682,11 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
       email:       state.email,
       tel:         state.tel,
       demandes:    state.demandes,
-      simulations:  allSimsFR,
-      simulation:   allSimsFR[chosen],
-      reaction:     reactionLabel,
-      intention:    intentionLabel,
+      simulations:  allSimsEmail,
+      simulation:   allSimsEmail[chosen],
+      reactionKey:  state.reaction,
       intentionKey: state.intention,
+      lang,
     };
 
     try {

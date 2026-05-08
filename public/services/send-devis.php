@@ -23,45 +23,154 @@ if (!$d || empty($d['email'])) {
     exit(json_encode(["ok" => false, "error" => "Données manquantes"]));
 }
 
-$to     = filter_var($d['email'], FILTER_SANITIZE_EMAIL);
-$prenom = htmlspecialchars($d['prenom']   ?? '', ENT_QUOTES);
-$nom    = htmlspecialchars($d['nom']      ?? '', ENT_QUOTES);
-$tel    = htmlspecialchars($d['tel']      ?? '', ENT_QUOTES);
+$to           = filter_var($d['email'], FILTER_SANITIZE_EMAIL);
+$prenom       = htmlspecialchars($d['prenom']      ?? '', ENT_QUOTES);
+$nom          = htmlspecialchars($d['nom']         ?? '', ENT_QUOTES);
+$tel          = htmlspecialchars($d['tel']         ?? '', ENT_QUOTES);
 $demandes     = $d['demandes']     ?? '';
-$reaction     = $d['reaction']     ?? '';
-$intention    = $d['intention']    ?? '';
+$reactionKey  = $d['reactionKey']  ?? '';
 $intentionKey = $d['intentionKey'] ?? '';
 $sims         = $d['simulations']  ?? [$d['simulation'] ?? []];
+$lang         = strtoupper($d['lang'] ?? 'FR') === 'EN' ? 'EN' : 'FR';
 
-// ── Objet et titre de section selon la décision ───────────────────────────────
+// ── Traductions ───────────────────────────────────────────────────────────────
+$tr = [
+    'FR' => [
+        'greeting'       => "Bonjour {prenom},",
+        'contact'        => "VOS COORDONNÉES",
+        'name'           => "Nom          :",
+        'email'          => "Email        :",
+        'phone'          => "Téléphone    :",
+        'estimate_n'     => "Estimation",
+        'format'         => "Format       :",
+        'moments'        => "Moments      :",
+        'price'          => "Estimation   :",
+        'ttc'            => "TTC",
+        'travel'         => "Déplacement  :",
+        'roundtrip'      => "km A/R ->",
+        'tolls'          => "€ + péages",
+        'reaction_title' => "RÉACTION & DÉCISION",
+        'budget'         => "Budget        :",
+        'decision'       => "Intention     :",
+        'special'        => "DEMANDES PARTICULIÈRES",
+        'footer1'        => "Cette estimation est indicative.",
+        'footer2'        => "Nous vous confirmons le devis définitif sous 48h.",
+        'footer3'        => "Si vous ne recevez pas notre réponse, pensez à vérifier vos spams",
+        'footer4'        => "et ajoutez contact@dfly.fr à vos contacts pour ne rien manquer.",
+        'bye'            => "À très bientôt,",
+        'studio'         => "DFly - Photographie & Film de mariage",
+        'reaction' => [
+            'oui'    => "Oui, tout à fait",
+            'approx' => "C'est un peu au-dessus, mais je suis intéressé·e",
+            'non'    => "C'est au-dessus de mon budget",
+        ],
+        'intention' => [
+            'reserver'  => "Je souhaite réserver cette date",
+            'discuter'  => "Je voudrais en discuter avant de décider",
+            'reflechir' => "Je vais réfléchir",
+        ],
+        'subjects' => [
+            'reserver'    => "Votre demande de devis - DFly Mariage",
+            'discuter'    => "Votre demande de renseignement - DFly Mariage",
+            'one'         => "Votre estimation - DFly Mariage",
+            'multi'       => "Vos estimations - DFly Mariage",
+        ],
+        'sections' => [
+            'reserver'    => "VOTRE DEMANDE DE DEVIS",
+            'discuter'    => "VOTRE DEMANDE DE RENSEIGNEMENT",
+            'one'         => "VOTRE ESTIMATION",
+            'multi'       => "VOS ESTIMATIONS",
+        ],
+        'intros' => [
+            'reserver'    => "Merci pour votre demande de devis. Voici le récapitulatif de votre session.",
+            'discuter'    => "Merci pour votre message. Voici le récapitulatif de votre session.",
+            'one'         => "Merci pour votre intérêt. Voici le récapitulatif de votre estimation.",
+            'multi'       => "Merci pour votre intérêt. Voici le récapitulatif de vos estimations.",
+        ],
+    ],
+    'EN' => [
+        'greeting'       => "Hello {prenom},",
+        'contact'        => "YOUR CONTACT DETAILS",
+        'name'           => "Name         :",
+        'email'          => "Email        :",
+        'phone'          => "Phone        :",
+        'estimate_n'     => "Estimate",
+        'format'         => "Format       :",
+        'moments'        => "Moments      :",
+        'price'          => "Estimate     :",
+        'ttc'            => "incl. VAT",
+        'travel'         => "Travel       :",
+        'roundtrip'      => "km round trip ->",
+        'tolls'          => "€ + tolls",
+        'reaction_title' => "FEEDBACK & DECISION",
+        'budget'         => "Budget        :",
+        'decision'       => "Decision      :",
+        'special'        => "SPECIAL REQUESTS",
+        'footer1'        => "This estimate is indicative.",
+        'footer2'        => "We will confirm the final quote within 48h.",
+        'footer3'        => "If you don't receive our reply, please check your spam folder",
+        'footer4'        => "and add contact@dfly.fr to your contacts.",
+        'bye'            => "See you soon,",
+        'studio'         => "DFly - Wedding Photography & Film",
+        'reaction' => [
+            'oui'    => "Yes, absolutely",
+            'approx' => "It's slightly above my budget, but I'm interested",
+            'non'    => "It's above my budget",
+        ],
+        'intention' => [
+            'reserver'  => "I'd like to book this date",
+            'discuter'  => "I'd like to discuss before deciding",
+            'reflechir' => "I'll think about it",
+        ],
+        'subjects' => [
+            'reserver'    => "Your booking request - DFly Wedding",
+            'discuter'    => "Your enquiry - DFly Wedding",
+            'one'         => "Your estimate - DFly Wedding",
+            'multi'       => "Your estimates - DFly Wedding",
+        ],
+        'sections' => [
+            'reserver'    => "YOUR BOOKING REQUEST",
+            'discuter'    => "YOUR ENQUIRY",
+            'one'         => "YOUR ESTIMATE",
+            'multi'       => "YOUR ESTIMATES",
+        ],
+        'intros' => [
+            'reserver'    => "Thank you for your booking request. Here is a summary of your session.",
+            'discuter'    => "Thank you for your message. Here is a summary of your session.",
+            'one'         => "Thank you for your interest. Here is a summary of your estimate.",
+            'multi'       => "Thank you for your interest. Here is a summary of your estimates.",
+        ],
+    ],
+];
+
+$T = $tr[$lang];
 $count = count($sims);
-if ($intentionKey === 'reserver') {
-    $subject      = "Votre demande de devis - DFly Mariage";
-    $sectionTitle = "VOTRE DEMANDE DE DEVIS";
-    $intro        = "Merci pour votre demande de devis. Voici le récapitulatif de votre session.";
-} elseif ($intentionKey === 'discuter') {
-    $subject      = "Votre demande de renseignement - DFly Mariage";
-    $sectionTitle = "VOTRE DEMANDE DE RENSEIGNEMENT";
-    $intro        = "Merci pour votre message. Voici le récapitulatif de votre session.";
+
+// ── Objet, titre et intro selon intention et nb d'estimations ─────────────────
+if ($intentionKey === 'reserver' || $intentionKey === 'discuter') {
+    $subject      = $T['subjects'][$intentionKey];
+    $sectionTitle = $T['sections'][$intentionKey];
+    $intro        = $T['intros'][$intentionKey];
 } elseif ($count > 1) {
-    $subject      = "Vos estimations - DFly Mariage";
-    $sectionTitle = "VOS ESTIMATIONS ({$count})";
-    $intro        = "Merci pour votre intérêt. Voici le récapitulatif de vos estimations.";
+    $subject      = $T['subjects']['multi'];
+    $sectionTitle = $T['sections']['multi'] . " ({$count})";
+    $intro        = $T['intros']['multi'];
 } else {
-    $subject      = "Votre estimation - DFly Mariage";
-    $sectionTitle = "VOTRE ESTIMATION";
-    $intro        = "Merci pour votre intérêt. Voici le récapitulatif de votre estimation.";
+    $subject      = $T['subjects']['one'];
+    $sectionTitle = $T['sections']['one'];
+    $intro        = $T['intros']['one'];
 }
 
 // ── Corps du mail ─────────────────────────────────────────────────────────────
-$body  = "Bonjour {$prenom},\n\n";
+$greeting = str_replace('{prenom}', $prenom, $T['greeting']);
+$body  = "{$greeting}\n\n";
 $body .= "{$intro}\n\n";
 $body .= str_repeat("-", 40) . "\n";
-$body .= "VOS COORDONNÉES\n";
+$body .= $T['contact'] . "\n";
 $body .= str_repeat("-", 40) . "\n\n";
-$body .= "Nom          : {$prenom} {$nom}\n";
-$body .= "Email        : {$to}\n";
-if ($tel) $body .= "Téléphone    : {$tel}\n";
+$body .= $T['name'] . " {$prenom} {$nom}\n";
+$body .= $T['email'] . " {$to}\n";
+if ($tel) $body .= $T['phone'] . " {$tel}\n";
 $body .= "\n";
 
 $body .= str_repeat("-", 40) . "\n";
@@ -75,44 +184,47 @@ foreach ($sims as $i => $sim) {
     $travel  = $sim['travel'] ?? [];
 
     if ($count > 1) {
-        $body .= "\nEstimation " . ($i + 1) . "\n";
+        $body .= "\n" . $T['estimate_n'] . " " . ($i + 1) . "\n";
     } else {
         $body .= "\n";
     }
-    $body .= "Format       : {$format}\n";
-    if ($moments) $body .= "Moments      : {$moments}\n";
-    $body .= "Estimation   : {$price} TTC\n";
+    $body .= $T['format'] . " {$format}\n";
+    if ($moments) $body .= $T['moments'] . " {$moments}\n";
+    $body .= $T['price'] . " {$price} " . $T['ttc'] . "\n";
 
     if (!empty($travel['km']) && $travel['km'] > 0) {
         $km   = (int) $travel['km'];
         $cost = number_format((float) $travel['cost'], 0, ',', ' ');
-        $body .= "Déplacement  : {$km} km A/R -> {$cost} € + péages\n";
+        $body .= $T['travel'] . " {$km} " . $T['roundtrip'] . " {$cost} " . $T['tolls'] . "\n";
     }
 }
 
-if ($reaction || $intention) {
+$reactionLabel  = $T['reaction'][$reactionKey]   ?? '';
+$intentionLabel = $T['intention'][$intentionKey]  ?? '';
+
+if ($reactionLabel || $intentionLabel) {
     $body .= "\n" . str_repeat("-", 40) . "\n";
-    $body .= "RÉACTION & DÉCISION\n";
+    $body .= $T['reaction_title'] . "\n";
     $body .= str_repeat("-", 40) . "\n\n";
-    if ($reaction)  $body .= "Budget        : " . htmlspecialchars($reaction,  ENT_QUOTES) . "\n";
-    if ($intention) $body .= "Intention     : " . htmlspecialchars($intention, ENT_QUOTES) . "\n";
+    if ($reactionLabel)  $body .= $T['budget']   . " {$reactionLabel}\n";
+    if ($intentionLabel) $body .= $T['decision']  . " {$intentionLabel}\n";
 }
 
 if ($demandes) {
     $body .= "\n" . str_repeat("-", 40) . "\n";
-    $body .= "DEMANDES PARTICULIÈRES\n";
+    $body .= $T['special'] . "\n";
     $body .= str_repeat("-", 40) . "\n\n";
     $body .= htmlspecialchars($demandes, ENT_QUOTES) . "\n";
 }
 
 $body .= "\n" . str_repeat("-", 40) . "\n\n";
-$body .= "Cette estimation est indicative.\n";
-$body .= "Nous vous confirmons le devis définitif sous 48h.\n\n";
-$body .= "Si vous ne recevez pas notre réponse, pensez à vérifier vos spams\n";
-$body .= "et ajoutez contact@dfly.fr à vos contacts pour ne rien manquer.\n\n";
-$body .= "À très bientôt,\n";
+$body .= $T['footer1'] . "\n";
+$body .= $T['footer2'] . "\n\n";
+$body .= $T['footer3'] . "\n";
+$body .= $T['footer4'] . "\n\n";
+$body .= $T['bye'] . "\n";
 $body .= "Antoine & Rémi\n";
-$body .= "DFly - Photographie & Film de mariage\n";
+$body .= $T['studio'] . "\n";
 $body .= "https://dfly.fr\n";
 
 // ── Envoi SMTP (SSL port 465) ─────────────────────────────────────────────────
