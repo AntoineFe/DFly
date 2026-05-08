@@ -59,8 +59,9 @@ const RATE_HT = {
 
 function calcPrice(state) {
   const h = totalHours(state.moments);
+  const billableH = Math.min(h, FULL_DAY_H);
   const rate = RATE_HT[state.format === "both" ? "both" : state.format] ?? RATE_HT.photo;
-  let baseHT = h * rate;
+  let baseHT = billableH * rate;
 
   let addonsHT = 0;
   if (state.format !== "photo") {
