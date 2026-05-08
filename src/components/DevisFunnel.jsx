@@ -511,7 +511,7 @@ function PriceLine({ label, value, muted }) {
   );
 }
 
-function StepEstimation({ state, set, travel, travelLoading, onExplore }) {
+function StepEstimation({ state, set, travel, travelLoading, onExplore, simulations }) {
   const { ttc, h } = calcPrice(state);
   const total = ttc + (travel?.cost || 0);
 
@@ -526,6 +526,24 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore }) {
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
         Durée estimée : {Math.round(h * 10) / 10}h de présence
       </p>
+
+      {simulations?.length > 0 && (
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ fontWeight: 600, color: "var(--fg)", marginBottom: 12 }}>Vos estimations précédentes</div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            {simulations.map((sim, i) => (
+              <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline",
+                padding: "10px 0", borderBottom: "1px solid var(--line)", gap: 16 }}>
+                <div>
+                  <span style={{ fontWeight: 500, color: "var(--fg)", fontSize: 14 }}>{sim.format}</span>
+                  <span style={{ color: "var(--fg-muted)", fontSize: 13, marginLeft: 10 }}>{sim.moments}</span>
+                </div>
+                <span style={{ fontWeight: 600, color: "var(--fg)", whiteSpace: "nowrap" }}>{eur(sim.price)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div style={{ marginBottom: 32 }}>
         <PriceLine label={fmtLabel} value={eur(ttc)} />
@@ -846,7 +864,7 @@ export default function DevisFunnel() {
     <StepFormat   key="format"    state={state} set={set} />,
     <StepDrone    key="drone"     state={state} set={set} />,
     <StepDemandes key="demandes"  state={state} set={set} />,
-    <StepEstimation key="estim"   state={state} set={set} travel={travel} travelLoading={travelLoading} onExplore={handleExplore} />,
+    <StepEstimation key="estim"   state={state} set={set} travel={travel} travelLoading={travelLoading} onExplore={handleExplore} simulations={simulations} />,
     <StepContact  key="contact"   state={state} set={set} simulations={simulations} travel={travel} onSubmit={handleSubmit} />,
   ];
 
