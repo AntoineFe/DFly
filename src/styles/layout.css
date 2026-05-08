@@ -132,7 +132,7 @@
   }
 
   /* Mariage hero: province label plus haut sur mobile */
-  .hero-province-label { top: 72px !important; }
+  .hero-province-label { top: 90px !important; }
 
   /* Mariage hero: gap réduit entre h1 et paragraphe sur mobile */
   .hero-intro-flex { gap: 20px !important; }
