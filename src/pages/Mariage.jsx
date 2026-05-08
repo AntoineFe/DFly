@@ -564,89 +564,46 @@ function Mariage({ lang, setLang }) {
       {/* CONTACT */}
       <section id="contact" style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
         <div className="container">
-          <div className="grid-contact">
-            <div>
-              <SectionLabel num="VIII" label={t("Écrire", "Write")} />
-              <h2 style={{
-                fontFamily: "var(--serif-display)",
-                fontSize: "clamp(40px, 4.4vw, 64px)",
-                fontWeight: 400, lineHeight: 1.05,
-                margin: "32px 0 32px",
-                color: "var(--fg)",
-              }}>
-                {t(
-                  <>Parlez-nous de<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>votre journée.</em></>,
-                  <>Tell us about<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>your day.</em></>
-                )}
-              </h2>
-              <p style={{
-                fontFamily: "var(--serif)", fontSize: 19,
-                lineHeight: 1.7, fontWeight: 300, color: "var(--fg-muted)",
-                marginBottom: 40, maxWidth: 440,
-              }}>
-                {t(
-                  "Quelques mots sur la date, le lieu, l'esprit que vous imaginez. Nous répondons sous 48 heures, et nous prenons le temps d'un appel avant tout engagement.",
-                  "A few words about the date, the place, the spirit you imagine. We reply within 48 hours, and we take time for a call before any commitment."
-                )}
-              </p>
-              <div style={{ borderTop: "1px solid var(--line)", paddingTop: 32 }}>
-                <div className="eyebrow" style={{ color: "var(--fg-muted)", marginBottom: 18 }}>
-                  {t("Joignables directement", "Reach us directly")}
+          <div style={{ maxWidth: 680 }}>
+            <SectionLabel num="VIII" label={t("Écrire", "Write")} />
+            <h2 style={{
+              fontFamily: "var(--serif-display)",
+              fontSize: "clamp(40px, 4.4vw, 64px)",
+              fontWeight: 400, lineHeight: 1.05,
+              margin: "32px 0 32px",
+              color: "var(--fg)",
+            }}>
+              {t(
+                <>Parlons de<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>votre projet.</em></>,
+                <>Let's talk about<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>your project.</em></>
+              )}
+            </h2>
+            <p style={{
+              fontFamily: "var(--serif)", fontSize: 19,
+              lineHeight: 1.7, fontWeight: 300, color: "var(--fg-muted)",
+              marginBottom: 48, maxWidth: 520,
+            }}>
+              {t(
+                "Écrivez-nous ou appelez-nous directement — nous répondons sous 48h et prenons toujours le temps d'un appel avant tout engagement.",
+                "Write to us or call us directly — we reply within 48h and always take the time for a call before any commitment."
+              )}
+            </p>
+            <div className="grid-contact-info">
+              <div>
+                <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 12 }}>Antoine</div>
+                <div style={{ fontFamily: "var(--serif)", fontSize: 17, lineHeight: 2, color: "var(--fg-muted)" }}>
+                  <a href="tel:+33607720940" style={{ color: "inherit", textDecoration: "none" }}>06 07 72 09 40</a><br/>
+                  <a href="mailto:antoine.ferrera@dfly.fr" style={{ color: "inherit", textDecoration: "none" }}>antoine.ferrera@dfly.fr</a>
                 </div>
-                <div className="grid-contact-info">
-                  <div>
-                    <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 8 }}>Antoine</div>
-                    <div style={{ fontFamily: "var(--serif)", fontSize: 17, lineHeight: 1.7, color: "var(--fg-muted)" }}>
-                      06 07 72 09 40<br/>antoine.ferrera@dfly.fr
-                    </div>
-                  </div>
-                  <div>
-                    <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 8 }}>Rémi</div>
-                    <div style={{ fontFamily: "var(--serif)", fontSize: 17, lineHeight: 1.7, color: "var(--fg-muted)" }}>
-                      06 95 40 27 00<br/>remi.ferrera@dfly.fr
-                    </div>
-                  </div>
+              </div>
+              <div>
+                <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 12 }}>Rémi</div>
+                <div style={{ fontFamily: "var(--serif)", fontSize: 17, lineHeight: 2, color: "var(--fg-muted)" }}>
+                  <a href="tel:+33695402700" style={{ color: "inherit", textDecoration: "none" }}>06 95 40 27 00</a><br/>
+                  <a href="mailto:remi.ferrera@dfly.fr" style={{ color: "inherit", textDecoration: "none" }}>remi.ferrera@dfly.fr</a>
                 </div>
               </div>
             </div>
-
-            {/* Form */}
-            <form onSubmit={(e) => e.preventDefault()} style={{
-              borderTop: "1px solid var(--line)",
-              paddingTop: 8,
-            }}>
-              <FormRow label={t("Vos prénoms", "Your first names")} placeholder={t("Camille & Étienne", "Camille & Étienne")} />
-              <FormRow label={t("E-mail", "Email")} placeholder="vous@exemple.fr" type="email" />
-              <FormRow label={t("Date du mariage", "Wedding date")} placeholder={t("12 juin 2026", "June 12, 2026")} />
-              <FormRow label={t("Lieu", "Place")} placeholder={t("Domaine en Lubéron", "Estate in the Luberon")} />
-              <div className="form-row" style={{
-                padding: "20px 0", borderBottom: "1px solid var(--line)",
-              }}>
-                <label style={{
-                  fontFamily: "var(--sans)", fontSize: 11,
-                  letterSpacing: "0.32em", textTransform: "uppercase",
-                  color: "var(--fg-muted)", paddingTop: 8,
-                }}>{t("Quelques mots", "A few words")}</label>
-                <textarea
-                  rows={5}
-                  placeholder={t("L'esprit, l'ambiance que vous imaginez…", "The spirit, the mood you imagine…")}
-                  style={{
-                    border: "none", outline: "none", background: "transparent",
-                    fontFamily: "var(--serif)", fontSize: 17,
-                    fontWeight: 300, color: "var(--fg)",
-                    resize: "vertical", width: "100%",
-                  }}
-                />
-              </div>
-              <div style={{ marginTop: 40, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div className="eyebrow" style={{ color: "var(--fg-muted)" }}>
-                  {t("Réponse sous 48h", "Reply within 48h")}
-                </div>
-                <button type="submit" className="btn btn-solid">
-                  {t("Envoyer le message", "Send message")}
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       </section>
