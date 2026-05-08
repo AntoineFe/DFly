@@ -617,7 +617,7 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
     };
 
     try {
-      const res = await fetch(`${import.meta.env.BASE_URL}send-devis.php`, {
+      const res = await fetch(`${import.meta.env.BASE_URL}services/send-devis.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
