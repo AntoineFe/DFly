@@ -50,14 +50,17 @@ function totalHours(moments) {
   }, 0);
 }
 
+// Taux horaires HT (post-prod + captation ramenés à l'heure)
+const RATE_HT = {
+  photo: (PP_PHOTO_HT + CAPTATION_HT) / FULL_DAY_H,  // 250 €/h
+  video: (PP_VIDEO_HT + CAPTATION_HT) / FULL_DAY_H,  // 350 €/h
+  both:  (PP_PHOTO_HT + PP_VIDEO_HT + CAPTATION_HT) / FULL_DAY_H,  // 500 €/h
+};
+
 function calcPrice(state) {
   const h = totalHours(state.moments);
-  const captHT = (h / FULL_DAY_H) * CAPTATION_HT;
-
-  let baseHT;
-  if (state.format === "photo")  baseHT = PP_PHOTO_HT + captHT;
-  else if (state.format === "video") baseHT = PP_VIDEO_HT + captHT;
-  else                           baseHT = PP_PHOTO_HT + PP_VIDEO_HT + captHT;
+  const rate = RATE_HT[state.format === "both" ? "both" : state.format] ?? RATE_HT.photo;
+  let baseHT = h * rate;
 
   let addonsHT = 0;
   if (state.format !== "photo") {
