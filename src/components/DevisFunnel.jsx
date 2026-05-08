@@ -576,7 +576,7 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore }) {
           { v: "reserver",  label: "Je souhaite réserver cette date" },
           { v: "discuter",  label: "Je voudrais en discuter avant de décider" },
           { v: "reflechir", label: "Je vais réfléchir" },
-          { v: "explorer",  label: "Je veux explorer d'autres options" },
+          { v: "explorer",  label: "Faire une nouvelle estimation" },
         ].map(opt => (
           <label key={opt.v} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", cursor: "pointer", color: "var(--fg)" }}>
             <input type="radio" name="intention" checked={state.intention === opt.v}
