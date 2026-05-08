@@ -516,13 +516,14 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
   const total = ttc + (travel?.cost || 0);
 
   const fmtLabel = formatLabel(state);
+  const momentsLabel = momentsSummary(state.moments);
   const hasVideo = state.format !== "photo";
 
   return (
     <div>
       {simulations?.length > 0 && (
-        <div style={{ marginBottom: 40, paddingBottom: 32, borderBottom: "1px solid var(--line)" }}>
-          <div style={{ fontWeight: 600, color: "var(--fg)", marginBottom: 12 }}>Vos estimations</div>
+        <div style={{ marginBottom: 40 }}>
+          <div style={{ fontWeight: 600, color: "var(--fg)", marginBottom: 12 }}>Vos estimations précédentes</div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {simulations.map((sim, i) => (
               <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline",
@@ -538,15 +539,16 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
         </div>
       )}
 
-      <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        {simulations?.length > 0 ? "Nouvelle estimation" : "Votre estimation"}
+      <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)",
+        ...(simulations?.length > 0 ? { paddingTop: 32, borderTop: "1px solid var(--line)" } : {}) }}>
+        {simulations?.length > 0 ? "Votre nouvelle estimation" : "Votre estimation"}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
         Durée estimée : {Math.round(h * 10) / 10}h de présence
       </p>
 
       <div style={{ marginBottom: 32 }}>
-        <PriceLine label={fmtLabel} value={eur(ttc)} />
+        <PriceLine label={fmtLabel + (momentsLabel ? ` · ${momentsLabel}` : '')} value={eur(ttc)} />
         {hasVideo && state.teaser   && <PriceLine label="+ Teaser"   value="+700 €"  muted />}
         {hasVideo && state.integral && <PriceLine label="+ Intégral" value="+500 €"  muted />}
         {state.drone                && <PriceLine label="+ Drone"    value="+200 €"  muted />}
