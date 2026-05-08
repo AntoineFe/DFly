@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
+import DevisFunnel from '../components/DevisFunnel'
 
 const BASE = import.meta.env.BASE_URL;
 const W_IMG = {
@@ -482,11 +483,11 @@ function Mariage({ lang, setLang }) {
         </div>
       </section>
 
-      {/* COLLECTIONS / pricing */}
+      {/* DEVIS FUNNEL */}
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
-            <SectionLabel num="VI" label={t("Les collections", "The collections")} align="center" />
+            <SectionLabel num="VI" label={t("Votre devis", "Your quote")} align="center" />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(36px, 4.4vw, 56px)",
@@ -495,8 +496,8 @@ function Mariage({ lang, setLang }) {
               color: "var(--fg)", maxWidth: 800,
             }}>
               {t(
-                <>Trois formules,<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>la même exigence.</em></>,
-                <>Three offerings,<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>the same standard.</em></>
+                <>Construisons ensemble<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>votre journée.</em></>,
+                <>Let's build<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>your day together.</em></>
               )}
             </h2>
             <p style={{
@@ -505,114 +506,12 @@ function Mariage({ lang, setLang }) {
               maxWidth: 520, margin: "16px auto 0",
             }}>
               {t(
-                "Chaque mariage est unique. Ce que vous lisez ci-dessous est une base que nous adaptons.",
-                "Every wedding is unique. What you see below is a starting point we adapt."
+                "Quelques questions pour estimer votre devis en temps réel.",
+                "A few questions to estimate your quote in real time."
               )}
             </p>
           </div>
-
-          <div className="grid-collections">
-            {[
-              {
-                name: t("Photographie", "Photography"),
-                roman: "I",
-                desc: t("Un photographe seul. Une journée pleine, en images.", "A photographer alone. A full day, in images."),
-                price: t("dès 2 400 €", "from €2,400"),
-                points: [
-                  t("12 heures de couverture", "12 hours coverage"),
-                  t("500 — 800 photos traitées", "500 — 800 retouched photos"),
-                  t("Galerie privée HD", "Private HD gallery"),
-                  t("Tirage album sur demande", "Album on request"),
-                ],
-              },
-              {
-                name: t("Photographie & Film", "Photography & Film"),
-                roman: "II",
-                desc: t("Un photographe et un vidéaste. Notre formule la plus demandée.", "One photographer and one filmmaker. Our most requested offering."),
-                price: t("dès 4 200 €", "from €4,200"),
-                points: [
-                  t("Photo + vidéo journée complète", "Photo + film, full day"),
-                  t("500 — 800 photos traitées", "500 — 800 retouched photos"),
-                  t("Teaser 90 s + film 12 min", "90s teaser + 12-min film"),
-                  t("Cérémonie intégrale", "Full ceremony"),
-                  t("Color grading sur mesure", "Custom color grading"),
-                ],
-                highlighted: true,
-              },
-              {
-                name: t("Signature", "Signature"),
-                roman: "III",
-                desc: t("Pour les jours qui s'étendent, et le ciel.", "For days that extend, and the sky."),
-                price: t("sur devis", "on request"),
-                points: [
-                  t("Photographie & vidéo deux jours", "Photography & film, two days"),
-                  t("Vues aériennes drone", "Aerial drone footage"),
-                  t("Album baryté en édition limitée", "Limited edition baryta album"),
-                  t("Film long format, 25 min", "Long-form film, 25 min"),
-                  t("Captation son professionnel", "Professional sound capture"),
-                ],
-              },
-            ].map((p, i) => (
-              <div key={i} style={{
-                padding: "60px 40px",
-                borderRight: i < 2 ? "1px solid var(--line)" : "none",
-                background: p.highlighted ? "var(--bg)" : "transparent",
-                position: "relative",
-              }}>
-                {p.highlighted && (
-                  <div style={{
-                    position: "absolute", top: -1, left: 0, right: 0,
-                    height: 3, background: "var(--sage)",
-                  }} />
-                )}
-                <div className="num" style={{ marginBottom: 18 }}>— {p.roman}</div>
-                <div style={{
-                  fontFamily: "var(--serif-display)",
-                  fontSize: 32, fontWeight: 400, lineHeight: 1.1,
-                  marginBottom: 12, color: "var(--fg)",
-                }}>{p.name}</div>
-                <div style={{
-                  fontFamily: "var(--serif)", fontStyle: "italic",
-                  fontSize: 17, fontWeight: 300,
-                  color: "var(--fg-muted)", marginBottom: 36, lineHeight: 1.5,
-                }}>{p.desc}</div>
-
-                <ul style={{
-                  listStyle: "none", padding: 0, margin: "0 0 40px",
-                  borderTop: "1px solid var(--line)",
-                }}>
-                  {p.points.map((pt, j) => (
-                    <li key={j} style={{
-                      padding: "14px 0",
-                      borderBottom: "1px solid var(--line)",
-                      fontFamily: "var(--serif)", fontSize: 17,
-                      color: "var(--fg)", fontWeight: 300,
-                      display: "flex", alignItems: "baseline", gap: 12,
-                    }}>
-                      <span style={{
-                        fontFamily: "var(--serif)", fontStyle: "italic",
-                        fontSize: 12, color: "var(--fg-muted)", flexShrink: 0,
-                      }}>0{j+1}</span>
-                      <span>{pt}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div style={{
-                  fontFamily: "var(--serif-display)",
-                  fontStyle: "italic",
-                  fontSize: 24, fontWeight: 300,
-                  color: "var(--fg)",
-                }}>{p.price}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ textAlign: "center", marginTop: 60 }}>
-            <a href="#contact" className="btn">
-              {t("Demander un devis personnalisé", "Request a tailored quote")}
-            </a>
-          </div>
+          <DevisFunnel />
         </div>
       </section>
 
