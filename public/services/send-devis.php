@@ -74,4 +74,8 @@ $headers = implode("\r\n", [
 
 $sent = mail($to, $subject, $body, $headers);
 
-echo json_encode(["ok" => (bool) $sent]);
+if (!$sent) {
+    error_log("[DFly send-devis] mail() a échoué — to:{$to} subject:{$subject}");
+}
+
+echo json_encode(["ok" => (bool) $sent, "debug" => error_get_last()]);
