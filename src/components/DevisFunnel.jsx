@@ -177,7 +177,7 @@ function StepMoments({ state, set, lang }) {
   return (
     <div>
       <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        {t("Sur quels moments souhaitez-vous nous avoir ?", "Which moments would you like us to cover?")}
+        {t("Quels moments souhaitez-vous nous confier ?", "Which moments would you like us to cover?")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
         {t("Sélectionnez tous les moments qui vous intéressent.", "Select all the moments you'd like covered.")}

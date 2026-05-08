@@ -18,12 +18,12 @@ const W_IMG = {
   table:       `${BASE}images/mariage/_7R41267.jpeg`,
   aerial:      `${BASE}images/mariage/MAX_0011.jpeg`,
   sortie:      `${BASE}images/mariage/090_7R43637.jpg`,
-  filmstrip3:  `${BASE}images/mariage/_7R41266_1.jpeg`,
   filmstrip1:  `${BASE}images/mariage/_DSC7546.jpeg`,
-  filmstrip2:  `${BASE}images/mariage/_DSC7838.jpeg`,
-  filmstrip4:  `${BASE}images/mariage/423_7R44891_1.jpeg`,
-  filmstrip5:  `${BASE}images/mariage/397_DSC0942.jpeg`,
-  filmstrip6:  `${BASE}images/mariage/445_7R49749.jpeg`,
+  filmstrip2:  `${BASE}images/mariage/_7R41266_1.jpeg`,
+  filmstrip3:  `${BASE}images/mariage/_DSC7838.jpeg`,
+  filmstrip4:  `${BASE}images/mariage/397_DSC0942.jpeg`,
+  filmstrip5:  `${BASE}images/mariage/445_7R49749.jpeg`,
+  filmstrip6:  `${BASE}images/mariage/423_7R44891_1.jpeg`,
   filmstrip7:  `${BASE}images/mariage/462_7R45062.jpeg`,
 };
 
@@ -157,8 +157,8 @@ function Mariage({ lang, setLang }) {
                 marginBottom: 24,
               }}>
                 {t(
-                  "Pas de séance posée interminable. Pas de figures imposées. Nous intervenons selon le déroulé de votre journée, et composons avec ce qui se joue naturellement, à vos côtés. Le jour vous appartient. Notre rôle est d'en révéler les images.",
-                  "No endless posed sessions. No required choreography. We work with the flow of your day, composing with what unfolds naturally, by your side. The day is yours. Our role is to reveal its images."
+                  "Nous intervenons selon le déroulé de votre journée, et composons avec ce qui se joue naturellement, à vos côtés. Le jour vous appartient. Notre rôle est d'en révéler les images.",
+                  "We work with the flow of your day, composing with what unfolds naturally, by your side. The day is yours. Our role is to reveal its images."
                 )}
               </p>
               <p style={{
@@ -300,7 +300,7 @@ function Mariage({ lang, setLang }) {
             <GridImg src={W_IMG.bouquet}     cols="span 5"  rows="span 3" />
             <GridImg src={W_IMG.preparation} cols="span 5"  rows="span 4" />
             <GridImg src={W_IMG.dance}       cols="span 4"  rows="span 6" pos="center 20%" />
-            <GridImg src={W_IMG.sortie}      cols="span 3"  rows="span 3" zoom={1.4} pos="center 30%" />
+            <GridImg src={W_IMG.sortie}      cols="span 3"  rows="span 3" zoom={1} pos="center 30%" />
             <GridImg src={W_IMG.details}     cols="span 8"  rows="span 3" pos="center 30%" />
             <GridImg src={W_IMG.guests}      cols="span 6"  rows="span 4" />
             <GridImg src={W_IMG.table}       cols="span 6"  rows="span 4" />
@@ -319,14 +319,14 @@ function Mariage({ lang, setLang }) {
             position: "absolute", right: 0, bottom: 0,
             height: "100%", width: "auto",
             objectFit: "cover", objectPosition: "right bottom",
-            opacity: 0.08,
+            opacity: 0.1,
             filter: "grayscale(1)",
             pointerEvents: "none",
           }}
         />
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
-            <SectionLabel num="IV" label={t("Une journée qui se raconte, du matin à la dernière danse", "The day, hour by hour")} align="center" />
+            <SectionLabel num="IV" label={t("L", "The day, hour by hour")} align="center" />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(36px, 4.4vw, 60px)",
