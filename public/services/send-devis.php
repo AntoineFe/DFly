@@ -39,6 +39,13 @@ $travel  = $sim['travel']  ?? [];
 $body  = "Bonjour {$prenom},\n\n";
 $body .= "Merci pour votre demande. Voici le récapitulatif de votre estimation.\n\n";
 $body .= str_repeat("-", 40) . "\n";
+$body .= "VOS COORDONNÉES\n";
+$body .= str_repeat("-", 40) . "\n\n";
+$body .= "Nom          : {$prenom} {$nom}\n";
+$body .= "Email        : {$to}\n";
+if ($tel) $body .= "Téléphone    : {$tel}\n";
+$body .= "\n";
+$body .= str_repeat("-", 40) . "\n";
 $body .= "VOTRE DEVIS ESTIMATIF\n";
 $body .= str_repeat("-", 40) . "\n\n";
 $body .= "Format       : {$format}\n";
@@ -53,9 +60,6 @@ if (!empty($travel['km']) && $travel['km'] > 0) {
 
 if ($demandes) {
     $body .= "\nDemandes particulières :\n" . htmlspecialchars($demandes, ENT_QUOTES) . "\n";
-}
-if ($tel) {
-    $body .= "\nTéléphone    : {$tel}\n";
 }
 
 $body .= "\n" . str_repeat("-", 40) . "\n\n";
