@@ -79,7 +79,7 @@ function Mariage({ lang, setLang }) {
           {t('Provence Alpes Côte d\'Azur', 'Provence Alpes Côte d\'Azur')}
         </div>
 
-        <div className="container" style={{ position: "relative", zIndex: 2 }}>
+        <div className="container hero-intro-container" style={{ position: "relative", zIndex: 2 }}>
           <div className="hero-intro-flex" style={{
             display: "flex",
             alignItems: "flex-end",
