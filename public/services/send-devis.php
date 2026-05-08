@@ -28,16 +28,11 @@ $prenom = htmlspecialchars($d['prenom']   ?? '', ENT_QUOTES);
 $nom    = htmlspecialchars($d['nom']      ?? '', ENT_QUOTES);
 $tel    = htmlspecialchars($d['tel']      ?? '', ENT_QUOTES);
 $demandes = $d['demandes'] ?? '';
-$sim    = $d['simulation'] ?? [];
+$sims   = $d['simulations'] ?? [$d['simulation'] ?? []];
 
 // ── Corps du mail ─────────────────────────────────────────────────────────────
-$format  = $sim['format']  ?? '';
-$moments = $sim['moments'] ?? '';
-$price   = isset($sim['price']) ? number_format((float)$sim['price'], 0, ',', ' ') . ' €' : '';
-$travel  = $sim['travel']  ?? [];
-
 $body  = "Bonjour {$prenom},\n\n";
-$body .= "Merci pour votre demande. Voici le récapitulatif de votre estimation.\n\n";
+$body .= "Merci pour votre demande. Voici le récapitulatif de votre session.\n\n";
 $body .= str_repeat("-", 40) . "\n";
 $body .= "VOS COORDONNÉES\n";
 $body .= str_repeat("-", 40) . "\n\n";
@@ -45,21 +40,39 @@ $body .= "Nom          : {$prenom} {$nom}\n";
 $body .= "Email        : {$to}\n";
 if ($tel) $body .= "Téléphone    : {$tel}\n";
 $body .= "\n";
-$body .= str_repeat("-", 40) . "\n";
-$body .= "VOTRE DEVIS ESTIMATIF\n";
-$body .= str_repeat("-", 40) . "\n\n";
-$body .= "Format       : {$format}\n";
-$body .= "Moments      : {$moments}\n";
-$body .= "Estimation   : {$price} TTC\n";
 
-if (!empty($travel['km']) && $travel['km'] > 0) {
-    $km   = (int) $travel['km'];
-    $cost = number_format((float) $travel['cost'], 0, ',', ' ');
-    $body .= "Déplacement  : {$km} km A/R -> {$cost} € + péages\n";
+$count = count($sims);
+$body .= str_repeat("-", 40) . "\n";
+$body .= ($count > 1 ? "VOS ESTIMATIONS ({$count})" : "VOTRE DEVIS ESTIMATIF") . "\n";
+$body .= str_repeat("-", 40) . "\n";
+
+foreach ($sims as $i => $sim) {
+    $format  = htmlspecialchars($sim['format']  ?? '', ENT_QUOTES);
+    $moments = htmlspecialchars($sim['moments'] ?? '', ENT_QUOTES);
+    $price   = isset($sim['price']) ? number_format((float)$sim['price'], 0, ',', ' ') . ' €' : '';
+    $travel  = $sim['travel'] ?? [];
+
+    if ($count > 1) {
+        $body .= "\nEstimation " . ($i + 1) . "\n";
+    } else {
+        $body .= "\n";
+    }
+    $body .= "Format       : {$format}\n";
+    if ($moments) $body .= "Moments      : {$moments}\n";
+    $body .= "Estimation   : {$price} TTC\n";
+
+    if (!empty($travel['km']) && $travel['km'] > 0) {
+        $km   = (int) $travel['km'];
+        $cost = number_format((float) $travel['cost'], 0, ',', ' ');
+        $body .= "Déplacement  : {$km} km A/R -> {$cost} € + péages\n";
+    }
 }
 
 if ($demandes) {
-    $body .= "\nDemandes particulières :\n" . htmlspecialchars($demandes, ENT_QUOTES) . "\n";
+    $body .= "\n" . str_repeat("-", 40) . "\n";
+    $body .= "DEMANDES PARTICULIÈRES\n";
+    $body .= str_repeat("-", 40) . "\n\n";
+    $body .= htmlspecialchars($demandes, ENT_QUOTES) . "\n";
 }
 
 $body .= "\n" . str_repeat("-", 40) . "\n\n";

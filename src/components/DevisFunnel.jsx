@@ -631,12 +631,13 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
     setError("");
 
     const payload = {
-      prenom:     state.prenom,
-      nom:        state.nom,
-      email:      state.email,
-      tel:        state.tel,
-      demandes:   state.demandes,
-      simulation: allSims[chosen],
+      prenom:      state.prenom,
+      nom:         state.nom,
+      email:       state.email,
+      tel:         state.tel,
+      demandes:    state.demandes,
+      simulations: allSims,
+      simulation:  allSims[chosen],
     };
 
     try {
