@@ -511,7 +511,7 @@ function Mariage({ lang, setLang }) {
               )}
             </p>
           </div>
-          <DevisFunnel />
+          <DevisFunnel lang={lang} />
         </div>
       </section>
 

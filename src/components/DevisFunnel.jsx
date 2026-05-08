@@ -12,31 +12,36 @@ const PP_VIDEO_HT = 2000;  // Antoine 5j × 400€
 const CAPTATION_HT = 800;  // 2 personnes × 400€/j
 
 const MOMENTS = [
-  { id: "preparatifs", label: "Préparatifs",                       h: 2   },
-  { id: "mairie",      label: "Mairie",                            h: 1   },
-  { id: "ceremonie",   label: "Cérémonie religieuse ou laïque",    h: 1.5 },
-  { id: "groupes",     label: "Photos de groupes",                 h: 0.5 },
-  { id: "couple",      label: "Photos de couple",                  h: 1.5 },
-  { id: "cocktail",    label: "Cocktail / Vin d'honneur", opts: [
-    { v: "complet", label: "Couverture complète",          h: 2   },
-    { v: "debut",   label: "Jusqu'au début seulement",     h: 0.5 },
+  { id: "preparatifs", label: "Préparatifs",                       en: "Getting ready",                       h: 2   },
+  { id: "mairie",      label: "Mairie",                            en: "Civil ceremony",                      h: 1   },
+  { id: "ceremonie",   label: "Cérémonie religieuse ou laïque",    en: "Religious or civil ceremony",         h: 1.5 },
+  { id: "groupes",     label: "Photos de groupes",                 en: "Group photos",                        h: 0.5 },
+  { id: "couple",      label: "Photos de couple",                  en: "Couple portraits",                    h: 1.5 },
+  { id: "cocktail",    label: "Cocktail / Vin d'honneur",          en: "Cocktail hour", opts: [
+    { v: "complet", label: "Couverture complète",          en: "Full coverage",        h: 2   },
+    { v: "debut",   label: "Jusqu'au début seulement",     en: "Beginning only",       h: 0.5 },
   ]},
-  { id: "diner",       label: "Dîner", opts: [
-    { v: "complet", label: "Jusqu'au gâteau",                      h: 3 },
-    { v: "debut",   label: "Installation et groupes seulement",    h: 1 },
+  { id: "diner",       label: "Dîner",                             en: "Reception dinner", opts: [
+    { v: "complet", label: "Jusqu'au gâteau",                      en: "Until the cake",               h: 3 },
+    { v: "debut",   label: "Installation et groupes seulement",    en: "Setup and group photos only",  h: 1 },
   ]},
-  { id: "danse",       label: "Soirée / Danse", opts: [
-    { v: "standard", label: "Ouverture de bal + gâteau + 30 min", h: 1.5 },
-    { v: "etendue",  label: "Soirée étendue",                      h: 3   },
+  { id: "danse",       label: "Soirée / Danse",                    en: "Evening / Dancing", opts: [
+    { v: "standard", label: "Ouverture de bal + gâteau + 30 min", en: "First dance + cake + 30 min",  h: 1.5 },
+    { v: "etendue",  label: "Soirée étendue",                      en: "Extended evening",             h: 3   },
   ]},
 ];
 
 const MOMENT_IDS = MOMENTS.map(m => m.id);
 
 const EXTRAS = [
-  { id: "engagement", label: "Séance d'engagement",  note: "à partir de 200 €" },
-  { id: "trash",      label: "Trash the dress",       note: "à partir de 200 €" },
+  { id: "engagement", label: "Séance d'engagement",  en: "Engagement session", note: "à partir de 200 €", noteEn: "from €200" },
+  { id: "trash",      label: "Trash the dress",       en: "Trash the dress",    note: "à partir de 200 €", noteEn: "from €200" },
 ];
+
+// ── i18n helper ───────────────────────────────────────────────────────────────
+
+const mkT = (lang) => (fr, en) => lang === "EN" ? en : fr;
+const mLabel = (m, lang) => lang === "EN" ? (m.en || m.label) : m.label;
 
 // ── Pricing ───────────────────────────────────────────────────────────────────
 
@@ -53,9 +58,9 @@ function totalHours(moments) {
 
 // Taux horaires HT (post-prod + captation ramenés à l'heure)
 const RATE_HT = {
-  photo: (PP_PHOTO_HT + CAPTATION_HT) / FULL_DAY_H,  // 250 €/h
-  video: (PP_VIDEO_HT + CAPTATION_HT) / FULL_DAY_H,  // 350 €/h
-  both:  (PP_PHOTO_HT + PP_VIDEO_HT + CAPTATION_HT) / FULL_DAY_H,  // 500 €/h
+  photo: (PP_PHOTO_HT + CAPTATION_HT) / FULL_DAY_H,
+  video: (PP_VIDEO_HT + CAPTATION_HT) / FULL_DAY_H,
+  both:  (PP_PHOTO_HT + PP_VIDEO_HT + CAPTATION_HT) / FULL_DAY_H,
 };
 
 function calcPrice(state) {
@@ -101,46 +106,45 @@ async function calcTravel(lieux, moments) {
     const coords = resolveCoords(id, lieux);
     if (!coords) continue;
     const last = venues[venues.length - 1];
-    if (!last || Math.abs(last.lat - coords.lat) > 0.0005 || Math.abs(last.lng - coords.lng) > 0.0005) {
+    if (!last || last.lat !== coords.lat || last.lng !== coords.lng) {
       venues.push(coords);
     }
   }
   if (!venues.length) return { km: 0, cost: 0 };
 
+  const waypoints = [CAGNES, ...venues, CAGNES];
+  const coordStr  = waypoints.map(c => `${c.lng},${c.lat}`).join(";");
   try {
-    const pts = [CAGNES, ...venues, CAGNES];
-    const coordStr = pts.map(p => `${p.lng},${p.lat}`).join(";");
     const r = await fetch(`https://router.project-osrm.org/route/v1/driving/${coordStr}?overview=false`);
     const d = await r.json();
-    if (d.code === "Ok") {
-      const km = Math.round(d.routes[0].distance / 1000);
-      return { km, cost: Math.round(km * KM_RATE) };
+    if (d.routes?.[0]) {
+      const km   = Math.round(d.routes[0].distance / 1000);
+      const cost = Math.round(km * KM_RATE);
+      return { km, cost };
     }
   } catch {}
   return { km: 0, cost: 0 };
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Formatters ────────────────────────────────────────────────────────────────
 
-function eur(n) {
-  return new Intl.NumberFormat("fr-FR").format(Math.round(n)) + " €";
-}
+const eur = v => new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(v);
 
-function formatLabel(state) {
-  if (state.format === "photo") return "Photo";
-  if (state.format === "video") return "Vidéo";
+function formatLabel(state, lang = "FR") {
+  if (state.format === "photo") return lang === "EN" ? "Photo" : "Photo";
+  if (state.format === "video") return lang === "EN" ? "Video" : "Vidéo";
   return "Photo + Vidéo";
 }
 
-function momentsSummary(moments) {
+function momentsSummary(moments, lang = "FR") {
   return MOMENTS
     .filter(m => moments[m.id])
     .map(m => {
       if (m.opts) {
         const o = m.opts.find(o => o.v === moments[m.id]);
-        return o ? m.label : m.label;
+        return o ? mLabel(o, lang) : mLabel(m, lang);
       }
-      return m.label;
+      return mLabel(m, lang);
     })
     .join(", ");
 }
@@ -154,7 +158,8 @@ const inputStyle = {
   boxSizing: "border-box",
 };
 
-function StepMoments({ state, set }) {
+function StepMoments({ state, set, lang }) {
+  const t = mkT(lang);
   const { moments, extras } = state;
 
   function toggleSimple(id) {
@@ -172,10 +177,10 @@ function StepMoments({ state, set }) {
   return (
     <div>
       <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        Sur quels moments souhaitez-vous nous avoir ?
+        {t("Sur quels moments souhaitez-vous nous avoir ?", "Which moments would you like us to cover?")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
-        Sélectionnez tous les moments qui vous intéressent.
+        {t("Sélectionnez tous les moments qui vous intéressent.", "Select all the moments you'd like covered.")}
       </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
@@ -183,7 +188,7 @@ function StepMoments({ state, set }) {
           <div key={m.id} style={{ borderTop: i === 0 ? "1px solid var(--line)" : "none", borderBottom: "1px solid var(--line)" }}>
             {m.opts ? (
               <div style={{ padding: "16px 0" }}>
-                <div style={{ fontWeight: 500, marginBottom: 12, color: "var(--fg)" }}>{m.label}</div>
+                <div style={{ fontWeight: 500, marginBottom: 12, color: "var(--fg)" }}>{mLabel(m, lang)}</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingLeft: 4 }}>
                   {m.opts.map(opt => (
                     <label key={opt.v} style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", color: "var(--fg)", fontSize: 15 }}>
@@ -192,7 +197,7 @@ function StepMoments({ state, set }) {
                         checked={moments[m.id] === opt.v}
                         onChange={() => selectOpt(m.id, opt.v)}
                       />
-                      {opt.label}
+                      {mLabel(opt, lang)}
                     </label>
                   ))}
                   {moments[m.id] && (
@@ -200,7 +205,7 @@ function StepMoments({ state, set }) {
                       onClick={() => { const n = { ...moments }; delete n[m.id]; set("moments", n); }}
                       style={{ alignSelf: "flex-start", background: "none", border: "none", color: "var(--fg-muted)", fontSize: 12, cursor: "pointer", padding: 0, marginTop: 4 }}
                     >
-                      Retirer
+                      {t("Retirer", "Remove")}
                     </button>
                   )}
                 </div>
@@ -208,7 +213,7 @@ function StepMoments({ state, set }) {
             ) : (
               <label style={{ display: "flex", alignItems: "center", gap: 12, padding: "16px 0", cursor: "pointer" }}>
                 <input type="checkbox" checked={!!moments[m.id]} onChange={() => toggleSimple(m.id)} />
-                <span style={{ fontWeight: 500, color: "var(--fg)", fontSize: 15 }}>{m.label}</span>
+                <span style={{ fontWeight: 500, color: "var(--fg)", fontSize: 15 }}>{mLabel(m, lang)}</span>
               </label>
             )}
           </div>
@@ -217,7 +222,7 @@ function StepMoments({ state, set }) {
 
       <div style={{ marginTop: 36 }}>
         <div style={{ fontSize: 13, color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 14 }}>
-          Prestations complémentaires (avant ou après le mariage)
+          {t("Prestations complémentaires (avant ou après le mariage)", "Additional services (before or after the wedding)")}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {EXTRAS.map(e => (
@@ -227,8 +232,8 @@ function StepMoments({ state, set }) {
                 checked={!!extras[e.id]}
                 onChange={() => set("extras", { ...extras, [e.id]: !extras[e.id] })}
               />
-              <span style={{ fontSize: 15, color: "var(--fg)" }}>{e.label}</span>
-              <span style={{ fontSize: 13, color: "var(--fg-muted)" }}>{e.note}</span>
+              <span style={{ fontSize: 15, color: "var(--fg)" }}>{mLabel(e, lang)}</span>
+              <span style={{ fontSize: 13, color: "var(--fg-muted)" }}>{lang === "EN" ? e.noteEn : e.note}</span>
             </label>
           ))}
           <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
@@ -237,12 +242,12 @@ function StepMoments({ state, set }) {
               checked={!!extras.autreChecked}
               onChange={() => set("extras", { ...extras, autreChecked: !extras.autreChecked, autre: "" })}
             />
-            <span style={{ fontSize: 15, color: "var(--fg)" }}>Autre</span>
+            <span style={{ fontSize: 15, color: "var(--fg)" }}>{t("Autre", "Other")}</span>
           </label>
           {extras.autreChecked && (
             <input
               type="text"
-              placeholder="Précisez..."
+              placeholder={t("Précisez...", "Please specify...")}
               value={extras.autre || ""}
               onChange={e => set("extras", { ...extras, autre: e.target.value })}
               style={{ ...inputStyle, marginLeft: 24, width: "calc(100% - 24px)" }}
@@ -254,24 +259,25 @@ function StepMoments({ state, set }) {
   );
 }
 
-function StepDate({ state, set }) {
+function StepDate({ state, set, lang }) {
+  const t = mkT(lang);
   const { dates } = state;
   const upd = patch => set("dates", { ...dates, ...patch });
 
   return (
     <div>
       <h3 style={{ marginBottom: 36, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        Avez-vous fixé une date ?
+        {t("Avez-vous fixé une date ?", "Have you set a date?")}
       </h3>
       <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
           <input type="checkbox" checked={!!dates.noDate} onChange={e => upd({ noDate: e.target.checked, main: "" })} />
-          <span style={{ color: "var(--fg)" }}>Date non encore fixée</span>
+          <span style={{ color: "var(--fg)" }}>{t("Date non encore fixée", "Date not yet set")}</span>
         </label>
 
         {!dates.noDate && (
           <div>
-            <div style={{ marginBottom: 8, fontWeight: 500, color: "var(--fg)" }}>Date du mariage</div>
+            <div style={{ marginBottom: 8, fontWeight: 500, color: "var(--fg)" }}>{t("Date du mariage", "Wedding date")}</div>
             <input type="date" value={dates.main} onChange={e => upd({ main: e.target.value })}
               style={{ ...inputStyle, width: "auto" }} />
           </div>
@@ -279,12 +285,12 @@ function StepDate({ state, set }) {
 
         <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
           <input type="checkbox" checked={!!dates.diffMairie} onChange={e => upd({ diffMairie: e.target.checked })} />
-          <span style={{ color: "var(--fg)" }}>La mairie se déroule à une date différente</span>
+          <span style={{ color: "var(--fg)" }}>{t("La mairie se déroule à une date différente", "The civil ceremony takes place on a different date")}</span>
         </label>
 
         {dates.diffMairie && (
           <div>
-            <div style={{ marginBottom: 8, fontWeight: 500, color: "var(--fg)" }}>Date de la mairie</div>
+            <div style={{ marginBottom: 8, fontWeight: 500, color: "var(--fg)" }}>{t("Date de la mairie", "Civil ceremony date")}</div>
             <input type="date" value={dates.mairie} onChange={e => upd({ mairie: e.target.value })}
               style={{ ...inputStyle, width: "auto" }} />
           </div>
@@ -294,7 +300,8 @@ function StepDate({ state, set }) {
   );
 }
 
-function StepLieux({ state, set }) {
+function StepLieux({ state, set, lang }) {
+  const t = mkT(lang);
   const { moments, lieux } = state;
   const [geocoding, setGeocoding] = useState({});
 
@@ -321,14 +328,14 @@ function StepLieux({ state, set }) {
   return (
     <div>
       <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        Où se déroulent vos événements ?
+        {t("Où se déroulent vos événements ?", "Where will your events take place?")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
-        Adresse complète — nous préparons chaque lieu à l'avance.
+        {t("Adresse complète — nous préparons chaque lieu à l'avance.", "Full address — we prepare each venue in advance.")}
       </p>
 
       {activeMoments.length === 0 && (
-        <p style={{ color: "var(--fg-muted)" }}>Aucun moment sélectionné à l'étape précédente.</p>
+        <p style={{ color: "var(--fg-muted)" }}>{t("Aucun moment sélectionné à l'étape précédente.", "No moments selected in the previous step.")}</p>
       )}
 
       <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
@@ -340,7 +347,7 @@ function StepLieux({ state, set }) {
           return (
             <div key={m.id} style={{ paddingBottom: 24, borderBottom: "1px solid var(--line)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                <span style={{ fontWeight: 600, color: "var(--fg)" }}>{m.label}</span>
+                <span style={{ fontWeight: 600, color: "var(--fg)" }}>{mLabel(m, lang)}</span>
                 {hasOk && <span style={{ color: "var(--sage)", fontSize: 13 }}>✓</span>}
               </div>
 
@@ -351,9 +358,9 @@ function StepLieux({ state, set }) {
                     onChange={e => setSameAs(m.id, e.target.value)}
                     style={{ ...inputStyle, width: "auto", marginBottom: 4 }}
                   >
-                    <option value="">Lieu différent</option>
+                    <option value="">{t("Lieu différent", "Different venue")}</option>
                     {prevMoments.map(p => (
-                      <option key={p.id} value={p.id}>Même lieu que : {p.label}</option>
+                      <option key={p.id} value={p.id}>{t("Même lieu que : ", "Same venue as: ")}{mLabel(p, lang)}</option>
                     ))}
                   </select>
                 </div>
@@ -363,7 +370,7 @@ function StepLieux({ state, set }) {
                 <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                   <input
                     type="text"
-                    placeholder="Adresse complète..."
+                    placeholder={t("Adresse complète...", "Full address...")}
                     value={loc.address || ""}
                     onChange={e => setAddress(m.id, e.target.value)}
                     onBlur={() => handleBlur(m.id)}
@@ -380,20 +387,29 @@ function StepLieux({ state, set }) {
   );
 }
 
-function StepFormat({ state, set }) {
+function StepFormat({ state, set, lang }) {
+  const t = mkT(lang);
+
   const FORMAT_OPTS = [
-    { v: "photo", label: "Photo uniquement",  desc: "Des images fixes, pour (re)voir chaque instant." },
-    { v: "video", label: "Vidéo uniquement",  desc: "La journée en mouvement — voix, musique, émotions. Micro-cravate fourni." },
-    { v: "both",  label: "Photo + Vidéo",     desc: "Le choix de la plupart de nos mariés. Rien ne manque.", recommended: true },
+    { v: "photo", label: t("Photo uniquement",  "Photo only"),   desc: t("Des images fixes, pour (re)voir chaque instant.", "Still images to (re)live every moment.") },
+    { v: "video", label: t("Vidéo uniquement",  "Video only"),   desc: t("La journée en mouvement — voix, musique, émotions. Micro-cravate fourni.", "The day in motion — voices, music, emotions. Lapel mic included.") },
+    { v: "both",  label: "Photo + Vidéo",                         desc: t("Le choix de la plupart de nos mariés. Rien ne manque.", "The choice of most of our couples. Nothing is missed."), recommended: true },
+  ];
+
+  const FILM_OPTS = [
+    { key: "teaser",   label: t("Teaser — 2 à 5 min",  "Teaser — 2 to 5 min"),
+      desc: t("Les émotions dans un résumé à partager", "The emotions in a shareable highlight"), price: "+700 €" },
+    { key: "integral", label: t("Intégral — 1h+", "Full version — 1h+"),
+      desc: t("Parce que certains jours, vous voudrez revivre chaque moment comme si vous y étiez", "Because some days, you'll want to relive every moment as if you were there"), price: "+500 €" },
   ];
 
   return (
     <div>
       <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        Comment souhaitez-vous revivre cette journée dans dix ans ?
+        {t("Comment souhaitez-vous revivre cette journée dans dix ans ?", "How would you like to relive this day in ten years?")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
-        Choisissez ce qui vous ressemble.
+        {t("Choisissez ce qui vous ressemble.", "Choose what suits you.")}
       </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 36 }}>
@@ -408,7 +424,7 @@ function StepFormat({ state, set }) {
             <div>
               <div style={{ fontWeight: 600, color: "var(--fg)", marginBottom: 2 }}>
                 {opt.label}
-                {opt.recommended && <span style={{ marginLeft: 10, fontSize: 12, color: "var(--fg-muted)", fontWeight: 400 }}>recommandé</span>}
+                {opt.recommended && <span style={{ marginLeft: 10, fontSize: 12, color: "var(--fg-muted)", fontWeight: 400 }}>{t("recommandé", "recommended")}</span>}
               </div>
               <div style={{ fontSize: 14, color: "var(--fg-muted)" }}>{opt.desc}</div>
             </div>
@@ -418,24 +434,19 @@ function StepFormat({ state, set }) {
 
       {state.format !== "photo" && (
         <div style={{ padding: "24px", background: "var(--bg-alt)", border: "1px solid var(--line)" }}>
-          <div style={{ fontWeight: 600, color: "var(--fg)", marginBottom: 16 }}>Format du film</div>
+          <div style={{ fontWeight: 600, color: "var(--fg)", marginBottom: 16 }}>{t("Format du film", "Film format")}</div>
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
 
             <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 0", borderBottom: "1px solid var(--line)", opacity: 0.7 }}>
               <input type="checkbox" checked disabled style={{ marginTop: 3, flexShrink: 0 }} />
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 500, color: "var(--fg)" }}>Film — 20 à 40 min</div>
-                <div style={{ fontSize: 13, color: "var(--fg-muted)" }}>L'histoire de votre journée</div>
+                <div style={{ fontWeight: 500, color: "var(--fg)" }}>{t("Film — 20 à 40 min", "Film — 20 to 40 min")}</div>
+                <div style={{ fontSize: 13, color: "var(--fg-muted)" }}>{t("L'histoire de votre journée", "The story of your day")}</div>
               </div>
-              <div style={{ color: "var(--fg-muted)", fontSize: 13, whiteSpace: "nowrap" }}>inclus</div>
+              <div style={{ color: "var(--fg-muted)", fontSize: 13, whiteSpace: "nowrap" }}>{t("inclus", "included")}</div>
             </div>
 
-            {[
-              { key: "teaser",   label: "Teaser — 2 à 5 min",
-                desc: "Les émotions dans un résumé à partager", price: "+700 €" },
-              { key: "integral", label: "Intégral — 1h+",
-                desc: "Parce que certains jours, vous voudrez revivre chaque moment comme si vous y étiez", price: "+500 €" },
-            ].map(opt => (
+            {FILM_OPTS.map(opt => (
               <label key={opt.key} style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: "14px 0", borderBottom: "1px solid var(--line)", cursor: "pointer" }}>
                 <input type="checkbox" checked={!!state[opt.key]}
                   onChange={() => set(opt.key, !state[opt.key])} style={{ marginTop: 3, flexShrink: 0 }} />
@@ -453,17 +464,21 @@ function StepFormat({ state, set }) {
   );
 }
 
-function StepDrone({ state, set }) {
+function StepDrone({ state, set, lang }) {
+  const t = mkT(lang);
+
+  const DRONE_OPTS = [
+    { v: true,  label: t("Oui", "Yes"), desc: t("Vues aériennes du lieu, des invités, de la cérémonie. +200 €", "Aerial views of the venue, guests, and ceremony. +€200") },
+    { v: false, label: t("Non", "No"),  desc: null },
+  ];
+
   return (
     <div>
       <h3 style={{ marginBottom: 36, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        Souhaitez-vous des prises de vue par drone ?
+        {t("Souhaitez-vous des prises de vue par drone ?", "Would you like aerial drone footage?")}
       </h3>
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {[
-          { v: true,  label: "Oui",  desc: "Vues aériennes du lieu, des invités, de la cérémonie. +200 €" },
-          { v: false, label: "Non",  desc: null },
-        ].map(opt => (
+        {DRONE_OPTS.map(opt => (
           <label key={String(opt.v)} style={{
             display: "flex", gap: 16, padding: "18px 20px", cursor: "pointer",
             border: `2px solid ${state.drone === opt.v ? "var(--fg)" : "var(--line)"}`,
@@ -482,19 +497,27 @@ function StepDrone({ state, set }) {
   );
 }
 
-function StepDemandes({ state, set }) {
+function StepDemandes({ state, set, lang }) {
+  const t = mkT(lang);
+
   return (
     <div>
       <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        Des éléments particuliers à nous signaler ?
+        {t("Des éléments particuliers à nous signaler ?", "Anything specific we should know?")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
-        Contraintes de lieu, moments importants, demandes spécifiques — tout ce qui nous aide à préparer un devis juste.
+        {t(
+          "Contraintes de lieu, moments importants, demandes spécifiques — tout ce qui nous aide à préparer un devis juste.",
+          "Venue constraints, important moments, specific requests — anything that helps us prepare an accurate quote."
+        )}
       </p>
       <textarea
         value={state.demandes}
         onChange={e => set("demandes", e.target.value)}
-        placeholder="Ex : cérémonie en extérieur, discours surprise des témoins, liste de personnes à ne pas manquer…"
+        placeholder={t(
+          "Ex : cérémonie en extérieur, discours surprise des témoins, liste de personnes à ne pas manquer…",
+          "e.g. outdoor ceremony, surprise speech, list of people not to miss…"
+        )}
         rows={5}
         style={{ ...inputStyle, resize: "vertical" }}
       />
@@ -513,19 +536,35 @@ function PriceLine({ label, value, muted }) {
   );
 }
 
-function StepEstimation({ state, set, travel, travelLoading, onExplore, simulations }) {
+function StepEstimation({ state, set, travel, travelLoading, onExplore, simulations, lang }) {
+  const t = mkT(lang);
   const { ttc, h } = calcPrice(state);
   const total = ttc + (travel?.cost || 0);
 
-  const fmtLabel = formatLabel(state);
-  const momentsLabel = momentsSummary(state.moments);
-  const hasVideo = state.format !== "photo";
+  const fmtLabel    = formatLabel(state, lang);
+  const momentsLabel = momentsSummary(state.moments, lang);
+  const hasVideo    = state.format !== "photo";
+
+  const REACTION_OPTS = [
+    { v: "oui",    label: t("Oui, tout à fait", "Yes, absolutely") },
+    { v: "approx", label: t("C'est un peu au-dessus, mais je suis intéressé·e", "It's slightly above my budget, but I'm interested") },
+    { v: "non",    label: t("C'est au-dessus de mon budget", "It's above my budget") },
+  ];
+
+  const INTENTION_OPTS = [
+    { v: "reserver",  label: t("Je souhaite réserver cette date", "I'd like to book this date") },
+    { v: "discuter",  label: t("Je voudrais en discuter avant de décider", "I'd like to discuss before deciding") },
+    { v: "reflechir", label: t("Je vais réfléchir", "I'll think about it") },
+    { v: "explorer",  label: t("Faire une nouvelle estimation", "Make a new estimate") },
+  ];
 
   return (
     <div>
       {simulations?.length > 0 && (
         <div style={{ marginBottom: 40 }}>
-          <div style={{ fontWeight: 600, color: "var(--fg)", marginBottom: 12 }}>Vos estimations précédentes</div>
+          <div style={{ fontWeight: 600, color: "var(--fg)", marginBottom: 12 }}>
+            {t("Vos estimations précédentes", "Your previous estimates")}
+          </div>
           <div style={{ display: "flex", flexDirection: "column" }}>
             {simulations.map((sim, i) => (
               <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline",
@@ -543,47 +582,47 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
 
       <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)",
         ...(simulations?.length > 0 ? { paddingTop: 32, borderTop: "1px solid var(--line)" } : {}) }}>
-        {simulations?.length > 0 ? "Votre nouvelle estimation" : "Votre estimation"}
+        {simulations?.length > 0
+          ? t("Votre nouvelle estimation", "Your new estimate")
+          : t("Votre estimation", "Your estimate")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
-        Durée estimée : {Math.round(h * 10) / 10}h de présence
+        {t("Durée estimée : ", "Estimated duration: ")}{Math.round(h * 10) / 10}h {t("de présence", "of coverage")}
       </p>
 
       <div style={{ marginBottom: 32 }}>
         <PriceLine label={fmtLabel + (momentsLabel ? ` · ${momentsLabel}` : '')} value={eur(ttc)} />
-        {hasVideo && state.teaser   && <PriceLine label="+ Teaser"   value="+700 €"  muted />}
-        {hasVideo && state.integral && <PriceLine label="+ Intégral" value="+500 €"  muted />}
-        {state.drone                && <PriceLine label="+ Drone"    value="+200 €"  muted />}
+        {hasVideo && state.teaser   && <PriceLine label={t("+ Teaser",    "+ Teaser")}       value="+700 €" muted />}
+        {hasVideo && state.integral && <PriceLine label={t("+ Intégral",  "+ Full version")} value="+500 €" muted />}
+        {state.drone                && <PriceLine label="+ Drone"                            value="+200 €" muted />}
         {travelLoading ? (
-          <PriceLine label="Déplacement" value="calcul en cours…" muted />
+          <PriceLine label={t("Déplacement", "Travel")} value={t("calcul en cours…", "calculating…")} muted />
         ) : travel?.km > 0 ? (
-          <PriceLine label={`Déplacement · ${travel.km} km A/R`} value={`+${eur(travel.cost)} + péages`} muted />
+          <PriceLine label={`${t("Déplacement", "Travel")} · ${travel.km} km ${t("A/R", "round trip")}`} value={`+${eur(travel.cost)} + ${t("péages", "tolls")}`} muted />
         ) : null}
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline",
           padding: "20px 0 0", marginTop: 4 }}>
-          <span style={{ fontWeight: 600, fontSize: 17 }}>Total estimé TTC</span>
+          <span style={{ fontWeight: 600, fontSize: 17 }}>{t("Total estimé TTC", "Estimated total incl. VAT")}</span>
           <span style={{ fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 700, fontFamily: "var(--serif-display)" }}>
             {eur(total)}
           </span>
         </div>
         {travel?.km > 0 && (
           <div style={{ fontSize: 12, color: "var(--fg-muted)", marginTop: 4 }}>
-            Hors péages — confirmés dans le devis définitif
+            {t("Hors péages — confirmés dans le devis définitif", "Excluding tolls — confirmed in the final quote")}
           </div>
         )}
         <p style={{ fontSize: 13, color: "var(--fg-muted)", marginTop: 16, fontFamily: "var(--serif)", fontStyle: "italic" }}>
-          Estimation indicative. Devis définitif confirmé sous 48h.
+          {t("Estimation indicative. Devis définitif confirmé sous 48h.", "Indicative estimate. Final quote confirmed within 48h.")}
         </p>
       </div>
 
       <div style={{ marginBottom: 32 }}>
-        <div style={{ fontWeight: 600, marginBottom: 14, color: "var(--fg)" }}>Ce budget vous convient-il ?</div>
-        {[
-          { v: "oui",    label: "Oui, tout à fait" },
-          { v: "approx", label: "C'est un peu au-dessus, mais je suis intéressé·e" },
-          { v: "non",    label: "C'est au-dessus de mon budget" },
-        ].map(opt => (
+        <div style={{ fontWeight: 600, marginBottom: 14, color: "var(--fg)" }}>
+          {t("Ce budget vous convient-il ?", "Does this budget work for you?")}
+        </div>
+        {REACTION_OPTS.map(opt => (
           <label key={opt.v} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", cursor: "pointer", color: "var(--fg)" }}>
             <input type="radio" name="reaction" checked={state.reaction === opt.v}
               onChange={() => set("reaction", opt.v)} />
@@ -593,13 +632,10 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
       </div>
 
       <div>
-        <div style={{ fontWeight: 600, marginBottom: 14, color: "var(--fg)" }}>Quelle est votre intention ?</div>
-        {[
-          { v: "reserver",  label: "Je souhaite réserver cette date" },
-          { v: "discuter",  label: "Je voudrais en discuter avant de décider" },
-          { v: "reflechir", label: "Je vais réfléchir" },
-          { v: "explorer",  label: "Faire une nouvelle estimation" },
-        ].map(opt => (
+        <div style={{ fontWeight: 600, marginBottom: 14, color: "var(--fg)" }}>
+          {t("Quelle est votre intention ?", "What would you like to do?")}
+        </div>
+        {INTENTION_OPTS.map(opt => (
           <label key={opt.v} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", cursor: "pointer", color: "var(--fg)" }}>
             <input type="radio" name="intention" checked={state.intention === opt.v}
               onChange={() => {
@@ -614,14 +650,15 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
   );
 }
 
-function StepContact({ state, set, simulations, travel, onSubmit }) {
+function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
+  const t = mkT(lang);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
 
   const allSims = [...simulations, {
-    format: formatLabel(state),
-    moments: momentsSummary(state.moments),
-    price: calcPrice(state).ttc,
+    format:  formatLabel(state, lang),
+    moments: momentsSummary(state.moments, lang),
+    price:   calcPrice(state).ttc,
     travel,
   }];
 
@@ -632,6 +669,7 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
     setSending(true);
     setError("");
 
+    // Labels always in French for the email (read by Antoine/Rémi)
     const reactionLabel = {
       oui:    "Oui, tout à fait",
       approx: "C'est un peu au-dessus, mais je suis intéressé·e",
@@ -644,14 +682,21 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
       reflechir: "Je vais réfléchir",
     }[state.intention] ?? state.intention;
 
+    const allSimsFR = [...simulations, {
+      format:  formatLabel(state, "FR"),
+      moments: momentsSummary(state.moments, "FR"),
+      price:   calcPrice(state).ttc,
+      travel,
+    }];
+
     const payload = {
       prenom:      state.prenom,
       nom:         state.nom,
       email:       state.email,
       tel:         state.tel,
       demandes:    state.demandes,
-      simulations:  allSims,
-      simulation:   allSims[chosen],
+      simulations:  allSimsFR,
+      simulation:   allSimsFR[chosen],
       reaction:     reactionLabel,
       intention:    intentionLabel,
       intentionKey: state.intention,
@@ -667,20 +712,31 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
       if (data.ok) {
         onSubmit();
       } else {
-        setError("L'envoi a échoué. Veuillez réessayer ou nous écrire directement à contact@dfly.fr");
+        setError(t("L'envoi a échoué. Veuillez réessayer ou nous écrire directement à contact@dfly.fr", "Sending failed. Please try again or contact us directly at contact@dfly.fr"));
       }
     } catch {
-      setError("L'envoi a échoué. Veuillez réessayer ou nous écrire directement à contact@dfly.fr");
+      setError(t("L'envoi a échoué. Veuillez réessayer ou nous écrire directement à contact@dfly.fr", "Sending failed. Please try again or contact us directly at contact@dfly.fr"));
     } finally {
       setSending(false);
     }
   }
 
+  const FIELDS = [
+    [
+      { key: "prenom", label: t("Prénom", "First name"), type: "text",  required: true  },
+      { key: "nom",    label: t("Nom",    "Last name"),  type: "text",  required: true  },
+    ],
+    [
+      { key: "email", label: "Email",                     type: "email", required: true  },
+      { key: "tel",   label: t("Téléphone", "Phone"),     type: "tel",   required: false },
+    ],
+  ];
+
   return (
     <div>
       {allSims.length > 1 && (
         <div style={{ marginBottom: 40 }}>
-          <h4 style={{ fontWeight: 600, marginBottom: 16, color: "var(--fg)" }}>Vos simulations</h4>
+          <h4 style={{ fontWeight: 600, marginBottom: 16, color: "var(--fg)" }}>{t("Vos simulations", "Your estimates")}</h4>
           <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
             {allSims.map((sim, i) => (
               <label key={i} style={{
@@ -691,7 +747,7 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
                 <input type="radio" name="chosen" checked={chosen === i}
                   onChange={() => setChosen(i)} style={{ marginTop: 3 }} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 500, color: "var(--fg)" }}>Simulation {i + 1} · {sim.format}</div>
+                  <div style={{ fontWeight: 500, color: "var(--fg)" }}>{t("Simulation", "Estimate")} {i + 1} · {sim.format}</div>
                   <div style={{ fontSize: 13, color: "var(--fg-muted)" }}>{sim.moments}</div>
                 </div>
                 <div style={{ fontWeight: 600, color: "var(--fg)", whiteSpace: "nowrap" }}>{eur(sim.price)}</div>
@@ -702,33 +758,21 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
       )}
 
       <h3 style={{ marginBottom: 36, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        Vos coordonnées
+        {t("Vos coordonnées", "Your contact details")}
       </h3>
       <form onSubmit={handleSubmit}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-          {[
-            { key: "prenom", label: "Prénom", type: "text", required: true },
-            { key: "nom",    label: "Nom",    type: "text", required: true },
-          ].map(f => (
-            <div key={f.key}>
-              <div style={{ marginBottom: 6, fontWeight: 500, color: "var(--fg)", fontSize: 14 }}>{f.label}</div>
-              <input type={f.type} required={f.required} value={state[f.key]}
-                onChange={e => set(f.key, e.target.value)} style={inputStyle} />
-            </div>
-          ))}
-        </div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 32 }}>
-          {[
-            { key: "email", label: "Email",     type: "email", required: true },
-            { key: "tel",   label: "Téléphone", type: "tel",   required: false },
-          ].map(f => (
-            <div key={f.key}>
-              <div style={{ marginBottom: 6, fontWeight: 500, color: "var(--fg)", fontSize: 14 }}>{f.label}</div>
-              <input type={f.type} required={f.required} value={state[f.key]}
-                onChange={e => set(f.key, e.target.value)} style={inputStyle} />
-            </div>
-          ))}
-        </div>
+        {FIELDS.map((row, ri) => (
+          <div key={ri} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+            {row.map(f => (
+              <div key={f.key}>
+                <div style={{ marginBottom: 6, fontWeight: 500, color: "var(--fg)", fontSize: 14 }}>{f.label}</div>
+                <input type={f.type} required={f.required} value={state[f.key]}
+                  onChange={e => set(f.key, e.target.value)} style={inputStyle} />
+              </div>
+            ))}
+          </div>
+        ))}
+        <div style={{ marginBottom: 32 }} />
 
         <button
           type="submit"
@@ -742,13 +786,13 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
             fontFamily: "inherit",
           }}
         >
-          {sending ? "Envoi en cours…" : "Envoyer ma demande"}
+          {sending ? t("Envoi en cours…", "Sending…") : t("Envoyer ma demande", "Send my request")}
         </button>
         {error && (
           <p style={{ color: "red", fontSize: 13, marginTop: 12, textAlign: "center" }}>{error}</p>
         )}
         <p style={{ textAlign: "center", fontSize: 13, color: "var(--fg-muted)", marginTop: 12 }}>
-          Nous vous répondons sous 48h.
+          {t("Nous vous répondons sous 48h.", "We'll get back to you within 48h.")}
         </p>
       </form>
     </div>
@@ -757,13 +801,15 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
 
 // ── Progress bar ──────────────────────────────────────────────────────────────
 
-const STEP_LABELS = ["Moments", "Date", "Lieux", "Format", "Drone", "Infos", "Estimation", "Contact"];
+const STEP_LABELS_FR = ["Moments", "Date", "Lieux", "Format", "Drone", "Infos", "Estimation", "Contact"];
+const STEP_LABELS_EN = ["Moments", "Date", "Venues", "Format", "Drone", "Details", "Estimate", "Contact"];
 
-function Progress({ step }) {
+function Progress({ step, lang }) {
+  const labels = lang === "EN" ? STEP_LABELS_EN : STEP_LABELS_FR;
   return (
     <div style={{ marginBottom: 40 }}>
       <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
-        {STEP_LABELS.map((_, i) => (
+        {labels.map((_, i) => (
           <div key={i} style={{
             height: 2, flex: 1,
             background: i <= step ? "var(--fg)" : "var(--line)",
@@ -772,17 +818,18 @@ function Progress({ step }) {
         ))}
       </div>
       <div style={{ fontSize: 12, color: "var(--fg-muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
-        {STEP_LABELS[step]}
+        {labels[step]}
       </div>
     </div>
   );
 }
 
-function NavBtns({ step, onBack, onNext, nextLabel, nextDisabled }) {
+function NavBtns({ step, onBack, onNext, nextLabel, nextDisabled, lang }) {
+  const t = mkT(lang);
   return (
     <div style={{ display: "flex", justifyContent: "space-between", marginTop: 40, paddingTop: 24, borderTop: "1px solid var(--line)" }}>
       {step > 0
-        ? <button onClick={onBack} style={{ background: "none", border: "1px solid var(--line)", padding: "10px 24px", cursor: "pointer", color: "var(--fg)", fontSize: 14, fontFamily: "inherit" }}>← Retour</button>
+        ? <button onClick={onBack} style={{ background: "none", border: "1px solid var(--line)", padding: "10px 24px", cursor: "pointer", color: "var(--fg)", fontSize: 14, fontFamily: "inherit" }}>← {t("Retour", "Back")}</button>
         : <span />
       }
       <button
@@ -796,7 +843,7 @@ function NavBtns({ step, onBack, onNext, nextLabel, nextDisabled }) {
           fontSize: 14, fontWeight: 600, fontFamily: "inherit",
         }}
       >
-        {nextLabel || "Suivant →"}
+        {nextLabel || `${t("Suivant", "Next")} →`}
       </button>
     </div>
   );
@@ -815,7 +862,8 @@ const INIT = {
   prenom: "", nom: "", email: "", tel: "",
 };
 
-export default function DevisFunnel() {
+export default function DevisFunnel({ lang = "FR" }) {
+  const t = mkT(lang);
   const [step, setStep] = useState(0);
   const [state, setState] = useState(INIT);
   const [simulations, setSimulations] = useState([]);
@@ -827,7 +875,6 @@ export default function DevisFunnel() {
     setState(s => ({ ...s, [field]: value }));
   }
 
-  // Calculate travel when arriving on estimation step
   useEffect(() => {
     if (step === 6) {
       setTravelLoading(true);
@@ -844,10 +891,10 @@ export default function DevisFunnel() {
   function handleExplore() {
     const { ttc } = calcPrice(state);
     setSimulations(prev => [...prev, {
-      format: formatLabel(state),
-      moments: momentsSummary(state.moments),
-      price: ttc + (travel?.cost || 0),
-      state: { ...state },
+      format:  formatLabel(state, lang),
+      moments: momentsSummary(state.moments, lang),
+      price:   ttc + (travel?.cost || 0),
+      state:   { ...state },
     }]);
     setState({ ...INIT, dates: state.dates, lieux: state.lieux, moments: state.moments });
     setStep(0);
@@ -862,10 +909,10 @@ export default function DevisFunnel() {
       <div style={{ textAlign: "center", padding: "80px 0" }}>
         <div style={{ fontFamily: "var(--serif-display)", fontSize: 48, fontStyle: "italic", fontWeight: 300, marginBottom: 24, opacity: 0.4 }}>✓</div>
         <h3 style={{ fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(24px, 3vw, 36px)", marginBottom: 16 }}>
-          Votre demande a bien été envoyée.
+          {t("Votre demande a bien été envoyée.", "Your request has been sent.")}
         </h3>
         <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic" }}>
-          Nous vous répondons sous 48h.
+          {t("Nous vous répondons sous 48h.", "We'll get back to you within 48h.")}
         </p>
       </div>
     );
@@ -878,27 +925,28 @@ export default function DevisFunnel() {
   };
 
   const steps = [
-    <StepMoments  key="moments"   state={state} set={set} />,
-    <StepDate     key="date"      state={state} set={set} />,
-    <StepLieux    key="lieux"     state={state} set={set} />,
-    <StepFormat   key="format"    state={state} set={set} />,
-    <StepDrone    key="drone"     state={state} set={set} />,
-    <StepDemandes key="demandes"  state={state} set={set} />,
-    <StepEstimation key="estim"   state={state} set={set} travel={travel} travelLoading={travelLoading} onExplore={handleExplore} simulations={simulations} />,
-    <StepContact  key="contact"   state={state} set={set} simulations={simulations} travel={travel} onSubmit={handleSubmit} />,
+    <StepMoments    key="moments"  state={state} set={set} lang={lang} />,
+    <StepDate       key="date"     state={state} set={set} lang={lang} />,
+    <StepLieux      key="lieux"    state={state} set={set} lang={lang} />,
+    <StepFormat     key="format"   state={state} set={set} lang={lang} />,
+    <StepDrone      key="drone"    state={state} set={set} lang={lang} />,
+    <StepDemandes   key="demandes" state={state} set={set} lang={lang} />,
+    <StepEstimation key="estim"    state={state} set={set} lang={lang} travel={travel} travelLoading={travelLoading} onExplore={handleExplore} simulations={simulations} />,
+    <StepContact    key="contact"  state={state} set={set} lang={lang} simulations={simulations} travel={travel} onSubmit={handleSubmit} />,
   ];
 
   return (
     <div style={{ maxWidth: 680, margin: "0 auto" }}>
-      <Progress step={step} />
+      <Progress step={step} lang={lang} />
       {steps[step]}
       {step < 7 && (
         <NavBtns
           step={step}
           onBack={goBack}
           onNext={goNext}
-          nextLabel={step === 6 ? "Continuer →" : undefined}
+          nextLabel={step === 6 ? `${t("Continuer", "Continue")} →` : undefined}
           nextDisabled={!canGoNext()}
+          lang={lang}
         />
       )}
     </div>
