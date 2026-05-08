@@ -131,6 +131,12 @@
     padding-top: 110px;
   }
 
+  /* Mariage hero: province label plus haut sur mobile */
+  .hero-province-label { top: 72px !important; }
+
+  /* Mariage hero: gap réduit entre h1 et paragraphe sur mobile */
+  .hero-intro-flex { gap: 20px !important; }
+
   /* Cartouche hero: scale down to fit screen */
   .hero-cartouche-wrap { padding: 0 !important; }
   .cartouche-hero {

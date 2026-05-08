@@ -70,7 +70,7 @@ function Mariage({ lang, setLang }) {
         }}>
           {t("Domaine 01", "Field 01")}
         </div>
-        <div style={{
+        <div className="hero-province-label" style={{
           position: "absolute", top: 110, right: "var(--gutter)",
           fontFamily: "var(--sans)", fontSize: 11,
           letterSpacing: "0.4em", textTransform: "uppercase",
@@ -80,7 +80,7 @@ function Mariage({ lang, setLang }) {
         </div>
 
         <div className="container" style={{ position: "relative", zIndex: 2 }}>
-          <div style={{
+          <div className="hero-intro-flex" style={{
             display: "flex",
             alignItems: "flex-end",
             justifyContent: "space-between",
@@ -120,6 +120,16 @@ function Mariage({ lang, setLang }) {
                   "Antoine and Rémi, father and son, photographers and filmmakers. Depending on your day, we work as a duo: two photographers, two filmmakers, or photographer & filmmaker."
                 )}
               </p>
+              <a href="#devis" style={{
+                display: "inline-block", marginTop: 24,
+                fontFamily: "var(--sans)", fontSize: 11,
+                letterSpacing: "0.32em", textTransform: "uppercase",
+                border: "1px solid rgba(243,237,226,0.7)",
+                padding: "12px 24px", color: "rgba(243,237,226,0.9)",
+                textDecoration: "none",
+              }}>
+                {t("Voir les tarifs", "See pricing")}
+              </a>
             </div>
           </div>
         </div>
