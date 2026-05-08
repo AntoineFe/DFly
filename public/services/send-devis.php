@@ -27,14 +27,35 @@ $to     = filter_var($d['email'], FILTER_SANITIZE_EMAIL);
 $prenom = htmlspecialchars($d['prenom']   ?? '', ENT_QUOTES);
 $nom    = htmlspecialchars($d['nom']      ?? '', ENT_QUOTES);
 $tel    = htmlspecialchars($d['tel']      ?? '', ENT_QUOTES);
-$demandes  = $d['demandes']  ?? '';
-$reaction  = $d['reaction']  ?? '';
-$intention = $d['intention'] ?? '';
-$sims      = $d['simulations'] ?? [$d['simulation'] ?? []];
+$demandes     = $d['demandes']     ?? '';
+$reaction     = $d['reaction']     ?? '';
+$intention    = $d['intention']    ?? '';
+$intentionKey = $d['intentionKey'] ?? '';
+$sims         = $d['simulations']  ?? [$d['simulation'] ?? []];
+
+// ── Objet et titre de section selon la décision ───────────────────────────────
+$count = count($sims);
+if ($intentionKey === 'reserver') {
+    $subject      = "Votre demande de devis - DFly Mariage";
+    $sectionTitle = "VOTRE DEMANDE DE DEVIS";
+    $intro        = "Merci pour votre demande de devis. Voici le récapitulatif de votre session.";
+} elseif ($intentionKey === 'discuter') {
+    $subject      = "Votre demande de renseignement - DFly Mariage";
+    $sectionTitle = "VOTRE DEMANDE DE RENSEIGNEMENT";
+    $intro        = "Merci pour votre message. Voici le récapitulatif de votre session.";
+} elseif ($count > 1) {
+    $subject      = "Vos estimations - DFly Mariage";
+    $sectionTitle = "VOS ESTIMATIONS ({$count})";
+    $intro        = "Merci pour votre intérêt. Voici le récapitulatif de vos estimations.";
+} else {
+    $subject      = "Votre estimation - DFly Mariage";
+    $sectionTitle = "VOTRE ESTIMATION";
+    $intro        = "Merci pour votre intérêt. Voici le récapitulatif de votre estimation.";
+}
 
 // ── Corps du mail ─────────────────────────────────────────────────────────────
 $body  = "Bonjour {$prenom},\n\n";
-$body .= "Merci pour votre demande. Voici le récapitulatif de votre session.\n\n";
+$body .= "{$intro}\n\n";
 $body .= str_repeat("-", 40) . "\n";
 $body .= "VOS COORDONNÉES\n";
 $body .= str_repeat("-", 40) . "\n\n";
@@ -43,9 +64,8 @@ $body .= "Email        : {$to}\n";
 if ($tel) $body .= "Téléphone    : {$tel}\n";
 $body .= "\n";
 
-$count = count($sims);
 $body .= str_repeat("-", 40) . "\n";
-$body .= ($count > 1 ? "VOS ESTIMATIONS ({$count})" : "VOTRE DEVIS ESTIMATIF") . "\n";
+$body .= "{$sectionTitle}\n";
 $body .= str_repeat("-", 40) . "\n";
 
 foreach ($sims as $i => $sim) {
@@ -96,7 +116,7 @@ $body .= "DFly - Photographie & Film de mariage\n";
 $body .= "https://dfly.fr\n";
 
 // ── Envoi SMTP (SSL port 465) ─────────────────────────────────────────────────
-$result = smtp_send($smtp, $to, $body, "Votre demande de devis - DFly Mariage");
+$result = smtp_send($smtp, $to, $body, $subject);
 echo json_encode($result);
 
 // ── Fonction SMTP ─────────────────────────────────────────────────────────────

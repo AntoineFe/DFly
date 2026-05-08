@@ -648,10 +648,11 @@ function StepContact({ state, set, simulations, travel, onSubmit }) {
       email:       state.email,
       tel:         state.tel,
       demandes:    state.demandes,
-      simulations: allSims,
-      simulation:  allSims[chosen],
-      reaction:    reactionLabel,
-      intention:   intentionLabel,
+      simulations:  allSims,
+      simulation:   allSims[chosen],
+      reaction:     reactionLabel,
+      intention:    intentionLabel,
+      intentionKey: state.intention,
     };
 
     try {
