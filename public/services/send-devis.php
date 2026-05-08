@@ -65,6 +65,8 @@ if ($demandes) {
 $body .= "\n" . str_repeat("-", 40) . "\n\n";
 $body .= "Cette estimation est indicative.\n";
 $body .= "Nous vous confirmons le devis définitif sous 48h.\n\n";
+$body .= "Si vous ne recevez pas notre réponse, pensez à vérifier vos spams\n";
+$body .= "et ajoutez contact@dfly.fr à vos contacts pour ne rien manquer.\n\n";
 $body .= "À très bientôt,\n";
 $body .= "Antoine & Rémi\n";
 $body .= "DFly - Photographie & Film de mariage\n";
