@@ -522,14 +522,19 @@ function Mariage({ lang, setLang }) {
           <div className="grid-testimonials" style={{ marginTop: 80 }}>
             {[
               {
-                fr: "Nous avions peur d'un mariage envahi par les caméras. Antoine et Rémi ont été invisibles toute la journée. Le film qu'ils nous ont rendu — nous le regardons encore, deux ans plus tard.",
-                en: "We feared a wedding invaded by cameras. Antoine and Rémi were invisible all day. The film they gave us — we still watch it, two years later.",
-                who: "Camille & Étienne", where: t("Mariage à Gordes", "Wedding in Gordes"),
+                fr: "Je vous recommande vivement Antoine et Rémy qui ont parfaitement immortalisé notre mariage ! Les photos sont de très bonne qualité. Nous avons eu un vrai coup de cœur pour ces deux professionnels.",
+                en: "I highly recommend Antoine and Rémy, who perfectly captured our wedding! The photos are of very high quality. We had a real love-at-first-sight feeling for these two professionals.",
+                who: "Tatiana Q.", where: t("Mariage, juin 2024", "Wedding, June 2024"),
               },
               {
-                fr: "Ils ont saisi des regards entre nos parents que nous n'avions pas vus. Ce sont devenus nos images préférées du jour.",
-                en: "They captured glances between our parents we hadn't seen. They became our favorite images of the day.",
-                who: "Anaïs & Pierre", where: t("Mariage à Lourmarin", "Wedding at Lourmarin"),
+                fr: "Nous avons énormément apprécié notre collaboration avec Antoine et Rémi pour immortaliser le mariage de nos enfants : la gentillesse, la disponibilité, leur écoute, et bien sûr leur travail d'une très grande qualité. Nous referons appel à eux sans hésitation.",
+                en: "We greatly appreciated working with Antoine and Rémi to capture our children's wedding: their kindness, availability, attentiveness, and of course their outstanding work. We will call on them again without hesitation.",
+                who: "Pascale B.", where: t("Mariage, octobre 2024", "Wedding, October 2024"),
+              },
+              {
+                fr: "Antoine et Rémi sont d'une extrême gentillesse, nos photos de mariage sont magnifiques, je les recommande et referai appel à eux pour de prochaines photos !",
+                en: "Antoine and Rémi are extremely kind, our wedding photos are magnificent — I recommend them wholeheartedly and will call on them again!",
+                who: "Maxime B.", where: t("Mariage, octobre 2024", "Wedding, October 2024"),
               },
             ].map((q, i) => (
               <div key={i}>
