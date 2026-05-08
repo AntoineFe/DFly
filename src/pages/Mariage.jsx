@@ -584,8 +584,8 @@ function Mariage({ lang, setLang }) {
               marginBottom: 48, maxWidth: 520,
             }}>
               {t(
-                "Écrivez-nous. Nous répondons sous 48h. Ou appelez-nous directement et prenons le temps d'un appel avant tout engagement.",
-                "Write to us. We reply within 48h. Or call us directly — we always take the time for a call before any commitment."
+                "Écrivez-nous, nous répondons sous 48h. Ou appelez-nous — on prend toujours le temps d'un appel avant tout engagement.",
+                "Write to us, we reply within 48h. Or call us — we always take the time for a call before any commitment."
               )}
             </p>
             <div className="grid-contact-info">
