@@ -69,7 +69,7 @@ export default function Home({ lang, setLang }) {
             whiteSpace: 'nowrap',
             background: 'rgba(20,22,18,0.3)', backdropFilter: 'blur(4px)',
           }}>
-            {t('Demander un devis', 'Request a quote')}
+            {t('Voir les tarifs', 'See pricing')}
           </a>
         </div>
 

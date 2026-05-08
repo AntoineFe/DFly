@@ -109,7 +109,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
             textTransform: 'uppercase', border: `1px solid ${tone}`,
             padding: '10px 18px', color: tone,
           }}>
-            {lang === 'FR' ? 'Demander un devis' : 'Request a quote'}
+            {lang === 'FR' ? 'Voir les tarifs' : 'See pricing'}
           </a>
 
           {/* Hamburger button */}
@@ -160,7 +160,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
             textTransform: 'uppercase', border: '1px solid var(--fg)',
             padding: '12px 24px', color: 'var(--fg)',
           }}>
-            {lang === 'FR' ? 'Demander un devis' : 'Request a quote'}
+            {lang === 'FR' ? 'Voir les tarifs' : 'See pricing'}
           </a>
         </nav>
       )}
