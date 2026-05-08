@@ -11,7 +11,7 @@ const W_IMG = {
   ceremony:    `${BASE}images/mariage/MAX_0035.jpeg`,
   bouquet:     `${BASE}images/mariage/409_7R49654.jpeg`,
   preparation: `${BASE}images/mariage/090_7R43637.jpg`,
-  dance:       `${BASE}images/mariage/467__DSC0477.jpeg`,
+  dance:       `${BASE}images/mariage/374_7R45410.jpeg`,
   details:     `${BASE}images/mariage/239_7R45173_1.jpg`,
   guests:      `${BASE}images/mariage/424_DSC8763.jpeg`,
   table:       `${BASE}images/mariage/_7R41267.jpeg`,
