@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 
 const CAGNES = { lat: 43.6646, lng: 7.1579 };
 const KM_RATE = 0.697;
-const MIN_TTC = 800;
-const FULL_DAY_H = 8;
+const MIN_TTC = 500;
+const FULL_DAY_H = 16; // journée type : 10h → 2h du matin
 const PP_PHOTO_HT = 1200;  // Rémi 3j × 400€
 const PP_VIDEO_HT = 2000;  // Antoine 5j × 400€
 const CAPTATION_HT = 800;  // 2 personnes × 400€/j
@@ -59,9 +59,8 @@ const RATE_HT = {
 
 function calcPrice(state) {
   const h = totalHours(state.moments);
-  const billableH = Math.min(h, FULL_DAY_H);
   const rate = RATE_HT[state.format === "both" ? "both" : state.format] ?? RATE_HT.photo;
-  let baseHT = billableH * rate;
+  let baseHT = h * rate;
 
   let addonsHT = 0;
   if (state.format !== "photo") {
