@@ -320,24 +320,91 @@ function StepDate({ state, set, lang }) {
   );
 }
 
+const MAPBOX_TOKEN = ["pk.eyJ1IjoiYW50b2luZWZlIiwiYSI6ImNtb3kybTJ5NT", "AycTEycHNjY3Y1MndqbWIifQ._dZ6nPOaP_A9E6VQcgCD-A"].join("");
+
+async function mapboxSuggest(query) {
+  if (!query || query.length < 2) return [];
+  try {
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&autocomplete=true&language=fr&country=fr&types=address,place,poi&limit=5`;
+    const r = await fetch(url);
+    const d = await r.json();
+    return (d.features || []).map(f => ({
+      label: f.place_name,
+      coords: { lng: f.center[0], lat: f.center[1] },
+    }));
+  } catch { return []; }
+}
+
+function AddressInput({ id, loc, setAddress, setCoords, lang }) {
+  const t = mkT(lang);
+  const [suggestions, setSuggestions] = useState([]);
+  const [open, setOpen] = useState(false);
+  const debounce = useRef(null);
+
+  function handleChange(val) {
+    setAddress(val);
+    clearTimeout(debounce.current);
+    debounce.current = setTimeout(async () => {
+      const s = await mapboxSuggest(val);
+      setSuggestions(s);
+      setOpen(s.length > 0);
+    }, 300);
+  }
+
+  function handleSelect(s) {
+    setAddress(s.label);
+    setCoords(s.coords);
+    setSuggestions([]);
+    setOpen(false);
+  }
+
+  return (
+    <div style={{ position: "relative", flex: 1 }}>
+      <input
+        type="text"
+        placeholder={t("Nom du lieu ou adresse complète...", "Venue name or full address...")}
+        value={loc.address || ""}
+        onChange={e => handleChange(e.target.value)}
+        onBlur={() => setTimeout(() => setOpen(false), 150)}
+        onFocus={() => suggestions.length > 0 && setOpen(true)}
+        style={inputStyle}
+        autoComplete="off"
+      />
+      {open && (
+        <div style={{
+          position: "absolute", top: "100%", left: 0, right: 0, zIndex: 100,
+          background: "var(--bg)", border: "1px solid var(--line)", borderTop: "none",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        }}>
+          {suggestions.map((s, i) => (
+            <div key={i} onMouseDown={() => handleSelect(s)} style={{
+              padding: "10px 14px", cursor: "pointer", fontSize: 14, color: "var(--fg)",
+              borderBottom: i < suggestions.length - 1 ? "1px solid var(--line)" : "none",
+            }}
+            onMouseEnter={e => e.currentTarget.style.background = "var(--bg-alt)"}
+            onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+            >
+              {s.label}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function StepLieux({ state, set, lang }) {
   const t = mkT(lang);
   const { moments, lieux } = state;
-  const [geocoding, setGeocoding] = useState({});
 
   const activeMoments = MOMENTS.filter(m => !!moments[m.id]);
 
-  async function handleBlur(id) {
-    const loc = lieux[id];
-    if (!loc?.address || loc.coords) return;
-    setGeocoding(g => ({ ...g, [id]: true }));
-    const coords = await geocode(loc.address);
-    setGeocoding(g => ({ ...g, [id]: false }));
-    set("lieux", { ...lieux, [id]: { ...loc, coords } });
+  function setAddress(id, address) {
+    set("lieux", { ...lieux, [id]: { ...lieux[id], address, coords: null } });
   }
 
-  function setAddress(id, address) {
-    set("lieux", { ...lieux, [id]: { address, coords: null } });
+  function setCoords(id, coords) {
+    set("lieux", { ...lieux, [id]: { ...lieux[id], coords } });
   }
 
   function setSameAs(id, sameAs) {
@@ -387,17 +454,13 @@ function StepLieux({ state, set, lang }) {
               )}
 
               {!loc.sameAs && (
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                  <input
-                    type="text"
-                    placeholder={t("Adresse complète...", "Full address...")}
-                    value={loc.address || ""}
-                    onChange={e => setAddress(m.id, e.target.value)}
-                    onBlur={() => handleBlur(m.id)}
-                    style={inputStyle}
-                  />
-                  {geocoding[m.id] && <span style={{ color: "var(--fg-muted)", fontSize: 13, whiteSpace: "nowrap" }}>…</span>}
-                </div>
+                <AddressInput
+                  id={m.id}
+                  loc={loc}
+                  setAddress={v => setAddress(m.id, v)}
+                  setCoords={v => setCoords(m.id, v)}
+                  lang={lang}
+                />
               )}
             </div>
           );
