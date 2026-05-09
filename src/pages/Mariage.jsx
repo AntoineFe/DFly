@@ -32,7 +32,10 @@ function Mariage({ lang, setLang }) {
 
   return (
     <div>
-      <TopNav active="wedding" scheme="over-hero" lang={lang} setLang={setLang} />
+      <TopNav active="wedding" scheme="over-hero" lang={lang} setLang={setLang}
+        ctaLabel={lang === "EN" ? "Get a quote" : "Estimer mon projet"}
+        ctaHref="#devis"
+      />
 
       {/* HERO — full bleed image with editorial title overlay */}
       <section style={{
@@ -494,7 +497,7 @@ function Mariage({ lang, setLang }) {
       </section>
 
       {/* DEVIS FUNNEL */}
-      <section style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)" }}>
+      <section id="devis" style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
             <SectionLabel num="VI" label={t("Votre devis", "Your quote")} align="center" />

@@ -21,7 +21,7 @@ const NAV_LINKS = {
   ],
 }
 
-export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
+export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabel, ctaHref }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
@@ -104,12 +104,12 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
           </div>
 
           {/* Devis — hidden on mobile (appears in mobile menu) */}
-          <a href="#contact" className="nav-links" style={{
+          <a href={ctaHref ?? '#contact'} className="nav-links" style={{
             fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em',
             textTransform: 'uppercase', border: `1px solid ${tone}`,
             padding: '10px 18px', color: tone,
           }}>
-            {lang === 'FR' ? 'Demander un devis' : 'Get a quote'}
+            {ctaLabel ?? (lang === 'FR' ? 'Voir les tarifs' : 'See pricing')}
           </a>
 
           {/* Hamburger button */}
@@ -154,13 +154,13 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang }) {
               )
             })}
           </div>
-          <a href="#contact" style={{
+          <a href={ctaHref ?? '#contact'} style={{
             display: 'inline-block', marginTop: 32,
             fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em',
             textTransform: 'uppercase', border: '1px solid var(--fg)',
             padding: '12px 24px', color: 'var(--fg)',
           }}>
-            {lang === 'FR' ? 'Demander un devis' : 'Get a quote'}
+            {ctaLabel ?? (lang === 'FR' ? 'Voir les tarifs' : 'See pricing')}
           </a>
         </nav>
       )}
