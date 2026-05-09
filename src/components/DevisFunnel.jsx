@@ -831,17 +831,23 @@ function Progress({ step, onGoTo, lang }) {
             key={i}
             onClick={() => i < step && onGoTo(i)}
             title={i < step ? labels[i] : undefined}
-            style={{ display: "flex", alignItems: "center", justifyContent: "center", cursor: i < step ? "pointer" : "default" }}
-            onMouseEnter={e => { if (i < step) e.currentTarget.querySelector("span").style.opacity = "0.4"; }}
-            onMouseLeave={e => { if (i < step) e.currentTarget.querySelector("span").style.opacity = "1"; }}
+            style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: i < step ? "pointer" : "default" }}
+            onMouseEnter={e => { if (i < step) e.currentTarget.style.opacity = "0.4"; }}
+            onMouseLeave={e => { if (i < step) e.currentTarget.style.opacity = "1"; }}
           >
             <span style={{
               display: "block",
-              width: i === step ? 10 : 8,
-              height: i === step ? 10 : 8,
+              width: i < step ? 14 : 0,
+              height: i < step ? 14 : 0,
               borderRadius: "50%",
-              background: i <= step ? "var(--fg)" : "var(--line)",
+              background: "var(--fg)",
               transition: "opacity .2s",
+              flexShrink: 0,
+            }} />
+            <span style={{
+              display: "block", height: 2, width: "100%",
+              background: i <= step ? "var(--fg)" : "var(--line)",
+              transition: "background .3s",
             }} />
           </div>
         ))}
