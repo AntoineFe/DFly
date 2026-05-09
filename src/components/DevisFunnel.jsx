@@ -984,7 +984,7 @@ export default function DevisFunnel({ lang = "FR" }) {
 
   return (
     <div style={{ maxWidth: 680, margin: "0 auto" }}>
-      <div ref={topRef} style={{ scrollMarginTop: 80 }} />
+      <div ref={topRef} style={{ scrollMarginTop: 110 }} />
       <Progress step={step} onGoTo={setStep} lang={lang} />
       {steps[step]}
       {step < 7 && (
