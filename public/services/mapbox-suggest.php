@@ -33,9 +33,11 @@ if ($body === false) {
 }
 
 $data = json_decode($body, true);
-$results = array_map(fn($f) => [
-    'label'  => $f['place_name'],
-    'coords' => ['lng' => $f['center'][0], 'lat' => $f['center'][1]],
-], $data['features'] ?? []);
+$results = array_map(function($f) {
+    return [
+        'label'  => $f['place_name'],
+        'coords' => ['lng' => $f['center'][0], 'lat' => $f['center'][1]],
+    ];
+}, $data['features'] ?? []);
 
 echo json_encode($results);
