@@ -201,6 +201,25 @@ function StepMoments({ state, set, lang }) {
                       {mLabel(opt, lang)}
                     </label>
                   ))}
+                  {moments[m.id] === "etendue" && (
+                    <div style={{ marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--line)", paddingLeft: 4 }}>
+                      <div style={{ fontSize: 13, color: "var(--fg-muted)", marginBottom: 8 }}>
+                        {t("Hébergement des prestataires", "Accommodation for photographers")}
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                        <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", color: "var(--fg)", fontSize: 15 }}>
+                          <input type="radio" name="hotel" checked={!state.hotelPrisEnCharge}
+                            onChange={() => set("hotelPrisEnCharge", false)} />
+                          {t(`Forfait hôtelier : +${eur(HOTEL_TTC)}`, `Hotel allowance: +${eur(HOTEL_TTC)}`)}
+                        </label>
+                        <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", color: "var(--fg)", fontSize: 15 }}>
+                          <input type="radio" name="hotel" checked={!!state.hotelPrisEnCharge}
+                            onChange={() => set("hotelPrisEnCharge", true)} />
+                          {t("Pris en charge par les mariés", "Covered by the couple")}
+                        </label>
+                      </div>
+                    </div>
+                  )}
                   {moments[m.id] && (
                     <button
                       onClick={() => { const n = { ...moments }; delete n[m.id]; set("moments", n); }}
@@ -605,17 +624,11 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
         ) : null}
 
         {needsHotel && (
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
-            padding: "10px 0", borderBottom: "1px solid var(--line)", gap: 16 }}>
-            <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", color: "var(--fg-muted)", fontSize: 15, flex: 1 }}>
-              <input type="checkbox" checked={!!state.hotelPrisEnCharge}
-                onChange={() => set("hotelPrisEnCharge", !state.hotelPrisEnCharge)} />
-              {t("Hébergement des photographes pris en charge par les mariés", "Accommodation provided by the couple")}
-            </label>
-            <span style={{ whiteSpace: "nowrap", color: "var(--fg-muted)", fontSize: 15 }}>
-              {state.hotelPrisEnCharge ? t("Pris en charge par les mariés", "Covered by the couple") : `+${eur(HOTEL_TTC)}`}
-            </span>
-          </div>
+          <PriceLine
+            label={t("Hébergement des prestataires", "Accommodation for photographers")}
+            value={state.hotelPrisEnCharge ? t("Pris en charge par les mariés", "Covered by the couple") : `+${eur(HOTEL_TTC)}`}
+            muted
+          />
         )}
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline",
