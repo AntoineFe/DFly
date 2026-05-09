@@ -109,7 +109,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             textTransform: 'uppercase', border: `1px solid ${tone}`,
             padding: '10px 18px', color: tone,
           }}>
-            {ctaLabel ?? (lang === 'FR' ? 'Voir les tarifs' : 'See pricing')}
+            {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
           </a>
 
           {/* Hamburger button */}
@@ -160,7 +160,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             textTransform: 'uppercase', border: '1px solid var(--fg)',
             padding: '12px 24px', color: 'var(--fg)',
           }}>
-            {ctaLabel ?? (lang === 'FR' ? 'Voir les tarifs' : 'See pricing')}
+            {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
           </a>
         </nav>
       )}
