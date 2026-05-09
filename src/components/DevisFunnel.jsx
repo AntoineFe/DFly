@@ -613,7 +613,7 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
               {t("Hébergement des photographes pris en charge par les mariés", "Accommodation provided by the couple")}
             </label>
             <span style={{ whiteSpace: "nowrap", color: "var(--fg-muted)", fontSize: 15 }}>
-              {state.hotelPrisEnCharge ? t("offert", "covered") : `+${eur(HOTEL_TTC)}`}
+              {state.hotelPrisEnCharge ? t("Pris en charge par les mariés", "Covered by the couple") : `+${eur(HOTEL_TTC)}`}
             </span>
           </div>
         )}
