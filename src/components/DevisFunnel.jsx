@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
@@ -900,6 +900,7 @@ const INIT = {
 
 export default function DevisFunnel({ lang = "FR" }) {
   const t = mkT(lang);
+  const topRef = useRef(null);
   const [step, setStep] = useState(0);
   const [maxStep, setMaxStep] = useState(0);
   const [state, setState] = useState(INIT);
@@ -920,7 +921,7 @@ export default function DevisFunnel({ lang = "FR" }) {
         setTravelLoading(false);
       });
     }
-    document.getElementById("devis")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
   function goNext() { setStep(s => { const n = s + 1; setMaxStep(m => Math.max(m, n)); return n; }); }
@@ -983,6 +984,7 @@ export default function DevisFunnel({ lang = "FR" }) {
 
   return (
     <div style={{ maxWidth: 680, margin: "0 auto" }}>
+      <div ref={topRef} />
       <Progress step={step} onGoTo={setStep} lang={lang} />
       {steps[step]}
       {step < 7 && (
