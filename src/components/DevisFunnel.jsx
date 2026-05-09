@@ -351,7 +351,7 @@ function StepLieux({ state, set, lang }) {
         {t("Où se déroulent vos événements ?", "Where will your events take place?")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
-        {t("Adresse complète — nous préparons chaque lieu à l'avance.", "Full address — we prepare each venue in advance.")}
+        {t("Adresse complète — pour le calcul des déplacements et le repérage des lieux.", "Full address — for travel cost calculation and venue scouting.")}
       </p>
 
       {activeMoments.length === 0 && (
