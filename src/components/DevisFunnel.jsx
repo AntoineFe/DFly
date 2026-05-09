@@ -948,9 +948,17 @@ export default function DevisFunnel({ lang = "FR" }) {
         <h3 style={{ fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(24px, 3vw, 36px)", marginBottom: 16 }}>
           {t("Votre demande a bien été envoyée.", "Your request has been sent.")}
         </h3>
-        <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic" }}>
+        <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 40 }}>
           {t("Nous vous répondons sous 48h.", "We'll get back to you within 48h.")}
         </p>
+        <button
+          onClick={() => { setSubmitted(false); setState(INIT); setSimulations([]); setStep(0); setMaxStep(0); }}
+          style={{ background: "none", border: "1px solid var(--line)", padding: "12px 28px",
+            cursor: "pointer", color: "var(--fg-muted)", fontSize: 13,
+            fontFamily: "var(--sans)", letterSpacing: "0.2em", textTransform: "uppercase" }}
+        >
+          {t("Faire une nouvelle estimation", "Start a new estimate")}
+        </button>
       </div>
     );
   }
