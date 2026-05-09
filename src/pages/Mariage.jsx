@@ -128,7 +128,7 @@ function Mariage({ lang, setLang }) {
                 padding: "12px 24px", color: "rgba(243,237,226,0.9)",
                 textDecoration: "none",
               }}>
-                {t("Voir les tarifs", "See pricing")}
+                {t("Estimer mon projet", "Get a quote")}
               </a>
             </div>
           </div>
