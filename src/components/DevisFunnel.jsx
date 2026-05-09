@@ -823,6 +823,7 @@ const STEP_LABELS_EN = ["Moments", "Date", "Venues", "Format", "Drone", "Details
 
 function Progress({ step, onGoTo, lang }) {
   const labels = lang === "EN" ? STEP_LABELS_EN : STEP_LABELS_FR;
+  const [hovered, setHovered] = useState(null);
   return (
     <div style={{ marginBottom: 40 }}>
       <div style={{ display: "flex", gap: 4, marginBottom: 8, marginTop: 20, position: "relative" }}>
@@ -831,9 +832,10 @@ function Progress({ step, onGoTo, lang }) {
             key={i}
             onClick={() => i < step && onGoTo(i)}
             title={i < step ? labels[i] : undefined}
-            style={{ flex: 1, position: "relative", height: 2, cursor: i < step ? "pointer" : "default", padding: "8px 0" }}
-            onMouseEnter={e => { if (i < step) e.currentTarget.style.opacity = "0.4"; }}
-            onMouseLeave={e => { if (i < step) e.currentTarget.style.opacity = "1"; }}
+            style={{ flex: 1, position: "relative", height: 2, cursor: i < step ? "pointer" : "default", padding: "8px 0",
+              opacity: hovered === i ? 0.4 : 1, transition: "opacity .2s" }}
+            onMouseEnter={() => { if (i < step) setHovered(i); }}
+            onMouseLeave={() => setHovered(null)}
           >
             {i < step && (
               <span style={{
