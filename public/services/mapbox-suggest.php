@@ -7,26 +7,8 @@ if (strlen($q) < 2) {
     exit(json_encode([]));
 }
 
-$config_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/smtp-config.php';
-if (!file_exists($config_path)) {
-    http_response_code(500);
-    exit(json_encode(["error" => "config introuvable", "path" => $config_path]));
-}
-$cfg = require $config_path;
-
-$token = $cfg['mapbox_token'] ?? '';
-if (!$token) {
-    http_response_code(500);
-    exit(json_encode(["error" => "token manquant", "path" => $config_path]));
-}
-
-$url = "https://api.mapbox.com/geocoding/v5/mapbox.places/"
-     . urlencode($q)
-     . ".json?access_token=" . urlencode($token)
-     . "&autocomplete=true&language=fr&country=fr"
-     . "&types=poi,place,locality,address"
-     . "&proximity=6.9,43.6"
-     . "&limit=6";
+$url = "https://photon.komoot.io/api/?q=" . urlencode($q)
+     . "&lang=fr&limit=6&lat=43.6&lon=6.9";
 
 $ctx = stream_context_create(['http' => ['timeout' => 5]]);
 $body = @file_get_contents($url, false, $ctx);
@@ -37,9 +19,17 @@ if ($body === false) {
 
 $data = json_decode($body, true);
 $results = array_map(function($f) {
+    $p = $f['properties'];
+    $parts = array_filter([
+        $p['name']    ?? null,
+        $p['street']  ?? null,
+        $p['city']    ?? ($p['town'] ?? ($p['village'] ?? null)),
+        $p['postcode'] ?? null,
+        $p['country'] ?? null,
+    ]);
     return [
-        'label'  => $f['place_name'],
-        'coords' => ['lng' => $f['center'][0], 'lat' => $f['center'][1]],
+        'label'  => implode(', ', $parts),
+        'coords' => ['lng' => $f['geometry']['coordinates'][0], 'lat' => $f['geometry']['coordinates'][1]],
     ];
 }, $data['features'] ?? []);
 
