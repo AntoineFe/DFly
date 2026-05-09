@@ -676,7 +676,7 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
         {travelLoading ? (
           <PriceLine label={t("Déplacement", "Travel")} value={t("calcul en cours…", "calculating…")} muted />
         ) : travel?.km > 0 ? (
-          <PriceLine label={`${t("Déplacement", "Travel")} · ${travel.km} km ${t("A/R", "round trip")}`} value={`+${eur(travel.cost)} + ${t("péages", "tolls")}`} muted />
+          <PriceLine label={`${t("Déplacement hors péages autoroute", "Travel excl. motorway tolls")} · ${travel.km} km ${t("A/R", "round trip")}`} value={`+${eur(travel.cost)}`} muted />
         ) : null}
 
         {needsHotel && (
@@ -694,11 +694,6 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
             {eur(total)}
           </span>
         </div>
-        {travel?.km > 0 && (
-          <div style={{ fontSize: 12, color: "var(--fg-muted)", marginTop: 4 }}>
-            {t("Hors péages — confirmés dans le devis définitif", "Excluding tolls — confirmed in the final quote")}
-          </div>
-        )}
         <p style={{ fontSize: 13, color: "var(--fg-muted)", marginTop: 16, fontFamily: "var(--serif)", fontStyle: "italic" }}>
           {t("Estimation indicative. Devis définitif confirmé sous 48h.", "Indicative estimate. Final quote confirmed within 48h.")}
         </p>
