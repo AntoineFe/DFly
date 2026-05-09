@@ -825,27 +825,25 @@ function Progress({ step, onGoTo, lang }) {
   const labels = lang === "EN" ? STEP_LABELS_EN : STEP_LABELS_FR;
   return (
     <div style={{ marginBottom: 40 }}>
-      <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
+      <div style={{ display: "flex", gap: 4, marginBottom: 8, marginTop: 20, position: "relative" }}>
         {labels.map((_, i) => (
           <div
             key={i}
             onClick={() => i < step && onGoTo(i)}
             title={i < step ? labels[i] : undefined}
-            style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 6, cursor: i < step ? "pointer" : "default" }}
+            style={{ flex: 1, position: "relative", height: 2, cursor: i < step ? "pointer" : "default", padding: "8px 0" }}
             onMouseEnter={e => { if (i < step) e.currentTarget.style.opacity = "0.4"; }}
             onMouseLeave={e => { if (i < step) e.currentTarget.style.opacity = "1"; }}
           >
+            {i < step && (
+              <span style={{
+                position: "absolute", top: -18, left: "50%", transform: "translateX(-50%)",
+                display: "block", width: 14, height: 14, borderRadius: "50%",
+                background: "var(--fg)",
+              }} />
+            )}
             <span style={{
-              display: "block",
-              width: i < step ? 14 : 0,
-              height: i < step ? 14 : 0,
-              borderRadius: "50%",
-              background: "var(--fg)",
-              transition: "opacity .2s",
-              flexShrink: 0,
-            }} />
-            <span style={{
-              display: "block", height: 2, width: "100%",
+              display: "block", height: 2,
               background: i <= step ? "var(--fg)" : "var(--line)",
               transition: "background .3s",
             }} />
