@@ -901,6 +901,7 @@ const INIT = {
 export default function DevisFunnel({ lang = "FR" }) {
   const t = mkT(lang);
   const [step, setStep] = useState(0);
+  const [maxStep, setMaxStep] = useState(0);
   const [state, setState] = useState(INIT);
   const [simulations, setSimulations] = useState([]);
   const [travel, setTravel] = useState({ km: 0, cost: 0 });
@@ -921,7 +922,7 @@ export default function DevisFunnel({ lang = "FR" }) {
     }
   }, [step]);
 
-  function goNext() { setStep(s => s + 1); }
+  function goNext() { setStep(s => { const n = s + 1; setMaxStep(m => Math.max(m, n)); return n; }); }
   function goBack() { setStep(s => s - 1); }
 
   function handleExplore() {
@@ -984,6 +985,17 @@ export default function DevisFunnel({ lang = "FR" }) {
           nextDisabled={!canGoNext()}
           lang={lang}
         />
+      )}
+      {step < 6 && maxStep >= 6 && (
+        <div style={{ textAlign: "center", marginTop: 12 }}>
+          <button
+            onClick={() => setStep(6)}
+            style={{ background: "none", border: "none", cursor: "pointer", color: "var(--fg-muted)", fontSize: 13,
+              fontFamily: "var(--sans)", letterSpacing: "0.1em", textDecoration: "underline", textUnderlineOffset: 4 }}
+          >
+            {t("→ Voir l'estimation", "→ See estimate")}
+          </button>
+        </div>
       )}
     </div>
   );
