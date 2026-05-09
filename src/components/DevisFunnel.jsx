@@ -26,8 +26,8 @@ const MOMENTS = [
     { v: "debut",   label: "Installation et groupes seulement",    en: "Setup and group photos only",  h: 1 },
   ]},
   { id: "danse",       label: "Soirée / Danse",                    en: "Evening / Dancing", opts: [
-    { v: "standard", label: "Ouverture de bal + gâteau + 30 min", en: "First dance + cake + 30 min",  h: 1.5 },
-    { v: "etendue",  label: "Soirée étendue",                      en: "Extended evening",             h: 3   },
+    { v: "etendue",  label: "Jusqu'au bout de la nuit",            en: "Extended evening",             h: 3   },
+    { v: "standard", label: "Juste les 30 premières minutes",      en: "First dance + cake + 30 min",  h: 1.5 },
   ]},
 ];
 
