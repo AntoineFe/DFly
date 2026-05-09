@@ -455,6 +455,11 @@ function StepLieux({ state, set, lang }) {
                   lang={lang}
                 />
               )}
+              {!loc.sameAs && !loc.coords && (
+                <div style={{ fontSize: 12, color: "var(--fg-muted)", marginTop: 6, fontStyle: "italic" }}>
+                  {t("Si le lieu n'est pas reconnu, saisissez la commune — ex : Cros de Cagnes.", "If the venue isn't found, enter the town name.")}
+                </div>
+              )}
             </div>
           );
         })}
