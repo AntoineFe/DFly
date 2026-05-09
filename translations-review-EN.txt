@@ -1,0 +1,566 @@
+DFLY.FR — TEXTES ANGLAIS POUR RELECTURE
+========================================
+Format : Texte EN / (Texte FR correspondant)
+Organisé par page et section.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NAVIGATION (TopNav — toutes les pages)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Liens de navigation :
+  Home             (Accueil)
+  Wedding          (Mariage)
+  Real Estate      (Immobilier)
+  Stage            (Spectacle)
+  Events           (Événements)
+  Family           (Famille)
+
+Bouton CTA (pages générales) :
+  Request a quote  (Demander un devis)
+
+Bouton CTA (page Mariage uniquement) :
+  Get a quote      (Estimer mon projet)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE D'ACCUEIL (Home.jsx)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+— HERO —
+
+  Photography & Film
+  (Photographie & Vidéo)
+
+  Provence Alpes Côte d'Azur
+  [identique en FR]
+
+  Since
+  (Depuis)
+
+  Photo and film services
+  For individuals and professionals
+  (Prestations photo et vidéo
+  Pour particuliers et professionnels)
+
+  Request a quote
+  (Demander un devis)
+
+  Scroll
+  (Découvrir)
+
+
+— SECTION I · Hello (Bonjour) —
+
+  We are Antoine and Rémi, father and son.
+  (Nous sommes Antoine et Rémi, père et fils.)
+
+  We deliver photo & film services for individuals and professionals.
+  (Nous réalisons des prestations photo & vidéo pour les particuliers et les professionnels.)
+
+  We adapt our approach to each situation: discreet to capture emotions as they happen, and present when the image needs to be composed. Depending on the project, we often work as a duo.
+  (Nous adaptons notre approche à la situation : discrets pour capter l'émotion sur le vif, présents quand l'image doit être composée. Selon le projet, nous intervenons à deux.)
+
+
+— SECTION II · Our work (Nos domaines) —
+
+  Lien "Voir le travail" sous chaque domaine :
+  See the work →
+  (Voir le travail →)
+
+  01 — Wedding (Mariage)
+    Your day, your memories.
+    (Votre journée, vos souvenirs.)
+
+    You live your wedding from the inside — carried by emotion, surrounded by those you love. Some glances, some smiles, you will only see them afterwards, in the images. That is exactly our role.
+    (Vous vivez votre mariage de l'intérieur — portés par l'émotion, entourés de ceux que vous aimez. Certains regards, certains sourires, vous ne les verrez qu'après, sur les images. C'est exactement notre rôle.)
+
+  02 — Real Estate (Immobilier)
+    Care for detail, lines and light
+    (Le soin du détail, des lignes et de la lumière)
+
+    From the individual home to new developments, every property has an hour, an angle, a light that suits it. Ground and aerial views, interiors and exteriors treated with a magazine standard.
+    (De la maison individuelle au programme neuf, chaque bien a une heure, un angle, une lumière qui lui convient. Vues au sol et aériennes, intérieurs et extérieurs traités avec une exigence de magazine.)
+
+  03 — Business & Brand (Communication & Entreprise)
+    Your work deserves to be seen
+    (Votre travail mérite d'être vu)
+
+    Craftsmen, builders, estates, retailers. Photos and videos that show your work — for your social media, print, and tenders.
+    (Artisans, constructeurs, domaines, commerçants. Des photos et vidéos qui montrent votre travail — pour vos réseaux, vos affiches, vos appels d'offres.)
+
+  04 — Event & Stage (Événement & Spectacle)
+    Live capture, multi-camera
+    (Captation vivante, multi-caméra)
+
+    Fashion shows, graduations, concerts, festivals, performances. Every event has its rhythm, its emotion, its decisive moment. Our role is to capture them.
+    (Défilés, remises de diplômes, concerts, festivals, spectacles. Chaque événement a son rythme, son émotion, son moment décisif. Notre rôle est de les saisir.)
+
+  05 — Portrait & Family (Portrait & Famille)
+    Simple, true, lasting images.
+    (Des images simples, vraies, durables.)
+
+    Outdoor sessions, at home, without imposing anything. Portfolios, couples, families with children. We let things happen — you keep the truth of a moment.
+    (Séances en extérieur, à la maison, sans rien imposer. Books, couples, familles avec enfants. Nous laissons les choses se passer — vous gardez la vérité d'un instant.)
+
+
+— SECTION III · The craft (Le savoir-faire) —
+
+  From the shot
+  to the final print
+  (De la prise de vue
+  au tirage final)
+
+  01 — Photography (Photographie)
+    Sony full-frame bodies, high-end lenses, controlled lighting. It is the eye that decides. Choose the right moment, let the light do the rest.
+    (Boîtiers plein-format Sony, optiques haut de gamme, éclairage maîtrisé. C'est le regard qui décide. Choisir le bon moment, laisser la lumière faire le reste.)
+
+  02 — Film & capture (Vidéo & captation)
+    Blackmagic cinema cameras, Xeen lenses, multi-camera when needed. Every project filmed to the same standard, from short clip to long-form film.
+    (Caméras cinéma Blackmagic, optiques Xeen, multi-caméra si besoin. Chaque projet filmé avec la même exigence, du clip court au film long format.)
+
+  03 — Photo editing (Retouche photo)
+    Every image reviewed, cropped if needed, processed according to what it asks. True to the scene or elevated — always at the service of the subject.
+    (Chaque image relue, recadrée si nécessaire, traitée selon ce qu'elle demande. Fidèle à la scène ou sublimée, toujours au service du sujet.)
+
+  04 — Editing & grading (Montage & color grading)
+    The edit is a story. It has its rhythm, its breathing, its ruptures. Colour gives it its personality. We work each film so the viewer does not watch images, they live a story.
+    (Le montage est un récit. Il a son rythme, ses respirations, ses ruptures. La couleur vient lui donner sa personnalité. Nous travaillons chaque film pour que le spectateur ne regarde pas des images, il vit une histoire.)
+
+  05 — Drone piloting (Télépilotage drone)
+    DGAC-certified pilots. The drone is our third eye: the one that rises where our feet cannot go. Used when it serves the story.
+    (Pilotes certifiés DGAC. Le drone est notre troisième regard : celui qui s'élève là où nos pieds ne vont pas. Utilisé quand il sert le récit.)
+
+  06 — Delivery & prints (Livraison & tirages)
+    Private online gallery, HD files on a wood USB engraved with the DFly logo. Films and highlights included depending on the package. Derivative products orderable online via our partner gallery: prints, calendars, photo books and more.
+    (Galerie privée en ligne, fichiers HD sur clé USB bois gravée au logo DFly. Films et résumés inclus selon la formule. Produits dérivés commandables en ligne via notre galerie partenaire : tirages, calendriers, livres photo et bien d'autres.)
+
+
+— SECTION IV · Aerial view (Vue du ciel) —
+
+  A fifth gaze,
+  when it serves the story.
+  (Un cinquième regard,
+  quand il sert le récit.)
+
+  Our name is in the sky: DFly. But we only fly when the scene calls for it — a château from above, a beach at dawn, a procession through the vines. DGAC-certified pilots.
+  (Notre nom est dans le ciel : DFly. Mais nous ne sortons le drone que lorsque la scène le demande — un château vu d'en haut, une plage à l'aube, une procession dans les vignes. Pilotes certifiés DGAC.)
+
+
+— SECTION V · What holds us (Ce qui nous tient) —
+
+  "Always the same standard: the right image."
+  (« Toujours la même exigence : l'image juste. »)
+
+  Standard (Exigence)
+    High-end equipment, a trained eye, constant attention to detail. Every project deserves our best.
+    (Du matériel haut de gamme, un œil formé, une attention constante aux détails. Chaque projet mérite notre meilleur.)
+
+  Adaptability (Adaptabilité)
+    Discreet reportage at a wedding, careful staging for real estate, live capture for an event. We change our stance, not our rigour.
+    (Reportage discret sur un mariage, mise en scène soignée pour l'immobilier, captation live pour un événement. Nous changeons de posture, pas de rigueur.)
+
+  Sensitivity (Sensibilité)
+    Understand what we film before filming. Whether a concert hall or a vineyard, we look for what makes the truth of the place or moment.
+    (Comprendre ce qu'on filme avant de filmer. Que ce soit une salle de concert ou un vignoble, nous cherchons ce qui fait la vérité du lieu ou du moment.)
+
+  Commitment (Engagement)
+    We bring to every project what we would bring to our own. Without distance.
+    (Nous mettons dans chaque projet ce que nous mettrions dans le nôtre. Sans distance.)
+
+
+— SECTION VI · Father & son (Père & fils) —
+
+  Two gazes.
+  One family.
+  (Deux regards.
+  Une même famille.)
+
+  Antoine has been photographing since 1981. Trained in a military photo lab, cinema projectionist, then a career in electronics and IT — photography accompanied him all his life, as a demanding amateur.
+  (Antoine photographie depuis 1981. Formé dans un labo photo militaire, projectionniste de cinéma, avant une carrière dans l'électronique et l'informatique — la photo l'a accompagné toute sa vie, en amateur exigeant.)
+
+  After a construction degree, Rémi worked as a technical draughtsman before turning to drones, then film, then photography. An eye trained in volumes, lines and precision. Together, two complementary gazes, one shared rigour.
+  (Après un BTS bâtiment, Rémi a exercé comme dessinateur projeteur avant de se tourner vers le drone, puis la vidéo, puis la photo. Un œil formé aux volumes, aux lignes, à la précision. Ensemble, deux regards complémentaires, une même rigueur.)
+
+
+— SECTION VII · What they say (Ce qu'ils en disent) —
+
+  Témoignage 1 — Axelle C. · September 2025 (Septembre 2025)
+    Every photo tells a story and perfectly captures the emotion of the moment. Luminous, authentic images of exceptional quality.
+    (Chaque photo raconte une histoire et reflète parfaitement l'émotion du moment. Des clichés lumineux, authentiques et d'une qualité exceptionnelle.)
+
+  Témoignage 2 — Pascale B. · Wedding · October 2024 (Mariage · Octobre 2024)
+    Their kindness, availability, attentiveness, and of course their work of very high quality. We will call on them again without hesitation.
+    (La gentillesse, la disponibilité, leur écoute, et bien sûr leur travail d'une très grande qualité. Nous referons appel à eux sans hésitation pour une prochaine occasion.)
+
+  Témoignage 3 — Gérard B. · Real estate · 2020 (Immobilier · 2020)
+    The choice of viewpoints truly amazed me. I recommend without the slightest hesitation.
+    (Le choix des points de vue m'a vraiment bluffé. Je recommande sans l'ombre d'une hésitation.)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PAGE MARIAGE (Mariage.jsx)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+— HERO —
+
+  Field 01
+  (Domaine 01)
+
+  Provence Alpes Côte d'Azur
+  [identique en FR]
+
+  — Wedding
+  (— Mariage)
+
+  The day
+  that becomes
+  memory.
+  (Le jour
+  qui devient
+  mémoire.)
+
+  Get a quote
+  (Estimer mon projet)
+
+  Antoine and Rémi, father and son, photographers and filmmakers. Depending on your day, we work as a duo: two photographers, two filmmakers, or photographer & filmmaker.
+  (Antoine et Rémi, père et fils, photographes et vidéastes. Selon votre journée, nous intervenons en duo : deux photographes, deux vidéastes, ou photographe & vidéaste.)
+
+
+— SECTION I · Our approach (Notre approche) —
+
+  You entrust us with a day that won't replay. We capture it in photo and video with sensitivity, present at the right moments.
+  (Vous nous confiez un jour qui ne se rejoue pas. Nous le capturons en photo et en vidéo avec sensibilité, présents aux bons moments.)
+
+  We work with the flow of your day, composing with what unfolds naturally, by your side. The day is yours. Our role is to reveal its images.
+  (Nous intervenons selon le déroulé de votre journée, et composons avec ce qui se joue naturellement, à vos côtés. Le jour vous appartient. Notre rôle est d'en révéler les images.)
+
+  We have worked together for several years, as a duo. Two complementary perspectives, two ways of reading the scene, for a more complete vision of your day.
+  (Nous travaillons ensemble depuis plusieurs années, en duo. Deux regards complémentaires, deux manières de lire la scène, pour une vision plus complète de votre journée.)
+
+
+— SECTION II · Two mediums (Deux médiums) —
+
+  Photography & Film
+  (Photographie & Film)
+
+  Medium 01 — Photography (Médium 01 — Photographie)
+    Full-frame bodies, Sony GM premium lenses, light mastered to each location. A curated selection of individually processed images. Delivered via private gallery and DFly box set containing all files in high definition.
+    (Boîtiers plein-format, optiques haut de gamme Sony GM, lumière maîtrisée selon les lieux. Une sélection d'images travaillées une à une. Livraison via galerie privée et coffret DFly contenant l'ensemble des fichiers en haute définition.)
+
+  Medium 02 — Film & capture (Médium 02 — Vidéo & captation)
+    Cinema cameras, live sound, two to three axes. A 90-second teaser, a film of about 12 minutes, and the full ceremony. Custom color grading, scene by scene.
+    (Caméras cinéma, son en direct, deux à trois axes. Un teaser de 90 secondes, un film d'environ 12 minutes, et la cérémonie complète. Color grading sur mesure, scène par scène.)
+
+
+— SECTION III · A few images (Quelques images) —
+
+  Provence · 2024 — 2026
+  [identique en FR]
+
+
+— SECTION IV · The day, hour by hour —
+  Note : le label FR est tronqué ("L") — probablement un bug à vérifier.
+  (La journée, heure par heure)
+
+  A day told
+  from morning to the last dance.
+  (Une journée qui se raconte
+  du matin à la dernière danse.)
+
+  10h00 — Preparations (Préparatifs)
+    In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother holds something between joy and nostalgia. The grandfather says nothing but misses nothing. Then the door opens. The father sees his daughter.
+    (Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman guide, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien mais ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.)
+
+  14h00 — Town hall (Mairie)
+    This is the step that changes everything — before the law and before the world. The room is joyful, the groom enters, then the bride, then the room comes alive with the mayor's words. Simple texts, read aloud, irrevocable. Smiles, glances, tears. A family is born.
+    (C'est l'étape qui change tout — devant la loi et devant les hommes. La salle est joyeuse, le marié entre, puis la mariée, puis la salle vit au rythme des paroles du maire. Des textes simples, lus à voix haute, officiels. Des sourires, des regards, des larmes. C'est la naissance d'une famille.)
+
+  15h00 — Ceremony (Cérémonie laïque ou religieuse)
+    The ceremony — religious or secular — brings us back to what matters. We think of those who have gone, we measure how much we hold onto those still here. Words come from the heart — and yet the room stays light, laughter arrives between tears. That is the mix we observe through the lens: depth and joy, often on the same face, at the same instant.
+    (La cérémonie — religieuse ou laïque — ramène vers l'essentiel. On pense à ceux qui sont partis, on mesure à quel point on tient à ceux qui sont encore là. Les mots viennent du cœur — et pourtant la salle reste légère, les rires arrivent entre les larmes. C'est ce mélange qu'on observe dans l'objectif : la profondeur et la joie, souvent sur le même visage, au même instant.)
+
+  16h30 — Portrait session (Séance photo)
+    They've said yes. Outside, joy erupts — bubbles and petals catching the light, everyone wants a photo with the couple. Then they slip away. This is our moment: thirty minutes, apart from the crowd, away from the noise.
+    (Ils se sont dit oui. À la sortie, la joie explose — bulles et pétales brillent, tout le monde veut sa photo avec les mariés. Puis le couple s'éclipse. C'est notre moment : trente minutes, à l'écart, loin du bruit.)
+
+  18h00 — Cocktail hour (Cocktail / Vin d'honneur)
+    The cocktail hour is the world finding itself again. Families discover each other, old friends recognise one another with a smile. Children run between adults, glasses clink. While the couple was with us, the party organised itself without them. When they reappear, there's a way of applauding that says everything.
+    (Les amis se retrouvent. Les deux familles font connaissance, un verre à la main. Des photos spontanées, sans mise en scène.)
+
+  20h00 — Dinner (Dîner)
+    A decorated room, carefully dressed tables. The seating plan is a surprise — guests discover it, laugh, wonder. Then the music, the couple enters to cheers. The evening can begin. People let loose then take their seats — a round of tables for group photos. Then come the speeches, the games, the surprises — some prepared for weeks, others improvised at the mic. Tears don't warn you. Neither do laughs.
+    (Une salle décorée, des tables soignées. Le plan de table est une surprise — les invités découvrent, s'amusent, s'émerveillent. Puis la musique, les mariés entrent sous les acclamations. La soirée peut commencer. On se défoule puis on s'assoit pour le dîner — un tour des tables pour les photos de groupe. Souvent, le repas s'entremêle de musique et de danse. Puis viennent les discours, les interventions, les jeux — certains préparés depuis des semaines, d'autres improvisés au micro. Les larmes ne préviennent pas, les rires non plus. Le gâteau clôt le repas.)
+
+  23h00 — Dancing (Danse)
+    The first dance, then the floor opens to everyone. Lights go down, music rises, people let go. Some dance well, others don't care. The cake arrives — everyone stops, they cut, they taste. Then the floor comes back. It empties around midnight when the parents leave, fills again. We stay until the end. The best images, sometimes, happen at this hour.
+    (L'ouverture de bal, puis la piste qui s'ouvre à tous. Les lumières baissent, la musique monte, les gens se lâchent. Il y a ceux qui dansent bien et ceux qui s'en fichent. La piste se vide vers minuit quand les parents rentrent, se remplit à nouveau. On reste jusqu'à la fin. Les meilleures images, parfois, se font à cette heure-là.)
+
+
+— SECTION V · A frame (Un extrait) —
+
+  « A wedding film »
+  (« Un film de mariage »)
+
+  Watch the film →
+  (Voir le film →)
+
+
+— SECTION VI · Your quote (Votre devis) —
+
+  Let's build
+  your day together.
+  (Construisons ensemble
+  votre journée.)
+
+  A few questions to estimate your quote in real time.
+  (Quelques questions pour estimer votre devis en temps réel.)
+
+
+— SECTION VII · What they say (Ce qu'ils en disent) —
+
+  Témoignage 1 — Tatiana Q. · Wedding, June 2024 (Mariage, juin 2024)
+    I highly recommend Antoine and Rémy, who perfectly captured our wedding! The photos are of very high quality. We had a real love-at-first-sight feeling for these two professionals.
+    (Je vous recommande vivement Antoine et Rémy qui ont parfaitement immortalisé notre mariage ! Les photos sont de très bonne qualité. Nous avons eu un vrai coup de cœur pour ces deux professionnels.)
+
+  Témoignage 2 — Pascale B. · Wedding, October 2024 (Mariage, octobre 2024)
+    We greatly appreciated working with Antoine and Rémi to capture our children's wedding: their kindness, availability, attentiveness, and of course their outstanding work. We will call on them again without hesitation.
+    (Nous avons énormément apprécié notre collaboration avec Antoine et Rémi pour immortaliser le mariage de nos enfants : la gentillesse, la disponibilité, leur écoute, et bien sûr leur travail d'une très grande qualité. Nous referons appel à eux sans hésitation.)
+
+  Témoignage 3 — Maxime B. · Wedding, October 2024 (Mariage, octobre 2024)
+    Antoine and Rémi are extremely kind, our wedding photos are magnificent — I recommend them wholeheartedly and will call on them again!
+    (Antoine et Rémi sont d'une extrême gentillesse, nos photos de mariage sont magnifiques, je les recommande et referai appel à eux pour de prochaines photos !)
+
+
+— SECTION VIII · Write (Écrire) —
+
+  Let's talk about
+  your project.
+  (Parlons de
+  votre projet.)
+
+  Write to us, we reply within 48h. Or call us — we always take the time for a call before any commitment.
+  (Écrivez-nous, nous répondons sous 48h. Ou appelez-nous — on prend toujours le temps d'un appel avant tout engagement.)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PIED DE PAGE (Footer — toutes les pages)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  Let's talk about your project
+  (Parlons de votre projet)
+
+  Reply within 48 hours
+  (Réponse sous 48 heures)
+
+  Antoine & Rémi Ferrera. Father and son — photographers and filmmakers based in Provence Alpes Côte d'Azur.
+  (Antoine & Rémi Ferrera. Père et fils, photographes et vidéastes basés en Provence Alpes Côte d'Azur.)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TUNNEL DE DEVIS (DevisFunnel — page Mariage)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Barre de progression — noms des étapes :
+  Moments / Date / Venues (Lieux) / Format / Drone / Details (Infos) / Estimate (Estimation) / Contact
+
+Étape 1 — Moments :
+  Which moments would you like us to cover?
+  (Quels moments souhaitez-vous nous confier ?)
+
+  Select all the moments you'd like covered.
+  (Sélectionnez tous les moments qui vous intéressent.)
+
+  Getting ready          (Préparatifs)
+  Civil ceremony         (Mairie)
+  Religious or civil ceremony  (Cérémonie religieuse ou laïque)
+  Group photos           (Photos de groupes)
+  Couple portraits       (Photos de couple)
+  Cocktail hour          (Cocktail / Vin d'honneur)
+    Full coverage          (Couverture complète)
+    Beginning only         (Jusqu'au début seulement)
+  Reception dinner       (Dîner)
+    Until the cake         (Jusqu'au gâteau)
+    Setup and group photos only  (Installation et groupes seulement)
+  Evening / Dancing      (Soirée / Danse)
+    Extended evening       (Jusqu'au bout de la nuit)
+    Start of dancing · 30 min  (Début des danses · 30 min)
+
+  Accommodation for photographers  (Hébergement des prestataires)
+    Hotel allowance: +120 €   (Forfait hôtelier : +120 €)
+    Covered by the couple     (Pris en charge par les mariés)
+
+  Additional services (before or after the wedding)
+  (Prestations complémentaires (avant ou après le mariage))
+    Engagement session   (Séance d'engagement)
+    Trash the dress      [identique]
+    Other                (Autre)
+    Please specify...    (Précisez...)
+
+  Remove   (Retirer)
+
+
+Étape 2 — Date :
+  Have you set a date?
+  (Avez-vous fixé une date ?)
+
+  Date not yet set       (Date non encore fixée)
+  Wedding date           (Date du mariage)
+  The civil ceremony takes place on a different date
+  (La mairie se déroule à une date différente)
+  Civil ceremony date    (Date de la mairie)
+
+
+Étape 3 — Venues (Lieux) :
+  Where will your events take place?
+  (Où se déroulent vos événements ?)
+
+  Full address — for travel cost calculation and venue scouting.
+  (Adresse complète — pour le calcul des déplacements et le repérage des lieux.)
+
+  No moments selected in the previous step.
+  (Aucun moment sélectionné à l'étape précédente.)
+
+  Different venue        (Lieu différent)
+  Same venue as:         (Même lieu que :)
+
+  Venue name or full address...
+  (Nom du lieu ou adresse complète...)
+
+  If the venue isn't found, enter the town name.
+  (Si le lieu n'est pas reconnu, saisissez la commune — ex : Cros de Cagnes.)
+
+
+Étape 4 — Format :
+  How would you like to relive this day in ten years?
+  (Comment souhaitez-vous revivre cette journée dans dix ans ?)
+
+  Choose what suits you.
+  (Choisissez ce qui vous ressemble.)
+
+  Photo only    (Photo uniquement)
+    Still images to (re)live every moment.
+    (Des images fixes, pour (re)voir chaque instant.)
+
+  Video only    (Vidéo uniquement)
+    The day in motion — voices, music, emotions. Lapel mic included.
+    (La journée en mouvement — voix, musique, émotions. Micro-cravate fourni.)
+
+  Photo + Vidéo  [identique]
+    The choice of most of our couples. Nothing is missed.
+    (Le choix de la plupart de nos mariés. Rien ne manque.)
+    recommended   (recommandé)
+
+  Film format    (Format du film)
+    Film — 20 to 40 min    (Film — 20 à 40 min)
+    The story of your day  (L'histoire de votre journée)
+    included               (inclus)
+
+    Teaser — 2 to 5 min    (Teaser — 2 à 5 min)
+    The emotions in a shareable highlight
+    (Les émotions dans un résumé à partager)
+
+    Full version — 1h+     (Intégral — 1h+)
+    Because some days, you'll want to relive every moment as if you were there
+    (Parce que certains jours, vous voudrez revivre chaque moment comme si vous y étiez)
+
+
+Étape 5 — Drone :
+  Would you like aerial drone footage?
+  (Souhaitez-vous des prises de vue par drone ?)
+
+  Yes  (Oui)
+    Aerial views of the venue, guests, and ceremony. +€200
+    (Vues aériennes du lieu, des invités, de la cérémonie. +200 €)
+
+  No   (Non)
+
+
+Étape 6 — Details (Infos) :
+  Anything specific we should know?
+  (Des éléments particuliers à nous signaler ?)
+
+  Venue constraints, important moments, specific requests — anything that helps us prepare an accurate quote.
+  (Contraintes de lieu, moments importants, demandes spécifiques — tout ce qui nous aide à préparer un devis juste.)
+
+  e.g. outdoor ceremony, surprise speech, list of people not to miss…
+  (Ex : cérémonie en extérieur, discours surprise des témoins, liste de personnes à ne pas manquer…)
+
+
+Étape 7 — Estimate (Estimation) :
+  Your previous estimates     (Vos estimations précédentes)
+  Your new estimate           (Votre nouvelle estimation)
+  Your estimate               (Votre estimation)
+
+  Estimated duration:         (Durée estimée :)
+  of coverage                 (de présence)
+
+  Travel excl. motorway tolls · xxx km round trip
+  (Déplacement hors péages autoroute · xxx km A/R)
+
+  Accommodation for photographers   (Hébergement des prestataires)
+  Covered by the couple             (Pris en charge par les mariés)
+
+  Estimated total incl. VAT   (Total estimé TTC)
+
+  Indicative estimate. Final quote confirmed within 48h.
+  (Estimation indicative. Devis définitif confirmé sous 48h.)
+
+  Does this budget work for you?    (Ce budget vous convient-il ?)
+    Yes, absolutely              (Oui, tout à fait)
+    It's slightly above my budget, but I'm interested
+    (C'est un peu au-dessus, mais je suis intéressé·e)
+    It's above my budget         (C'est au-dessus de mon budget)
+
+  What would you like to do?   (Quelle est votre intention ?)
+    I'd like to book this date   (Je souhaite réserver cette date)
+    I'd like to discuss before deciding
+    (Je voudrais en discuter avant de décider)
+    I'll think about it          (Je vais réfléchir)
+    Make a new estimate          (Faire une nouvelle estimation)
+
+  → See estimate                (→ Voir l'estimation)
+
+
+Étape 8 — Contact :
+  Your contact details   (Vos coordonnées)
+  Your estimates         (Vos simulations)
+  Estimate               (Simulation)
+
+  First name    (Prénom)
+  Last name     (Nom)
+  Phone         (Téléphone)
+
+  Send my request    (Envoyer ma demande)
+  Sending…           (Envoi en cours…)
+  We'll get back to you within 48h.
+  (Nous vous répondons sous 48h.)
+
+  Sending failed. Please try again or contact us directly at contact@dfly.fr
+  (L'envoi a échoué. Veuillez réessayer ou nous écrire directement à contact@dfly.fr)
+
+
+Confirmation d'envoi :
+  Your request has been sent.
+  (Votre demande a bien été envoyée.)
+
+  We'll get back to you within 48h.
+  (Nous vous répondons sous 48h.)
+
+  Start a new estimate   (Faire une nouvelle estimation)
+
+
+Navigation entre étapes :
+  Back     (Retour)
+  Next →   (Suivant →)
+  Continue → (Continuer →)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+NOTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Bug détecté lors de la compilation de ce document :
+Section IV de la page Mariage, le label du SectionLabel en FR
+est tronqué : t("L", "The day, hour by hour") — le "L" semble
+être une coupure du texte "La journée, heure par heure". À vérifier.
