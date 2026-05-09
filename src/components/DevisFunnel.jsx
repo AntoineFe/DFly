@@ -329,7 +329,7 @@ async function mapboxSuggest(query) {
   } catch { return []; }
 }
 
-function AddressInput({ id, loc, setAddress, setCoords, lang }) {
+function AddressInput({ id, loc, setAddress, setLoc, lang }) {
   const t = mkT(lang);
   const [suggestions, setSuggestions] = useState([]);
   const [open, setOpen] = useState(false);
@@ -346,8 +346,7 @@ function AddressInput({ id, loc, setAddress, setCoords, lang }) {
   }
 
   function handleSelect(s) {
-    setAddress(s.label);
-    setCoords(s.coords);
+    setLoc(s.label, s.coords);
     setSuggestions([]);
     setOpen(false);
   }
@@ -397,8 +396,8 @@ function StepLieux({ state, set, lang }) {
     set("lieux", { ...lieux, [id]: { ...lieux[id], address, coords: null } });
   }
 
-  function setCoords(id, coords) {
-    set("lieux", { ...lieux, [id]: { ...lieux[id], coords } });
+  function setLoc(id, address, coords) {
+    set("lieux", { ...lieux, [id]: { ...lieux[id], address, coords } });
   }
 
   function setSameAs(id, sameAs) {
@@ -452,7 +451,7 @@ function StepLieux({ state, set, lang }) {
                   id={m.id}
                   loc={loc}
                   setAddress={v => setAddress(m.id, v)}
-                  setCoords={v => setCoords(m.id, v)}
+                  setLoc={(address, coords) => setLoc(m.id, address, coords)}
                   lang={lang}
                 />
               )}
