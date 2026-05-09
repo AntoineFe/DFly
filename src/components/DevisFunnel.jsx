@@ -821,17 +821,22 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
 const STEP_LABELS_FR = ["Moments", "Date", "Lieux", "Format", "Drone", "Infos", "Estimation", "Contact"];
 const STEP_LABELS_EN = ["Moments", "Date", "Venues", "Format", "Drone", "Details", "Estimate", "Contact"];
 
-function Progress({ step, lang }) {
+function Progress({ step, onGoTo, lang }) {
   const labels = lang === "EN" ? STEP_LABELS_EN : STEP_LABELS_FR;
   return (
     <div style={{ marginBottom: 40 }}>
       <div style={{ display: "flex", gap: 4, marginBottom: 8 }}>
         {labels.map((_, i) => (
-          <div key={i} style={{
-            height: 2, flex: 1,
-            background: i <= step ? "var(--fg)" : "var(--line)",
-            transition: "background .3s",
-          }} />
+          <div
+            key={i}
+            onClick={() => i < step && onGoTo(i)}
+            style={{
+              height: 2, flex: 1,
+              background: i <= step ? "var(--fg)" : "var(--line)",
+              transition: "background .3s",
+              cursor: i < step ? "pointer" : "default",
+            }}
+          />
         ))}
       </div>
       <div style={{ fontSize: 12, color: "var(--fg-muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
@@ -955,7 +960,7 @@ export default function DevisFunnel({ lang = "FR" }) {
 
   return (
     <div style={{ maxWidth: 680, margin: "0 auto" }}>
-      <Progress step={step} lang={lang} />
+      <Progress step={step} onGoTo={setStep} lang={lang} />
       {steps[step]}
       {step < 7 && (
         <NavBtns
