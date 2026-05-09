@@ -830,14 +830,16 @@ function Progress({ step, onGoTo, lang }) {
           <div
             key={i}
             onClick={() => i < step && onGoTo(i)}
-            style={{
-              flex: 1, padding: "8px 0", cursor: i < step ? "pointer" : "default",
-            }}
+            title={i < step ? labels[i] : undefined}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", cursor: i < step ? "pointer" : "default" }}
             onMouseEnter={e => { if (i < step) e.currentTarget.querySelector("span").style.opacity = "0.4"; }}
             onMouseLeave={e => { if (i < step) e.currentTarget.querySelector("span").style.opacity = "1"; }}
           >
             <span style={{
-              display: "block", height: 2,
+              display: "block",
+              width: i === step ? 10 : 8,
+              height: i === step ? 10 : 8,
+              borderRadius: "50%",
               background: i <= step ? "var(--fg)" : "var(--line)",
               transition: "opacity .2s",
             }} />
