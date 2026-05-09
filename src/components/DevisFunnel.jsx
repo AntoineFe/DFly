@@ -5,11 +5,12 @@ import { useState, useEffect } from "react";
 const CAGNES = { lat: 43.6646, lng: 7.1579 };
 const KM_RATE = 0.697;
 const MIN_TTC = 500;
-const FULL_DAY_H = 14.5;  // heures actives max (captation)
-const REAL_DAY_H = 16;    // présence réelle avec temps morts (10h → 2h)
-const PP_PHOTO_HT = 1200;  // Rémi 3j × 400€
-const PP_VIDEO_HT = 2000;  // Antoine 5j × 400€
-const CAPTATION_HT = 800;  // 2 personnes × 400€/j
+const FULL_DAY_H = 14.5;
+const REAL_DAY_H = 16;
+const PP_PHOTO_HT = 1200;
+const PP_VIDEO_HT = 2000;
+const CAPTATION_HT = 800;
+const HOTEL_TTC = 120;
 
 const MOMENTS = [
   { id: "preparatifs", label: "Préparatifs",                       en: "Getting ready",                       h: 2   },
@@ -539,7 +540,9 @@ function PriceLine({ label, value, muted }) {
 function StepEstimation({ state, set, travel, travelLoading, onExplore, simulations, lang }) {
   const t = mkT(lang);
   const { ttc, h } = calcPrice(state);
-  const total = ttc + (travel?.cost || 0);
+  const needsHotel = state.moments.danse === "etendue";
+  const hotelCost  = needsHotel && !state.hotelPrisEnCharge ? HOTEL_TTC : 0;
+  const total = ttc + (travel?.cost || 0) + hotelCost;
 
   const fmtLabel    = formatLabel(state, lang);
   const momentsLabel = momentsSummary(state.moments, lang);
@@ -600,6 +603,20 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
         ) : travel?.km > 0 ? (
           <PriceLine label={`${t("Déplacement", "Travel")} · ${travel.km} km ${t("A/R", "round trip")}`} value={`+${eur(travel.cost)} + ${t("péages", "tolls")}`} muted />
         ) : null}
+
+        {needsHotel && (
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
+            padding: "10px 0", borderBottom: "1px solid var(--line)", gap: 16 }}>
+            <label style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", color: "var(--fg-muted)", fontSize: 15, flex: 1 }}>
+              <input type="checkbox" checked={!!state.hotelPrisEnCharge}
+                onChange={() => set("hotelPrisEnCharge", !state.hotelPrisEnCharge)} />
+              {t("Hébergement des photographes pris en charge par les mariés", "Accommodation provided by the couple")}
+            </label>
+            <span style={{ whiteSpace: "nowrap", color: "var(--fg-muted)", fontSize: 15 }}>
+              {state.hotelPrisEnCharge ? t("offert", "covered") : `+${eur(HOTEL_TTC)}`}
+            </span>
+          </div>
+        )}
 
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline",
           padding: "20px 0 0", marginTop: 4 }}>
@@ -844,6 +861,7 @@ const INIT = {
   lieux: {},
   format: "both",
   teaser: false, integral: false, drone: false,
+  hotelPrisEnCharge: false,
   demandes: "",
   reaction: "", intention: "",
   prenom: "", nom: "", email: "", tel: "",
