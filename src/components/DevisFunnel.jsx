@@ -920,6 +920,7 @@ export default function DevisFunnel({ lang = "FR" }) {
         setTravelLoading(false);
       });
     }
+    document.getElementById("devis")?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [step]);
 
   function goNext() { setStep(s => { const n = s + 1; setMaxStep(m => Math.max(m, n)); return n; }); }
