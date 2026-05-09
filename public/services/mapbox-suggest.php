@@ -20,9 +20,10 @@ if ($body === false) {
 $data = json_decode($body, true);
 $results = array_map(function($f) {
     $p = $f['properties'];
+    $street = trim(($p['housenumber'] ?? '') . ' ' . ($p['street'] ?? '')) ?: null;
     $parts = array_filter([
         $p['name']    ?? null,
-        $p['street']  ?? null,
+        $street,
         $p['city']    ?? ($p['town'] ?? ($p['village'] ?? null)),
         $p['postcode'] ?? null,
         $p['country'] ?? null,
