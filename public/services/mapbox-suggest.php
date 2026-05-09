@@ -23,7 +23,10 @@ if (!$token) {
 $url = "https://api.mapbox.com/geocoding/v5/mapbox.places/"
      . urlencode($q)
      . ".json?access_token=" . urlencode($token)
-     . "&autocomplete=true&language=fr&country=fr&types=address,place,poi&limit=5";
+     . "&autocomplete=true&language=fr&country=fr"
+     . "&types=poi,place,locality,address"
+     . "&proximity=6.9,43.6"
+     . "&limit=6";
 
 $ctx = stream_context_create(['http' => ['timeout' => 5]]);
 $body = @file_get_contents($url, false, $ctx);
