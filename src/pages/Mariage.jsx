@@ -109,6 +109,16 @@ function Mariage({ lang, setLang }) {
                 {t(<>Le jour<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>qui devient</em><br/>mémoire.</>,
                    <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>that becomes</em><br/>memory.</>)}
               </h1>
+              <a href="#devis" style={{
+                display: "inline-block", marginTop: 32,
+                fontFamily: "var(--sans)", fontSize: 11,
+                letterSpacing: "0.32em", textTransform: "uppercase",
+                border: "1px solid rgba(243,237,226,0.7)",
+                padding: "12px 24px", color: "rgba(243,237,226,0.9)",
+                textDecoration: "none",
+              }}>
+                {t("Estimer mon projet", "Get a quote")}
+              </a>
             </div>
             <div style={{ maxWidth: 500, paddingBottom: 24 }}>
               <p style={{
@@ -123,16 +133,6 @@ function Mariage({ lang, setLang }) {
                   "Antoine and Rémi, father and son, photographers and filmmakers. Depending on your day, we work as a duo: two photographers, two filmmakers, or photographer & filmmaker."
                 )}
               </p>
-              <a href="#devis" style={{
-                display: "inline-block", marginTop: 24,
-                fontFamily: "var(--sans)", fontSize: 11,
-                letterSpacing: "0.32em", textTransform: "uppercase",
-                border: "1px solid rgba(243,237,226,0.7)",
-                padding: "12px 24px", color: "rgba(243,237,226,0.9)",
-                textDecoration: "none",
-              }}>
-                {t("Estimer mon projet", "Get a quote")}
-              </a>
             </div>
           </div>
         </div>
