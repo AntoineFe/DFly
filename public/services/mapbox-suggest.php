@@ -10,14 +10,14 @@ if (strlen($q) < 2) {
 $config_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/smtp-config.php';
 if (!file_exists($config_path)) {
     http_response_code(500);
-    exit(json_encode(["error" => "config introuvable"]));
+    exit(json_encode(["error" => "config introuvable", "path" => $config_path]));
 }
 $cfg = require $config_path;
 
 $token = $cfg['mapbox_token'] ?? '';
 if (!$token) {
     http_response_code(500);
-    exit(json_encode(["error" => "token manquant"]));
+    exit(json_encode(["error" => "token manquant", "path" => $config_path]));
 }
 
 $url = "https://api.mapbox.com/geocoding/v5/mapbox.places/"
