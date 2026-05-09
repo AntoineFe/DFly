@@ -831,12 +831,17 @@ function Progress({ step, onGoTo, lang }) {
             key={i}
             onClick={() => i < step && onGoTo(i)}
             style={{
-              height: 2, flex: 1,
-              background: i <= step ? "var(--fg)" : "var(--line)",
-              transition: "background .3s",
-              cursor: i < step ? "pointer" : "default",
+              flex: 1, padding: "8px 0", cursor: i < step ? "pointer" : "default",
             }}
-          />
+            onMouseEnter={e => { if (i < step) e.currentTarget.querySelector("span").style.opacity = "0.4"; }}
+            onMouseLeave={e => { if (i < step) e.currentTarget.querySelector("span").style.opacity = "1"; }}
+          >
+            <span style={{
+              display: "block", height: 2,
+              background: i <= step ? "var(--fg)" : "var(--line)",
+              transition: "opacity .2s",
+            }} />
+          </div>
         ))}
       </div>
       <div style={{ fontSize: 12, color: "var(--fg-muted)", textTransform: "uppercase", letterSpacing: "0.1em" }}>
