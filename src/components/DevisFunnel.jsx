@@ -27,7 +27,7 @@ const MOMENTS = [
   ]},
   { id: "danse",       label: "Soirée / Danse",                    en: "Evening / Dancing", opts: [
     { v: "etendue",  label: "Jusqu'au bout de la nuit",            en: "Extended evening",             h: 3   },
-    { v: "standard", label: "Début des danses",                     en: "Start of dancing",             h: 1.5 },
+    { v: "standard", label: "Début des danses · 30 min",            en: "Start of dancing · 30 min",    h: 1.5 },
   ]},
 ];
 
