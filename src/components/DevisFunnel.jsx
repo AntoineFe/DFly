@@ -320,18 +320,12 @@ function StepDate({ state, set, lang }) {
   );
 }
 
-const MAPBOX_TOKEN = ["pk.eyJ1IjoiYW50b2luZWZlIiwiYSI6ImNtb3kybTJ5NT", "AycTEycHNjY3Y1MndqbWIifQ._dZ6nPOaP_A9E6VQcgCD-A"].join("");
-
 async function mapboxSuggest(query) {
   if (!query || query.length < 2) return [];
   try {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${MAPBOX_TOKEN}&autocomplete=true&language=fr&country=fr&types=address,place,poi&limit=5`;
+    const url = `${import.meta.env.BASE_URL}services/mapbox-suggest.php?q=${encodeURIComponent(query)}`;
     const r = await fetch(url);
-    const d = await r.json();
-    return (d.features || []).map(f => ({
-      label: f.place_name,
-      coords: { lng: f.center[0], lat: f.center[1] },
-    }));
+    return await r.json();
   } catch { return []; }
 }
 
