@@ -32,7 +32,8 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const curFile  = files[index]
   const nextFile = index < files.length - 1 ? files[index + 1] : null
 
-  const isZoomed = zoomed || scale > 1
+  const isPanMode = zoomed || scale > 1  // pan actif (double-tap OU pinch)
+  const isZoomed  = zoomed               // contraintes CSS supprimées (double-tap uniquement)
 
   const resetZoom = () => {
     setZoomed(false)
@@ -233,7 +234,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
               </video>
             ) : (
               <img src={f.url} alt={f.name}
-                onMouseDown={f === curFile && isZoomed ? e => {
+                onMouseDown={f === curFile && isPanMode ? e => {
                   e.preventDefault()
                   mouseStartPos.current = { x: e.clientX, y: e.clientY }
                   mouseDragged.current  = false
@@ -251,8 +252,10 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
                     setZoomed(true)
                   }
                 } : undefined}
-                style={f === curFile && isZoomed ? {
-                  maxWidth: 'none', maxHeight: 'none',
+                style={f === curFile && isPanMode ? {
+                  ...(isZoomed
+                    ? { maxWidth: 'none', maxHeight: 'none' }
+                    : { maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain' }),
                   transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`,
                   transformOrigin: 'center center',
                   cursor: isMouseDown ? 'grabbing' : 'grab',
