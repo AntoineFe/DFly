@@ -8,7 +8,8 @@ import DflyMonogram from '../components/DflyMonogram'
 function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const [dragX,           setDragX]           = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [scale,           setScale]           = useState(1)
+  const [zoomed,          setZoomed]          = useState(false) // double-tap : saute les contraintes CSS
+  const [scale,           setScale]           = useState(1)     // pinch : zoom continu
   const [pan,             setPan]             = useState({ x: 0, y: 0 })
   const [isMouseDown,     setIsMouseDown]     = useState(false)
 
@@ -26,13 +27,23 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const pinchStartScale = useRef(1)
   const mouseStartPos   = useRef(null)
   const mouseDragged    = useRef(false)
-  const curImgRef       = useRef(null)
 
   const prevFile = index > 0               ? files[index - 1] : null
   const curFile  = files[index]
   const nextFile = index < files.length - 1 ? files[index + 1] : null
 
+  const isZoomed = zoomed || scale > 1
+
+  const resetZoom = () => {
+    setZoomed(false)
+    setScale(1); scaleRef.current = 1
+    setPan({ x: 0, y: 0 })
+    panAccum.current = { x: 0, y: 0 }
+    panLive.current  = { x: 0, y: 0 }
+  }
+
   useLayoutEffect(() => {
+    setZoomed(false)
     setScale(1); scaleRef.current = 1
     setIsTransitioning(false)
     setDragX(0); dragXRef.current = 0
@@ -111,7 +122,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     touchStartY.current  = e.touches[0].clientY
     didSwipe.current     = false
     didDoubleTap.current = false
-    if (scaleRef.current === 1) setIsTransitioning(false)
+    if (!zoomed && scaleRef.current === 1) setIsTransitioning(false)
   }
 
   function handleTouchMove(e) {
@@ -129,7 +140,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     const dx = e.touches[0].clientX - touchStartX.current
     const dy = e.touches[0].clientY - touchStartY.current
 
-    if (scaleRef.current > 1) {
+    if (zoomed || scaleRef.current > 1) {
       const maxX = window.innerWidth  * 2
       const maxY = window.innerHeight * 2
       const newX = Math.max(-maxX, Math.min(maxX, panAccum.current.x + dx))
@@ -157,21 +168,14 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     touchStartX.current = null
     touchStartY.current = null
 
-    // Double-tap → toggle zoom
+    // Double-tap → toggle zoom (saute les contraintes CSS, scale revient à 1)
     const now = Date.now()
     if (now - lastTapTime.current < 300 && Math.abs(rawDeltaX) < 10) {
       didDoubleTap.current = true
-      if (scaleRef.current > 1) {
-        setScale(1); scaleRef.current = 1
-        setPan({ x: 0, y: 0 })
-        panAccum.current = { x: 0, y: 0 }
-        panLive.current  = { x: 0, y: 0 }
+      if (zoomed || scaleRef.current > 1) {
+        resetZoom()
       } else {
-        const img = curImgRef.current
-        const dpr      = window.devicePixelRatio || 1
-        const ratio    = img ? img.naturalWidth / (img.clientWidth * dpr) : 2
-        const newScale = Math.max(1, ratio)
-        setScale(newScale); scaleRef.current = newScale
+        setZoomed(true)
       }
       setDragX(0); dragXRef.current = 0
       lastTapTime.current = 0
@@ -179,7 +183,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     }
     lastTapTime.current = now
 
-    if (scaleRef.current > 1) {
+    if (zoomed || scaleRef.current > 1) {
       panAccum.current = { ...panLive.current }
       return
     }
@@ -229,8 +233,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
               </video>
             ) : (
               <img src={f.url} alt={f.name}
-                ref={f === curFile ? curImgRef : null}
-                onMouseDown={f === curFile && scale > 1 ? e => {
+                onMouseDown={f === curFile && isZoomed ? e => {
                   e.preventDefault()
                   mouseStartPos.current = { x: e.clientX, y: e.clientY }
                   mouseDragged.current  = false
@@ -242,18 +245,13 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
                   mouseDragged.current = false
                   if (wasDragging) return
                   e.stopPropagation()
-                  if (scaleRef.current > 1) {
-                    setScale(1); scaleRef.current = 1
-                    setPan({ x: 0, y: 0 })
-                    panAccum.current = { x: 0, y: 0 }
-                    panLive.current  = { x: 0, y: 0 }
+                  if (zoomed || scaleRef.current > 1) {
+                    resetZoom()
                   } else {
-                    const ratio    = e.target.naturalWidth / e.target.clientWidth
-                    const newScale = Math.max(1.5, Math.min(4, ratio))
-                    setScale(newScale); scaleRef.current = newScale
+                    setZoomed(true)
                   }
                 } : undefined}
-                style={f === curFile && scale > 1 ? {
+                style={f === curFile && isZoomed ? {
                   maxWidth: 'none', maxHeight: 'none',
                   transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`,
                   transformOrigin: 'center center',
