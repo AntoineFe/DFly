@@ -26,6 +26,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
   const [menuOpen, setMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
   const userMenuRef = useRef(null)
+  const userSectionRef = useRef(null)
   const location = useLocation()
 
   useEffect(() => {
@@ -201,8 +202,11 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
           padding: `${galerieUser ? '20px' : '32px'} var(--gutter) 48px`,
         }}>
           {galerieUser && (
-            <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: 22, color: 'var(--fg)', marginBottom: 16 }}>
-              Bonjour {galerieUser.firstName}
+            <div
+              onClick={() => userSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: 22, color: 'var(--fg)', marginBottom: 16, cursor: 'pointer' }}
+            >
+              Bonjour {galerieUser.firstName} <span style={{ fontSize: 14, opacity: 0.5 }}>↓</span>
             </div>
           )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
@@ -231,7 +235,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
           </a>
           {galerieUser && (
-            <div style={{ marginTop: 32, borderTop: '1px solid var(--line)', paddingTop: 24 }}>
+            <div ref={userSectionRef} style={{ marginTop: 32, borderTop: '1px solid var(--line)', paddingTop: 24 }}>
               <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 16 }}>
                 {galerieUser.firstName}
               </div>
