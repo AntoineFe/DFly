@@ -341,7 +341,7 @@ function Mariage({ lang, setLang }) {
         />
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
-            <SectionLabel num="IV" label={t("L", "The day, hour by hour")} align="center" />
+            <SectionLabel num="IV" label={t("Le récit d'une journée", "The story of a day")} align="center" />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(36px, 4.4vw, 60px)",
@@ -357,57 +357,34 @@ function Mariage({ lang, setLang }) {
             </h2>
           </div>
 
-          <div style={{ maxWidth: 920, margin: "0 auto" }}>
+          <div style={{ maxWidth: 680, margin: "0 auto" }}>
             {[
-              { time: "10h00", fr: "Préparatifs",  en: "Preparations",
-                fr_d: "Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman guide, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien mais ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.",
+              { fr_d: "Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman guide, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien mais ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.",
                 en_d: "In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother holds something between joy and nostalgia. The grandfather says nothing but misses nothing. Then the door opens. The father sees his daughter." },
-              { time: "14h00", fr: "Mairie", en: "Town hall",
-                fr_d: "C'est l'étape qui change tout — devant la loi et devant les hommes. La salle est joyeuse, le marié entre, puis la mariée, puis la salle vit au rythme des paroles du maire. Des textes simples, lus à voix haute, officiels. Des sourires, des regards, des larmes.\nC'est la naissance d'une famille.",
-                en_d: "This is the step that changes everything — before the law and before the world. The room is joyful, the groom enters, then the bride, then the room comes alive with the mayor's words. Simple texts, read aloud, irrevocable. Smiles, glances, tears. A family is born." },
-              { time: "15h00", fr: "Cérémonie laïque ou religieuse", en: "Ceremony",
-                fr_d: "La cérémonie — religieuse ou laïque — ramène vers l'essentiel. On pense à ceux qui sont partis, on mesure à quel point on tient à ceux qui sont encore là. Les mots viennent du cœur — et pourtant la salle reste légère, les rires arrivent entre les larmes. C'est ce mélange qu'on observe dans l'objectif : la profondeur et la joie, souvent sur le même visage, au même instant.",
+              { fr_d: "La mairie, c'est l'étape qui change tout — devant la loi et devant les hommes. La salle est joyeuse, le marié entre, puis la mariée, puis la salle vit au rythme des paroles du maire. Des textes simples, lus à voix haute, officiels. Des sourires, des regards, des larmes. C'est la naissance d'une famille.",
+                en_d: "The town hall is the step that changes everything — before the law and before the world. The room is joyful, the groom enters, then the bride, then the room comes alive with the mayor's words. Simple texts, read aloud, irrevocable. Smiles, glances, tears. A family is born." },
+              { fr_d: "La cérémonie — religieuse ou laïque — ramène vers l'essentiel. On pense à ceux qui sont partis, on mesure à quel point on tient à ceux qui sont encore là. Les mots viennent du cœur — et pourtant la salle reste légère, les rires arrivent entre les larmes. C'est ce mélange qu'on observe dans l'objectif : la profondeur et la joie, souvent sur le même visage, au même instant.",
                 en_d: "The ceremony — religious or secular — brings us back to what matters. We think of those who have gone, we measure how much we hold onto those still here. Words come from the heart — and yet the room stays light, laughter arrives between tears. That is the mix we observe through the lens: depth and joy, often on the same face, at the same instant." },
-              { time: "16h30", fr: "Séance photo", en: "Portrait session",
-                fr_d: "Ils se sont dit oui. À la sortie, la joie explose — bulles et pétales brillent, tout le monde veut sa photo avec les mariés. Puis le couple s'éclipse. C'est notre moment : trente minutes, à l'écart, loin du bruit.",
+              { fr_d: "Ils se sont dit oui. À la sortie, la joie explose — bulles et pétales brillent, tout le monde veut sa photo avec les mariés. Puis le couple s'éclipse. C'est notre moment : trente minutes, à l'écart, loin du bruit.",
                 en_d: "They've said yes. Outside, joy erupts — bubbles and petals catching the light, everyone wants a photo with the couple. Then they slip away. This is our moment: thirty minutes, apart from the crowd, away from the noise." },
-              { time: "18h00", fr: "Cocktail / Vin d'honneur", en: "Cocktail hour",
-                fr_d: "Les amis se retrouvent. Les deux familles font connaissance, un verre à la main. Des photos spontanées, sans mise en scène.",
-                en_d: "The cocktail hour is the world finding itself again. Families discover each other, old friends recognise one another with a smile. Children run between adults, glasses clink. While the couple was with us, the party organised itself without them. When they reappear, there's a way of applauding that says everything." },
-              { time: "20h00", fr: "Dîner", en: "Dinner",
-                fr_d: "Une salle décorée, des tables soignées. Le plan de table est une surprise — les invités découvrent, s'amusent, s'émerveillent. Puis la musique, les mariés entrent sous les acclamations. La soirée peut commencer. On se défoule puis on s'assoit pour le dîner — un tour des tables pour les photos de groupe. Souvent, le repas s'entremêle de musique et de danse. Puis viennent les discours, les interventions, les jeux — certains préparés depuis des semaines, d'autres improvisés au micro. Les larmes ne préviennent pas, les rires non plus. Le gâteau clôt le repas.",
-                en_d: "A decorated room, carefully dressed tables. The seating plan is a surprise — guests discover it, laugh, wonder. Then the music, the couple enters to cheers. The evening can begin. People let loose then take their seats — a round of tables for group photos. Then come the speeches, the games, the surprises — some prepared for weeks, others improvised at the mic. Tears don't warn you. Neither do laughs." },
-              { time: "23h00", fr: "Danse", en: "Dancing",
-                fr_d: "L'ouverture de bal, puis la piste qui s'ouvre à tous. Les lumières baissent, la musique monte, les gens se lâchent. Il y a ceux qui dansent bien et ceux qui s'en fichent. La piste se vide vers minuit quand les parents rentrent, se remplit à nouveau. On reste jusqu'à la fin. Les meilleures images, parfois, se font à cette heure-là.",
-                en_d: "The first dance, then the floor opens to everyone. Lights go down, music rises, people let go. Some dance well, others don't care. The cake arrives — everyone stops, they cut, they taste. Then the floor comes back. It empties around midnight when the parents leave, fills again. We stay until the end. The best images, sometimes, happen at this hour." },
+              { fr_d: "Les amis se retrouvent. Les deux familles font connaissance, un verre à la main. Des photos spontanées, sans mise en scène.",
+                en_d: "Friends find each other again. The two families discover one another, glass in hand. Spontaneous photos, nothing staged." },
+              { fr_d: "Une salle décorée, des tables soignées. Les mariés entrent sous les acclamations. Viennent les discours, les interventions, les jeux — certains préparés depuis des semaines, d'autres improvisés au micro. Les larmes ne préviennent pas, les rires non plus. Le gâteau clôt le repas.",
+                en_d: "A decorated room, carefully dressed tables. The couple enters to cheers. Then come the speeches, the games, the surprises — some prepared for weeks, others improvised at the mic. Tears don't warn you. Neither do laughs. The cake closes the meal." },
+              { fr_d: "L'ouverture de bal, puis la piste qui s'ouvre à tous. Les lumières baissent, la musique monte, les gens se lâchent. Il y a ceux qui dansent bien et ceux qui s'en fichent. On reste jusqu'à la fin. Les meilleures images, parfois, se font à cette heure-là.",
+                en_d: "The first dance, then the floor opens to everyone. Lights go down, music rises, people let go. Some dance well, others don't care. We stay until the end. The best images, sometimes, happen at this hour." },
             ].map((step, i) => (
-              <div key={i} className="grid-timeline-row" style={{
-                padding: "32px 0",
-                borderTop: "1px solid var(--line)",
-                borderBottom: i === 6 ? "1px solid var(--line)" : "none",
+              <p key={i} style={{
+                fontFamily: "var(--serif)",
+                fontSize: "clamp(18px, 1.5vw, 22px)",
+                lineHeight: 1.75,
+                fontWeight: 300,
+                fontStyle: "italic",
+                color: "var(--fg-muted)",
+                margin: "0 0 36px 0",
               }}>
-                <div>
-                  <div style={{
-                    fontFamily: "var(--serif-display)",
-                    fontSize: 28, fontStyle: "italic",
-                    fontWeight: 300, color: "var(--fg)",
-                  }}>{step.time}</div>
-                </div>
-                <div>
-                  <div style={{
-                    fontFamily: "var(--serif-display)",
-                    fontSize: 26, fontWeight: 400,
-                    color: "var(--fg)", marginBottom: 10,
-                  }}>{t(step.fr, step.en)}</div>
-                  <div style={{
-                    fontFamily: "var(--serif)",
-                    fontSize: "clamp(20px, 2vw, 30px)", lineHeight: 1.3,
-                    fontWeight: 300, fontStyle: "italic",
-                    color: "var(--fg-muted)",
-                    whiteSpace: "pre-line",
-                  }}>{t(step.fr_d, step.en_d)}</div>
-                </div>
-              </div>
+                {t(step.fr_d, step.en_d)}
+              </p>
             ))}
           </div>
         </div>
