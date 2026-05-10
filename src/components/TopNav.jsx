@@ -202,7 +202,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
       )}
     </header>
     {galerieUser && createPortal(
-      <div ref={userMenuRef} className="nav-links" style={{ position: 'fixed', top: 0, right: 'var(--gutter)', zIndex: 101, display: 'flex', alignItems: 'center', height: 64 }}>
+      <div ref={userMenuRef} className="nav-links" style={{ position: 'fixed', top: 0, right: 'var(--gutter)', zIndex: 101, alignItems: 'center', height: 64 }}>
         <button
           onClick={() => setUserMenuOpen(o => !o)}
           style={{
