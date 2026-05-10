@@ -168,8 +168,9 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
         panLive.current  = { x: 0, y: 0 }
       } else {
         const img = curImgRef.current
-        const ratio    = img ? img.naturalWidth / img.clientWidth : 2
-        const newScale = Math.max(1.5, Math.min(4, ratio))
+        const dpr      = window.devicePixelRatio || 1
+        const ratio    = img ? img.naturalWidth / (img.clientWidth * dpr) : 2
+        const newScale = Math.max(1, ratio)
         setScale(newScale); scaleRef.current = newScale
       }
       setDragX(0); dragXRef.current = 0
