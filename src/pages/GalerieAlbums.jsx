@@ -8,30 +8,39 @@ import DflyMonogram from '../components/DflyMonogram'
 function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const [dragX,           setDragX]           = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
-  const [zoomed,          setZoomed]          = useState(false)
+  const [scale,           setScale]           = useState(1)
   const [pan,             setPan]             = useState({ x: 0, y: 0 })
+  const [isMouseDown,     setIsMouseDown]     = useState(false)
 
-  const containerRef = useRef(null)
-  const touchStartX  = useRef(null)
-  const touchStartY  = useRef(null)
-  const dragXRef     = useRef(0)
-  const panAccum     = useRef({ x: 0, y: 0 }) // pan accumulé entre les gestes
-  const panLive      = useRef({ x: 0, y: 0 }) // delta du geste en cours
-  const lastTapTime  = useRef(0)
-  const didSwipe     = useRef(false)
-  const didDoubleTap = useRef(false)
+  const containerRef    = useRef(null)
+  const touchStartX     = useRef(null)
+  const touchStartY     = useRef(null)
+  const dragXRef        = useRef(0)
+  const scaleRef        = useRef(1)
+  const panAccum        = useRef({ x: 0, y: 0 })
+  const panLive         = useRef({ x: 0, y: 0 })
+  const lastTapTime     = useRef(0)
+  const didSwipe        = useRef(false)
+  const didDoubleTap    = useRef(false)
+  const pinchStartDist  = useRef(null)
+  const pinchStartScale = useRef(1)
+  const mouseStartPos   = useRef(null)
+  const mouseDragged    = useRef(false)
 
   const prevFile = index > 0               ? files[index - 1] : null
   const curFile  = files[index]
   const nextFile = index < files.length - 1 ? files[index + 1] : null
 
   useLayoutEffect(() => {
-    setZoomed(false)
+    setScale(1); scaleRef.current = 1
     setIsTransitioning(false)
     setDragX(0); dragXRef.current = 0
     setPan({ x: 0, y: 0 })
-    panAccum.current = { x: 0, y: 0 }
-    panLive.current  = { x: 0, y: 0 }
+    panAccum.current  = { x: 0, y: 0 }
+    panLive.current   = { x: 0, y: 0 }
+    setIsMouseDown(false)
+    mouseStartPos.current = null
+    mouseDragged.current  = false
   }, [index])
 
   useEffect(() => {
@@ -44,7 +53,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose, onPrev, onNext])
 
-  // Bloque le scroll page (passive:false obligatoire, toujours actif)
+  // Bloque le scroll page (passive:false obligatoire pour pouvoir preventDefault)
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
@@ -53,21 +62,73 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     return () => el.removeEventListener('touchmove', prevent)
   }, [])
 
+  // Suivi du drag souris (desktop pan quand zoomé)
+  useEffect(() => {
+    function onMouseMove(e) {
+      if (!mouseStartPos.current) return
+      const dx = e.clientX - mouseStartPos.current.x
+      const dy = e.clientY - mouseStartPos.current.y
+      if (!mouseDragged.current && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
+        mouseDragged.current = true
+      }
+      if (mouseDragged.current) {
+        const maxX = window.innerWidth  * 2
+        const maxY = window.innerHeight * 2
+        const newX = Math.max(-maxX, Math.min(maxX, panAccum.current.x + dx))
+        const newY = Math.max(-maxY, Math.min(maxY, panAccum.current.y + dy))
+        panLive.current = { x: newX, y: newY }
+        setPan({ x: newX, y: newY })
+      }
+    }
+    function onMouseUp() {
+      if (!mouseStartPos.current) return
+      if (mouseDragged.current) panAccum.current = { ...panLive.current }
+      mouseStartPos.current = null
+      setIsMouseDown(false)
+      // ne pas réinitialiser mouseDragged ici : onPointerUp le lit juste après
+    }
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('mouseup',   onMouseUp)
+    return () => {
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('mouseup',   onMouseUp)
+    }
+  }, [])
+
+  // ── Handlers tactiles ─────────────────────────────────────────────────────
+
   function handleTouchStart(e) {
+    if (e.touches.length === 2) {
+      const dx = e.touches[1].clientX - e.touches[0].clientX
+      const dy = e.touches[1].clientY - e.touches[0].clientY
+      pinchStartDist.current  = Math.hypot(dx, dy)
+      pinchStartScale.current = scaleRef.current
+      touchStartX.current = null
+      return
+    }
     touchStartX.current  = e.touches[0].clientX
     touchStartY.current  = e.touches[0].clientY
     didSwipe.current     = false
     didDoubleTap.current = false
-    if (!zoomed) setIsTransitioning(false)
+    if (scaleRef.current === 1) setIsTransitioning(false)
   }
 
   function handleTouchMove(e) {
+    // Pinch-to-zoom
+    if (e.touches.length === 2 && pinchStartDist.current !== null) {
+      const dx = e.touches[1].clientX - e.touches[0].clientX
+      const dy = e.touches[1].clientY - e.touches[0].clientY
+      const dist = Math.hypot(dx, dy)
+      const newScale = Math.max(1, Math.min(5, pinchStartScale.current * (dist / pinchStartDist.current)))
+      scaleRef.current = newScale
+      setScale(newScale)
+      return
+    }
     if (touchStartX.current === null) return
     const dx = e.touches[0].clientX - touchStartX.current
     const dy = e.touches[0].clientY - touchStartY.current
 
-    if (zoomed) {
-      // Mode pan : déplacer l'image dans toutes les directions
+    if (scaleRef.current > 1) {
       const maxX = window.innerWidth  * 2
       const maxY = window.innerHeight * 2
       const newX = Math.max(-maxX, Math.min(maxX, panAccum.current.x + dx))
@@ -77,7 +138,6 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
       return
     }
 
-    // Mode swipe : navigation entre photos
     const clamped = dx > 0 && !prevFile ? dx * 0.15
                   : dx < 0 && !nextFile ? dx * 0.15
                   : dx
@@ -86,22 +146,27 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   }
 
   function handleTouchEnd(e) {
+    if (pinchStartDist.current !== null && e.touches.length < 2) {
+      pinchStartDist.current = null
+      return
+    }
     if (touchStartX.current === null) return
     const rawDeltaX = e.changedTouches[0].clientX - touchStartX.current
     const currentDX = dragXRef.current
     touchStartX.current = null
     touchStartY.current = null
 
-    // Double-tap
+    // Double-tap → toggle zoom
     const now = Date.now()
     if (now - lastTapTime.current < 300 && Math.abs(rawDeltaX) < 10) {
       didDoubleTap.current = true
-      const zoomingOut = zoomed
-      setZoomed(z => !z)
-      if (zoomingOut) {
+      if (scaleRef.current > 1) {
+        setScale(1); scaleRef.current = 1
         setPan({ x: 0, y: 0 })
         panAccum.current = { x: 0, y: 0 }
         panLive.current  = { x: 0, y: 0 }
+      } else {
+        setScale(2.5); scaleRef.current = 2.5
       }
       setDragX(0); dragXRef.current = 0
       lastTapTime.current = 0
@@ -109,13 +174,11 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     }
     lastTapTime.current = now
 
-    if (zoomed) {
-      // Finaliser le pan (accumuler pour le prochain geste)
+    if (scaleRef.current > 1) {
       panAccum.current = { ...panLive.current }
       return
     }
 
-    // Swipe entre photos
     const W = window.innerWidth
     if (Math.abs(currentDX) > W * 0.25) {
       didSwipe.current = true
@@ -161,28 +224,42 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
               </video>
             ) : (
               <img src={f.url} alt={f.name}
-              onClick={f === curFile ? e => {
-                e.stopPropagation()
-                const zoomingOut = zoomed
-                setZoomed(z => !z)
-                if (zoomingOut) {
-                  setPan({ x: 0, y: 0 })
-                  panAccum.current = { x: 0, y: 0 }
-                  panLive.current  = { x: 0, y: 0 }
-                }
-              } : undefined}
-              style={f === curFile && zoomed ? {
-                // Taille réelle de la photo + pan
-                maxWidth: 'none', maxHeight: 'none',
-                transform: `translate(${pan.x}px, ${pan.y}px)`,
-                cursor: 'zoom-out',
-                userSelect: 'none',
-              } : {
-                maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain',
-                transition: 'transform 0.3s ease',
-                cursor: f === curFile ? 'zoom-in' : 'default',
-                userSelect: 'none',
-              }} />
+                onMouseDown={f === curFile && scale > 1 ? e => {
+                  e.preventDefault()
+                  mouseStartPos.current = { x: e.clientX, y: e.clientY }
+                  mouseDragged.current  = false
+                  setIsMouseDown(true)
+                } : undefined}
+                onPointerUp={f === curFile ? e => {
+                  if (e.pointerType !== 'mouse') return
+                  const wasDragging = mouseDragged.current
+                  mouseDragged.current = false
+                  if (wasDragging) return
+                  e.stopPropagation()
+                  if (scaleRef.current > 1) {
+                    setScale(1); scaleRef.current = 1
+                    setPan({ x: 0, y: 0 })
+                    panAccum.current = { x: 0, y: 0 }
+                    panLive.current  = { x: 0, y: 0 }
+                  } else {
+                    const ratio    = e.target.naturalWidth / e.target.clientWidth
+                    const newScale = Math.max(1.5, Math.min(4, ratio))
+                    setScale(newScale); scaleRef.current = newScale
+                  }
+                } : undefined}
+                style={f === curFile && scale > 1 ? {
+                  maxWidth: 'none', maxHeight: 'none',
+                  transform: `translate(${pan.x}px, ${pan.y}px) scale(${scale})`,
+                  transformOrigin: 'center center',
+                  cursor: isMouseDown ? 'grabbing' : 'grab',
+                  userSelect: 'none',
+                } : {
+                  maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain',
+                  transition: 'transform 0.3s ease',
+                  cursor: f === curFile ? 'zoom-in' : 'default',
+                  userSelect: 'none',
+                }}
+              />
             )}
           </div>
         ))}

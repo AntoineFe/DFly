@@ -956,7 +956,8 @@ const INIT = {
 
 export default function DevisFunnel({ lang = "FR" }) {
   const t = mkT(lang);
-  const topRef = useRef(null);
+  const topRef        = useRef(null);
+  const isFirstRender = useRef(true);
   const [step, setStep] = useState(0);
   const [maxStep, setMaxStep] = useState(0);
   const [state, setState] = useState(INIT);
@@ -970,6 +971,7 @@ export default function DevisFunnel({ lang = "FR" }) {
   }
 
   useEffect(() => {
+    if (isFirstRender.current) { isFirstRender.current = false; return; }
     if (step === 6) {
       setTravelLoading(true);
       calcTravel(state.lieux, state.moments).then(t => {
