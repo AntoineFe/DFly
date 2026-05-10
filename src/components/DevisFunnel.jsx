@@ -71,8 +71,8 @@ function oldCaptationHT(h) {
   return             1.5 * CAPTATION_DAY_HT * 2;
 }
 function captationHT(h) {
-  if (h <= 2)  return 0.25 * CAPTATION_DAY_HT * 2;
-  return              0.25 * CAPTATION_DAY_HT * 2 + ((h-2) / 7) * 0.75 * CAPTATION_DAY_HT * 2;
+  if (h <= 3)  return 0.33 * CAPTATION_DAY_HT * 2;
+  return              0.33 * CAPTATION_DAY_HT * 2 + ((h-3) / 5) * 0.67 * CAPTATION_DAY_HT * 2;
 }
 
 function calcPrice(state) {
