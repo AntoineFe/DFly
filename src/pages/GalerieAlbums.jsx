@@ -403,26 +403,26 @@ export default function GalerieAlbums() {
   const gridPhotosRef = useRef(null)
 
   function useGridPinch(ref, cols, setCols, maxCols, storageKey) {
+    const pinch = useRef({ active: false, startDist: 0, startCols: cols })
     useEffect(() => {
       const el = ref.current
       if (!el) return
-      const pinch = { active: false, startDist: 0, startCols: cols }
       const onStart = e => {
         if (e.touches.length !== 2) return
-        pinch.active    = true
-        pinch.startDist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY)
-        pinch.startCols = cols
+        pinch.current.active    = true
+        pinch.current.startDist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY)
+        pinch.current.startCols = cols
       }
       const onMove = e => {
-        if (!pinch.active || e.touches.length !== 2) return
+        if (!pinch.current.active || e.touches.length !== 2) return
         e.preventDefault()
         const dist   = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY)
-        const offset = Math.round(Math.log(dist / pinch.startDist) / Math.log(1.5))
-        setCols(Math.max(2, Math.min(maxCols, pinch.startCols - offset)))
+        const offset = Math.round(Math.log(dist / pinch.current.startDist) / Math.log(1.5))
+        setCols(Math.max(2, Math.min(maxCols, pinch.current.startCols - offset)))
       }
       const onEnd = () => {
-        if (!pinch.active) return
-        pinch.active = false
+        if (!pinch.current.active) return
+        pinch.current.active = false
         setCols(c => { localStorage.setItem(storageKey, c); return c })
       }
       el.addEventListener('touchstart',  onStart, { passive: true })
