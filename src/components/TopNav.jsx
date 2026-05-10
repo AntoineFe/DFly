@@ -168,7 +168,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
                     fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
                     textTransform: 'uppercase', color: 'var(--fg)', cursor: 'pointer',
                   }}>
-                    Se déconnecter
+                    Me déconnecter
                   </button>
                 </div>
               )}
@@ -242,7 +242,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
                 Changer mon mot de passe
               </button>
               <button onClick={() => { setMenuOpen(false); onGalerieLogout?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
-                Se déconnecter
+                Me déconnecter
               </button>
             </div>
           )}
