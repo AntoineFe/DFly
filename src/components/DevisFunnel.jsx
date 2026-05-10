@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 const CAGNES = { lat: 43.6646, lng: 7.1579 };
 const KM_RATE = 0.697;
-const FULL_DAY_H = 14.5;
+const FULL_DAY_H = 13.5;
 const REAL_DAY_H = 16;
 const BASE_HT = 0;
 const PP_PHOTO_HT = 1200;
@@ -17,7 +17,7 @@ const MOMENTS = [
   { id: "mairie",      label: "Mairie",                            en: "Civil ceremony",                      h: 1   },
   { id: "ceremonie",   label: "Cérémonie religieuse ou laïque",    en: "Religious or civil ceremony",         h: 1.5 },
   { id: "groupes",     label: "Photos de groupes",                 en: "Group photos",                        h: 0.5 },
-  { id: "couple",      label: "Photos de couple",                  en: "Couple portraits",                    h: 1.5 },
+  { id: "couple",      label: "Photos de couple",                  en: "Couple portraits",                    h: 0.5 },
   { id: "cocktail",    label: "Cocktail / Vin d'honneur",          en: "Cocktail hour", opts: [
     { v: "complet", label: "Couverture complète",          en: "Full coverage",        h: 2   },
     { v: "debut",   label: "Jusqu'au début seulement",     en: "Beginning only",       h: 0.5 },
