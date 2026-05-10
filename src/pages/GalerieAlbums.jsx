@@ -565,15 +565,16 @@ export default function GalerieAlbums() {
                     <button key={dir.name} onClick={() => openDir(dir.name)} style={{
                       background: 'none', border: '1px solid var(--line)',
                       cursor: 'pointer', textAlign: 'left', padding: 0,
+                      display: 'flex', flexDirection: 'column', height: '100%',
                     }}>
-                      <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: 'var(--bg-alt)' }}>
+                      <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: 'var(--bg-alt)', flexShrink: 0 }}>
                         {dir.cover
                           ? <img src={dir.cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center',
                               justifyContent: 'center', opacity: 0.2, fontSize: 40 }}>📁</div>
                         }
                       </div>
-                      <div style={{ padding: '12px 14px' }}>
+                      <div style={{ padding: '12px 14px', minHeight: 72 }}>
                         <div style={{ fontFamily: 'var(--serif-display)', fontSize: 18, color: 'var(--fg)' }}>
                           {dir.meta?.title || dir.name}
                         </div>
