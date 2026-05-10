@@ -213,7 +213,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             {NAV_LINKS[lang].map((l) => {
               const active = location.pathname === l.path
               return (
-                <Link key={l.path} to={l.path} style={{
+                <Link key={l.path} to={l.path} onClick={() => setMenuOpen(false)} style={{
                   fontFamily: 'var(--serif-display)', fontSize: 32,
                   fontWeight: 400, lineHeight: 1.2,
                   color: 'var(--fg)',
