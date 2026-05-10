@@ -122,9 +122,9 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
           </a>
 
-          {/* User menu */}
+          {/* User menu — hidden on mobile (appears in hamburger panel) */}
           {galerieUser && (
-            <div ref={userMenuRef} style={{ position: 'relative' }}>
+            <div ref={userMenuRef} className="nav-links" style={{ position: 'relative' }}>
               <button
                 onClick={() => setUserMenuOpen(o => !o)}
                 style={{
