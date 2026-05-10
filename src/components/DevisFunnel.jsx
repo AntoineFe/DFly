@@ -22,7 +22,7 @@ const MOMENTS = [
     { v: "complet", label: "Couverture complète",          en: "Full coverage",        h: 2   },
     { v: "debut",   label: "Jusqu'au début seulement",     en: "Beginning only",       h: 0.5 },
   ]},
-  { id: "diner",       label: "Dîner",                             en: "Reception dinner", opts: [
+  { id: "diner",       label: "Repas",                             en: "Wedding meal", opts: [
     { v: "complet", label: "Jusqu'au gâteau",                      en: "Until the cake",               h: 2 },
     { v: "debut",   label: "Installation et groupes seulement",    en: "Setup and group photos only",  h: 0.5 },
   ]},
