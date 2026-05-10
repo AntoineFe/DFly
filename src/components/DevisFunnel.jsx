@@ -65,10 +65,14 @@ const PP_RATE_HT = {
 };
 
 // Captation : paliers × 2 prestataires × 400€/jour/presta
-function captationHT(h) {
+function oldCaptationHT(h) {
   if (h <= 4)  return 0.5 * CAPTATION_DAY_HT * 2;
   if (h <= 10) return 1.0 * CAPTATION_DAY_HT * 2;
   return             1.5 * CAPTATION_DAY_HT * 2;
+}
+function captationHT(h) {
+  if (h <= 4)  return 0.5 * CAPTATION_DAY_HT * 2;
+  return             0.5 * CAPTATION_DAY_HT * 2 + ((h-4) / 5) * 0.5 * CAPTATION_DAY_HT * 2;
 }
 
 function calcPrice(state) {
