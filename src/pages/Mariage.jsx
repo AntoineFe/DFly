@@ -371,8 +371,8 @@ function Mariage({ lang, setLang }) {
                 en_d: "Friends find each other again. The two families discover one another, glass in hand. Spontaneous photos, nothing staged." },
               { fr_d: "Une salle décorée, des tables soignées. Les mariés entrent sous les acclamations. Viennent les discours, les interventions, les jeux — certains préparés depuis des semaines, d'autres improvisés au micro. Les larmes ne préviennent pas, les rires non plus. Le gâteau clôt le repas.",
                 en_d: "A decorated room, carefully dressed tables. The couple enters to cheers. Then come the speeches, the games, the surprises — some prepared for weeks, others improvised at the mic. Tears don't warn you. Neither do laughs. The cake closes the meal." },
-              { fr_d: "L'ouverture de bal, puis la piste qui s'ouvre à tous. Les lumières baissent, la musique monte, les gens se lâchent. Il y a ceux qui dansent bien et ceux qui s'en fichent. On reste jusqu'à la fin. Les meilleures images, parfois, se font à cette heure-là.",
-                en_d: "The first dance, then the floor opens to everyone. Lights go down, music rises, people let go. Some dance well, others don't care. We stay until the end. The best images, sometimes, happen at this hour." },
+              { fr_d: "L'ouverture de bal, puis la piste qui s'ouvre à tous. Les lumières baissent, la musique monte, les gens se lâchent. Dehors, des groupes se forment — on sort fumer, on sort rire, on sort souffler. On reste jusqu'à la fin. Les meilleures images, parfois, se font à cette heure-là.",
+                en_d: "The first dance, then the floor opens to everyone. Lights go down, music rises, people let go. Outside, groups form — stepping out to smoke, to laugh, to breathe. We stay until the end. The best images, sometimes, happen at this hour." },
             ].map((step, i) => (
               <p key={i} style={{
                 fontFamily: "var(--serif)",
