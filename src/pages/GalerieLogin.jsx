@@ -1,15 +1,30 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
 
 export default function GalerieLogin() {
-  const { login } = useGalerieAuth()
-  const navigate  = useNavigate()
-  const [login_,  setLogin]    = useState('')
+  const { login, loginWithCle } = useGalerieAuth()
+  const navigate       = useNavigate()
+  const [searchParams] = useSearchParams()
+  const [login_,   setLogin]    = useState('')
   const [password, setPassword] = useState('')
   const [error,    setError]    = useState('')
   const [loading,  setLoading]  = useState(false)
+
+  // Connexion automatique via lien ?cle=
+  useEffect(() => {
+    const cle = searchParams.get('cle')
+    if (!cle) return
+    setLoading(true)
+    loginWithCle(cle)
+      .then(d => {
+        if (d.ok) navigate('/galerie/albums', { replace: true })
+        else setError('Lien invalide ou expiré')
+      })
+      .catch(() => setError('Erreur de connexion'))
+      .finally(() => setLoading(false))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   async function handleSubmit(e) {
     e.preventDefault()

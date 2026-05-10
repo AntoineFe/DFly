@@ -46,6 +46,16 @@ export function GalerieAuthProvider({ children }) {
     return d
   }
 
+  async function loginWithCle(cle) {
+    const r = await fetch(API(`galerie-autologin.php?cle=${encodeURIComponent(cle)}`))
+    const d = await r.json()
+    if (d.ok) {
+      localStorage.setItem('galerie_token', d.token)
+      setUser(d.user)
+    }
+    return d
+  }
+
   async function logout() {
     await authFetch('galerie-logout.php', { method: 'POST' }).catch(() => {})
     localStorage.removeItem('galerie_token')
@@ -57,7 +67,7 @@ export function GalerieAuthProvider({ children }) {
   }
 
   return (
-    <GalerieAuthContext.Provider value={{ user, loading, login, logout, authFetch, hasAuth }}>
+    <GalerieAuthContext.Provider value={{ user, loading, login, loginWithCle, logout, authFetch, hasAuth }}>
       {children}
     </GalerieAuthContext.Provider>
   )
