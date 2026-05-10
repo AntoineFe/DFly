@@ -81,7 +81,7 @@ function calcPrice(state) {
   const fmt = state.format === "both" ? "both" : state.format;
   const ppRate = PP_RATE_HT[fmt] ?? PP_RATE_HT.photo;
 
-  let totalHT = BASE_HT + activeH * ppRate + (activeH > 0 ? captationHT(activeH * REAL_DAY_H / FULL_DAY_H) : 0);
+  let totalHT = BASE_HT + activeH * ppRate + (activeH > 0 ? captationHT(activeH) : 0);
 
   if (state.format !== "photo") {
     if (state.teaser)   totalHT += 700 / 1.2;
