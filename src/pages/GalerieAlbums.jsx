@@ -9,10 +9,14 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const [dragX,           setDragX]           = useState(0)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [zoomed,          setZoomed]          = useState(false)
+  const [pan,             setPan]             = useState({ x: 0, y: 0 })
 
   const containerRef = useRef(null)
   const touchStartX  = useRef(null)
+  const touchStartY  = useRef(null)
   const dragXRef     = useRef(0)
+  const panAccum     = useRef({ x: 0, y: 0 }) // pan accumulé entre les gestes
+  const panLive      = useRef({ x: 0, y: 0 }) // delta du geste en cours
   const lastTapTime  = useRef(0)
   const didSwipe     = useRef(false)
   const didDoubleTap = useRef(false)
@@ -24,8 +28,10 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   useLayoutEffect(() => {
     setZoomed(false)
     setIsTransitioning(false)
-    setDragX(0)
-    dragXRef.current = 0
+    setDragX(0); dragXRef.current = 0
+    setPan({ x: 0, y: 0 })
+    panAccum.current = { x: 0, y: 0 }
+    panLive.current  = { x: 0, y: 0 }
   }, [index])
 
   useEffect(() => {
@@ -38,52 +44,80 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose, onPrev, onNext])
 
-  // Bloque le scroll page pendant le glissement (passive:false obligatoire)
+  // Bloque le scroll page (passive:false obligatoire, toujours actif)
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
-    const prevent = e => { if (!zoomed) e.preventDefault() }
+    const prevent = e => e.preventDefault()
     el.addEventListener('touchmove', prevent, { passive: false })
     return () => el.removeEventListener('touchmove', prevent)
-  }, [zoomed])
+  }, [])
 
   function handleTouchStart(e) {
     touchStartX.current  = e.touches[0].clientX
+    touchStartY.current  = e.touches[0].clientY
     didSwipe.current     = false
     didDoubleTap.current = false
-    setIsTransitioning(false)
+    if (!zoomed) setIsTransitioning(false)
   }
 
   function handleTouchMove(e) {
-    if (touchStartX.current === null || zoomed) return
-    const delta   = e.touches[0].clientX - touchStartX.current
-    const clamped = delta > 0 && !prevFile ? delta * 0.15
-                  : delta < 0 && !nextFile ? delta * 0.15
-                  : delta
+    if (touchStartX.current === null) return
+    const dx = e.touches[0].clientX - touchStartX.current
+    const dy = e.touches[0].clientY - touchStartY.current
+
+    if (zoomed) {
+      // Mode pan : déplacer l'image dans toutes les directions
+      const maxX = window.innerWidth  * 0.7
+      const maxY = window.innerHeight * 0.7
+      const newX = Math.max(-maxX, Math.min(maxX, panAccum.current.x + dx))
+      const newY = Math.max(-maxY, Math.min(maxY, panAccum.current.y + dy))
+      panLive.current = { x: newX, y: newY }
+      setPan({ x: newX, y: newY })
+      return
+    }
+
+    // Mode swipe : navigation entre photos
+    const clamped = dx > 0 && !prevFile ? dx * 0.15
+                  : dx < 0 && !nextFile ? dx * 0.15
+                  : dx
     dragXRef.current = clamped
     setDragX(clamped)
   }
 
   function handleTouchEnd(e) {
     if (touchStartX.current === null) return
-    const rawDelta  = e.changedTouches[0].clientX - touchStartX.current
+    const rawDeltaX = e.changedTouches[0].clientX - touchStartX.current
     const currentDX = dragXRef.current
     touchStartX.current = null
+    touchStartY.current = null
 
     // Double-tap
     const now = Date.now()
-    if (now - lastTapTime.current < 300 && Math.abs(rawDelta) < 10) {
+    if (now - lastTapTime.current < 300 && Math.abs(rawDeltaX) < 10) {
       didDoubleTap.current = true
+      const zoomingOut = zoomed
       setZoomed(z => !z)
+      if (zoomingOut) {
+        setPan({ x: 0, y: 0 })
+        panAccum.current = { x: 0, y: 0 }
+        panLive.current  = { x: 0, y: 0 }
+      }
       setDragX(0); dragXRef.current = 0
       lastTapTime.current = 0
       return
     }
     lastTapTime.current = now
 
-    // Swipe
+    if (zoomed) {
+      // Finaliser le pan (accumuler pour le prochain geste)
+      panAccum.current = { ...panLive.current }
+      return
+    }
+
+    // Swipe entre photos
     const W = window.innerWidth
-    if (!zoomed && Math.abs(currentDX) > W * 0.25) {
+    if (Math.abs(currentDX) > W * 0.25) {
       didSwipe.current = true
       const targetX = currentDX < 0 ? -W : W
       setIsTransitioning(true)
@@ -128,9 +162,11 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
             ) : (
               <img src={f.url} alt={f.name} style={{
                 maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain',
-                transform: f === curFile && zoomed ? 'scale(2.5)' : 'scale(1)',
-                transition: 'transform 0.3s ease',
-                cursor: f === curFile ? (zoomed ? 'zoom-out' : 'zoom-in') : 'default',
+                transform: f === curFile && zoomed
+                  ? `translate(${pan.x}px, ${pan.y}px) scale(2.5)`
+                  : 'scale(1)',
+                transition: zoomed ? 'none' : 'transform 0.3s ease',
+                cursor: f === curFile ? (zoomed ? 'grab' : 'zoom-in') : 'default',
                 userSelect: 'none',
               }} />
             )}
