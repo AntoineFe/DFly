@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
@@ -7,6 +7,9 @@ import DflyMonogram from '../components/DflyMonogram'
 
 function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const file = files[index]
+  const touchStartX = useRef(null)
+  const didSwipe    = useRef(false)
+
   useEffect(() => {
     function onKey(e) {
       if (e.key === 'Escape')     onClose()
@@ -17,8 +20,28 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose, onPrev, onNext])
 
+  function handleTouchStart(e) {
+    touchStartX.current = e.touches[0].clientX
+    didSwipe.current = false
+  }
+
+  function handleTouchEnd(e) {
+    if (touchStartX.current === null) return
+    const delta = e.changedTouches[0].clientX - touchStartX.current
+    if (Math.abs(delta) > 50) {
+      didSwipe.current = true
+      if (delta < 0) onNext()
+      else           onPrev()
+    }
+    touchStartX.current = null
+  }
+
   return (
-    <div onClick={onClose} style={{
+    <div
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onClick={() => { if (!didSwipe.current) onClose() }}
+      style={{
       position: 'fixed', inset: 0, zIndex: 1000,
       background: 'rgba(14,16,13,0.96)',
       display: 'flex', alignItems: 'center', justifyContent: 'center',
