@@ -200,6 +200,11 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
           borderTop: '1px solid var(--line)',
           padding: '32px var(--gutter) 48px',
         }}>
+          {galerieUser && (
+            <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: 22, color: 'var(--fg)', marginBottom: 28 }}>
+              Bonjour {galerieUser.firstName}
+            </div>
+          )}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {NAV_LINKS[lang].map((l) => {
               const active = location.pathname === l.path
