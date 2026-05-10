@@ -260,7 +260,7 @@ export default function GalerieAlbums() {
             {/* Photos */}
             {data.files.length > 0 && (
               <div style={{ display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 4 }}>
+                gridTemplateColumns: 'repeat(auto-fill, minmax(min(30vw, 200px), 1fr))', gap: 4 }}>
                 {data.files.map((file, i) => {
                   const imgIndex = imageFiles.indexOf(file)
                   return (
