@@ -4,12 +4,12 @@ import { useState, useEffect, useRef } from "react";
 
 const CAGNES = { lat: 43.6646, lng: 7.1579 };
 const KM_RATE = 0.697;
-const MIN_TTC = 500;
 const FULL_DAY_H = 14.5;
 const REAL_DAY_H = 16;
+const BASE_HT = 100;
 const PP_PHOTO_HT = 1200;
 const PP_VIDEO_HT = 2000;
-const CAPTATION_HT = 800;
+const CAPTATION_DAY_HT = 400; // par prestataire par jour
 const HOTEL_TTC = 120;
 
 const MOMENTS = [
@@ -57,28 +57,35 @@ function totalHours(moments) {
   }, 0);
 }
 
-// Taux horaires HT (post-prod + captation ramenés à l'heure)
-const RATE_HT = {
-  photo: (PP_PHOTO_HT + CAPTATION_HT) / FULL_DAY_H,
-  video: (PP_VIDEO_HT + CAPTATION_HT) / FULL_DAY_H,
-  both:  (PP_PHOTO_HT + PP_VIDEO_HT + CAPTATION_HT) / FULL_DAY_H,
+// Taux de post-production HT par heure
+const PP_RATE_HT = {
+  photo: PP_PHOTO_HT / FULL_DAY_H,
+  video: PP_VIDEO_HT / FULL_DAY_H,
+  both:  (PP_PHOTO_HT + PP_VIDEO_HT) / FULL_DAY_H,
 };
+
+// Captation : paliers × 2 prestataires × 400€/jour/presta
+function captationHT(h) {
+  if (h <= 4)  return 0.5 * CAPTATION_DAY_HT * 2;
+  if (h <= 10) return 1.0 * CAPTATION_DAY_HT * 2;
+  return             1.5 * CAPTATION_DAY_HT * 2;
+}
 
 function calcPrice(state) {
   const activeH  = totalHours(state.moments);
   const displayH = Math.round(activeH * (REAL_DAY_H / FULL_DAY_H) * 10) / 10;
-  const rate = RATE_HT[state.format === "both" ? "both" : state.format] ?? RATE_HT.photo;
-  let baseHT = activeH * rate;
+  const fmt = state.format === "both" ? "both" : state.format;
+  const ppRate = PP_RATE_HT[fmt] ?? PP_RATE_HT.photo;
 
-  let addonsHT = 0;
+  let totalHT = BASE_HT + activeH * ppRate + (activeH > 0 ? captationHT(activeH) : 0);
+
   if (state.format !== "photo") {
-    if (state.teaser)   addonsHT += 700 / 1.2;
-    if (state.integral) addonsHT += 500 / 1.2;
+    if (state.teaser)   totalHT += 700 / 1.2;
+    if (state.integral) totalHT += 500 / 1.2;
   }
-  if (state.drone) addonsHT += 200 / 1.2;
+  if (state.drone) totalHT += 200 / 1.2;
 
-  const ttc = Math.max((baseHT + addonsHT) * 1.2, MIN_TTC);
-  return { h: displayH, ttc: Math.round(ttc / 10) * 10 };
+  return { h: displayH, ttc: Math.round(totalHT * 1.2 / 10) * 10 };
 }
 
 // ── Geocoding + routing ───────────────────────────────────────────────────────
