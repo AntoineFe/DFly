@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Mariage from './pages/Mariage'
+import MariageFilm from './pages/MariageFilm'
 import Immobilier from './pages/Immobilier'
 import Communication from './pages/Communication'
 import Spectacle from './pages/Spectacle'
@@ -49,6 +50,7 @@ export default function App() {
       <Routes>
         <Route path="/"               element={<Home          lang={lang} setLang={setLang} />} />
         <Route path="/mariage"        element={<Mariage       lang={lang} setLang={setLang} />} />
+        <Route path="/mariage/film"   element={<MariageFilm   lang={lang} setLang={setLang} />} />
         <Route path="/immobilier"     element={<Immobilier    lang={lang} setLang={setLang} />} />
         <Route path="/communication"  element={<Communication lang={lang} setLang={setLang} />} />
         <Route path="/spectacle"      element={<Spectacle     lang={lang} setLang={setLang} />} />

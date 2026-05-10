@@ -484,15 +484,15 @@ function Mariage({ lang, setLang }) {
         </div>
 
         <div className="container" style={{ textAlign: "center", marginTop: 60 }}>
-          <a href="#" style={{
+          <Link to="/mariage/film" style={{
             fontFamily: "var(--sans)", fontSize: 11,
             letterSpacing: "0.4em", textTransform: "uppercase",
             color: "var(--fg)",
             borderBottom: "1px solid var(--fg)",
             paddingBottom: 8,
           }}>
-            {t("Voir le film", "Watch the film")} &nbsp;→
-          </a>
+            {t("Voir un extrait", "Watch an excerpt")} &nbsp;→
+          </Link>
         </div>
       </section>
 
