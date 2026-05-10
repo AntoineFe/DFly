@@ -1,0 +1,97 @@
+<?php
+header('Content-Type: application/json; charset=utf-8');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
+
+require 'galerie-auth.php';
+$session = galerie_require_auth();
+galerie_require_level($session, 'galerie', 'R');
+
+[, $cfg] = galerie_db();
+
+// Le client ne peut voir que son propre dossier (shortDescEnt)
+// Un admin peut passer ?ent=shortDesc pour voir n'importe quel client
+$isAdmin = galerie_has_auth($session, 'admin', 'R');
+
+if ($isAdmin && isset($_GET['ent'])) {
+    $entSlug = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_GET['ent']);
+} else {
+    $entSlug = $session['shortDescEnt'];
+}
+
+$subPath = isset($_GET['path']) ? $_GET['path'] : '';
+// Sécurité : interdire les traversées de répertoire
+$subPath = preg_replace('/\.\./', '', $subPath);
+$subPath = ltrim($subPath, '/');
+
+$baseDir   = rtrim($cfg['galerie_root'], '/') . '/' . $entSlug;
+$targetDir = $subPath !== '' ? $baseDir . '/' . $subPath : $baseDir;
+
+if (!is_dir($targetDir)) {
+    http_response_code(404);
+    exit(json_encode(['ok' => false, 'error' => 'Dossier introuvable']));
+}
+
+$IMAGE_EXT = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+$VIDEO_EXT = ['mp4', 'mov', 'avi', 'webm'];
+
+$dirs  = [];
+$files = [];
+
+foreach (scandir($targetDir) as $item) {
+    if ($item === '.' || $item === '..') continue;
+    $full = $targetDir . '/' . $item;
+    if (is_dir($full)) {
+        // Image de couverture : première image du sous-dossier (thumbnails)
+        $thumbDir = rtrim($cfg['thumbnails_root'], '/') . '/' . $entSlug . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item;
+        $cover    = null;
+        if (is_dir($thumbDir)) {
+            foreach (scandir($thumbDir) as $tf) {
+                $ext = strtolower(pathinfo($tf, PATHINFO_EXTENSION));
+                if (in_array($ext, $IMAGE_EXT)) {
+                    $cover = $cfg['thumbnails_url'] . '/' . $entSlug . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item . '/' . $tf;
+                    break;
+                }
+            }
+        }
+        // Lire meta si présent
+        $metaFile = $full . '/_meta.json';
+        $meta     = file_exists($metaFile) ? json_decode(file_get_contents($metaFile), true) : null;
+        $dirs[] = ['name' => $item, 'cover' => $cover, 'meta' => $meta];
+    } else {
+        if ($item === '_meta.json') continue;
+        $ext  = strtolower(pathinfo($item, PATHINFO_EXTENSION));
+        $type = in_array($ext, $IMAGE_EXT) ? 'image' : (in_array($ext, $VIDEO_EXT) ? 'video' : null);
+        if (!$type) continue;
+
+        $relPath  = ($subPath !== '' ? $subPath . '/' : '') . $item;
+        $thumbUrl = null;
+        if ($type === 'image') {
+            $thumbPath = rtrim($cfg['thumbnails_root'], '/') . '/' . $entSlug . '/' . $relPath;
+            if (file_exists($thumbPath)) {
+                $thumbUrl = $cfg['thumbnails_url'] . '/' . $entSlug . '/' . $relPath;
+            }
+        }
+        $files[] = [
+            'name'     => $item,
+            'type'     => $type,
+            'url'      => $cfg['galerie_url'] . '/' . $entSlug . '/' . $relPath,
+            'thumbUrl' => $thumbUrl ?? ($cfg['galerie_url'] . '/' . $entSlug . '/' . $relPath),
+        ];
+    }
+}
+
+// Lire meta du dossier courant
+$metaFile    = $targetDir . '/_meta.json';
+$currentMeta = file_exists($metaFile) ? json_decode(file_get_contents($metaFile), true) : null;
+
+echo json_encode([
+    'ok'      => true,
+    'path'    => $subPath,
+    'ent'     => $entSlug,
+    'meta'    => $currentMeta,
+    'dirs'    => $dirs,
+    'files'   => $files,
+]);
