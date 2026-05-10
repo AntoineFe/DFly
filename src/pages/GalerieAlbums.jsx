@@ -391,71 +391,55 @@ export default function GalerieAlbums() {
   const [loading,     setLoading]     = useState(true)
   const [lightbox,    setLightbox]    = useState(null)
   const [selectedEnt, setSelectedEnt] = useState(entId || null)
-  const [cols,        setCols]        = useState(() => {
-    const saved = localStorage.getItem('galerie_grid_cols')
-    if (saved) return parseInt(saved)
-    // Reproduit le comportement de auto-fill minmax(200px, 1fr) dans un container max 1200px
+  const defaultCols = () => {
     const available = Math.min(window.innerWidth, 1200) - 80
     return Math.max(2, Math.floor(available / 200))
-  })
-
-  const gridRef   = useRef(null)
-  const gridPinch = useRef({ active: false, startDist: 0, startCols: 2 })
-
-  const maxCols = () => {
-    const w = window.innerWidth
-    return w < 768 ? 4 : w < 1200 ? 6 : 8
   }
 
-  const saveCols = (n) => {
-    setCols(n)
-    localStorage.setItem('galerie_grid_cols', n)
-  }
+  const [colsDirs,   setColsDirs]   = useState(() => parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || defaultCols())
+  const [colsPhotos, setColsPhotos] = useState(() => parseInt(localStorage.getItem('galerie_grid_cols_photos')) || defaultCols())
 
-  useEffect(() => {
-    const el = gridRef.current
-    if (!el) return
-    const onStart = e => {
-      if (e.touches.length !== 2) return
-      gridPinch.current = {
-        active: true,
-        startDist: Math.hypot(
-          e.touches[1].clientX - e.touches[0].clientX,
-          e.touches[1].clientY - e.touches[0].clientY
-        ),
-        startCols: cols,
+  const gridDirsRef   = useRef(null)
+  const gridPhotosRef = useRef(null)
+
+  function useGridPinch(ref, cols, setCols, maxCols, storageKey) {
+    useEffect(() => {
+      const el = ref.current
+      if (!el) return
+      const pinch = { active: false, startDist: 0, startCols: cols }
+      const onStart = e => {
+        if (e.touches.length !== 2) return
+        pinch.active    = true
+        pinch.startDist = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY)
+        pinch.startCols = cols
       }
-    }
-    const onMove = e => {
-      if (!gridPinch.current.active || e.touches.length !== 2) return
-      e.preventDefault()
-      const dist  = Math.hypot(
-        e.touches[1].clientX - e.touches[0].clientX,
-        e.touches[1].clientY - e.touches[0].clientY
-      )
-      const ratio  = dist / gridPinch.current.startDist
-      // log base 1.5 : chaque ×1.5 = 1 colonne de moins (pinch out = vignettes plus grandes)
-      const offset = Math.round(Math.log(ratio) / Math.log(1.5))
-      const next   = Math.max(2, Math.min(maxCols(), gridPinch.current.startCols - offset))
-      setCols(next)
-    }
-    const onEnd = () => {
-      if (!gridPinch.current.active) return
-      gridPinch.current.active = false
-      // Sauvegarde à la fin du geste seulement
-      setCols(c => { localStorage.setItem('galerie_grid_cols', c); return c })
-    }
-    el.addEventListener('touchstart', onStart,  { passive: true })
-    el.addEventListener('touchmove',  onMove,   { passive: false })
-    el.addEventListener('touchend',   onEnd,    { passive: true })
-    el.addEventListener('touchcancel',onEnd,    { passive: true })
-    return () => {
-      el.removeEventListener('touchstart', onStart)
-      el.removeEventListener('touchmove',  onMove)
-      el.removeEventListener('touchend',   onEnd)
-      el.removeEventListener('touchcancel',onEnd)
-    }
-  }, [cols, data])
+      const onMove = e => {
+        if (!pinch.active || e.touches.length !== 2) return
+        e.preventDefault()
+        const dist   = Math.hypot(e.touches[1].clientX - e.touches[0].clientX, e.touches[1].clientY - e.touches[0].clientY)
+        const offset = Math.round(Math.log(dist / pinch.startDist) / Math.log(1.5))
+        setCols(Math.max(2, Math.min(maxCols, pinch.startCols - offset)))
+      }
+      const onEnd = () => {
+        if (!pinch.active) return
+        pinch.active = false
+        setCols(c => { localStorage.setItem(storageKey, c); return c })
+      }
+      el.addEventListener('touchstart',  onStart, { passive: true })
+      el.addEventListener('touchmove',   onMove,  { passive: false })
+      el.addEventListener('touchend',    onEnd,   { passive: true })
+      el.addEventListener('touchcancel', onEnd,   { passive: true })
+      return () => {
+        el.removeEventListener('touchstart',  onStart)
+        el.removeEventListener('touchmove',   onMove)
+        el.removeEventListener('touchend',    onEnd)
+        el.removeEventListener('touchcancel', onEnd)
+      }
+    }, [cols, data]) // eslint-disable-line react-hooks/exhaustive-deps
+  }
+
+  useGridPinch(gridDirsRef,   colsDirs,   setColsDirs,   6, 'galerie_grid_cols_dirs')
+  useGridPinch(gridPhotosRef, colsPhotos, setColsPhotos, 8, 'galerie_grid_cols_photos')
 
   // Si multi-entreprises et pas d'ent sélectionnée → choix
   const multiEnt = user?.ents?.length > 1
@@ -555,12 +539,10 @@ export default function GalerieAlbums() {
           <>
             <AlbumHeader meta={data.meta} />
 
-            <div ref={gridRef}>
-
             {/* Dossiers */}
             {data.dirs.length > 0 && (
-              <div style={{ marginBottom: 60 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 12 }}>
+              <div ref={gridDirsRef} style={{ marginBottom: 60 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: `repeat(${colsDirs}, 1fr)`, gap: 12 }}>
                   {data.dirs.map(dir => (
                     <button key={dir.name} onClick={() => openDir(dir.name)} style={{
                       background: 'none', border: '1px solid var(--line)',
@@ -594,7 +576,7 @@ export default function GalerieAlbums() {
 
             {/* Photos */}
             {data.files.length > 0 && (
-              <div style={{ display: 'grid', gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 4 }}>
+              <div ref={gridPhotosRef} style={{ display: 'grid', gridTemplateColumns: `repeat(${colsPhotos}, 1fr)`, gap: 4 }}>
                 {data.files.map((file, i) => {
                   const imgIndex = imageFiles.indexOf(file)
                   return (
@@ -628,7 +610,6 @@ export default function GalerieAlbums() {
               </div>
             )}
 
-            </div>{/* /gridRef */}
           </>
         )}
       </div>
