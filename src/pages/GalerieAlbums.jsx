@@ -394,7 +394,9 @@ export default function GalerieAlbums() {
   const [cols,        setCols]        = useState(() => {
     const saved = localStorage.getItem('galerie_grid_cols')
     if (saved) return parseInt(saved)
-    return window.innerWidth < 600 ? 2 : 3
+    // Reproduit le comportement de auto-fill minmax(200px, 1fr) dans un container max 1200px
+    const available = Math.min(window.innerWidth, 1200) - 80
+    return Math.max(2, Math.floor(available / 200))
   })
 
   const gridRef   = useRef(null)
