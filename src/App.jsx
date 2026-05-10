@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import Home from './pages/Home'
 import Mariage from './pages/Mariage'
 import Immobilier from './pages/Immobilier'
@@ -11,6 +11,14 @@ import GalerieLogin from './pages/GalerieLogin'
 import GalerieAlbums from './pages/GalerieAlbums'
 import GalerieAdmin from './pages/GalerieAdmin'
 import { GalerieAuthProvider, useGalerieAuth } from './context/GalerieAuth'
+
+function ScrollToTop() {
+  const { pathname, hash } = useLocation()
+  useEffect(() => {
+    if (!hash) window.scrollTo(0, 0)
+  }, [pathname, hash])
+  return null
+}
 
 function ProtectedRoute({ children, adminOnly }) {
   const { user, loading } = useGalerieAuth()
@@ -37,6 +45,7 @@ export default function App() {
 
   return (
     <GalerieAuthProvider>
+      <ScrollToTop />
       <Routes>
         <Route path="/"               element={<Home          lang={lang} setLang={setLang} />} />
         <Route path="/mariage"        element={<Mariage       lang={lang} setLang={setLang} />} />
