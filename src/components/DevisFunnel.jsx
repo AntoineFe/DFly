@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 const CAGNES = { lat: 43.6646, lng: 7.1579 };
 const KM_RATE = 0.697;
-const FULL_DAY_H = 13.5;
+const FULL_DAY_H = 11.5;
 const REAL_DAY_H = 16;
 const BASE_HT = 0;
 const PP_PHOTO_HT = 1200;
@@ -23,12 +23,12 @@ const MOMENTS = [
     { v: "debut",   label: "Jusqu'au début seulement",     en: "Beginning only",       h: 0.5 },
   ]},
   { id: "diner",       label: "Dîner",                             en: "Reception dinner", opts: [
-    { v: "complet", label: "Jusqu'au gâteau",                      en: "Until the cake",               h: 3 },
-    { v: "debut",   label: "Installation et groupes seulement",    en: "Setup and group photos only",  h: 1 },
+    { v: "complet", label: "Jusqu'au gâteau",                      en: "Until the cake",               h: 2 },
+    { v: "debut",   label: "Installation et groupes seulement",    en: "Setup and group photos only",  h: 0.5 },
   ]},
   { id: "danse",       label: "Soirée / Danse",                    en: "Evening / Dancing", opts: [
-    { v: "etendue",  label: "Jusqu'au bout de la nuit",            en: "Extended evening",             h: 3   },
-    { v: "standard", label: "Début des danses · 30 min",            en: "Start of dancing · 30 min",    h: 1.5 },
+    { v: "etendue",  label: "Jusqu'au bout de la nuit",            en: "Extended evening",             h: 2   },
+    { v: "standard", label: "Début des danses · 30 min",            en: "Start of dancing · 30 min",    h: 0.5 },
   ]},
 ];
 
