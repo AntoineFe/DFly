@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, useLocation } from 'react-router-dom'
 import DflyMonogram from './DflyMonogram'
 
@@ -50,6 +51,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
   const border = isOverHero ? 'rgba(243,237,226,0.18)' : 'var(--line)'
 
   return (
+    <>
     <header style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
       background: menuOpen ? 'var(--bg)' : bg,
@@ -64,72 +66,18 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
         display: 'grid', gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center', gap: 24,
       }}>
-        {/* Logo + nom + user (desktop) */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 14, color: menuOpen ? 'var(--fg)' : tone }}>
-            <DflyMonogram size={32} color={menuOpen ? 'var(--fg)' : tone} />
-            <div>
-              <div style={{ fontFamily: 'var(--serif-display)', fontSize: 24, lineHeight: 1, letterSpacing: '0.01em' }}>
-                D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
-              </div>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: 8.5, letterSpacing: '0.36em', textTransform: 'uppercase', marginTop: 3, opacity: 0.75 }}>
-                Photographie · Vidéo
-              </div>
+        {/* Logo */}
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 14, color: menuOpen ? 'var(--fg)' : tone }}>
+          <DflyMonogram size={32} color={menuOpen ? 'var(--fg)' : tone} />
+          <div>
+            <div style={{ fontFamily: 'var(--serif-display)', fontSize: 24, lineHeight: 1, letterSpacing: '0.01em' }}>
+              D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
             </div>
-          </Link>
-
-          {/* User menu — desktop only, left of logo area */}
-          {galerieUser && (
-            <div ref={userMenuRef} className="nav-links" style={{ position: 'relative' }}>
-              <button
-                onClick={() => setUserMenuOpen(o => !o)}
-                style={{
-                  background: 'none', border: `1px solid ${menuOpen ? 'var(--fg)' : tone}`,
-                  cursor: 'pointer', padding: '6px 12px',
-                  fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.18em',
-                  textTransform: 'uppercase', color: menuOpen ? 'var(--fg)' : tone,
-                  opacity: 0.85,
-                }}
-              >
-                {galerieUser.firstName}
-              </button>
-              {userMenuOpen && (
-                <div style={{
-                  position: 'absolute', top: 'calc(100% + 8px)', left: 0,
-                  background: 'var(--bg)', border: '1px solid var(--line)',
-                  minWidth: 210, zIndex: 200,
-                  boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-                }}>
-                  <Link to="/galerie/albums" onClick={() => setUserMenuOpen(false)} style={{
-                    display: 'block', padding: '14px 20px',
-                    fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
-                    textTransform: 'uppercase', color: 'var(--fg)',
-                    borderBottom: '1px solid var(--line)',
-                  }}>
-                    Ma galerie
-                  </Link>
-                  <button onClick={() => { setUserMenuOpen(false); onChangePassword?.() }} style={{
-                    display: 'block', width: '100%', textAlign: 'left',
-                    padding: '14px 20px', background: 'none', border: 'none',
-                    borderBottom: '1px solid var(--line)',
-                    fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
-                    textTransform: 'uppercase', color: 'var(--fg)', cursor: 'pointer',
-                  }}>
-                    Changer mon mot de passe
-                  </button>
-                  <button onClick={() => { setUserMenuOpen(false); onGalerieLogout?.() }} style={{
-                    display: 'block', width: '100%', textAlign: 'left',
-                    padding: '14px 20px', background: 'none', border: 'none',
-                    fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
-                    textTransform: 'uppercase', color: 'var(--fg)', cursor: 'pointer',
-                  }}>
-                    Me déconnecter
-                  </button>
-                </div>
-              )}
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 8.5, letterSpacing: '0.36em', textTransform: 'uppercase', marginTop: 3, opacity: 0.75 }}>
+              Photographie · Vidéo
             </div>
-          )}
-        </div>
+          </div>
+        </Link>
 
         {/* Navigation desktop */}
         <nav className="nav-links" style={{ gap: 28, alignItems: 'center', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase' }}>
@@ -253,5 +201,40 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
         </nav>
       )}
     </header>
+    {galerieUser && createPortal(
+      <div ref={userMenuRef} className="nav-links" style={{ position: 'fixed', top: 0, right: 'var(--gutter)', zIndex: 101, display: 'flex', alignItems: 'center', height: 64 }}>
+        <button
+          onClick={() => setUserMenuOpen(o => !o)}
+          style={{
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
+            textTransform: 'uppercase',
+            color: menuOpen ? 'var(--fg)' : tone,
+            padding: '8px 0',
+          }}
+        >
+          {galerieUser.firstName}
+        </button>
+        {userMenuOpen && (
+          <div style={{
+            position: 'absolute', top: '100%', right: 0,
+            background: 'var(--bg)', border: '1px solid var(--line)',
+            minWidth: 200, padding: '8px 0',
+          }}>
+            <Link to="/galerie/albums" onClick={() => setUserMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px' }}>
+              Ma galerie
+            </Link>
+            <button onClick={() => { setUserMenuOpen(false); onChangePassword?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
+              Changer mon mot de passe
+            </button>
+            <button onClick={() => { setUserMenuOpen(false); onGalerieLogout?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
+              Me déconnecter
+            </button>
+          </div>
+        )}
+      </div>,
+      document.body
+    )}
+    </>
   )
 }
