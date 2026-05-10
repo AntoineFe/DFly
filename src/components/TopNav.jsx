@@ -198,10 +198,10 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
         <nav className="mobile-menu-panel" style={{
           background: 'var(--bg)',
           borderTop: '1px solid var(--line)',
-          padding: '32px var(--gutter) 48px',
+          padding: `${galerieUser ? '20px' : '32px'} var(--gutter) 48px`,
         }}>
           {galerieUser && (
-            <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: 22, color: 'var(--fg)', marginBottom: 28 }}>
+            <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: 22, color: 'var(--fg)', marginBottom: 16 }}>
               Bonjour {galerieUser.firstName}
             </div>
           )}
