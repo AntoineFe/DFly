@@ -68,8 +68,8 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
 
     if (zoomed) {
       // Mode pan : déplacer l'image dans toutes les directions
-      const maxX = window.innerWidth  * 0.7
-      const maxY = window.innerHeight * 0.7
+      const maxX = window.innerWidth  * 2
+      const maxY = window.innerHeight * 2
       const newX = Math.max(-maxX, Math.min(maxX, panAccum.current.x + dx))
       const newY = Math.max(-maxY, Math.min(maxY, panAccum.current.y + dy))
       panLive.current = { x: newX, y: newY }
@@ -161,7 +161,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
               </video>
             ) : (
               <img src={f.url} alt={f.name}
-              onDoubleClick={f === curFile ? e => {
+              onClick={f === curFile ? e => {
                 e.stopPropagation()
                 const zoomingOut = zoomed
                 setZoomed(z => !z)
@@ -171,13 +171,16 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
                   panLive.current  = { x: 0, y: 0 }
                 }
               } : undefined}
-              style={{
+              style={f === curFile && zoomed ? {
+                // Taille réelle de la photo + pan
+                maxWidth: 'none', maxHeight: 'none',
+                transform: `translate(${pan.x}px, ${pan.y}px)`,
+                cursor: 'zoom-out',
+                userSelect: 'none',
+              } : {
                 maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain',
-                transform: f === curFile && zoomed
-                  ? `translate(${pan.x}px, ${pan.y}px) scale(2.5)`
-                  : 'scale(1)',
-                transition: zoomed ? 'none' : 'transform 0.3s ease',
-                cursor: f === curFile ? (zoomed ? 'grab' : 'zoom-in') : 'default',
+                transition: 'transform 0.3s ease',
+                cursor: f === curFile ? 'zoom-in' : 'default',
                 userSelect: 'none',
               }} />
             )}
