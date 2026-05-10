@@ -680,12 +680,6 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
           ? t("Votre nouvelle estimation", "Your new estimate")
           : t("Votre estimation", "Your estimate")}
       </h3>
-	  <!--
-      <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
-        {t("Durée estimée : ", "Estimated duration: ")}{Math.round(h * 10) / 10}h {t("de présence", "of coverage")}
-      </p>
-	  -->
-
       <div style={{ marginBottom: 32 }}>
         <PriceLine label={fmtLabel + (momentsLabel ? ` · ${momentsLabel}` : '')} value={eur(ttc)} />
         {hasVideo && state.teaser   && <PriceLine label={t("+ Teaser",    "+ Teaser")}       value="+700 €" muted />}
