@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
 
@@ -46,10 +46,12 @@ export default function GalerieLogin() {
     }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
         <div style={{ textAlign: 'center', marginBottom: 48 }}>
-          <DflyMonogram size={40} color="var(--fg)" />
-          <div style={{ fontFamily: 'var(--serif-display)', fontSize: 28, marginTop: 16 }}>
-            D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
-          </div>
+          <Link to="/" style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', color: 'var(--fg)' }}>
+            <DflyMonogram size={40} color="var(--fg)" />
+            <div style={{ fontFamily: 'var(--serif-display)', fontSize: 28, marginTop: 16 }}>
+              D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
+            </div>
+          </Link>
           <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em',
             textTransform: 'uppercase', color: 'var(--fg-muted)', marginTop: 6 }}>
             Galerie privée

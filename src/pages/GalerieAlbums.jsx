@@ -1,5 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
 
@@ -632,12 +632,12 @@ export default function GalerieAlbums() {
 function Header({ user, onLogout }) {
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 48 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'var(--fg)' }}>
         <DflyMonogram size={28} color="var(--fg)" />
         <div style={{ fontFamily: 'var(--serif-display)', fontSize: 20 }}>
           D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
         </div>
-      </div>
+      </Link>
       <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
         <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)',
           letterSpacing: '0.2em' }}>
@@ -647,7 +647,7 @@ function Header({ user, onLogout }) {
           background: 'none', border: '1px solid var(--line)', padding: '7px 16px',
           fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em',
           textTransform: 'uppercase', cursor: 'pointer', color: 'var(--fg-muted)',
-        }}>Déconnexion</button>
+        }}>Me déconnecter</button>
       </div>
     </div>
   )
