@@ -160,7 +160,18 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
                 <source src={f.url} />
               </video>
             ) : (
-              <img src={f.url} alt={f.name} style={{
+              <img src={f.url} alt={f.name}
+              onDoubleClick={f === curFile ? e => {
+                e.stopPropagation()
+                const zoomingOut = zoomed
+                setZoomed(z => !z)
+                if (zoomingOut) {
+                  setPan({ x: 0, y: 0 })
+                  panAccum.current = { x: 0, y: 0 }
+                  panLive.current  = { x: 0, y: 0 }
+                }
+              } : undefined}
+              style={{
                 maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain',
                 transform: f === curFile && zoomed
                   ? `translate(${pan.x}px, ${pan.y}px) scale(2.5)`
