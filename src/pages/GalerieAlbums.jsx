@@ -26,6 +26,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const pinchStartScale = useRef(1)
   const mouseStartPos   = useRef(null)
   const mouseDragged    = useRef(false)
+  const curImgRef       = useRef(null)
 
   const prevFile = index > 0               ? files[index - 1] : null
   const curFile  = files[index]
@@ -166,7 +167,10 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
         panAccum.current = { x: 0, y: 0 }
         panLive.current  = { x: 0, y: 0 }
       } else {
-        setScale(2.5); scaleRef.current = 2.5
+        const img = curImgRef.current
+        const ratio    = img ? img.naturalWidth / img.clientWidth : 2
+        const newScale = Math.max(1.5, Math.min(4, ratio))
+        setScale(newScale); scaleRef.current = newScale
       }
       setDragX(0); dragXRef.current = 0
       lastTapTime.current = 0
@@ -224,6 +228,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
               </video>
             ) : (
               <img src={f.url} alt={f.name}
+                ref={f === curFile ? curImgRef : null}
                 onMouseDown={f === curFile && scale > 1 ? e => {
                   e.preventDefault()
                   mouseStartPos.current = { x: e.clientX, y: e.clientY }
