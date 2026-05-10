@@ -88,10 +88,9 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
                   cursor: 'pointer', padding: '6px 12px',
                   fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.18em',
                   textTransform: 'uppercase', color: menuOpen ? 'var(--fg)' : tone,
-                  display: 'flex', alignItems: 'center', gap: 7, opacity: 0.85,
+                  opacity: 0.85,
                 }}
               >
-                <span style={{ fontSize: 12, lineHeight: 1 }}>&#9679;</span>
                 {galerieUser.firstName}
               </button>
               {userMenuOpen && (
