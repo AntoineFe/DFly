@@ -25,8 +25,11 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const didDoubleTap    = useRef(false)
   const pinchStartDist  = useRef(null)
   const pinchStartScale = useRef(1)
+  const pinchStartMid   = useRef({ x: 0, y: 0 })
+  const pinchStartPan   = useRef({ x: 0, y: 0 })
   const mouseStartPos   = useRef(null)
   const mouseDragged    = useRef(false)
+  const curImgRef       = useRef(null)
 
   const prevFile = index > 0               ? files[index - 1] : null
   const curFile  = files[index]
@@ -112,10 +115,11 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
 
   function handleTouchStart(e) {
     if (e.touches.length === 2) {
-      const dx = e.touches[1].clientX - e.touches[0].clientX
-      const dy = e.touches[1].clientY - e.touches[0].clientY
-      pinchStartDist.current  = Math.hypot(dx, dy)
+      const t0 = e.touches[0], t1 = e.touches[1]
+      pinchStartDist.current  = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY)
       pinchStartScale.current = scaleRef.current
+      pinchStartMid.current   = { x: (t0.clientX + t1.clientX) / 2, y: (t0.clientY + t1.clientY) / 2 }
+      pinchStartPan.current   = { ...panAccum.current }
       touchStartX.current = null
       return
     }
@@ -127,14 +131,25 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   }
 
   function handleTouchMove(e) {
-    // Pinch-to-zoom
+    // Pinch-to-zoom avec ancrage au point de contact
     if (e.touches.length === 2 && pinchStartDist.current !== null) {
-      const dx = e.touches[1].clientX - e.touches[0].clientX
-      const dy = e.touches[1].clientY - e.touches[0].clientY
-      const dist = Math.hypot(dx, dy)
+      const t0 = e.touches[0], t1 = e.touches[1]
+      const mx   = (t0.clientX + t1.clientX) / 2
+      const my   = (t0.clientY + t1.clientY) / 2
+      const dist = Math.hypot(t1.clientX - t0.clientX, t1.clientY - t0.clientY)
       const newScale = Math.max(1, Math.min(5, pinchStartScale.current * (dist / pinchStartDist.current)))
+      const cx   = window.innerWidth  / 2
+      const cy   = window.innerHeight / 2
+      // Point image fixe (en pixels CSS, relatif au centre image, à scale de départ)
+      const lx = (pinchStartMid.current.x - cx - pinchStartPan.current.x) / pinchStartScale.current
+      const ly = (pinchStartMid.current.y - cy - pinchStartPan.current.y) / pinchStartScale.current
+      // Pan pour que ce point reste sous le milieu actuel des doigts
+      const newPanX = mx - cx - newScale * lx
+      const newPanY = my - cy - newScale * ly
       scaleRef.current = newScale
       setScale(newScale)
+      panLive.current = { x: newPanX, y: newPanY }
+      setPan({ x: newPanX, y: newPanY })
       return
     }
     if (touchStartX.current === null) return
@@ -160,6 +175,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
 
   function handleTouchEnd(e) {
     if (pinchStartDist.current !== null && e.touches.length < 2) {
+      panAccum.current = { ...panLive.current }
       pinchStartDist.current = null
       return
     }
@@ -176,6 +192,19 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
       if (zoomed || scaleRef.current > 1) {
         resetZoom()
       } else {
+        // Zoom centré sur le point du double-tap
+        const tapX = e.changedTouches[0].clientX
+        const tapY = e.changedTouches[0].clientY
+        const cx   = window.innerWidth  / 2
+        const cy   = window.innerHeight / 2
+        const img  = curImgRef.current
+        if (img && img.naturalWidth) {
+          const newPanX = (tapX - cx) * (1 - img.naturalWidth  / img.clientWidth)
+          const newPanY = (tapY - cy) * (1 - img.naturalHeight / img.clientHeight)
+          setPan({ x: newPanX, y: newPanY })
+          panAccum.current = { x: newPanX, y: newPanY }
+          panLive.current  = { x: newPanX, y: newPanY }
+        }
         setZoomed(true)
       }
       setDragX(0); dragXRef.current = 0
@@ -234,6 +263,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
               </video>
             ) : (
               <img src={f.url} alt={f.name}
+                ref={f === curFile ? curImgRef : null}
                 onMouseDown={f === curFile && isPanMode ? e => {
                   e.preventDefault()
                   mouseStartPos.current = { x: e.clientX, y: e.clientY }
