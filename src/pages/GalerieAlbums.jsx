@@ -21,7 +21,12 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const curFile  = files[index]
   const nextFile = index < files.length - 1 ? files[index + 1] : null
 
-  useEffect(() => { setZoomed(false); setDragX(0); dragXRef.current = 0 }, [index])
+  useEffect(() => {
+    setZoomed(false)
+    setIsTransitioning(false)
+    setDragX(0)
+    dragXRef.current = 0
+  }, [index])
 
   useEffect(() => {
     function onKey(e) {
