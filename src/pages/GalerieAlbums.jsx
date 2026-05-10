@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
@@ -21,7 +21,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   const curFile  = files[index]
   const nextFile = index < files.length - 1 ? files[index + 1] : null
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     setZoomed(false)
     setIsTransitioning(false)
     setDragX(0)
