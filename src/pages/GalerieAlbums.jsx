@@ -2,6 +2,7 @@ import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react
 import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
+import ChangePasswordModal from '../components/ChangePasswordModal'
 
 // ── Lightbox ──────────────────────────────────────────────────────────────────
 
@@ -381,7 +382,7 @@ function AlbumHeader({ meta }) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function GalerieAlbums() {
-  const { authFetch, user, logout } = useGalerieAuth()
+  const { authFetch, user, logout, changePassword } = useGalerieAuth()
   const navigate       = useNavigate()
   const { entId }      = useParams()
   const [searchParams] = useSearchParams()
@@ -473,9 +474,9 @@ export default function GalerieAlbums() {
   // ── Sélection entreprise ──────────────────────────────────────────────────
   if (multiEnt && !selectedEnt) {
     return (
-      <div style={{ minHeight: '100vh', padding: '80px var(--gutter)', background: 'var(--bg)' }}>
+      <div style={{ minHeight: '100vh', padding: '0 var(--gutter) 80px', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Header user={user} onLogout={() => { logout(); navigate('/galerie') }} />
+          <Header user={user} onLogout={() => { logout(); navigate('/galerie') }} changePassword={changePassword} />
           <h2 style={{ fontFamily: 'var(--serif-display)', fontWeight: 400, fontSize: 32, marginBottom: 40 }}>
             Choisir un client
           </h2>
@@ -505,7 +506,7 @@ export default function GalerieAlbums() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '80px var(--gutter) 120px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 var(--gutter) 120px' }}>
         <Header user={user} onLogout={() => { logout(); navigate('/galerie') }} />
 
         {/* Fil d'ariane */}
@@ -629,27 +630,117 @@ export default function GalerieAlbums() {
 
 // ── Composants utilitaires ────────────────────────────────────────────────────
 
-function Header({ user, onLogout }) {
+function Header({ user, onLogout, changePassword }) {
+  const [menuOpen,    setMenuOpen]    = useState(false)
+  const [dropOpen,    setDropOpen]    = useState(false)
+  const [showPwdModal, setShowPwdModal] = useState(false)
+  const dropRef    = useRef(null)
+  const userSecRef = useRef(null)
+
+  useEffect(() => {
+    if (!dropOpen) return
+    const onDown = e => { if (dropRef.current && !dropRef.current.contains(e.target)) setDropOpen(false) }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [dropOpen])
+
+  function openPwd() { setMenuOpen(false); setDropOpen(false); setShowPwdModal(true) }
+  function doLogout() { setMenuOpen(false); setDropOpen(false); onLogout() }
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 48 }}>
-      <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'var(--fg)' }}>
-        <DflyMonogram size={28} color="var(--fg)" />
-        <div style={{ fontFamily: 'var(--serif-display)', fontSize: 20 }}>
-          D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
+    <>
+      {showPwdModal && (
+        <ChangePasswordModal onClose={() => setShowPwdModal(false)} changePassword={changePassword} />
+      )}
+
+      <header style={{
+        position: 'sticky', top: 0, zIndex: 100,
+        background: 'var(--bg)', borderBottom: '1px solid var(--line)',
+        marginBottom: 48, marginLeft: 'calc(-1 * var(--gutter))', marginRight: 'calc(-1 * var(--gutter))',
+        padding: '0 var(--gutter)',
+      }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: 64 }}>
+
+          {/* Logo */}
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 12, color: 'var(--fg)' }}>
+            <DflyMonogram size={26} color="var(--fg)" />
+            <div style={{ fontFamily: 'var(--serif-display)', fontSize: 20 }}>
+              D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
+            </div>
+          </Link>
+
+          {/* Desktop : dropdown prénom */}
+          <div ref={dropRef} className="nav-links" style={{ position: 'relative' }}>
+            <button onClick={() => setDropOpen(o => !o)} style={{
+              background: 'none', border: '1px solid var(--line)', cursor: 'pointer',
+              padding: '8px 14px', fontFamily: 'var(--sans)', fontSize: 11,
+              letterSpacing: '0.18em', textTransform: 'uppercase', color: 'var(--fg)',
+              display: 'flex', alignItems: 'center', gap: 7,
+            }}>
+              <span style={{ fontSize: 14, lineHeight: 1 }}>&#9679;</span>
+              {user?.firstName}
+            </button>
+            {dropOpen && (
+              <div style={{
+                position: 'absolute', top: 'calc(100% + 8px)', right: 0,
+                background: 'var(--bg)', border: '1px solid var(--line)',
+                minWidth: 210, zIndex: 200, boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+              }}>
+                <button onClick={openPwd} style={{
+                  display: 'block', width: '100%', textAlign: 'left',
+                  padding: '14px 20px', background: 'none', border: 'none',
+                  borderBottom: '1px solid var(--line)',
+                  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+                  textTransform: 'uppercase', color: 'var(--fg)', cursor: 'pointer',
+                }}>Changer mon mot de passe</button>
+                <button onClick={doLogout} style={{
+                  display: 'block', width: '100%', textAlign: 'left',
+                  padding: '14px 20px', background: 'none', border: 'none',
+                  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+                  textTransform: 'uppercase', color: 'var(--fg)', cursor: 'pointer',
+                }}>Me déconnecter</button>
+              </div>
+            )}
+          </div>
+
+          {/* Mobile : hamburger */}
+          <button
+            className="nav-hamburger"
+            onClick={() => setMenuOpen(o => !o)}
+            aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              padding: '8px 4px', color: 'var(--fg)',
+              flexDirection: 'column', gap: 5, alignItems: 'center',
+            }}
+          >
+            <span style={{ display: 'block', width: 22, height: 1.5, background: 'currentColor', transition: 'transform .25s ease, opacity .25s ease', transform: menuOpen ? 'translateY(6.5px) rotate(45deg)' : 'none' }} />
+            <span style={{ display: 'block', width: 22, height: 1.5, background: 'currentColor', opacity: menuOpen ? 0 : 1, transition: 'opacity .25s ease' }} />
+            <span style={{ display: 'block', width: 22, height: 1.5, background: 'currentColor', transition: 'transform .25s ease, opacity .25s ease', transform: menuOpen ? 'translateY(-6.5px) rotate(-45deg)' : 'none' }} />
+          </button>
         </div>
-      </Link>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-        <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)',
-          letterSpacing: '0.2em' }}>
-          {user?.firstName} {user?.lastName}
-        </span>
-        <button onClick={onLogout} style={{
-          background: 'none', border: '1px solid var(--line)', padding: '7px 16px',
-          fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em',
-          textTransform: 'uppercase', cursor: 'pointer', color: 'var(--fg-muted)',
-        }}>Me déconnecter</button>
-      </div>
-    </div>
+
+        {/* Mobile panel */}
+        {menuOpen && (
+          <nav style={{ borderTop: '1px solid var(--line)', padding: '20px 0 32px' }}>
+            <div
+              onClick={() => userSecRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontWeight: 300, fontSize: 22, color: 'var(--fg)', marginBottom: 16, cursor: 'pointer' }}
+            >
+              Bonjour {user?.firstName} <span style={{ fontSize: 14, opacity: 0.5 }}>↓</span>
+            </div>
+            <div ref={userSecRef} style={{ borderTop: '1px solid var(--line)', paddingTop: 16 }}>
+              <button onClick={openPwd} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid var(--line)', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
+                Changer mon mot de passe
+              </button>
+              <button onClick={doLogout} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
+                Me déconnecter
+              </button>
+            </div>
+          </nav>
+        )}
+      </header>
+    </>
   )
 }
 
