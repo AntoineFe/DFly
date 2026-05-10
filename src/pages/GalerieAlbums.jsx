@@ -453,7 +453,7 @@ export default function GalerieAlbums() {
       el.removeEventListener('touchend',   onEnd)
       el.removeEventListener('touchcancel',onEnd)
     }
-  }, [cols])
+  }, [cols, data])
 
   // Si multi-entreprises et pas d'ent sélectionnée → choix
   const multiEnt = user?.ents?.length > 1
