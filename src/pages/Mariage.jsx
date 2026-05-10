@@ -109,8 +109,9 @@ function Mariage({ lang, setLang }) {
                 {t(<>Le jour<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>qui devient</em><br/>mémoire.</>,
                    <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>that becomes</em><br/>memory.</>)}
               </h1>
+              <div style={{ textAlign: 'center', marginTop: 32 }}>
               <a href="#devis" style={{
-                display: "inline-block", marginTop: 32,
+                display: "inline-block",
                 fontFamily: "var(--sans)", fontSize: 11,
                 letterSpacing: "0.32em", textTransform: "uppercase",
                 border: "1px solid rgba(243,237,226,0.7)",
@@ -119,6 +120,7 @@ function Mariage({ lang, setLang }) {
               }}>
                 {t("Estimer mon projet", "Get a quote")}
               </a>
+              </div>
             </div>
             <div style={{ maxWidth: 500, paddingBottom: 24 }}>
               <p style={{
