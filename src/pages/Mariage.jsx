@@ -8,7 +8,7 @@ const BASE = import.meta.env.BASE_URL;
 const W_IMG = {
   hero:        `${BASE}images/mariage/_7R41480.jpeg`,
   bride:       `${BASE}images/mariage/434_DSC8785.jpeg`,
-  couple:      `${BASE}images/mariage/319_7R45314.jpeg`,
+  couple:      `${BASE}images/mariage/259_7R44229.jpeg`,
   ceremony:    `${BASE}images/mariage/MAX_0035.jpeg`,
   bouquet:     `${BASE}images/mariage/409_7R49654.jpeg`,
   preparation: `${BASE}images/mariage/_7R44108.jpg`,
