@@ -106,7 +106,7 @@ function Mariage({ lang, setLang }) {
                 margin: 0,
                 letterSpacing: "-0.005em",
               }}>
-                {t(<>Le jour<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>qui devient mémoire.</em></>,
+                {t(<>Le jour<br/><em style={{ fontStyle: "italic", fontWeight: 300, display: 'block', marginTop: '0.08em' }}>qui devient mémoire.</em></>,
                    <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>that becomes</em><br/>memory.</>)}
               </h1>
               <div style={{ textAlign: 'center', marginTop: 32 }}>
