@@ -639,11 +639,6 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
   const momentsLabel = momentsSummary(state.moments, lang);
   const hasVideo    = state.format !== "photo";
 
-  const REACTION_OPTS = [
-    { v: "oui",    label: t("Oui, tout à fait", "Yes, absolutely") },
-    { v: "approx", label: t("C'est un peu au-dessus, mais je suis intéressé·e", "It's slightly above my budget, but I'm interested") },
-    { v: "non",    label: t("C'est au-dessus de mon budget", "It's above my budget") },
-  ];
 
   const INTENTION_OPTS = [
     { v: "reserver",  label: t("Je souhaite réserver cette date", "I'd like to book this date") },
@@ -711,19 +706,6 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
         </p>
       </div>
 
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ fontWeight: 600, marginBottom: 14, color: "var(--fg)" }}>
-          {t("Ce budget vous convient-il ?", "Does this budget work for you?")}
-        </div>
-        {REACTION_OPTS.map(opt => (
-          <label key={opt.v} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", cursor: "pointer", color: "var(--fg)" }}>
-            <input type="radio" name="reaction" checked={state.reaction === opt.v}
-              onChange={() => set("reaction", opt.v)} />
-            {opt.label}
-          </label>
-        ))}
-      </div>
-
       <div>
         <div style={{ fontWeight: 600, marginBottom: 14, color: "var(--fg)" }}>
           {t("Quelle est votre intention ?", "What would you like to do?")}
@@ -777,7 +759,6 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
       demandes:    state.demandes,
       simulations:  allSimsEmail,
       simulation:   allSimsEmail[chosen],
-      reactionKey:  state.reaction,
       intentionKey: state.intention,
       lang,
     };
@@ -957,7 +938,7 @@ const INIT = {
   teaser: false, integral: false, drone: false,
   hotelPrisEnCharge: false,
   demandes: "",
-  reaction: "", intention: "",
+  intention: "",
   prenom: "", nom: "", email: "", tel: "",
 };
 
@@ -1032,7 +1013,7 @@ export default function DevisFunnel({ lang = "FR" }) {
 
   const canGoNext = () => {
     if (step === 0) return Object.keys(state.moments).length > 0;
-    if (step === 6) return !!state.reaction && !!state.intention && state.intention !== "explorer";
+    if (step === 6) return !!state.intention && state.intention !== "explorer";
     return true;
   };
 
