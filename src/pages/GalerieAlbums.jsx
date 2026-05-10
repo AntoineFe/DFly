@@ -6,15 +6,22 @@ import DflyMonogram from '../components/DflyMonogram'
 // ── Lightbox ──────────────────────────────────────────────────────────────────
 
 function Lightbox({ files, index, onClose, onPrev, onNext }) {
-  const file        = files[index]
-  const touchStartX = useRef(null)
-  const didSwipe    = useRef(false)
-  const didDoubleTap = useRef(false)
-  const lastTapTime  = useRef(0)
-  const [zoomed, setZoomed] = useState(false)
+  const [dragX,           setDragX]           = useState(0)
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const [zoomed,          setZoomed]          = useState(false)
 
-  // Réinitialiser le zoom au changement de photo
-  useEffect(() => { setZoomed(false) }, [index])
+  const containerRef = useRef(null)
+  const touchStartX  = useRef(null)
+  const dragXRef     = useRef(0)
+  const lastTapTime  = useRef(0)
+  const didSwipe     = useRef(false)
+  const didDoubleTap = useRef(false)
+
+  const prevFile = index > 0               ? files[index - 1] : null
+  const curFile  = files[index]
+  const nextFile = index < files.length - 1 ? files[index + 1] : null
+
+  useEffect(() => { setZoomed(false); setDragX(0); dragXRef.current = 0 }, [index])
 
   useEffect(() => {
     function onKey(e) {
@@ -26,86 +33,129 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose, onPrev, onNext])
 
+  // Bloque le scroll page pendant le glissement (passive:false obligatoire)
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const prevent = e => { if (!zoomed) e.preventDefault() }
+    el.addEventListener('touchmove', prevent, { passive: false })
+    return () => el.removeEventListener('touchmove', prevent)
+  }, [zoomed])
+
   function handleTouchStart(e) {
     touchStartX.current  = e.touches[0].clientX
     didSwipe.current     = false
     didDoubleTap.current = false
+    setIsTransitioning(false)
+  }
+
+  function handleTouchMove(e) {
+    if (touchStartX.current === null || zoomed) return
+    const delta   = e.touches[0].clientX - touchStartX.current
+    const clamped = delta > 0 && !prevFile ? delta * 0.15
+                  : delta < 0 && !nextFile ? delta * 0.15
+                  : delta
+    dragXRef.current = clamped
+    setDragX(clamped)
   }
 
   function handleTouchEnd(e) {
     if (touchStartX.current === null) return
-    const delta = e.changedTouches[0].clientX - touchStartX.current
+    const rawDelta  = e.changedTouches[0].clientX - touchStartX.current
+    const currentDX = dragXRef.current
     touchStartX.current = null
 
-    const now     = Date.now()
-    const elapsed = now - lastTapTime.current
-
-    // Double-tap : deux taps rapprochés avec peu de mouvement
-    if (elapsed < 300 && Math.abs(delta) < 10) {
+    // Double-tap
+    const now = Date.now()
+    if (now - lastTapTime.current < 300 && Math.abs(rawDelta) < 10) {
       didDoubleTap.current = true
       setZoomed(z => !z)
+      setDragX(0); dragXRef.current = 0
       lastTapTime.current = 0
       return
     }
     lastTapTime.current = now
 
-    // Swipe (seulement si pas zoomé)
-    if (!zoomed && Math.abs(delta) > 50) {
+    // Swipe
+    const W = window.innerWidth
+    if (!zoomed && Math.abs(currentDX) > W * 0.25) {
       didSwipe.current = true
-      if (delta < 0) onNext()
-      else           onPrev()
+      const targetX = currentDX < 0 ? -W : W
+      setIsTransitioning(true)
+      setDragX(targetX); dragXRef.current = targetX
+      setTimeout(() => { if (currentDX < 0) onNext(); else onPrev() }, 280)
+    } else {
+      setIsTransitioning(true)
+      setDragX(0); dragXRef.current = 0
+      setTimeout(() => setIsTransitioning(false), 300)
     }
   }
 
+  const panels = [...(prevFile ? [prevFile] : []), curFile, ...(nextFile ? [nextFile] : [])]
+  const baseVw  = -(prevFile ? 1 : 0) * 100
+
   return (
     <div
+      ref={containerRef}
       onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onClick={() => { if (!didSwipe.current && !didDoubleTap.current) onClose() }}
-      style={{
-      position: 'fixed', inset: 0, zIndex: 1000,
-      background: 'rgba(14,16,13,0.96)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-    }}>
+      style={{ position: 'fixed', inset: 0, zIndex: 1000, overflow: 'hidden',
+        background: 'rgba(14,16,13,0.96)' }}
+    >
+      {/* Strip coulissante */}
+      <div style={{
+        display: 'flex', height: '100%',
+        width: `${panels.length * 100}vw`,
+        transform: `translateX(calc(${baseVw}vw + ${dragX}px))`,
+        transition: isTransitioning ? 'transform 0.28s ease' : 'none',
+        alignItems: 'center',
+      }}>
+        {panels.map(f => (
+          <div key={f.name} onClick={e => e.stopPropagation()}
+            style={{ width: '100vw', height: '100%', display: 'flex',
+              alignItems: 'center', justifyContent: 'center' }}>
+            {f.type === 'video' ? (
+              <video controls autoPlay={f === curFile} style={{ maxWidth: '90vw', maxHeight: '90vh' }}>
+                <source src={f.url} />
+              </video>
+            ) : (
+              <img src={f.url} alt={f.name} style={{
+                maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain',
+                transform: f === curFile && zoomed ? 'scale(2.5)' : 'scale(1)',
+                transition: 'transform 0.3s ease',
+                cursor: f === curFile ? (zoomed ? 'zoom-out' : 'zoom-in') : 'default',
+                userSelect: 'none',
+              }} />
+            )}
+          </div>
+        ))}
+      </div>
+
       <button onClick={e => { e.stopPropagation(); onClose() }} style={{
-        position: 'absolute', top: 20, right: 24,
+        position: 'absolute', top: 20, right: 24, zIndex: 10,
         background: 'none', border: 'none', color: 'var(--ivory)',
         fontSize: 28, cursor: 'pointer', opacity: 0.7, lineHeight: 1,
       }}>✕</button>
 
       {index > 0 && (
         <button onClick={e => { e.stopPropagation(); onPrev() }} style={{
-          position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)',
+          position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
           background: 'none', border: 'none', color: 'var(--ivory)',
           fontSize: 36, cursor: 'pointer', opacity: 0.7, padding: '16px 12px',
         }}>‹</button>
       )}
-
-      <div onClick={e => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '90vh', overflow: 'hidden' }}>
-        {file.type === 'video' ? (
-          <video controls autoPlay style={{ maxWidth: '90vw', maxHeight: '90vh' }}>
-            <source src={file.url} />
-          </video>
-        ) : (
-          <img src={file.url} alt={file.name} style={{
-            maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain',
-            transform: zoomed ? 'scale(2.5)' : 'scale(1)',
-            transition: 'transform 0.3s ease',
-            cursor: zoomed ? 'zoom-out' : 'zoom-in',
-          }} />
-        )}
-      </div>
-
       {index < files.length - 1 && (
         <button onClick={e => { e.stopPropagation(); onNext() }} style={{
-          position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)',
+          position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)', zIndex: 10,
           background: 'none', border: 'none', color: 'var(--ivory)',
           fontSize: 36, cursor: 'pointer', opacity: 0.7, padding: '16px 12px',
         }}>›</button>
       )}
 
       <div style={{
-        position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)',
+        position: 'absolute', bottom: 16, left: '50%', transform: 'translateX(-50%)', zIndex: 10,
         fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.3em',
         textTransform: 'uppercase', color: 'rgba(243,237,226,0.5)',
       }}>
