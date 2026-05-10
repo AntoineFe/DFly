@@ -4,20 +4,20 @@ import DflyMonogram from './DflyMonogram'
 
 const NAV_LINKS = {
   FR: [
-    { path: '/',           label: 'Accueil'     },
-    { path: '/mariage',    label: 'Mariage'     },
-    { path: '/immobilier', label: 'Immobilier'  },
-    { path: '/spectacle',  label: 'Spectacle'   },
-    { path: '/evenements', label: 'Événements'  },
-    { path: '/famille',    label: 'Famille'     },
+    { path: '/',              label: 'Accueil'              },
+    { path: '/mariage',       label: 'Mariage'              },
+    { path: '/immobilier',    label: 'Immobilier'           },
+    { path: '/communication', label: 'Communication'        },
+    { path: '/spectacle',     label: 'Événement & Spectacle'},
+    { path: '/famille',       label: 'Portrait & Famille'   },
   ],
   EN: [
-    { path: '/',           label: 'Home'        },
-    { path: '/mariage',    label: 'Wedding'     },
-    { path: '/immobilier', label: 'Real Estate' },
-    { path: '/spectacle',  label: 'Stage'       },
-    { path: '/evenements', label: 'Events'      },
-    { path: '/famille',    label: 'Family'      },
+    { path: '/',              label: 'Home'                 },
+    { path: '/mariage',       label: 'Wedding'              },
+    { path: '/immobilier',    label: 'Real Estate'          },
+    { path: '/communication', label: 'Business & Brand'     },
+    { path: '/spectacle',     label: 'Event & Stage'        },
+    { path: '/famille',       label: 'Portrait & Family'    },
   ],
 }
 
