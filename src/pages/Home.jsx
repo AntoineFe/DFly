@@ -143,7 +143,7 @@ export default function Home({ lang, setLang }) {
               'De la maison individuelle au programme neuf, chaque bien a une heure, un angle, une lumière qui lui convient. Vues au sol et aériennes, intérieurs et extérieurs traités avec une exigence de magazine.',
               'From the individual home to new developments, every property has an hour, an angle, a light that suits it. Ground and aerial views, interiors and exteriors treated with a magazine standard.'
             )}
-            keywords={[]}
+            keywords={[]} href="/immobilier"
             image={IMG.realestate1} imageAlt={IMG.realestate2} reverse={true}
           />
 
@@ -154,7 +154,7 @@ export default function Home({ lang, setLang }) {
               'Artisans, constructeurs, domaines, commerçants. Des photos et vidéos qui montrent votre travail — pour vos réseaux, vos affiches, vos appels d\'offres.',
               'Craftsmen, builders, estates, retailers. Photos and videos that show your work — for your social media, print, and tenders.'
             )}
-            keywords={[]}
+            keywords={[]} href="/communication"
             image={IMG.business1} imageAlt={IMG.business2} reverse={false}
           />
 
@@ -165,7 +165,7 @@ export default function Home({ lang, setLang }) {
               'Défilés, remises de diplômes, concerts, festivals, spectacles. Chaque événement a son rythme, son émotion, son moment décisif. Notre rôle est de les saisir.',
               'Fashion shows, graduations, concerts, festivals, performances. Every event has its rhythm, its emotion, its decisive moment. Our role is to capture them.'
             )}
-            keywords={[]}
+            keywords={[]} href="/spectacle"
             image={IMG.event1} imageAlt={IMG.event2} reverse={true}
           />
 
@@ -176,7 +176,7 @@ export default function Home({ lang, setLang }) {
               'Séances en extérieur, à la maison, sans rien imposer. Books, couples, familles avec enfants. Nous laissons les choses se passer — vous gardez la vérité d\'un instant.',
               'Outdoor sessions, at home, without imposing anything. Portfolios, couples, families with children. We let things happen — you keep the truth of a moment.'
             )}
-            keywords={[]}
+            keywords={[]} href="/famille"
             image={IMG.portrait1} imageAlt={IMG.portrait2} reverse={false} isLast
           />
         </div>

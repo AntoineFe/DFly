@@ -2,6 +2,10 @@ import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Mariage from './pages/Mariage'
+import Immobilier from './pages/Immobilier'
+import Communication from './pages/Communication'
+import Spectacle from './pages/Spectacle'
+import Famille from './pages/Famille'
 import Contact from './pages/Contact'
 import GalerieLogin from './pages/GalerieLogin'
 import GalerieAlbums from './pages/GalerieAlbums'
@@ -34,10 +38,15 @@ export default function App() {
   return (
     <GalerieAuthProvider>
       <Routes>
-        <Route path="/"         element={<Home    lang={lang} setLang={setLang} />} />
-        <Route path="/mariage"  element={<Mariage lang={lang} setLang={setLang} />} />
-        <Route path="/contact"  element={<Contact lang={lang} setLang={setLang} />} />
-        <Route path="/galerie/*" element={<GalerieRoutes />} />
+        <Route path="/"               element={<Home          lang={lang} setLang={setLang} />} />
+        <Route path="/mariage"        element={<Mariage       lang={lang} setLang={setLang} />} />
+        <Route path="/immobilier"     element={<Immobilier    lang={lang} setLang={setLang} />} />
+        <Route path="/communication"  element={<Communication lang={lang} setLang={setLang} />} />
+        <Route path="/spectacle"      element={<Spectacle     lang={lang} setLang={setLang} />} />
+        <Route path="/evenements"     element={<Navigate to="/spectacle" replace />} />
+        <Route path="/famille"        element={<Famille       lang={lang} setLang={setLang} />} />
+        <Route path="/contact"        element={<Contact       lang={lang} setLang={setLang} />} />
+        <Route path="/galerie/*"      element={<GalerieRoutes />} />
       </Routes>
     </GalerieAuthProvider>
   )
