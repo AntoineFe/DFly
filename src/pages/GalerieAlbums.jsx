@@ -6,9 +6,15 @@ import DflyMonogram from '../components/DflyMonogram'
 // ── Lightbox ──────────────────────────────────────────────────────────────────
 
 function Lightbox({ files, index, onClose, onPrev, onNext }) {
-  const file = files[index]
+  const file        = files[index]
   const touchStartX = useRef(null)
   const didSwipe    = useRef(false)
+  const didDoubleTap = useRef(false)
+  const lastTapTime  = useRef(0)
+  const [zoomed, setZoomed] = useState(false)
+
+  // Réinitialiser le zoom au changement de photo
+  useEffect(() => { setZoomed(false) }, [index])
 
   useEffect(() => {
     function onKey(e) {
@@ -21,26 +27,41 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   }, [onClose, onPrev, onNext])
 
   function handleTouchStart(e) {
-    touchStartX.current = e.touches[0].clientX
-    didSwipe.current = false
+    touchStartX.current  = e.touches[0].clientX
+    didSwipe.current     = false
+    didDoubleTap.current = false
   }
 
   function handleTouchEnd(e) {
     if (touchStartX.current === null) return
     const delta = e.changedTouches[0].clientX - touchStartX.current
-    if (Math.abs(delta) > 50) {
+    touchStartX.current = null
+
+    const now     = Date.now()
+    const elapsed = now - lastTapTime.current
+
+    // Double-tap : deux taps rapprochés avec peu de mouvement
+    if (elapsed < 300 && Math.abs(delta) < 10) {
+      didDoubleTap.current = true
+      setZoomed(z => !z)
+      lastTapTime.current = 0
+      return
+    }
+    lastTapTime.current = now
+
+    // Swipe (seulement si pas zoomé)
+    if (!zoomed && Math.abs(delta) > 50) {
       didSwipe.current = true
       if (delta < 0) onNext()
       else           onPrev()
     }
-    touchStartX.current = null
   }
 
   return (
     <div
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
-      onClick={() => { if (!didSwipe.current) onClose() }}
+      onClick={() => { if (!didSwipe.current && !didDoubleTap.current) onClose() }}
       style={{
       position: 'fixed', inset: 0, zIndex: 1000,
       background: 'rgba(14,16,13,0.96)',
@@ -60,7 +81,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
         }}>‹</button>
       )}
 
-      <div onClick={e => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '90vh' }}>
+      <div onClick={e => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '90vh', overflow: 'hidden' }}>
         {file.type === 'video' ? (
           <video controls autoPlay style={{ maxWidth: '90vw', maxHeight: '90vh' }}>
             <source src={file.url} />
@@ -68,6 +89,9 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
         ) : (
           <img src={file.url} alt={file.name} style={{
             maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain',
+            transform: zoomed ? 'scale(2.5)' : 'scale(1)',
+            transition: 'transform 0.3s ease',
+            cursor: zoomed ? 'zoom-out' : 'zoom-in',
           }} />
         )}
       </div>
