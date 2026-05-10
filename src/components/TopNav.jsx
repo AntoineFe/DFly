@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import DflyMonogram from './DflyMonogram'
 
@@ -21,9 +21,11 @@ const NAV_LINKS = {
   ],
 }
 
-export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabel, ctaHref }) {
+export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabel, ctaHref, galerieUser, onGalerieLogout, onChangePassword }) {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const userMenuRef = useRef(null)
   const location = useLocation()
 
   useEffect(() => {
@@ -33,7 +35,15 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
   }, [])
 
   // Close menu on route change
-  useEffect(() => { setMenuOpen(false) }, [location.pathname])
+  useEffect(() => { setMenuOpen(false); setUserMenuOpen(false) }, [location.pathname])
+
+  // Close user menu on outside click
+  useEffect(() => {
+    if (!userMenuOpen) return
+    const onDown = e => { if (userMenuRef.current && !userMenuRef.current.contains(e.target)) setUserMenuOpen(false) }
+    document.addEventListener('mousedown', onDown)
+    return () => document.removeEventListener('mousedown', onDown)
+  }, [userMenuOpen])
 
   const isOverHero = scheme === 'over-hero' && !scrolled && !menuOpen
   const tone   = isOverHero ? 'rgba(243,237,226,0.95)' : 'var(--fg)'
@@ -112,6 +122,59 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
           </a>
 
+          {/* User menu */}
+          {galerieUser && (
+            <div ref={userMenuRef} style={{ position: 'relative' }}>
+              <button
+                onClick={() => setUserMenuOpen(o => !o)}
+                style={{
+                  background: 'none', border: `1px solid ${menuOpen ? 'var(--fg)' : tone}`,
+                  cursor: 'pointer', padding: '8px 14px',
+                  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.18em',
+                  textTransform: 'uppercase', color: menuOpen ? 'var(--fg)' : tone,
+                  display: 'flex', alignItems: 'center', gap: 7,
+                }}
+              >
+                <span style={{ fontSize: 14, lineHeight: 1 }}>&#9679;</span>
+                {galerieUser.firstName}
+              </button>
+              {userMenuOpen && (
+                <div style={{
+                  position: 'absolute', top: 'calc(100% + 8px)', right: 0,
+                  background: 'var(--bg)', border: '1px solid var(--line)',
+                  minWidth: 210, zIndex: 200,
+                  boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
+                }}>
+                  <Link to="/galerie/albums" onClick={() => setUserMenuOpen(false)} style={{
+                    display: 'block', padding: '14px 20px',
+                    fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+                    textTransform: 'uppercase', color: 'var(--fg)',
+                    borderBottom: '1px solid var(--line)',
+                  }}>
+                    Ma galerie
+                  </Link>
+                  <button onClick={() => { setUserMenuOpen(false); onChangePassword?.() }} style={{
+                    display: 'block', width: '100%', textAlign: 'left',
+                    padding: '14px 20px', background: 'none', border: 'none',
+                    borderBottom: '1px solid var(--line)',
+                    fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+                    textTransform: 'uppercase', color: 'var(--fg)', cursor: 'pointer',
+                  }}>
+                    Changer mon mot de passe
+                  </button>
+                  <button onClick={() => { setUserMenuOpen(false); onGalerieLogout?.() }} style={{
+                    display: 'block', width: '100%', textAlign: 'left',
+                    padding: '14px 20px', background: 'none', border: 'none',
+                    fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+                    textTransform: 'uppercase', color: 'var(--fg)', cursor: 'pointer',
+                  }}>
+                    Se déconnecter
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Hamburger button */}
           <button
             className="nav-hamburger"
@@ -162,6 +225,22 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
           }}>
             {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
           </a>
+          {galerieUser && (
+            <div style={{ marginTop: 32, borderTop: '1px solid var(--line)', paddingTop: 24 }}>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 16 }}>
+                {galerieUser.firstName}
+              </div>
+              <Link to="/galerie/albums" style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', borderBottom: '1px solid var(--line)' }}>
+                Ma galerie
+              </Link>
+              <button onClick={() => { setMenuOpen(false); onChangePassword?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid var(--line)', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
+                Changer mon mot de passe
+              </button>
+              <button onClick={() => { setMenuOpen(false); onGalerieLogout?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
+                Se déconnecter
+              </button>
+            </div>
+          )}
         </nav>
       )}
     </header>

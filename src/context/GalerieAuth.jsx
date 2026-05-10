@@ -62,12 +62,21 @@ export function GalerieAuthProvider({ children }) {
     setUser(null)
   }
 
+  async function changePassword(currentPassword, newPassword) {
+    const r = await authFetch('galerie-update-password.php', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ currentPassword, newPassword }),
+    })
+    return r.json()
+  }
+
   function hasAuth(rsrc, level) {
     return !!(user?.auths?.[rsrc] && user.auths[rsrc].includes(level))
   }
 
   return (
-    <GalerieAuthContext.Provider value={{ user, loading, login, loginWithCle, logout, authFetch, hasAuth }}>
+    <GalerieAuthContext.Provider value={{ user, loading, login, loginWithCle, logout, authFetch, hasAuth, changePassword }}>
       {children}
     </GalerieAuthContext.Provider>
   )

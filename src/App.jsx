@@ -17,15 +17,13 @@ function ProtectedRoute({ children, adminOnly }) {
 
 function GalerieRoutes() {
   return (
-    <GalerieAuthProvider>
-      <Routes>
-        <Route path="login" element={<GalerieLogin />} />
-        <Route path="albums"    element={<ProtectedRoute><GalerieAlbums /></ProtectedRoute>} />
-        <Route path="albums/:entId" element={<ProtectedRoute><GalerieAlbums /></ProtectedRoute>} />
-        <Route path="admin"  element={<ProtectedRoute adminOnly><GalerieAdmin /></ProtectedRoute>} />
-        <Route index         element={<GalerieLogin />} />
-      </Routes>
-    </GalerieAuthProvider>
+    <Routes>
+      <Route path="login" element={<GalerieLogin />} />
+      <Route path="albums"    element={<ProtectedRoute><GalerieAlbums /></ProtectedRoute>} />
+      <Route path="albums/:entId" element={<ProtectedRoute><GalerieAlbums /></ProtectedRoute>} />
+      <Route path="admin"  element={<ProtectedRoute adminOnly><GalerieAdmin /></ProtectedRoute>} />
+      <Route index         element={<GalerieLogin />} />
+    </Routes>
   )
 }
 
@@ -33,10 +31,12 @@ export default function App() {
   const [lang, setLang] = useState('FR')
 
   return (
-    <Routes>
-      <Route path="/"         element={<Home    lang={lang} setLang={setLang} />} />
-      <Route path="/mariage"  element={<Mariage lang={lang} setLang={setLang} />} />
-      <Route path="/galerie/*" element={<GalerieRoutes />} />
-    </Routes>
+    <GalerieAuthProvider>
+      <Routes>
+        <Route path="/"         element={<Home    lang={lang} setLang={setLang} />} />
+        <Route path="/mariage"  element={<Mariage lang={lang} setLang={setLang} />} />
+        <Route path="/galerie/*" element={<GalerieRoutes />} />
+      </Routes>
+    </GalerieAuthProvider>
   )
 }
