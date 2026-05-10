@@ -115,13 +115,13 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
           </div>
 
           {/* Devis — hidden on mobile (appears in mobile menu) */}
-          <a href={ctaHref ?? '#contact'} className="nav-links" style={{
+          <Link to={ctaHref ?? '/contact'} className="nav-links" style={{
             fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em',
             textTransform: 'uppercase', border: `1px solid ${tone}`,
             padding: '10px 18px', color: tone,
           }}>
             {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
-          </a>
+          </Link>
 
           {/* User menu — hidden on mobile (appears in hamburger panel) */}
           {galerieUser && (
@@ -226,14 +226,14 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
               )
             })}
           </div>
-          <a href={ctaHref ?? '#contact'} style={{
+          <Link to={ctaHref ?? '/contact'} style={{
             display: 'inline-block', marginTop: 32,
             fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em',
             textTransform: 'uppercase', border: '1px solid var(--fg)',
             padding: '12px 24px', color: 'var(--fg)',
           }}>
             {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
-          </a>
+          </Link>
           {galerieUser && (
             <div ref={userSectionRef} style={{ marginTop: 32, borderTop: '1px solid var(--line)', paddingTop: 24 }}>
               <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 16 }}>

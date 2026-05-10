@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Mariage from './pages/Mariage'
+import Contact from './pages/Contact'
 import GalerieLogin from './pages/GalerieLogin'
 import GalerieAlbums from './pages/GalerieAlbums'
 import GalerieAdmin from './pages/GalerieAdmin'
@@ -35,6 +36,7 @@ export default function App() {
       <Routes>
         <Route path="/"         element={<Home    lang={lang} setLang={setLang} />} />
         <Route path="/mariage"  element={<Mariage lang={lang} setLang={setLang} />} />
+        <Route path="/contact"  element={<Contact lang={lang} setLang={setLang} />} />
         <Route path="/galerie/*" element={<GalerieRoutes />} />
       </Routes>
     </GalerieAuthProvider>
