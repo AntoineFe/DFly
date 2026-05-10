@@ -565,22 +565,23 @@ export default function GalerieAlbums() {
                     <button key={dir.name} onClick={() => openDir(dir.name)} style={{
                       background: 'none', border: '1px solid var(--line)',
                       cursor: 'pointer', textAlign: 'left', padding: 0,
-                      display: 'flex', flexDirection: 'column', height: '100%',
+                      width: '100%', display: 'flex', flexDirection: 'column',
                     }}>
-                      <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: 'var(--bg-alt)', flexShrink: 0 }}>
+                      <div style={{ aspectRatio: '4/3', width: '100%', overflow: 'hidden', background: 'var(--bg-alt)' }}>
                         {dir.cover
                           ? <img src={dir.cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center',
                               justifyContent: 'center', opacity: 0.2, fontSize: 40 }}>📁</div>
                         }
                       </div>
-                      <div style={{ padding: '12px 14px', minHeight: 72 }}>
-                        <div style={{ fontFamily: 'var(--serif-display)', fontSize: 18, color: 'var(--fg)' }}>
+                      <div style={{ padding: '8px 10px' }}>
+                        <div style={{ fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.04em',
+                          color: 'var(--fg)', lineHeight: 1.35 }}>
                           {dir.meta?.title || dir.name}
                         </div>
                         {dir.meta?.subtitle && (
-                          <div style={{ fontFamily: 'var(--serif)', fontSize: 13, color: 'var(--fg-muted)',
-                            fontStyle: 'italic', marginTop: 4 }}>
+                          <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)',
+                            marginTop: 2, opacity: 0.7 }}>
                             {dir.meta.subtitle}
                           </div>
                         )}
