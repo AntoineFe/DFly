@@ -15,7 +15,7 @@ galerie_require_level($session, 'upload', 'C');
 [, $cfg] = galerie_db();
 
 $body    = json_decode(file_get_contents('php://input'), true);
-$ent     = preg_replace('/[^a-zA-Z0-9_\-]/', '', $body['ent']  ?? $session['shortDescEnt']);
+$ent     = galerie_ent_slug($body['ent'] ?? $session['shortDescEnt']);
 $subPath = preg_replace('/\.\./', '', $body['path'] ?? '');
 $name    = preg_replace('/[^a-zA-Z0-9_\- ]/', '', $body['name'] ?? '');
 $name    = trim($name);
@@ -26,8 +26,9 @@ if ($name === '') {
 }
 
 $subPath  = trim($subPath, '/');
-$newDir   = rtrim($cfg['galerie_root'],    '/') . '/' . $ent . ($subPath !== '' ? '/' . $subPath : '') . '/' . $name;
-$newThumb = rtrim($cfg['thumbnails_root'], '/') . '/' . $ent . ($subPath !== '' ? '/' . $subPath : '') . '/' . $name;
+$paths    = galerie_ent_paths($cfg, $ent);
+$newDir   = $paths['galerie_root']    . ($subPath !== '' ? '/' . $subPath : '') . '/' . $name;
+$newThumb = $paths['thumbnails_root'] . ($subPath !== '' ? '/' . $subPath : '') . '/' . $name;
 
 if (is_dir($newDir)) {
     http_response_code(409);

@@ -14,12 +14,13 @@ galerie_require_level($session, 'upload', 'C');
 
 [, $cfg] = galerie_db();
 
-$ent     = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_POST['ent'] ?? $session['shortDescEnt']);
+$ent     = galerie_ent_slug($_POST['ent'] ?? $session['shortDescEnt']);
 $subPath = preg_replace('/\.\./', '', $_POST['path'] ?? '');
 $subPath = trim($subPath, '/');
 
-$destDir  = rtrim($cfg['galerie_root'],    '/') . '/' . $ent . ($subPath !== '' ? '/' . $subPath : '');
-$thumbDir = rtrim($cfg['thumbnails_root'], '/') . '/' . $ent . ($subPath !== '' ? '/' . $subPath : '');
+$paths    = galerie_ent_paths($cfg, $ent);
+$destDir  = $paths['galerie_root']    . ($subPath !== '' ? '/' . $subPath : '');
+$thumbDir = $paths['thumbnails_root'] . ($subPath !== '' ? '/' . $subPath : '');
 
 if (!is_dir($destDir)) {
     http_response_code(400);
@@ -58,8 +59,8 @@ foreach ($_FILES as $file) {
     $results[] = [
         'name'     => $origName,
         'ok'       => true,
-        'url'      => $cfg['galerie_url']    . '/' . $ent . '/' . $relPath,
-        'thumbUrl' => $cfg['thumbnails_url'] . '/' . $ent . '/' . $relPath,
+        'url'      => $paths['galerie_url']    . '/' . $relPath,
+        'thumbUrl' => $paths['thumbnails_url'] . '/' . $relPath,
     ];
 }
 

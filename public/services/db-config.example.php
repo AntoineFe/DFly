@@ -28,27 +28,19 @@ if ($i !== false) {
 $configs = [
 
     'dev' => [
-        'host'            => 'localhost',
-        'user'            => 'alphoxfr_alphox',
-        'pass'            => 'MOT_DE_PASSE_ICI',
-        'dbname'          => 'alphoxfr_dfly_dev',
-        'port'            => 3306,
-        'galerie_root'    => '/home/alphoxfr/public_html/dflyclaude/galerie',
-        'thumbnails_root' => '/home/alphoxfr/public_html/dflyclaude/galerie_thumbnails',
-        'galerie_url'     => '/dflyclaude/galerie',
-        'thumbnails_url'  => '/dflyclaude/galerie_thumbnails',
+        'host'   => 'localhost',
+        'user'   => 'alphoxfr_alphox',
+        'pass'   => 'MOT_DE_PASSE_ICI',
+        'dbname' => 'alphoxfr_dfly_dev',
+        'port'   => 3306,
     ],
 
     'prd' => [
-        'host'            => 'localhost',
-        'user'            => 'MOT_UTILISATEUR_PROD',
-        'pass'            => 'MOT_DE_PASSE_PROD',
-        'dbname'          => 'alphoxfr_dfly_prd',
-        'port'            => 3306,
-        'galerie_root'    => '/home/dflyfr/public_html/galerie',
-        'thumbnails_root' => '/home/dflyfr/public_html/galerie_thumbnails',
-        'galerie_url'     => '/galerie',
-        'thumbnails_url'  => '/galerie_thumbnails',
+        'host'   => 'localhost',
+        'user'   => 'MOT_UTILISATEUR_PROD',
+        'pass'   => 'MOT_DE_PASSE_PROD',
+        'dbname' => 'alphoxfr_dfly_prd',
+        'port'   => 3306,
     ],
 
 ];

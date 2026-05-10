@@ -15,7 +15,35 @@ function galerie_db() {
         exit(json_encode(['ok' => false, 'error' => 'Connexion base de données impossible']));
     }
     mysqli_set_charset($link, 'utf8mb4');
+
+    // Calcul dynamique du répertoire Pro selon l'environnement
+    $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
+    $cwd     = getcwd();
+    $i       = strpos($cwd, 'public_html');
+    $after   = $i !== false ? substr($cwd, $i + 11) : '';
+    $prefix  = (str_starts_with($after, '/dflyclaude') || str_starts_with($after, '/dfly_dev')) ? '/dflyclaude' : '';
+
+    $cfg['pro_root'] = $docRoot . $prefix . '/images/Pro';
+    $cfg['pro_url']  = $prefix . '/images/Pro';
+
     return [$link, $cfg];
+}
+
+// Retourne les chemins filesystem et URL pour un client donné
+function galerie_ent_paths($cfg, $ent) {
+    $base    = $cfg['pro_root'] . '/' . $ent;
+    $baseUrl = $cfg['pro_url']  . '/' . $ent;
+    return [
+        'galerie_root'    => $base    . '/galerie',
+        'thumbnails_root' => $base    . '/galerie_thumbnails',
+        'galerie_url'     => $baseUrl . '/galerie',
+        'thumbnails_url'  => $baseUrl . '/galerie_thumbnails',
+    ];
+}
+
+// Convertit Entreprise.shortDesc en nom de dossier : minuscules, sans espaces
+function galerie_ent_slug($shortDesc) {
+    return strtolower(str_replace(' ', '', $shortDesc));
 }
 
 function galerie_require_auth() {

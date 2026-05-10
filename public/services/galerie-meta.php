@@ -12,7 +12,7 @@ galerie_require_level($session, 'upload', 'C');
 [, $cfg] = galerie_db();
 
 $body    = json_decode(file_get_contents('php://input'), true);
-$ent     = preg_replace('/[^a-zA-Z0-9_\-]/', '', $body['ent']  ?? $session['shortDescEnt']);
+$ent     = galerie_ent_slug($body['ent'] ?? $session['shortDescEnt']);
 $subPath = preg_replace('/\.\./', '', $body['path'] ?? '');
 $subPath = trim($subPath, '/');
 $meta    = $body['meta'] ?? [];
@@ -23,7 +23,8 @@ foreach (['title', 'subtitle', 'message', 'videoHtml', 'printUrl', 'printLabel']
     if (isset($meta[$k])) $clean[$k] = (string)$meta[$k];
 }
 
-$dir = rtrim($cfg['galerie_root'], '/') . '/' . $ent . ($subPath !== '' ? '/' . $subPath : '');
+$paths = galerie_ent_paths($cfg, $ent);
+$dir   = $paths['galerie_root'] . ($subPath !== '' ? '/' . $subPath : '');
 
 if (!is_dir($dir)) {
     http_response_code(404);

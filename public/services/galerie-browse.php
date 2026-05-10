@@ -16,9 +16,9 @@ galerie_require_level($session, 'galerie', 'R');
 $isAdmin = galerie_has_auth($session, 'admin', 'R');
 
 if ($isAdmin && isset($_GET['ent'])) {
-    $entSlug = preg_replace('/[^a-zA-Z0-9_\-]/', '', $_GET['ent']);
+    $entSlug = galerie_ent_slug($_GET['ent']);
 } else {
-    $entSlug = $session['shortDescEnt'];
+    $entSlug = galerie_ent_slug($session['shortDescEnt']);
 }
 
 $subPath = isset($_GET['path']) ? $_GET['path'] : '';
@@ -26,7 +26,8 @@ $subPath = isset($_GET['path']) ? $_GET['path'] : '';
 $subPath = preg_replace('/\.\./', '', $subPath);
 $subPath = ltrim($subPath, '/');
 
-$baseDir   = rtrim($cfg['galerie_root'], '/') . '/' . $entSlug;
+$paths     = galerie_ent_paths($cfg, $entSlug);
+$baseDir   = $paths['galerie_root'];
 $targetDir = $subPath !== '' ? $baseDir . '/' . $subPath : $baseDir;
 
 if (!is_dir($targetDir)) {
@@ -45,13 +46,13 @@ foreach (scandir($targetDir) as $item) {
     $full = $targetDir . '/' . $item;
     if (is_dir($full)) {
         // Image de couverture : première image du sous-dossier (thumbnails)
-        $thumbDir = rtrim($cfg['thumbnails_root'], '/') . '/' . $entSlug . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item;
+        $thumbDir = $paths['thumbnails_root'] . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item;
         $cover    = null;
         if (is_dir($thumbDir)) {
             foreach (scandir($thumbDir) as $tf) {
                 $ext = strtolower(pathinfo($tf, PATHINFO_EXTENSION));
                 if (in_array($ext, $IMAGE_EXT)) {
-                    $cover = $cfg['thumbnails_url'] . '/' . $entSlug . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item . '/' . $tf;
+                    $cover = $paths['thumbnails_url'] . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item . '/' . $tf;
                     break;
                 }
             }
@@ -69,16 +70,16 @@ foreach (scandir($targetDir) as $item) {
         $relPath  = ($subPath !== '' ? $subPath . '/' : '') . $item;
         $thumbUrl = null;
         if ($type === 'image') {
-            $thumbPath = rtrim($cfg['thumbnails_root'], '/') . '/' . $entSlug . '/' . $relPath;
+            $thumbPath = $paths['thumbnails_root'] . '/' . $relPath;
             if (file_exists($thumbPath)) {
-                $thumbUrl = $cfg['thumbnails_url'] . '/' . $entSlug . '/' . $relPath;
+                $thumbUrl = $paths['thumbnails_url'] . '/' . $relPath;
             }
         }
         $files[] = [
             'name'     => $item,
             'type'     => $type,
-            'url'      => $cfg['galerie_url'] . '/' . $entSlug . '/' . $relPath,
-            'thumbUrl' => $thumbUrl ?? ($cfg['galerie_url'] . '/' . $entSlug . '/' . $relPath),
+            'url'      => $paths['galerie_url'] . '/' . $relPath,
+            'thumbUrl' => $thumbUrl ?? ($paths['galerie_url'] . '/' . $relPath),
         ];
     }
 }
