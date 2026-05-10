@@ -537,8 +537,8 @@ function Mariage({ lang, setLang }) {
           <div className="grid-testimonials" style={{ marginTop: 80 }}>
             {[
               {
-                fr: "Je vous recommande vivement Antoine et Rémy qui ont parfaitement immortalisé notre mariage ! Les photos sont de très bonne qualité. Nous avons eu un vrai coup de cœur pour ces deux professionnels.",
-                en: "I highly recommend Antoine and Rémy, who perfectly captured our wedding! The photos are of very high quality. We had a real love-at-first-sight feeling for these two professionals.",
+                fr: "Je vous recommande vivement Antoine et Rémi qui ont parfaitement immortalisé notre mariage ! Les photos sont de très bonne qualité. Nous avons eu un vrai coup de cœur pour ces deux professionnels.",
+                en: "I highly recommend Antoine and Rémi, who perfectly captured our wedding! The photos are of very high quality. We had a real love-at-first-sight feeling for these two professionals.",
                 who: "Tatiana Q.", where: t("Mariage, juin 2024", "Wedding, June 2024"),
               },
               {
