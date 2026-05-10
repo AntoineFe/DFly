@@ -19,7 +19,7 @@ if ($login === '' || $password === '') {
     exit(json_encode(['ok' => false, 'error' => 'Identifiants manquants']));
 }
 
-[$link, $cfg] = galerie_db();
+list($link, $cfg) = galerie_db();
 
 $l = mysqli_real_escape_string($link, $login);
 $p = hash('sha256', $password);

@@ -9,7 +9,7 @@ require 'galerie-auth.php';
 $session = galerie_require_auth();
 galerie_require_level($session, 'galerie', 'R');
 
-[, $cfg] = galerie_db();
+list(, $cfg) = galerie_db();
 
 // Le client ne peut voir que son propre dossier (shortDescEnt)
 // Un admin peut passer ?ent=shortDesc pour voir n'importe quel client

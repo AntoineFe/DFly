@@ -21,7 +21,7 @@ function galerie_db() {
     $cwd     = getcwd();
     $i       = strpos($cwd, 'public_html');
     $after   = $i !== false ? substr($cwd, $i + 11) : '';
-    $prefix  = (str_starts_with($after, '/dflyclaude') || str_starts_with($after, '/dfly_dev')) ? '/dflyclaude' : '';
+    $prefix  = (strpos($after, '/dflyclaude') === 0 || strpos($after, '/dfly_dev') === 0) ? '/dflyclaude' : '';
 
     $cfg['pro_root'] = $docRoot . $prefix . '/images/Pro';
     $cfg['pro_url']  = $prefix . '/images/Pro';
@@ -54,7 +54,7 @@ function galerie_require_auth() {
     }
     $token = $m[1];
 
-    [$link] = galerie_db();
+    list($link) = galerie_db();
 
     $t = mysqli_real_escape_string($link, $token);
     $sql = "SELECT HS.userId, HS.tsLastAccess,

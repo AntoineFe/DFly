@@ -16,7 +16,7 @@ if ($cle === '') {
     exit(json_encode(['ok' => false, 'error' => 'Clé manquante']));
 }
 
-[$link] = galerie_db();
+list($link) = galerie_db();
 
 $c   = mysqli_real_escape_string($link, $cle);
 $sql = "SELECT HU.id, HU.firstName, HU.lastName, HU.email, HU.idEnt, HU.lang,

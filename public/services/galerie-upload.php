@@ -12,7 +12,7 @@ require 'galerie-auth.php';
 $session = galerie_require_auth();
 galerie_require_level($session, 'upload', 'C');
 
-[, $cfg] = galerie_db();
+list(, $cfg) = galerie_db();
 
 $ent     = galerie_ent_slug($_POST['ent'] ?? $session['shortDescEnt']);
 $subPath = preg_replace('/\.\./', '', $_POST['path'] ?? '');

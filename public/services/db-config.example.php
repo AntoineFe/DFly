@@ -13,7 +13,7 @@ $i   = strpos($cwd, 'public_html');
 
 if ($i !== false) {
     $afterHtml = substr($cwd, $i + 11); // ce qui suit "public_html"
-    if (str_starts_with($afterHtml, '/dflyclaude') || str_starts_with($afterHtml, '/dfly_dev')) {
+    if (strpos($afterHtml, '/dflyclaude') === 0 || strpos($afterHtml, '/dfly_dev') === 0) {
         $env = 'dev';
     } else {
         $env = 'prd';
