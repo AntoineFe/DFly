@@ -7,9 +7,9 @@ const NAV_LINKS = {
   FR: [
     { path: '/mariage',       label: 'Mariage'       },
     { path: '/immobilier',    label: 'Immobilier'    },
-    { path: '/communication', label: 'Communication' },
+    { path: '/communication', label: 'Entreprise' },
     { path: '/spectacle',     label: 'Événement'     },
-    { path: '/famille',       label: 'Portrait'      },
+    { path: '/famille',       label: 'Famille'      },
   ],
   EN: [
     { path: '/mariage',       label: 'Wedding'       },
