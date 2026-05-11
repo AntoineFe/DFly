@@ -271,8 +271,8 @@ function Mariage({ lang, setLang }) {
                   fontWeight: 300, color: "var(--fg-muted)", maxWidth: 480,
                 }}>
                   {t(
-                    "Caméras cinéma, son en direct, deux à trois axes. Un teaser de 90 secondes, un film d'environ 12 minutes, et la cérémonie complète. Color grading sur mesure, scène par scène.",
-                    "Cinema cameras, live sound, two to three axes. A 90-second teaser, a film of about 12 minutes, and the full ceremony. Custom color grading, scene by scene."
+                    "Caméras cinéma, son en direct, multi-cam deux à trois axes. Un teaser de 2 à 5 minutes, un film de 20 à 40 minutes. Color grading sur mesure, scène par scène.",
+                    "Cinema cameras, live sound, multi-cam with two to three camera angles. A 2 to 5 minutes teaser, a film of about 20 to 40 minutes. Custom color grading, scene by scene."
                   )}
                 </p>
                 <div style={{
@@ -282,9 +282,8 @@ function Mariage({ lang, setLang }) {
                   letterSpacing: "0.32em", textTransform: "uppercase",
                   color: "var(--fg-muted)",
                 }}>
-                  <span>Teaser 90s</span><span>·</span>
-                  <span>Film 12 min</span><span>·</span>
-                  <span>Cérémonie intégrale</span>
+                  <span>Teaser 2 à 5 min</span><span>·</span>
+                  <span>Film 20 à 40 min</span><span>·</span>
                 </div>
               </div>
             </div>
@@ -304,7 +303,6 @@ function Mariage({ lang, setLang }) {
               fontFamily: "var(--serif)", fontStyle: "italic",
               fontSize: 18, fontWeight: 300, color: "var(--fg-muted)",
             }}>
-              {t("Provence · 2024 — 2026", "Provence · 2024 — 2026")}
             </div>
           </div>
         </div>
