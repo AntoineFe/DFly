@@ -8,8 +8,8 @@ const BASE = import.meta.env.BASE_URL
 const IMG = {
   hero: `${BASE}images/_A7R3270.jpeg`,
   img1: `${BASE}images/_DSC0583.jpg`,
-  img2: `${BASE}images/404_7R44774.jpeg`,
-  img3: `${BASE}images/438_DSC8795.jpeg`,
+  img2: `${BASE}images/_DSC0576.jpeg`,
+  img3: `${BASE}images/_DSC0575.jpeg`,
 }
 
 export default function Communication({ lang, setLang }) {

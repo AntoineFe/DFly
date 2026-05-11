@@ -8,8 +8,8 @@ const BASE = import.meta.env.BASE_URL
 const IMG = {
   hero: `${BASE}images/051_7R42448.jpeg`,
   img1: `${BASE}images/DSC08533_1.jpg`,
-  img2: `${BASE}images/114_7R45654.jpeg`,
-  img3: `${BASE}images/079_DSC7618.jpeg`,
+  img2: `${BASE}images/004_7R47314.jpeg`,
+  img3: `${BASE}images/P-Charby.jpg`,
 }
 
 export default function Spectacle({ lang, setLang }) {

@@ -8,7 +8,7 @@ const BASE = import.meta.env.BASE_URL
 const IMG = {
   hero: `${BASE}images/038_7R42287.jpeg`,
   img1: `${BASE}images/_DSC2009_1.jpg`,
-  img2: `${BASE}images/392_DSC8665.jpeg`,
+  img2: `${BASE}images/013_DSC1621.jpeg`,
   img3: `${BASE}images/_DSC5943.jpeg`,
 }
 
