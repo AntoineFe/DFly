@@ -472,6 +472,15 @@ function Mariage({ lang, setLang }) {
           }}>
             {t("Voir un extrait", "Watch an excerpt")} &nbsp;→
           </Link>
+          <p style={{
+            marginTop: 20, fontFamily: "var(--serif)", fontStyle: "italic",
+            fontSize: 14, fontWeight: 300, color: "var(--fg-muted)", lineHeight: 1.6,
+          }}>
+            {t(
+              "D'autres films peuvent être partagés sur demande. Nous préservons la vie privée de chaque couple.",
+              "Other films are available on request. We respect the privacy of every couple."
+            )}
+          </p>
         </div>
       </section>
 
