@@ -107,7 +107,7 @@ function Mariage({ lang, setLang }) {
                 letterSpacing: "-0.005em",
               }}>
                 {t(<>Le jour<br/><em style={{ fontStyle: "italic", fontWeight: 300, display: 'block', marginTop: '0.12em' }}>qui devient mémoire.</em></>,
-                   <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>that becomes</em><br/>memory.</>)}
+                   <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300, display: 'block', marginTop: '0.12em' }}>that becomes</em><br/>memory.</>)}
               </h1>
               <div style={{ textAlign: 'center', marginTop: 32 }}>
               <a href="#devis" style={{
@@ -470,6 +470,15 @@ function Mariage({ lang, setLang }) {
           }}>
             {t("Voir un extrait", "Watch an excerpt")} &nbsp;→
           </Link>
+          <p style={{
+            marginTop: 20, fontFamily: "var(--serif)", fontStyle: "italic",
+            fontSize: 14, fontWeight: 300, color: "var(--fg-muted)", lineHeight: 1.6,
+          }}>
+            {t(
+              "D'autres films peuvent être partagés sur demande. Nous préservons la vie privée de chaque couple.",
+              "Other films are available on request. We respect the privacy of every couple."
+            )}
+          </p>
         </div>
       </section>
 
