@@ -32,8 +32,39 @@ const W_IMG = {
 function Mariage({ lang, setLang }) {
   const t = (fr, en) => lang === "FR" ? fr : en;
   usePageMeta({
-    title: t('Mariage — DFly Photographie & Vidéo · PACA', 'Wedding Photography & Film — DFly · French Riviera'),
-    description: t('Photo et vidéo de mariage en Provence Alpes Côte d\'Azur. Deux regards complémentaires, une approche sensible et documentaire.', 'Wedding photography and film in the French Riviera. A sensitive, documentary approach by father and son.'),
+    title: t(
+      'Photographe Vidéaste Mariage Nice · Côte d\'Azur — DFly',
+      'Wedding Photographer & Videographer Nice · French Riviera — DFly'
+    ),
+    description: t(
+      'Photographe et vidéaste mariage à Nice, Cannes, Antibes, Monaco, Grasse et dans les Alpes-Maritimes. Style reportage naturel, approche cinéma. Photo + vidéo par père et fils.',
+      'Wedding photographer and videographer in Nice, Cannes, Antibes, Monaco. French Riviera & Côte d\'Azur. Natural documentary style, cinematic approach.'
+    ),
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: t('Photographe vidéaste mariage Côte d\'Azur', 'Wedding photographer videographer French Riviera'),
+      description: t(
+        'Prestation photo et vidéo de mariage à Nice, Cannes, Antibes, Cagnes-sur-Mer, Monaco, Grasse et dans les Alpes-Maritimes. Style reportage naturel et cinématographique.',
+        'Wedding photography and videography in Nice, Cannes, Antibes, Monaco, Grasse and the French Riviera. Natural documentary and cinematic style.'
+      ),
+      provider: {
+        '@type': 'LocalBusiness',
+        name: 'DFly Photographie & Vidéo',
+        url: 'https://dfly.fr',
+      },
+      areaServed: [
+        { '@type': 'City', name: 'Nice' },
+        { '@type': 'City', name: 'Cannes' },
+        { '@type': 'City', name: 'Antibes' },
+        { '@type': 'City', name: 'Cagnes-sur-Mer' },
+        { '@type': 'City', name: 'Monaco' },
+        { '@type': 'City', name: 'Grasse' },
+        { '@type': 'AdministrativeArea', name: 'Alpes-Maritimes' },
+        { '@type': 'AdministrativeArea', name: 'Côte d\'Azur' },
+      ],
+      serviceType: t('Photographie et vidéo de mariage', 'Wedding photography and videography'),
+    },
   })
 
   return (
