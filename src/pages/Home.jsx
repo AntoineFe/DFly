@@ -217,7 +217,7 @@ export default function Home({ lang, setLang }) {
             <div>
               <SectionLabel num="IV" label={t('Vue du ciel', 'Aerial view')} />
               <h2 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(40px,4.5vw,64px)', lineHeight: 1.05, fontWeight: 400, margin: '32px 0 28px', color: 'var(--fg-on-deep)' }}>
-                {t(<>Un cinquième regard,<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>quand il sert le récit.</em></>, <>A fifth gaze,<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>when it serves the story.</em></>)}
+                {t(<>Un troisième regard,<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>quand il sert le récit.</em></>, <>A third gaze,<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>when it serves the story.</em></>)}
               </h2>
               <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.7, fontWeight: 300, opacity: 0.85, maxWidth: 460 }}>
                 {t(
