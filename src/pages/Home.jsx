@@ -87,13 +87,13 @@ export default function Home({ lang, setLang }) {
             <div style={{ textAlign: 'center', marginTop: 28, fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,4vw,58px)', lineHeight: 1.18, fontWeight: 400, color: 'var(--fg)', letterSpacing: '-0.005em' }}>
               {t(
                 <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Nous sommes Antoine et Rémi</em>, père et fils.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Nous réalisons des prestations photo & vidéo pour les particuliers et les professionnels.</span></>,
-                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>We are Antoine and Rémi</em>, father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>We deliver photo & film services for individuals and professionals.</span></>
+                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Hello from Antoine and Rémi</em>,<br />father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Whether it is personal or professional, we'll deliver the right photography or film for you.</span></>
               )}
             </div>
             <div style={{ textAlign: 'center', maxWidth: 640, margin: '28px auto 0', fontFamily: 'var(--serif)', fontSize: 25, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
               {t(
                 'Nous adaptons notre approche à la situation : présents quand l\’image doit être composée, discrets pour capter l\’émotion sur le vif. Selon le projet, nous intervenons à deux.',
-                'We adapt our approach to each situation: present when the image needs to be composed, and discreet to capture emotions as they happen. Depending on the project, we often work as a duo.'
+                'We adapt our approach to each situation: present when the image needs to be composed, and discreet to capture emotions as they happen. \nBeing a pair means we can adapt, give a different view.'
               )}
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function Home({ lang, setLang }) {
             subtitle={t('Votre journée, vos souvenirs.', 'Your day, your memories.')}
             body={t(
               'Vous vivez votre mariage de l\'intérieur — portés par l\'émotion, entourés de ceux que vous aimez. Certains regards, certains sourires, vous ne les verrez qu\'après, sur les images. C\'est exactement notre rôle.',
-              'You live your wedding from the inside — carried by emotion, surrounded by those you love. Some glances, some smiles, you will only see them afterwards, in the images. That is exactly our role.',
+              'You\'ll be living every moment — carried by emotion, surrounded by the people you love. Some looks, some smiles, you\'ll only discover them later, through the images. That\'s what we\'re here for.',
             )}
             keywords={[]} href="/mariage"
             image={IMG.wedding1} imageAlt={IMG.wedding2} reverse={false}

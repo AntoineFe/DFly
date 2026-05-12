@@ -133,7 +133,7 @@ function Mariage({ lang, setLang }) {
               }}>
                 {t(
                   "Antoine et Rémi, père et fils, photographes et vidéastes. Selon votre journée, nous intervenons en duo : deux photographes, deux vidéastes, ou photographe & vidéaste.",
-                  "Antoine and Rémi, father and son, photographers and filmmakers. Depending on your day, we work as a duo: two photographers, two filmmakers, or photographer & filmmaker."
+                  "Antoine and Rémi — father and son, photographers and filmmakers. We work as a duo, adapting to your day : two photographers, two filmmakers, or one of each."
                 )}
               </p>
             </div>
@@ -161,7 +161,7 @@ function Mariage({ lang, setLang }) {
               }}>
                 {t(
                   <><em style={{ fontStyle: "italic", fontWeight: 300 }}>Vous nous confiez un jour qui ne se rejoue pas.</em> Nous le capturons en photo et en vidéo avec sensibilité, présents aux bons moments.</>,
-                  <><em style={{ fontStyle: "italic", fontWeight: 300 }}>You entrust us with a day that won't replay.</em> We capture it in photo and video with sensitivity, present at the right moments.</>
+                  <><em style={{ fontStyle: "italic", fontWeight: 300 }}>You're entrusting us with a day that only happens once. </em> We capture it in photo and in video and we're right there when it matters.</>
                 )}
               </p>
               <p style={{
@@ -174,7 +174,7 @@ function Mariage({ lang, setLang }) {
               }}>
                 {t(
                   "Nous intervenons selon le déroulé de votre journée, et composons avec ce qui se joue naturellement, à vos côtés. Le jour vous appartient. Notre rôle est d'en révéler les images.",
-                  "We work with the flow of your day, composing with what unfolds naturally, by your side. The day is yours. Our role is to reveal its images."
+                  "As your day unfolds, we follow — naturally, by your side. The day is yours. We're simply here to witness it."
                 )}
               </p>
               <p style={{
@@ -186,7 +186,7 @@ function Mariage({ lang, setLang }) {
               }}>
                 {t(
                   "Nous travaillons ensemble depuis plusieurs années, en duo. Deux regards complémentaires, deux manières de lire la scène, pour une vision plus complète de votre journée.",
-                  "We have worked together for several years, as a duo. Two complementary perspectives, two ways of reading the scene, for a more complete vision of your day."
+                  "We've been working together for years — as a duo. Two angles, two ways of reading the moment — complementing each other, for a fuller picture of your day."
                 )}
               </p>
             </div>
