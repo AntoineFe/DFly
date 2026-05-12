@@ -47,7 +47,7 @@ export default function Footer({ lang = 'FR' }) {
         <div className="footer-bottom" style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.55 }}>
           <span>© {new Date().getFullYear()} DFly — Tous droits réservés</span>
           <span>Pilote drone certifié · DGAC</span>
-          <span>dfly.fr</span>
+          <span>dfly.fr V3.0.0</span>
         </div>
 
       </div>
