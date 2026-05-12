@@ -84,7 +84,7 @@ function galerie_require_auth() {
     $ient = (int)$row['idEnt'];
     $pSql = "SELECT HP.auths FROM HabilProfilUser HPU
              INNER JOIN HabilProfil HP ON HP.id = HPU.idProfil
-             WHERE HPU.idUser = $uid AND HP.idEnt = $ient";
+             WHERE HPU.idUser = $uid";
     $pRes = mysqli_query($link, $pSql);
 
     $authLogFile = __DIR__ . '/galerie-auth.log';

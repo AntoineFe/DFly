@@ -15,8 +15,15 @@ list(, $cfg) = galerie_db();
 // Un admin peut passer ?ent=shortDesc pour voir n'importe quel client
 $isAdmin = galerie_has_auth($session, 'admin', 'R');
 
-if ($isAdmin && isset($_GET['ent'])) {
-    $entSlug = galerie_ent_slug($_GET['ent']);
+if (isset($_GET['ent'])) {
+    $requestedSlug = galerie_ent_slug($_GET['ent']);
+    $allowedSlugs  = array_map('galerie_ent_slug', array_column($session['ents'], 'shortDesc'));
+    if ($isAdmin || in_array($requestedSlug, $allowedSlugs)) {
+        $entSlug = $requestedSlug;
+    } else {
+        http_response_code(403);
+        exit(json_encode(['ok' => false, 'error' => 'Accès refusé à ce client']));
+    }
 } else {
     $entSlug = galerie_ent_slug($session['shortDescEnt']);
 }
