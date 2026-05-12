@@ -348,8 +348,8 @@ function Mariage({ lang, setLang }) {
               margin: "0 auto",
             }}>
               {t(
-                "Un point de vue que personne n'a depuis le sol. Le domaine, le cortège, la cérémonie en plein air — vus d'en haut, ils révèlent une ampleur que l'on ne soupçonnait pas.",
-                "A perspective no one has from the ground. The estate, the procession, the outdoor ceremony — seen from above, they reveal a scale you never quite imagined."
+                "Un point de vue que personne n'a depuis le sol. Le domaine, la cérémonie en plein air — vus d'en haut, ils révèlent une ampleur que l'on ne soupçonnait pas.",
+                "A perspective no one has from the ground. The estate, the outdoor ceremony — seen from above, they reveal a scale you never quite imagined."
               )}
             </p>
             <div style={{
