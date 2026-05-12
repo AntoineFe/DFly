@@ -20,7 +20,7 @@ const IMG = {
   portrait1:   `${BASE}images/038_7R42287.jpeg`,
   portrait2:   `${BASE}images/_DSC2009_1.jpg`,
   drone:       `${BASE}images/YUN_0157.jpg`,
-  duo:         'https://images.unsplash.com/photo-1554080353-a576cf803bda?w=1600&q=85',
+  duo:         `${BASE}images/mariage/376_DSC0906.jpeg`,
 }
 
 export default function Home({ lang, setLang }) {
