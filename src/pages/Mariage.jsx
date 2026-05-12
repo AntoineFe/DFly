@@ -17,6 +17,7 @@ const W_IMG = {
   guests:      `${BASE}images/mariage/424_DSC8763.jpeg`,
   table:       `${BASE}images/mariage/_7R41267.jpeg`,
   aerial:      `${BASE}images/mariage/MAX_0011.jpeg`,
+  drone:       `${BASE}images/mariage/MAX_0035.jpeg`,
   sortie:      `${BASE}images/mariage/090_7R43637.jpg`,
   filmstrip1:  `${BASE}images/mariage/_DSC7546.jpeg`,
   filmstrip2:  `${BASE}images/mariage/_7R41266_1.jpeg`,
@@ -292,6 +293,51 @@ function Mariage({ lang, setLang }) {
         </div>
       </section>
 
+      {/* TROISIÈME REGARD — drone */}
+      <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
+        <div className="container">
+          <div className="grid-manifesto">
+            <div style={{ position: "sticky", top: 120 }}>
+              <SectionLabel num="III" label={t("Un troisième regard", "A third perspective")} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+              <img src={W_IMG.drone} alt=""
+                style={{
+                  width: "100%", aspectRatio: "16/9", objectFit: "cover",
+                  filter: "saturate(0.85) contrast(1.02)",
+                }} />
+              <div>
+                <div className="num" style={{ marginBottom: 12 }}>— {t("Médium 03", "Medium 03")}</div>
+                <div style={{
+                  fontFamily: "var(--serif-display)",
+                  fontSize: 38, fontStyle: "italic", fontWeight: 300,
+                  marginBottom: 18, color: "var(--fg)",
+                }}>{t("Drone", "Drone")}</div>
+                <p style={{
+                  fontFamily: "var(--serif)", fontSize: 18, lineHeight: 1.7,
+                  fontWeight: 300, color: "var(--fg-muted)", maxWidth: 560,
+                }}>
+                  {t(
+                    "Un point de vue que personne n'a depuis le sol. Le domaine, le cortège, la cérémonie en plein air — vus d'en haut, ils révèlent une ampleur que l'on ne soupçonnait pas.",
+                    "A perspective no one has from the ground. The estate, the procession, the outdoor ceremony — seen from above, they reveal a scale you never quite imagined."
+                  )}
+                </p>
+                <div style={{
+                  marginTop: 24,
+                  display: "flex", gap: 16, flexWrap: "wrap",
+                  fontFamily: "var(--sans)", fontSize: 10.5,
+                  letterSpacing: "0.32em", textTransform: "uppercase",
+                  color: "var(--fg-muted)",
+                }}>
+                  <span>{t("Photo & vidéo aérienne", "Aerial photo & video")}</span><span>·</span>
+                  <span>{t("En option", "Optional add-on")}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* GALLERY MOSAIC — editorial */}
       <section style={{ padding: "var(--section-y) 0 0", background: "var(--bg)" }}>
         <div className="container">
@@ -299,7 +345,7 @@ function Mariage({ lang, setLang }) {
             display: "flex", justifyContent: "space-between", alignItems: "baseline",
             marginBottom: 60,
           }}>
-            <SectionLabel num="III" label={t("Quelques images", "A few images")} />
+            <SectionLabel num="IV" label={t("Quelques images", "A few images")} />
             <div style={{
               fontFamily: "var(--serif)", fontStyle: "italic",
               fontSize: 18, fontWeight: 300, color: "var(--fg-muted)",
@@ -340,7 +386,7 @@ function Mariage({ lang, setLang }) {
         />
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
-            <SectionLabel num="IV" label={t("Le récit d'une journée", "The story of a day")} align="center" />
+            <SectionLabel num="V" label={t("Le récit d'une journée", "The story of a day")} align="center" />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(36px, 4.4vw, 60px)",
@@ -393,7 +439,7 @@ function Mariage({ lang, setLang }) {
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 60 }}>
-            <SectionLabel num="V" label={t("Un extrait", "A frame")} align="center" />
+            <SectionLabel num="VI" label={t("Un extrait", "A frame")} align="center" />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(36px, 4vw, 56px)",
@@ -487,7 +533,7 @@ function Mariage({ lang, setLang }) {
       <section id="devis" style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 80 }}>
-            <SectionLabel num="VI" label={t("Votre devis", "Your quote")} align="center" />
+            <SectionLabel num="VII" label={t("Votre devis", "Your quote")} align="center" />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(36px, 4.4vw, 56px)",
@@ -518,7 +564,7 @@ function Mariage({ lang, setLang }) {
       {/* TESTIMONIALS — 2 stacked */}
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg-deep)", color: "var(--fg-on-deep)" }}>
         <div className="container">
-          <SectionLabel num="VII" label={t("Ce qu'ils en disent", "What they say")} align="center" />
+          <SectionLabel num="VIII" label={t("Ce qu'ils en disent", "What they say")} align="center" />
           <div className="grid-testimonials" style={{ marginTop: 80 }}>
             {[
               {
@@ -565,7 +611,7 @@ function Mariage({ lang, setLang }) {
       <section id="contact" style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
         <div className="container">
           <div style={{ maxWidth: 680 }}>
-            <SectionLabel num="VIII" label={t("Écrire", "Write")} />
+            <SectionLabel num="IX" label={t("Écrire", "Write")} />
             <h2 style={{
               fontFamily: "var(--serif-display)",
               fontSize: "clamp(40px, 4.4vw, 64px)",
