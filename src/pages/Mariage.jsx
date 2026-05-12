@@ -455,7 +455,6 @@ function Mariage({ lang, setLang }) {
               letterSpacing: "0.36em", textTransform: "uppercase",
               color: "var(--fg-muted)", marginTop: 16,
             }}>
-              {t("Côte d'Azur · Provence", "Côte d'Azur · Provence")}
             </div>
           </div>
         </div>
