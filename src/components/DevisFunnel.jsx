@@ -483,9 +483,9 @@ function StepFormat({ state, set, lang }) {
   const t = mkT(lang);
 
   const FORMAT_OPTS = [
-    { v: "photo", label: t("Photo uniquement",  "Photo only"),   desc: t("Des images fixes, pour (re)voir chaque instant.", "Still images to (re)live every moment.") },
-    { v: "video", label: t("Vidéo uniquement",  "Video only"),   desc: t("La journée en mouvement — voix, musique, émotions. Micro-cravate fourni.", "The day in motion — voices, music, emotions. Lapel mic included.") },
-    { v: "both",  label: "Photo + Vidéo",                         desc: t("Le choix de la plupart de nos mariés. Rien ne manque.", "The choice of most of our couples. Nothing is missed."), recommended: true },
+    { v: "photo", label: t("Photo uniquement",  "Photo only"),   desc: t("Des instants figés, plus vrais que la réalité.", "Frozen moments, more real than memory.") },
+    { v: "video", label: t("Vidéo uniquement",  "Video only"),   desc: t("Les rires, les voix, l'ambiance — comme au premier jour.", "The laughs, the voices, the feeling — like it was yesterday.") },
+    { v: "both",  label: "Photo + Vidéo",                         desc: t("Dans 10 ans, vous aurez les deux.", "Ten years from now, you'll have it all."), recommended: true },
   ];
 
   const FILM_OPTS = [
@@ -498,7 +498,7 @@ function StepFormat({ state, set, lang }) {
   return (
     <div>
       <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        {t("Comment souhaitez-vous immortaliser cette journée ?", "How would you like to relive this day ?")}
+        {t("Comment immortaliser cette journée ?", "How will you immortalize this day?")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
         {t("Imaginez-vous dans 10 ans, un soir, vous la revivez…", "Picture yourself, ten years from now, on a quiet evening, reliving it all…")}
