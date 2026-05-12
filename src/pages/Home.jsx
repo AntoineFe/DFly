@@ -110,8 +110,8 @@ export default function Home({ lang, setLang }) {
             </div>
             <div style={{ textAlign: 'center', maxWidth: 640, margin: '28px auto 0', fontFamily: 'var(--serif)', fontSize: 25, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
               {t(
-                'Nous adaptons notre approche à la situation : discrets pour capter l\’émotion sur le vif, présents quand l\’image doit être composée. Selon le projet, nous intervenons à deux.',
-                'We adapt our approach to each situation: discreet to capture emotions as they happen, and present when the image needs to be composed. Depending on the project, we often work as a duo.'
+                'Nous adaptons notre approche à la situation : présents quand l\’image doit être composée, discrets pour capter l\’émotion sur le vif. Selon le projet, nous intervenons à deux.',
+                'We adapt our approach to each situation: present when the image needs to be composed, and discreet to capture emotions as they happen. Depending on the project, we often work as a duo.'
               )}
             </div>
           </div>
