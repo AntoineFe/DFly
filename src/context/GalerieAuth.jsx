@@ -47,6 +47,11 @@ export function GalerieAuthProvider({ children }) {
   }
 
   async function loginWithCle(cle) {
+    if (token()) {
+      await authFetch('galerie-logout.php', { method: 'POST' }).catch(() => {})
+      localStorage.removeItem('galerie_token')
+      setUser(null)
+    }
     const r = await fetch(API(`galerie-autologin.php?cle=${encodeURIComponent(cle)}`))
     const d = await r.json()
     if (d.ok) {
