@@ -18,6 +18,8 @@ if ($cle === '') {
 
 list($link) = galerie_db();
 
+$logFile = __DIR__ . '/galerie-autologin.log';
+
 $c   = mysqli_real_escape_string($link, $cle);
 $sql = "SELECT HU.id, HU.firstName, HU.lastName, HU.email, HU.idEnt, HU.lang,
                E.shortDesc AS shortDescEnt
@@ -25,12 +27,9 @@ $sql = "SELECT HU.id, HU.firstName, HU.lastName, HU.email, HU.idEnt, HU.lang,
         INNER JOIN Entreprise E ON E.id = HU.idEnt
         WHERE HU.cle = '$c'";
 
-$logFile = __DIR__ . '/galerie-autologin.log';
-file_put_contents($logFile, date('Y-m-d H:i:s') . ' | cle=' . $cle . ' | sql=' . $sql . PHP_EOL, FILE_APPEND | LOCK_EX);
-
 $res = mysqli_query($link, $sql);
 if (!$res || mysqli_num_rows($res) === 0) {
-    file_put_contents($logFile, date('Y-m-d H:i:s') . ' | FAIL | rows=' . ($res ? mysqli_num_rows($res) : 'query_failed') . ' | error=' . mysqli_error($link) . PHP_EOL, FILE_APPEND | LOCK_EX);
+    file_put_contents($logFile, date('Y-m-d H:i:s') . ' | SELECT user FAIL | rows=' . ($res ? mysqli_num_rows($res) : 'query_failed') . ' | error=' . mysqli_error($link) . ' | cle=' . $cle . PHP_EOL, FILE_APPEND | LOCK_EX);
     mysqli_close($link);
     http_response_code(401);
     exit(json_encode(['ok' => false, 'error' => 'Lien invalide ou expiré']));
@@ -42,14 +41,20 @@ $ient  = (int)$user['idEnt'];
 $token = bin2hex(random_bytes(32));
 $ip    = mysqli_real_escape_string($link, $_SERVER['REMOTE_ADDR'] ?? '');
 
-mysqli_query($link, "INSERT INTO HabilSessions (token, userId, tsOpenSession, tsLastAccess, ip)
+$iRes = mysqli_query($link, "INSERT INTO HabilSessions (token, userId, tsOpenSession, tsLastAccess, ip)
     VALUES ('$token', $uid, NOW(), NOW(), '$ip')");
+if (!$iRes) {
+    file_put_contents($logFile, date('Y-m-d H:i:s') . ' | INSERT session FAIL | uid=' . $uid . ' | error=' . mysqli_error($link) . PHP_EOL, FILE_APPEND | LOCK_EX);
+}
 
 // Profils/auths
 $pSql  = "SELECT HP.auths FROM HabilProfilUser HPU
            INNER JOIN HabilProfil HP ON HP.id = HPU.idProfil
            WHERE HPU.idUser = $uid AND HP.idEnt = $ient";
 $pRes  = mysqli_query($link, $pSql);
+if (!$pRes) {
+    file_put_contents($logFile, date('Y-m-d H:i:s') . ' | SELECT profils FAIL | uid=' . $uid . ' | error=' . mysqli_error($link) . PHP_EOL, FILE_APPEND | LOCK_EX);
+}
 $auths = [];
 while ($p = mysqli_fetch_assoc($pRes)) {
     $decoded = json_decode($p['auths'], true) ?? [];
@@ -63,6 +68,9 @@ $eSql = "SELECT DISTINCT E.id, E.shortDesc, E.raiSoc
          INNER JOIN HabilProfilUser HPU ON HPU.idProfil = HP.id
          WHERE HPU.idUser = $uid";
 $eRes = mysqli_query($link, $eSql);
+if (!$eRes) {
+    file_put_contents($logFile, date('Y-m-d H:i:s') . ' | SELECT entreprises FAIL | uid=' . $uid . ' | error=' . mysqli_error($link) . PHP_EOL, FILE_APPEND | LOCK_EX);
+}
 $ents = [];
 while ($e = mysqli_fetch_assoc($eRes)) { $ents[] = $e; }
 
