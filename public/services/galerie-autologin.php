@@ -25,8 +25,12 @@ $sql = "SELECT HU.id, HU.firstName, HU.lastName, HU.email, HU.idEnt, HU.lang,
         INNER JOIN Entreprise E ON E.id = HU.idEnt
         WHERE HU.cle = '$c'";
 
+$logFile = __DIR__ . '/galerie-autologin.log';
+file_put_contents($logFile, date('Y-m-d H:i:s') . ' | cle=' . $cle . ' | sql=' . $sql . PHP_EOL, FILE_APPEND | LOCK_EX);
+
 $res = mysqli_query($link, $sql);
 if (!$res || mysqli_num_rows($res) === 0) {
+    file_put_contents($logFile, date('Y-m-d H:i:s') . ' | FAIL | rows=' . ($res ? mysqli_num_rows($res) : 'query_failed') . ' | error=' . mysqli_error($link) . PHP_EOL, FILE_APPEND | LOCK_EX);
     mysqli_close($link);
     http_response_code(401);
     exit(json_encode(['ok' => false, 'error' => 'Lien invalide ou expiré']));
