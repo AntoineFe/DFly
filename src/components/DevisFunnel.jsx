@@ -8,11 +8,11 @@ const FULL_DAY_H = 9.5;
 const REAL_DAY_H = 16;
 const BASE_HT = 0;
 const PP_PHOTO_HT = 1200;
-const PP_VIDEO_HT = 2000;
+const PP_VIDEO_HT = 1900;
 const CAPTATION_DAY_HT = 400; // par prestataire par jour
 const HOTEL_TTC    = 120;
-const TEASER_TTC   = 700;
-const INTEGRAL_TTC = 500;
+const TEASER_TTC   = 300;
+const INTEGRAL_TTC = 400;
 const DRONE_TTC    = 200;
 
 const MOMENTS = [
