@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 
 const CAGNES = { lat: 43.6646, lng: 7.1579 };
 const KM_RATE = 0.697;
-const FULL_DAY_H = 11;
+const FULL_DAY_H = 9.5;
 const REAL_DAY_H = 16;
 const BASE_HT = 0;
 const PP_PHOTO_HT = 1200;
@@ -13,7 +13,7 @@ const CAPTATION_DAY_HT = 400; // par prestataire par jour
 const HOTEL_TTC = 120;
 
 const MOMENTS = [
-  { id: "preparatifs", label: "Préparatifs",                       en: "Getting ready",                       h: 2   },
+  { id: "preparatifs", label: "Préparatifs",                       en: "Getting ready",                       h: 1.5   },
   { id: "mairie",      label: "Mairie",                            en: "Civil ceremony",                      h: 1   },
   { id: "ceremonie",   label: "Cérémonie religieuse ou laïque",    en: "Religious or civil ceremony",         h: 1.5 },
   { id: "groupes",     label: "Photos de groupes",                 en: "Group photos",                        h: 0.5 },
@@ -23,11 +23,11 @@ const MOMENTS = [
     { v: "debut",   label: "Jusqu'au début seulement",     en: "Beginning only",       h: 0.5 },
   ]},
   { id: "diner",       label: "Repas",                             en: "Wedding meal", opts: [
-    { v: "complet", label: "Jusqu'au gâteau",                      en: "Until the cake",               h: 2 },
+    { v: "complet", label: "Jusqu'au gâteau",                      en: "Until the cake",               h: 1.5 },
     { v: "debut",   label: "Installation et groupes seulement",    en: "Setup and group photos only",  h: 0.5 },
   ]},
   { id: "danse",       label: "Soirée / Danse",                    en: "Evening / Dancing", opts: [
-    { v: "etendue",  label: "Jusqu'au bout de la nuit",            en: "Extended evening",             h: 2   },
+    { v: "etendue",  label: "Jusqu'au bout de la nuit",            en: "Extended evening",             h: 1.5   },
     { v: "standard", label: "Début des danses · 30 min",            en: "Start of dancing · 30 min",    h: 0.5 },
   ]},
 ];
