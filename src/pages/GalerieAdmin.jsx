@@ -376,7 +376,7 @@ export default function GalerieAdmin() {
               fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em',
               textTransform: 'uppercase', cursor: 'pointer', color: 'var(--fg-muted)',
             }}>Galerie client</button>
-            <button onClick={() => { logout(); navigate('/galerie') }} style={{
+            <button onClick={() => { logout(); navigate('/') }} style={{
               background: 'none', border: '1px solid var(--line)', padding: '7px 16px',
               fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em',
               textTransform: 'uppercase', cursor: 'pointer', color: 'var(--fg-muted)',

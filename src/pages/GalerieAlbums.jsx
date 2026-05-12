@@ -476,7 +476,7 @@ export default function GalerieAlbums() {
     return (
       <div style={{ minHeight: '100vh', padding: '0 var(--gutter) 80px', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
-          <Header user={user} onLogout={() => { logout(); navigate('/galerie') }} changePassword={changePassword} />
+          <Header user={user} onLogout={() => { logout(); navigate('/') }} changePassword={changePassword} />
           <h2 style={{ fontFamily: 'var(--serif-display)', fontWeight: 400, fontSize: 32, marginBottom: 40 }}>
             Choisir un client
           </h2>
@@ -507,7 +507,7 @@ export default function GalerieAlbums() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 var(--gutter) 120px' }}>
-        <Header user={user} onLogout={() => { logout(); navigate('/galerie') }} />
+        <Header user={user} onLogout={() => { logout(); navigate('/') }} />
 
         {/* Fil d'ariane */}
         <nav style={{ marginBottom: 48, display: 'flex', alignItems: 'center', gap: 8,
