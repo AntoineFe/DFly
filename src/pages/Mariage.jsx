@@ -293,11 +293,42 @@ function Mariage({ lang, setLang }) {
         </div>
       </section>
 
+      {/* GALLERY MOSAIC — editorial */}
+      <section style={{ padding: "var(--section-y) 0 0", background: "var(--bg)" }}>
+        <div className="container">
+          <div style={{
+            display: "flex", justifyContent: "space-between", alignItems: "baseline",
+            marginBottom: 60,
+          }}>
+            <SectionLabel num="III" label={t("Quelques images", "A few images")} />
+            <div style={{
+              fontFamily: "var(--serif)", fontStyle: "italic",
+              fontSize: 18, fontWeight: 300, color: "var(--fg-muted)",
+            }}>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ width: "100%", padding: "0 var(--gutter)" }}>
+          <div className="grid-gallery">
+            <GridImg src={W_IMG.ceremony}    cols="span 7"  rows="span 4" />
+            <GridImg src={W_IMG.bouquet}     cols="span 5"  rows="span 3" />
+            <GridImg src={W_IMG.preparation} cols="span 5"  rows="span 4" />
+            <GridImg src={W_IMG.dance}       cols="span 4"  rows="span 6" pos="center 20%" />
+            <GridImg src={W_IMG.sortie}      cols="span 3"  rows="span 3" zoom={1} pos="center 30%" />
+            <GridImg src={W_IMG.details}     cols="span 8"  rows="span 3" pos="center 30%" />
+            <GridImg src={W_IMG.guests}      cols="span 6"  rows="span 4" />
+            <GridImg src={W_IMG.table}       cols="span 6"  rows="span 4" />
+            <GridImg src={W_IMG.aerial}      cols="span 12" rows="span 4" pos="center 60%" />
+          </div>
+        </div>
+      </section>
+
       {/* TROISIÈME REGARD — drone */}
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
         <div className="container">
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <SectionLabel num="III" label={t("Un troisième regard", "A third perspective")} align="center" />
+            <SectionLabel num="IV" label={t("Un troisième regard", "A third perspective")} align="center" />
           </div>
           <img src={W_IMG.drone} alt=""
             style={{
@@ -332,37 +363,6 @@ function Mariage({ lang, setLang }) {
               <span>{t("Photo & vidéo aérienne", "Aerial photo & video")}</span><span>·</span>
               <span>{t("En option", "Optional add-on")}</span>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* GALLERY MOSAIC — editorial */}
-      <section style={{ padding: "var(--section-y) 0 0", background: "var(--bg)" }}>
-        <div className="container">
-          <div style={{
-            display: "flex", justifyContent: "space-between", alignItems: "baseline",
-            marginBottom: 60,
-          }}>
-            <SectionLabel num="IV" label={t("Quelques images", "A few images")} />
-            <div style={{
-              fontFamily: "var(--serif)", fontStyle: "italic",
-              fontSize: 18, fontWeight: 300, color: "var(--fg-muted)",
-            }}>
-            </div>
-          </div>
-        </div>
-
-        <div style={{ width: "100%", padding: "0 var(--gutter)" }}>
-          <div className="grid-gallery">
-            <GridImg src={W_IMG.ceremony}    cols="span 7"  rows="span 4" />
-            <GridImg src={W_IMG.bouquet}     cols="span 5"  rows="span 3" />
-            <GridImg src={W_IMG.preparation} cols="span 5"  rows="span 4" />
-            <GridImg src={W_IMG.dance}       cols="span 4"  rows="span 6" pos="center 20%" />
-            <GridImg src={W_IMG.sortie}      cols="span 3"  rows="span 3" zoom={1} pos="center 30%" />
-            <GridImg src={W_IMG.details}     cols="span 8"  rows="span 3" pos="center 30%" />
-            <GridImg src={W_IMG.guests}      cols="span 6"  rows="span 4" />
-            <GridImg src={W_IMG.table}       cols="span 6"  rows="span 4" />
-            <GridImg src={W_IMG.aerial}      cols="span 12" rows="span 4" pos="center 60%" />
           </div>
         </div>
       </section>
