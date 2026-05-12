@@ -296,43 +296,41 @@ function Mariage({ lang, setLang }) {
       {/* TROISIÈME REGARD — drone */}
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
         <div className="container">
-          <div className="grid-manifesto">
-            <div style={{ position: "sticky", top: 120 }}>
-              <SectionLabel num="III" label={t("Un troisième regard", "A third perspective")} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-              <img src={W_IMG.drone} alt=""
-                style={{
-                  width: "100%", aspectRatio: "16/9", objectFit: "cover",
-                  filter: "saturate(0.85) contrast(1.02)",
-                }} />
-              <div>
-                <div className="num" style={{ marginBottom: 12 }}>— {t("Médium 03", "Medium 03")}</div>
-                <div style={{
-                  fontFamily: "var(--serif-display)",
-                  fontSize: 38, fontStyle: "italic", fontWeight: 300,
-                  marginBottom: 18, color: "var(--fg)",
-                }}>{t("Drone", "Drone")}</div>
-                <p style={{
-                  fontFamily: "var(--serif)", fontSize: 18, lineHeight: 1.7,
-                  fontWeight: 300, color: "var(--fg-muted)", maxWidth: 560,
-                }}>
-                  {t(
-                    "Un point de vue que personne n'a depuis le sol. Le domaine, le cortège, la cérémonie en plein air — vus d'en haut, ils révèlent une ampleur que l'on ne soupçonnait pas.",
-                    "A perspective no one has from the ground. The estate, the procession, the outdoor ceremony — seen from above, they reveal a scale you never quite imagined."
-                  )}
-                </p>
-                <div style={{
-                  marginTop: 24,
-                  display: "flex", gap: 16, flexWrap: "wrap",
-                  fontFamily: "var(--sans)", fontSize: 10.5,
-                  letterSpacing: "0.32em", textTransform: "uppercase",
-                  color: "var(--fg-muted)",
-                }}>
-                  <span>{t("Photo & vidéo aérienne", "Aerial photo & video")}</span><span>·</span>
-                  <span>{t("En option", "Optional add-on")}</span>
-                </div>
-              </div>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <SectionLabel num="III" label={t("Un troisième regard", "A third perspective")} align="center" />
+          </div>
+          <img src={W_IMG.drone} alt=""
+            style={{
+              width: "100%", aspectRatio: "16/9", objectFit: "cover",
+              filter: "saturate(0.85) contrast(1.02)",
+            }} />
+          <div style={{ textAlign: "center", marginTop: 40 }}>
+            <div className="num" style={{ marginBottom: 12 }}>— {t("Médium 03", "Medium 03")}</div>
+            <div style={{
+              fontFamily: "var(--serif-display)",
+              fontSize: 38, fontStyle: "italic", fontWeight: 300,
+              marginBottom: 18, color: "var(--fg)",
+            }}>{t("Drone", "Drone")}</div>
+            <p style={{
+              fontFamily: "var(--serif)", fontSize: 18, lineHeight: 1.7,
+              fontWeight: 300, color: "var(--fg-muted)", maxWidth: 560,
+              margin: "0 auto",
+            }}>
+              {t(
+                "Un point de vue que personne n'a depuis le sol. Le domaine, le cortège, la cérémonie en plein air — vus d'en haut, ils révèlent une ampleur que l'on ne soupçonnait pas.",
+                "A perspective no one has from the ground. The estate, the procession, the outdoor ceremony — seen from above, they reveal a scale you never quite imagined."
+              )}
+            </p>
+            <div style={{
+              marginTop: 24,
+              display: "flex", gap: 16, flexWrap: "wrap",
+              justifyContent: "center",
+              fontFamily: "var(--sans)", fontSize: 10.5,
+              letterSpacing: "0.32em", textTransform: "uppercase",
+              color: "var(--fg-muted)",
+            }}>
+              <span>{t("Photo & vidéo aérienne", "Aerial photo & video")}</span><span>·</span>
+              <span>{t("En option", "Optional add-on")}</span>
             </div>
           </div>
         </div>
