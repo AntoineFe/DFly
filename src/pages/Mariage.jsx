@@ -72,7 +72,7 @@ function Mariage({ lang, setLang }) {
           letterSpacing: "0.4em", textTransform: "uppercase",
           opacity: 0.85,
         }}>
-          {t("Domaine 01", "Field 01")}
+          {t("Domaine 01", "Domaine 01")}
         </div>
         <div className="hero-province-label" style={{
           position: "absolute", top: 110, right: "var(--gutter)",
@@ -235,7 +235,7 @@ function Mariage({ lang, setLang }) {
                 }}>
                   {t(
                     "Un instant figé, plus vrai que la réalité. La photo sublime le moment — un regard, une lumière, un sourire qu'on n'avait pas imaginé si beau. Retravaillée une à une, livrée via galerie privée et coffret DFly.",
-                    "A frozen moment, truer than reality. Photography elevates what the eye overlooked — a glance, a light, a smile more beautiful than you thought possible. Each image crafted individually, delivered via private gallery and DFly box."
+                    "A frozen moment, truer than reality. Photography reveals what the eye couldn't hold onto — a glance, a light, a smile more beautiful than you thought possible. Each image crafted individually, delivered via private gallery and DFly box."
                   )}
                 </p>
                 <div style={{
@@ -273,7 +273,7 @@ function Mariage({ lang, setLang }) {
                 }}>
                   {t(
                     "Revivre le jour. Pas seulement en images, mais entendre les rires, les voix, l'ambiance. Monté comme un film de cinéma, il retrace votre journée dans ses moindres émotions. Le teaser, lui, est fait pour être partagé.",
-                    "Relive the day. Not just in pictures — hear the laughter, the voices, the feeling of the room. Edited like a feature film, it tells the story of your day in every emotion. The teaser is made to be shared."
+                    "Relive the day. Not just in pictures — hear the laughter, the voices, the feeling of the room. Edited like a feature film, it carries your day through every emotion. The teaser is made to be shared."
                   )}
                 </p>
                 <div style={{
@@ -403,9 +403,9 @@ function Mariage({ lang, setLang }) {
           <div style={{ maxWidth: 680, margin: "0 auto" }}>
             {[
               { fr_d: "Dans la chambre des parents, la robe attend dans la lumière. Les bijoux, les chaussures neuves. Les amies rient, la maman veille, la mamie tient en elle quelque chose entre bonheur et nostalgie. Le grand-père ne dit rien mais ne rate rien. Puis la porte s'ouvre. Le père voit sa fille.",
-                en_d: "In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother holds something between joy and nostalgia. The grandfather says nothing but misses nothing. Then the door opens. The father sees his daughter." },
+                en_d: "In the parents' room, the dress waits in the light. The jewellery, the new shoes. Friends laugh, the mother guides, the grandmother feels something between joy and nostalgia. The grandfather says nothing but misses nothing. Then the door opens. The father sees his daughter." },
               { fr_d: "La mairie, c'est l'étape qui change tout — devant la loi et devant les hommes. La salle est joyeuse, le marié entre, puis la mariée, puis la salle vit au rythme des paroles du maire. Des textes simples, lus à voix haute, officiels. Des sourires, des regards, des larmes. C'est la naissance d'une famille.",
-                en_d: "The town hall is the step that changes everything — before the law and before the world. The room is joyful, the groom enters, then the bride, then the room comes alive with the mayor's words. Simple texts, read aloud, irrevocable. Smiles, glances, tears. A family is born." },
+                en_d: "The town hall is the step that changes everything — before the law and before the world. The room is joyful, the groom enters, then the bride, then the room comes alive with the mayor's words. Simple texts, read aloud, forever. Smiles, glances, tears. A family is born." },
               { fr_d: "La cérémonie — religieuse ou laïque — ramène vers l'essentiel. On pense à ceux qui sont partis, on mesure à quel point on tient à ceux qui sont encore là. Les mots viennent du cœur — et pourtant la salle reste légère, les rires arrivent entre les larmes. C'est ce mélange qu'on observe dans l'objectif : la profondeur et la joie, souvent sur le même visage, au même instant.",
                 en_d: "The ceremony — religious or secular — brings us back to what matters. We think of those who have gone, we measure how much we hold onto those still here. Words come from the heart — and yet the room stays light, laughter arrives between tears. That is the mix we observe through the lens: depth and joy, often on the same face, at the same instant." },
               { fr_d: "Ils se sont dit oui. À la sortie, la joie explose — bulles et pétales brillent, tout le monde veut sa photo avec les mariés. Puis le couple s'éclipse. C'est notre moment : trente minutes, à l'écart, loin du bruit.",
@@ -617,7 +617,7 @@ function Mariage({ lang, setLang }) {
             {t('Nous contacter', 'Contact us')}
           </Link>
           <div style={{ fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.32em', textTransform: 'uppercase', marginTop: 16, opacity: 0.7 }}>
-            {t('Réponse sous 48 heures', 'Reply within 48 hours')}
+            {t('Réponse sous 48 heures', 'We\'ll get back to you within 48 hours')}
           </div>		  
         </div>
       </section>
