@@ -1,12 +1,9 @@
-import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import Cartouche from '../components/Cartouche'
 import SectionLabel from '../components/SectionLabel'
 import DflyMonogram from '../components/DflyMonogram'
-import { useGalerieAuth } from '../context/GalerieAuth'
-import ChangePasswordModal from '../components/ChangePasswordModal'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -28,25 +25,10 @@ const IMG = {
 
 export default function Home({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
-  const { user, logout, changePassword } = useGalerieAuth()
-  const [showPwdModal, setShowPwdModal] = useState(false)
 
   return (
     <div>
-      <TopNav
-        scheme="over-hero"
-        lang={lang}
-        setLang={setLang}
-        galerieUser={user}
-        onGalerieLogout={logout}
-        onChangePassword={() => setShowPwdModal(true)}
-      />
-      {showPwdModal && (
-        <ChangePasswordModal
-          onClose={() => setShowPwdModal(false)}
-          changePassword={changePassword}
-        />
-      )}
+      <TopNav scheme="over-hero" lang={lang} setLang={setLang} />
 
       {/* ── HERO ── */}
       <section className="hero-section" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', color: 'var(--ivory)' }}>

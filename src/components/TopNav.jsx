@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import DflyMonogram from './DflyMonogram'
+import { useGalerieAuth } from '../context/GalerieAuth'
+import ChangePasswordModal from './ChangePasswordModal'
 
 const NAV_LINKS = {
   FR: [
@@ -20,13 +22,16 @@ const NAV_LINKS = {
   ],
 }
 
-export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabel, ctaHref, galerieUser, onGalerieLogout, onChangePassword }) {
+export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabel, ctaHref }) {
+  const { user: galerieUser, logout, changePassword } = useGalerieAuth()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [userMenuOpen, setUserMenuOpen] = useState(false)
+  const [showPwdModal, setShowPwdModal] = useState(false)
   const userMenuRef = useRef(null)
   const userSectionRef = useRef(null)
   const location = useLocation()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60)
@@ -197,10 +202,10 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
               <Link to="/galerie/albums" style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', borderBottom: '1px solid var(--line)' }}>
                 Ma galerie
               </Link>
-              <button onClick={() => { setMenuOpen(false); onChangePassword?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid var(--line)', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
+              <button onClick={() => { setMenuOpen(false); setShowPwdModal(true) }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid var(--line)', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
                 Changer mon mot de passe
               </button>
-              <button onClick={() => { setMenuOpen(false); onGalerieLogout?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
+              <button onClick={() => { setMenuOpen(false); logout(); navigate('/') }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
                 Me déconnecter
               </button>
             </div>
@@ -245,10 +250,10 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             <Link to="/galerie/albums" onClick={() => setUserMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px' }}>
               Ma galerie
             </Link>
-            <button onClick={() => { setUserMenuOpen(false); onChangePassword?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
+            <button onClick={() => { setUserMenuOpen(false); setShowPwdModal(true) }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
               Changer mon mot de passe
             </button>
-            <button onClick={() => { setUserMenuOpen(false); onGalerieLogout?.() }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
+            <button onClick={() => { setUserMenuOpen(false); logout(); navigate('/') }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
               Me déconnecter
             </button>
           </div>
@@ -256,6 +261,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
       </div>,
       document.body
     )}
+    {showPwdModal && <ChangePasswordModal onClose={() => setShowPwdModal(false)} changePassword={changePassword} />}
     </>
   )
 }
