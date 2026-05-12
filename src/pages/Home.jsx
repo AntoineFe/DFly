@@ -335,6 +335,21 @@ export default function Home({ lang, setLang }) {
         </div>
       </section>
 
+      {/* CTA */}
+      <section style={{ padding: 'var(--section-y) 0', background: 'var(--bg)' }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(36px, 4vw, 56px)', fontStyle: 'italic', fontWeight: 300, marginBottom: 32 }}>
+            {t('Parlons de votre projet.', "Let's talk about your project.")}
+          </div>
+          <Link to="/contact" style={{
+            fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase',
+            border: '1px solid var(--fg)', padding: '14px 32px', color: 'var(--fg)', display: 'inline-block',
+          }}>
+            {t('Nous contacter', 'Contact us')}
+          </Link>
+        </div>
+      </section>
+	  
       <Footer lang={lang} />
     </div>
   )

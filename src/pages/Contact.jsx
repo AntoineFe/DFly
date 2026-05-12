@@ -95,7 +95,7 @@ export default function Contact({ lang, setLang }) {
                     {t('Basés à', 'Based in')}
                   </div>
                   <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 18, fontWeight: 300, color: 'var(--fg-muted)' }}>
-                    Cros-de-Cagnes<br />Provence Alpes Côte d'Azur
+                    Cagnes-sur-mer<br />Provence Alpes Côte d'Azur
                   </div>
                 </div>
               </div>

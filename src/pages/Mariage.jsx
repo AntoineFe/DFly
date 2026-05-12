@@ -604,50 +604,21 @@ function Mariage({ lang, setLang }) {
         </div>
       </section>
 
-      {/* CONTACT */}
-      <section id="contact" style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
-        <div className="container">
-          <div style={{ maxWidth: 680 }}>
-            <SectionLabel num="IX" label={t("Écrire", "Write")} />
-            <h2 style={{
-              fontFamily: "var(--serif-display)",
-              fontSize: "clamp(40px, 4.4vw, 64px)",
-              fontWeight: 400, lineHeight: 1.05,
-              margin: "32px 0 32px",
-              color: "var(--fg)",
-            }}>
-              {t(
-                <>Parlons de<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>votre projet.</em></>,
-                <>Let's talk about<br/><em style={{ fontStyle: "italic", fontWeight: 300 }}>your project.</em></>
-              )}
-            </h2>
-            <p style={{
-              fontFamily: "var(--serif)", fontSize: 19,
-              lineHeight: 1.7, fontWeight: 300, color: "var(--fg-muted)",
-              marginBottom: 48, maxWidth: 520,
-            }}>
-              {t(
-                "Écrivez-nous, nous répondons sous 48h. Ou appelez-nous — on prend toujours le temps d'un appel avant tout engagement.",
-                "Write to us, we reply within 48h. Or call us — we always take the time for a call before any commitment."
-              )}
-            </p>
-            <div className="grid-contact-info">
-              <div>
-                <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 12 }}>Antoine</div>
-                <div style={{ fontFamily: "var(--serif)", fontSize: 17, lineHeight: 2, color: "var(--fg-muted)" }}>
-                  <a href="tel:+33607720940" style={{ color: "inherit", textDecoration: "none" }}>06 07 72 09 40</a><br/>
-                  <a href="mailto:antoine.ferrera@dfly.fr" style={{ color: "inherit", textDecoration: "none" }}>antoine.ferrera@dfly.fr</a>
-                </div>
-              </div>
-              <div>
-                <div style={{ fontFamily: "var(--serif-display)", fontSize: 22, fontStyle: "italic", fontWeight: 300, marginBottom: 12 }}>Rémi</div>
-                <div style={{ fontFamily: "var(--serif)", fontSize: 17, lineHeight: 2, color: "var(--fg-muted)" }}>
-                  <a href="tel:+33695402700" style={{ color: "inherit", textDecoration: "none" }}>06 95 40 27 00</a><br/>
-                  <a href="mailto:remi.ferrera@dfly.fr" style={{ color: "inherit", textDecoration: "none" }}>remi.ferrera@dfly.fr</a>
-                </div>
-              </div>
-            </div>
+      {/* CTA */}
+      <section style={{ padding: 'var(--section-y) 0', background: 'var(--bg)' }}>
+        <div className="container" style={{ textAlign: 'center' }}>
+          <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(36px, 4vw, 56px)', fontStyle: 'italic', fontWeight: 300, marginBottom: 32 }}>
+            {t('Parlons de votre mariage.', "Let's talk about your wedding.")}
           </div>
+          <Link to="/contact" style={{
+            fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase',
+            border: '1px solid var(--fg)', padding: '14px 32px', color: 'var(--fg)', display: 'inline-block',
+          }}>
+            {t('Nous contacter', 'Contact us')}
+          </Link>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.32em', textTransform: 'uppercase', marginTop: 16, opacity: 0.7 }}>
+            {t('Réponse sous 48 heures', 'Reply within 48 hours')}
+          </div>		  
         </div>
       </section>
 

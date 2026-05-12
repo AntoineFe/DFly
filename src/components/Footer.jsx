@@ -7,17 +7,6 @@ export default function Footer({ lang = 'FR' }) {
     <footer style={{ background: 'var(--bg-deep)', color: 'var(--fg-on-deep)', paddingTop: 100, paddingBottom: 40 }}>
       <div className="container">
 
-        {/* CTA */}
-        <div style={{ textAlign: 'center', paddingBottom: 56, borderBottom: '1px solid rgba(243,237,226,0.18)' }}>
-          <DflyMonogram size={48} color="rgba(243,237,226,0.9)" />
-          <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(40px,5vw,64px)', fontStyle: 'italic', fontWeight: 300, marginTop: 24, letterSpacing: '0.01em' }}>
-            {t('Parlons de votre projet', "Let's talk about your project")}
-          </div>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.32em', textTransform: 'uppercase', marginTop: 16, opacity: 0.7 }}>
-            {t('Réponse sous 48 heures', 'Reply within 48 hours')}
-          </div>
-        </div>
-
         {/* Colonnes */}
         <div className="grid-footer" style={{ paddingTop: 56, paddingBottom: 56 }}>
           <div>
