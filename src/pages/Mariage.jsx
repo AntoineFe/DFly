@@ -160,8 +160,8 @@ function Mariage({ lang, setLang }) {
                 textWrap: "pretty",
               }}>
                 {t(
-                  "Vous nous confiez un jour qui ne se rejoue pas. Nous le capturons en photo et en vidéo avec sensibilité, présents aux bons moments.",
-                  "You entrust us with a day that won't replay. We capture it in photo and video with sensitivity, present at the right moments."
+                  <><em style={{ fontStyle: "italic", fontWeight: 300 }}>Vous nous confiez un jour qui ne se rejoue pas.</em> Nous le capturons en photo et en vidéo avec sensibilité, présents aux bons moments.</>,
+                  <><em style={{ fontStyle: "italic", fontWeight: 300 }}>You entrust us with a day that won't replay.</em> We capture it in photo and video with sensitivity, present at the right moments.</>
                 )}
               </p>
               <p style={{
