@@ -2,11 +2,16 @@ import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
+import usePageMeta from '../hooks/usePageMeta'
 
 const VIDEO_ID = '64IcNikJ9dY'
 
 export default function MariageFilm({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
+  usePageMeta({
+    title: t('Film de mariage — DFly · PACA', 'Wedding Film — DFly · French Riviera'),
+    description: t('Films de mariage cinématographiques en Provence Alpes Côte d\'Azur. Teaser, film intégral, drone.', 'Cinematic wedding films in the French Riviera. Teaser, full film, drone footage.'),
+  })
 
   return (
     <div>

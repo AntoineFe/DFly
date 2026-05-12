@@ -2,6 +2,7 @@ import { useState } from 'react'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
+import usePageMeta from '../hooks/usePageMeta'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -17,6 +18,10 @@ const inputStyle = {
 
 export default function Contact({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
+  usePageMeta({
+    title: t('Contact — DFly Photographie & Vidéo · PACA', 'Contact — DFly Photography & Film · French Riviera'),
+    description: t('Contactez DFly pour votre projet photo ou vidéo en Provence Alpes Côte d\'Azur.', 'Contact DFly for your photography or film project in the French Riviera.'),
+  })
 
   const [form, setForm] = useState({ prenom: '', nom: '', email: '', tel: '', sujet: '', message: '' })
   const [sending,  setSending]  = useState(false)

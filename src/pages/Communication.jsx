@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
+import usePageMeta from '../hooks/usePageMeta'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -14,6 +15,10 @@ const IMG = {
 
 export default function Communication({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
+  usePageMeta({
+    title: t('Photo & Vidéo Entreprise — DFly · PACA', 'Business Photography & Film — DFly · French Riviera'),
+    description: t('Photos et vidéos pour artisans, entreprises et marques en Provence Alpes Côte d\'Azur. Reportage, portraits corporate, contenu réseaux sociaux.', 'Photography and film for craftsmen, businesses and brands in the French Riviera. Corporate portraits, social media content.'),
+  })
 
   return (
     <div>

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
+import usePageMeta from '../hooks/usePageMeta'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -14,6 +15,10 @@ const IMG = {
 
 export default function Spectacle({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
+  usePageMeta({
+    title: t('Photo & Vidéo Événement — DFly · PACA', 'Event Photography & Film — DFly · French Riviera'),
+    description: t('Captation photo et vidéo d\'événements et spectacles en Provence Alpes Côte d\'Azur. Multi-caméra, live, concerts, conférences.', 'Event and live performance photography and film in the French Riviera. Multi-camera, concerts, conferences.'),
+  })
 
   return (
     <div>

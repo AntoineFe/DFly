@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import Cartouche from '../components/Cartouche'
 import SectionLabel from '../components/SectionLabel'
 import DflyMonogram from '../components/DflyMonogram'
+import usePageMeta from '../hooks/usePageMeta'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -25,6 +26,10 @@ const IMG = {
 
 export default function Home({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
+  usePageMeta({
+    title: t('DFly — Photographie & Vidéo · Provence Alpes Côte d\'Azur', 'DFly — Photography & Film · French Riviera'),
+    description: t('Mariage, immobilier, entreprise, événement, portrait. Photo et vidéo en Provence Alpes Côte d\'Azur.', 'Wedding, real estate, business, events, portraits. Photography and film in the French Riviera.'),
+  })
 
   return (
     <div>

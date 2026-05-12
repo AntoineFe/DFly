@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
+import usePageMeta from '../hooks/usePageMeta'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -14,6 +15,10 @@ const IMG = {
 
 export default function Famille({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
+  usePageMeta({
+    title: t('Portrait & Famille — DFly Photographie · PACA', 'Portrait & Family Photography — DFly · French Riviera'),
+    description: t('Séances photo portrait et famille en Provence Alpes Côte d\'Azur. Des images simples, vraies et durables.', 'Portrait and family photo sessions in the French Riviera. Simple, true and lasting images.'),
+  })
 
   return (
     <div>

@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
+import usePageMeta from '../hooks/usePageMeta'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -15,6 +16,10 @@ const IMG = {
 
 export default function Immobilier({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
+  usePageMeta({
+    title: t('Photographie Immobilière — DFly · PACA', 'Real Estate Photography — DFly · French Riviera'),
+    description: t('Photos et vidéos immobilières professionnelles en Provence Alpes Côte d\'Azur. Intérieurs, extérieurs, vues aériennes par drone.', 'Professional real estate photography and film in the French Riviera. Interiors, exteriors, aerial drone shots.'),
+  })
 
   return (
     <div>

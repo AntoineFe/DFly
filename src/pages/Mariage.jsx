@@ -3,6 +3,7 @@ import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
 import DevisFunnel from '../components/DevisFunnel'
+import usePageMeta from '../hooks/usePageMeta'
 
 const BASE = import.meta.env.BASE_URL;
 const W_IMG = {
@@ -30,6 +31,10 @@ const W_IMG = {
 
 function Mariage({ lang, setLang }) {
   const t = (fr, en) => lang === "FR" ? fr : en;
+  usePageMeta({
+    title: t('Mariage — DFly Photographie & Vidéo · PACA', 'Wedding Photography & Film — DFly · French Riviera'),
+    description: t('Photo et vidéo de mariage en Provence Alpes Côte d\'Azur. Deux regards complémentaires, une approche sensible et documentaire.', 'Wedding photography and film in the French Riviera. A sensitive, documentary approach by father and son.'),
+  })
 
   return (
     <div>
