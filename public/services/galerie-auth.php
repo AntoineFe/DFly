@@ -129,6 +129,15 @@ function galerie_has_auth($session, $rsrc, $level) {
 
 function galerie_require_level($session, $rsrc, $level) {
     if (!galerie_has_auth($session, $rsrc, $level)) {
+        $logFile = __DIR__ . '/galerie-auth.log';
+        file_put_contents($logFile,
+            date('Y-m-d H:i:s') . ' | 403 ' . $rsrc . ':' . $level
+            . ' | userId=' . ($session['userId'] ?? '?')
+            . ' | idEnt='  . ($session['idEnt']  ?? '?')
+            . ' | auths='  . json_encode($session['auths'] ?? [])
+            . PHP_EOL,
+            FILE_APPEND | LOCK_EX
+        );
         http_response_code(403);
         exit(json_encode(['ok' => false, 'error' => 'Accès refusé']));
     }
