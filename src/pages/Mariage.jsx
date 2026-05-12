@@ -9,7 +9,7 @@ const W_IMG = {
   hero:        `${BASE}images/mariage/_7R41480.jpeg`,
   bride:       `${BASE}images/mariage/434_DSC8785.jpeg`,
   couple:      `${BASE}images/mariage/259_7R44229.jpeg`,
-  ceremony:    `${BASE}images/mariage/MAX_0035.jpeg`,
+  ceremony:    `${BASE}images/mariage/452_7R49775.jpeg`,
   bouquet:     `${BASE}images/mariage/409_7R49654.jpeg`,
   preparation: `${BASE}images/mariage/_7R44108.jpg`,
   dance:       `${BASE}images/mariage/374_7R45410.jpeg`,
@@ -230,11 +230,11 @@ function Mariage({ lang, setLang }) {
                 }}>{t("Photographie", "Photography")}</div>
                 <p style={{
                   fontFamily: "var(--serif)", fontSize: 18, lineHeight: 1.7,
-                  fontWeight: 300, color: "var(--fg-muted)", maxWidth: 480,
+                  fontWeight: 300, color: "var(--fg-muted)", 
                 }}>
                   {t(
-                    "Boîtiers plein-format, optiques haut de gamme Sony GM, lumière maîtrisée selon les lieux. Une sélection d'images travaillées une à une. Livraison via galerie privée et coffret DFly contenant l'ensemble des fichiers en haute définition.",
-                    "Full-frame bodies, Sony GM premium lenses, light mastered to each location. A curated selection of individually processed images. Delivered via private gallery and DFly box set containing all files in high definition."
+                    "Un instant figé, plus vrai que la réalité. La photo sublime le moment — un regard, une lumière, un sourire qu'on n'avait pas imaginé si beau. Retravaillée une à une, livrée via galerie privée et coffret DFly.",
+                    "A frozen moment, truer than reality. Photography elevates what the eye overlooked — a glance, a light, a smile more beautiful than you thought possible. Each image crafted individually, delivered via private gallery and DFly box."
                   )}
                 </p>
                 <div style={{
@@ -265,14 +265,14 @@ function Mariage({ lang, setLang }) {
                   fontFamily: "var(--serif-display)",
                   fontSize: 38, fontStyle: "italic", fontWeight: 300,
                   marginBottom: 18, color: "var(--fg)",
-                }}>{t("Vidéo & captation", "Film & capture")}</div>
+                }}>{t("Film", "Film")}</div>
                 <p style={{
                   fontFamily: "var(--serif)", fontSize: 18, lineHeight: 1.7,
-                  fontWeight: 300, color: "var(--fg-muted)", maxWidth: 480,
+                  fontWeight: 300, color: "var(--fg-muted)", 
                 }}>
                   {t(
-                    "Caméras cinéma, son en direct, multi-cam deux à trois axes. Un teaser de 2 à 5 minutes, un film de 20 à 40 minutes. Color grading sur mesure, scène par scène.",
-                    "Cinema cameras, live sound, multi-cam with two to three camera angles. A 2 to 5 minutes teaser, a film of about 20 to 40 minutes. Custom color grading, scene by scene."
+                    "Revivre le jour. Pas seulement en images, mais entendre les rires, les voix, l'ambiance. Monté comme un film de cinéma, il retrace votre journée dans ses moindres émotions. Le teaser, lui, est fait pour être partagé.",
+                    "Relive the day. Not just in pictures — hear the laughter, the voices, the feeling of the room. Edited like a feature film, it tells the story of your day in every emotion. The teaser is made to be shared."
                   )}
                 </p>
                 <div style={{
@@ -282,8 +282,9 @@ function Mariage({ lang, setLang }) {
                   letterSpacing: "0.32em", textTransform: "uppercase",
                   color: "var(--fg-muted)",
                 }}>
-                  <span>Teaser 2 à 5 min</span><span>·</span>
                   <span>Film 20 à 40 min</span><span>·</span>
+                  <span>Teaser 2 à 5 min</span><span>·</span>
+                  <span>Multi-cam</span><span>·</span>
                 </div>
               </div>
             </div>

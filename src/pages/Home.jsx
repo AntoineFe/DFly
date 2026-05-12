@@ -346,30 +346,34 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
 
   const text = (
     <div className="domain-text" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: reverse ? '0 0 0 40px' : '0 40px 0 0' }}>
-      <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--fg-muted)', letterSpacing: '0.04em' }}>— {num}</div>
-      <h3 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,6vw,96px)', lineHeight: 0.95, fontWeight: 400, margin: '16px 0 18px', letterSpacing: '-0.005em', overflowWrap: 'break-word' }}>{title}</h3>
-      <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(20px,1.7vw,24px)', fontWeight: 300, color: 'var(--fg-muted)', marginBottom: 32, maxWidth: 460 }}>{subtitle}</div>
-      <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.7, fontWeight: 300, maxWidth: 480, marginBottom: 36 }}>{body}</p>
-      {keywords.length > 0 && (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, marginBottom: 36, borderTop: '1px solid var(--line)' }}>
-          {keywords.map((k, i) => (
-            <div key={i} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'var(--fg-muted)', padding: '14px 20px 14px 0', borderBottom: '1px solid var(--line)' }}>
-              {k}{i < keywords.length - 1 && <span style={{ marginLeft: 20, opacity: 0.4 }}>·</span>}
-            </div>
-          ))}
-        </div>
-      )}
-      <Link to={href || '#'} style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--fg)', borderBottom: '1px solid var(--fg)', paddingBottom: 8, display: 'inline-block', alignSelf: 'flex-start' }}>
-        {t('Voir le travail', 'See the work')} &nbsp;→
-      </Link>
-    </div>
+		<Link to={href || '#'}>
+		  <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--fg-muted)', letterSpacing: '0.04em' }}>— {num}</div>
+		  <h3 style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,6vw,96px)', lineHeight: 0.95, fontWeight: 400, margin: '16px 0 18px', letterSpacing: '-0.005em', overflowWrap: 'break-word' }}>{title}</h3>
+		  <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 'clamp(20px,1.7vw,24px)', fontWeight: 300, color: 'var(--fg-muted)', marginBottom: 32, maxWidth: 460 }}>{subtitle}</div>
+		  <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.7, fontWeight: 300, maxWidth: 480, marginBottom: 36 }}>{body}</p>
+		  {keywords.length > 0 && (
+			<div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, marginBottom: 36, borderTop: '1px solid var(--line)' }}>
+			  {keywords.map((k, i) => (
+				<div key={i} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', color: 'var(--fg-muted)', padding: '14px 20px 14px 0', borderBottom: '1px solid var(--line)' }}>
+				  {k}{i < keywords.length - 1 && <span style={{ marginLeft: 20, opacity: 0.4 }}>·</span>}
+				</div>
+			  ))}
+			</div>
+		  )}
+		  <Link to={href || '#'} style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', color: 'var(--fg)', borderBottom: '1px solid var(--fg)', paddingBottom: 8, display: 'inline-block', alignSelf: 'flex-start' }}>
+			{t('Voir le travail', 'See the work')} &nbsp;→
+		  </Link>
+		</Link>
+	</div>
   )
 
   const visual = (
     <div className="domain-visual" style={{ position: 'relative' }}>
-      <img src={image} alt="" className="cine domain-img" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-      <img src={imageAlt} alt="" className={`cine domain-thumb${reverse ? ' domain-thumb-reverse' : ''}`} style={{ position: 'absolute', width: '55%', aspectRatio: '1/1', objectFit: 'cover', bottom: -50, [reverse ? 'left' : 'right']: -40, border: '8px solid var(--bg-alt)', filter: 'saturate(0.85) contrast(1.02)', zIndex: 2 }} />
-    </div>
+		<Link to={href || '#'}>
+		  <img src={image} alt="" className="cine domain-img" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+		  <img src={imageAlt} alt="" className={`cine domain-thumb${reverse ? ' domain-thumb-reverse' : ''}`} style={{ position: 'absolute', width: '55%', aspectRatio: '1/1', objectFit: 'cover', bottom: -50, [reverse ? 'left' : 'right']: -40, border: '8px solid var(--bg-alt)', filter: 'saturate(0.85) contrast(1.02)', zIndex: 2 }} />
+		</Link>
+	</div>
   )
 
   return (
