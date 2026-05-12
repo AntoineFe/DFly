@@ -4,6 +4,8 @@
 
 function galerie_db() {
     $cfg_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-db-config.php';
+    if (!file_exists($cfg_path))
+        $cfg_path = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-db-config.php';
     if (!file_exists($cfg_path)) {
         http_response_code(500);
         exit(json_encode(['ok' => false, 'error' => 'dfly-db-config.php introuvable']));

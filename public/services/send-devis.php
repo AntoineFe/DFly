@@ -8,6 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // ── Config SMTP (hors web root) ───────────────────────────────────────────────
 $config_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-smtp-config.php';
+if (!file_exists($config_path))
+    $config_path = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-smtp-config.php';
 if (!file_exists($config_path)) {
     http_response_code(500);
     exit(json_encode(["ok" => false, "error" => "dfly-smtp-config.php introuvable"]));
