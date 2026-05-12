@@ -498,10 +498,10 @@ function StepFormat({ state, set, lang }) {
   return (
     <div>
       <h3 style={{ marginBottom: 8, fontFamily: "var(--serif-display)", fontWeight: 400, fontSize: "clamp(22px, 2.5vw, 30px)" }}>
-        {t("Comment souhaitez-vous revivre cette journée dans dix ans ?", "How would you like to relive this day in ten years?")}
+        {t("Comment souhaitez-vous immortaliser cette journée ?", "How would you like to relive this day ?")}
       </h3>
       <p style={{ color: "var(--fg-muted)", fontFamily: "var(--serif)", fontStyle: "italic", marginBottom: 36 }}>
-        {t("Choisissez ce qui vous ressemble.", "Choose what suits you.")}
+        {t("Imaginez-vous dans 10 ans, un soir, vous la revivez…", "Picture yourself, ten years from now, on a quiet evening, reliving it all…")}
       </p>
 
       <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 36 }}>
