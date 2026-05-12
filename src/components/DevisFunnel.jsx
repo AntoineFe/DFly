@@ -10,7 +10,10 @@ const BASE_HT = 0;
 const PP_PHOTO_HT = 1200;
 const PP_VIDEO_HT = 2000;
 const CAPTATION_DAY_HT = 400; // par prestataire par jour
-const HOTEL_TTC = 120;
+const HOTEL_TTC    = 120;
+const TEASER_TTC   = 700;
+const INTEGRAL_TTC = 500;
+const DRONE_TTC    = 200;
 
 const MOMENTS = [
   { id: "preparatifs", label: "Préparatifs",                       en: "Getting ready",                       h: 1.5   },
@@ -84,10 +87,10 @@ function calcPrice(state) {
   let totalHT = BASE_HT + activeH * ppRate + (activeH > 0 ? captationHT(activeH) : 0);
 
   if (state.format !== "photo") {
-    if (state.teaser)   totalHT += 700 / 1.2;
-    if (state.integral) totalHT += 500 / 1.2;
+    if (state.teaser)   totalHT += TEASER_TTC   / 1.2;
+    if (state.integral) totalHT += INTEGRAL_TTC / 1.2;
   }
-  if (state.drone) totalHT += 200 / 1.2;
+  if (state.drone) totalHT += DRONE_TTC / 1.2;
 
   return { h: displayH, ttc: Math.round(totalHT * 1.2 / 10) * 10 };
 }
@@ -490,9 +493,9 @@ function StepFormat({ state, set, lang }) {
 
   const FILM_OPTS = [
     { key: "teaser",   label: t("Teaser — 2 à 5 min",  "Teaser — 2 to 5 min"),
-      desc: t("Les émotions dans un résumé à partager", "The emotions in a shareable highlight"), price: "+700 €" },
+      desc: t("Les émotions dans un résumé à partager", "The emotions in a shareable highlight"), price: `+${TEASER_TTC} €` },
     { key: "integral", label: t("Intégral — 1h+", "Full version — 1h+"),
-      desc: t("Parce que certains jours, vous voudrez revivre chaque moment comme si vous y étiez", "Because some days, you'll want to relive every moment as if you were there"), price: "+500 €" },
+      desc: t("Parce que certains jours, vous voudrez revivre chaque moment comme si vous y étiez", "Because some days, you'll want to relive every moment as if you were there"), price: `+${INTEGRAL_TTC} €` },
   ];
 
   return (
@@ -560,7 +563,7 @@ function StepDrone({ state, set, lang }) {
   const t = mkT(lang);
 
   const DRONE_OPTS = [
-    { v: true,  label: t("Oui", "Yes"), desc: t("Vues aériennes du lieu, des invités, de la cérémonie. +200 €", "Aerial views of the venue, guests, and ceremony. +€200") },
+    { v: true,  label: t("Oui", "Yes"), desc: t(`Vues aériennes du lieu, des invités, de la cérémonie. +${DRONE_TTC} €`, `Aerial views of the venue, guests, and ceremony. +€${DRONE_TTC}`) },
     { v: false, label: t("Non", "No"),  desc: null },
   ];
 
@@ -677,9 +680,9 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
       </h3>
       <div style={{ marginBottom: 32 }}>
         <PriceLine label={fmtLabel + (momentsLabel ? ` · ${momentsLabel}` : '')} value={eur(ttc)} />
-        {hasVideo && state.teaser   && <PriceLine label={t("+ Teaser",    "+ Teaser")}       value="+700 €" muted />}
-        {hasVideo && state.integral && <PriceLine label={t("+ Intégral",  "+ Full version")} value="+500 €" muted />}
-        {state.drone                && <PriceLine label="+ Drone"                            value="+200 €" muted />}
+        {hasVideo && state.teaser   && <PriceLine label={t("+ Teaser",    "+ Teaser")}       value={`+${TEASER_TTC} €`}   muted />}
+        {hasVideo && state.integral && <PriceLine label={t("+ Intégral",  "+ Full version")} value={`+${INTEGRAL_TTC} €`} muted />}
+        {state.drone                && <PriceLine label="+ Drone"                            value={`+${DRONE_TTC} €`}    muted />}
         {travelLoading ? (
           <PriceLine label={t("Déplacement", "Travel")} value={t("calcul en cours…", "calculating…")} muted />
         ) : travel?.km > 0 ? (
