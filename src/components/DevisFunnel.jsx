@@ -10,10 +10,12 @@ const BASE_HT = 0;
 const PP_PHOTO_HT = 1200;
 const PP_VIDEO_HT = 1900;
 const CAPTATION_DAY_HT = 400; // par prestataire par jour
-const HOTEL_TTC    = 120;
-const TEASER_TTC   = 300;
-const INTEGRAL_TTC = 400;
-const DRONE_TTC    = 200;
+const HOTEL_TTC      = 120;
+const TEASER_TTC     = 300;
+const INTEGRAL_TTC   = 400;
+const DRONE_TTC      = 200;
+const ENGAGEMENT_TTC = 200;
+const BRUNCH_TTC     = 250;
 
 const MOMENTS = [
   { id: "preparatifs", label: "Préparatifs",                       en: "Getting ready",                       h: 1.5   },
@@ -38,8 +40,12 @@ const MOMENTS = [
 const MOMENT_IDS = MOMENTS.map(m => m.id);
 
 const EXTRAS = [
-  { id: "engagement", label: "Séance d'engagement",  en: "Engagement session", note: "à partir de 200 €", noteEn: "from €200" },
-  { id: "trash",      label: "Trash the dress",       en: "Trash the dress",    note: "à partir de 200 €", noteEn: "from €200" },
+  { id: "engagement", label: "Séance d'engagement", en: "Engagement session",
+    note: `à partir de ${ENGAGEMENT_TTC} €`, noteEn: `from €${ENGAGEMENT_TTC}` },
+  { id: "brunch",     label: "Brunch",               en: "Brunch",
+    desc:   "Le lendemain matin — détendus, heureux. Les meilleures images arrivent parfois là.",
+    descEn: "The morning after — relaxed, happy. Sometimes the best images happen then.",
+    note: `${BRUNCH_TTC} €`, noteEn: `€${BRUNCH_TTC}` },
 ];
 
 // ── i18n helper ───────────────────────────────────────────────────────────────
@@ -90,7 +96,8 @@ function calcPrice(state) {
     if (state.teaser)   totalHT += TEASER_TTC   / 1.2;
     if (state.integral) totalHT += INTEGRAL_TTC / 1.2;
   }
-  if (state.drone) totalHT += DRONE_TTC / 1.2;
+  if (state.drone)           totalHT += DRONE_TTC      / 1.2;
+  if (state.extras?.brunch) totalHT += BRUNCH_TTC     / 1.2;
 
   return { h: displayH, ttc: Math.round(totalHT * 1.2 / 10) * 10 };
 }
@@ -260,14 +267,24 @@ function StepMoments({ state, set, lang }) {
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
           {EXTRAS.map(e => (
-            <label key={e.id} style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
+            <label key={e.id} style={{ display: "flex", alignItems: "flex-start", gap: 12, cursor: "pointer" }}>
               <input
                 type="checkbox"
                 checked={!!extras[e.id]}
                 onChange={() => set("extras", { ...extras, [e.id]: !extras[e.id] })}
+                style={{ marginTop: 3, flexShrink: 0 }}
               />
-              <span style={{ fontSize: 15, color: "var(--fg)" }}>{mLabel(e, lang)}</span>
-              <span style={{ fontSize: 13, color: "var(--fg-muted)" }}>{lang === "EN" ? e.noteEn : e.note}</span>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 15, color: "var(--fg)" }}>{mLabel(e, lang)}</span>
+                  <span style={{ fontSize: 13, color: "var(--fg-muted)" }}>{lang === "EN" ? e.noteEn : e.note}</span>
+                </div>
+                {(e.desc || e.descEn) && (
+                  <div style={{ fontSize: 13, color: "var(--fg-muted)", fontStyle: "italic", marginTop: 2 }}>
+                    {lang === "EN" ? e.descEn : e.desc}
+                  </div>
+                )}
+              </div>
             </label>
           ))}
           <label style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}>
@@ -682,7 +699,8 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
         <PriceLine label={fmtLabel + (momentsLabel ? ` · ${momentsLabel}` : '')} value={eur(ttc)} />
         {hasVideo && state.teaser   && <PriceLine label={t("+ Teaser",    "+ Teaser")}       value={`+${TEASER_TTC} €`}   muted />}
         {hasVideo && state.integral && <PriceLine label={t("+ Intégral",  "+ Full version")} value={`+${INTEGRAL_TTC} €`} muted />}
-        {state.drone                && <PriceLine label="+ Drone"                            value={`+${DRONE_TTC} €`}    muted />}
+        {state.drone                 && <PriceLine label="+ Drone"                            value={`+${DRONE_TTC} €`}    muted />}
+        {state.extras?.brunch       && <PriceLine label={t("+ Brunch", "+ Brunch")}           value={`+${BRUNCH_TTC} €`}   muted />}
         {travelLoading ? (
           <PriceLine label={t("Déplacement", "Travel")} value={t("calcul en cours…", "calculating…")} muted />
         ) : travel?.km > 0 ? (
