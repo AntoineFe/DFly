@@ -91,9 +91,9 @@ function galerie_require_auth() {
     if (!$pRes) {
         file_put_contents($authLogFile, date('Y-m-d H:i:s') . ' | profils query FAIL | uid=' . $uid . ' | ient=' . $ient . ' | error=' . mysqli_error($link) . PHP_EOL, FILE_APPEND | LOCK_EX);
     } else {
-        $rows = mysqli_fetch_all($pRes, MYSQLI_ASSOC);
+        $rows = [];
+        while ($r = mysqli_fetch_assoc($pRes)) { $rows[] = $r; }
         file_put_contents($authLogFile, date('Y-m-d H:i:s') . ' | profils | uid=' . $uid . ' | ient=' . $ient . ' | rows=' . count($rows) . ' | raw=' . json_encode($rows) . PHP_EOL, FILE_APPEND | LOCK_EX);
-        // Rembobiner pour la boucle suivante
         mysqli_data_seek($pRes, 0);
     }
 
