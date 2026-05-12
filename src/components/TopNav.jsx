@@ -182,6 +182,13 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </Link>
           }
+          {!galerieUser && (
+            <div style={{ marginTop: 32, borderTop: '1px solid var(--line)', paddingTop: 24 }}>
+              <Link to="/galerie" onClick={() => setMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0' }}>
+                {lang === 'FR' ? 'Connexion' : 'Login'}
+              </Link>
+            </div>
+          )}
           {galerieUser && (
             <div ref={userSectionRef} style={{ marginTop: 32, borderTop: '1px solid var(--line)', paddingTop: 24 }}>
               <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 16 }}>
@@ -201,6 +208,20 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
         </nav>
       )}
     </header>
+    {!galerieUser && createPortal(
+      <div className="nav-links" style={{ position: 'fixed', top: 0, right: 'var(--gutter)', zIndex: 101, alignItems: 'center', height: 64 }}>
+        <Link to="/galerie" style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
+          textTransform: 'uppercase',
+          color: menuOpen ? 'var(--fg)' : tone,
+          padding: '8px 0', textDecoration: 'none',
+        }}>
+          {lang === 'FR' ? 'Connexion' : 'Login'}
+        </Link>
+      </div>,
+      document.body
+    )}
     {galerieUser && createPortal(
       <div ref={userMenuRef} className="nav-links" style={{ position: 'fixed', top: 0, right: 'var(--gutter)', zIndex: 101, alignItems: 'center', height: 64 }}>
         <button
