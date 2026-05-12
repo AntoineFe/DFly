@@ -981,7 +981,7 @@ export default function DevisFunnel({ lang = "FR" }) {
       price:   ttc + (travel?.cost || 0),
       state:   { ...state },
     }]);
-    setState({ ...INIT, dates: state.dates, lieux: state.lieux, moments: state.moments });
+    setState({ ...INIT, dates: state.dates, lieux: state.lieux, moments: state.moments, format: state.format, teaser: state.teaser, integral: state.integral, drone: state.drone });
     setStep(0);
   }
 
