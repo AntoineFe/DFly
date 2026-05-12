@@ -6,10 +6,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit(json_encode(["ok" => false]));
 }
 
-$config_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/smtp-config.php';
+$config_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-smtp-config.php';
 if (!file_exists($config_path)) {
     http_response_code(500);
-    exit(json_encode(["ok" => false, "error" => "smtp-config.php introuvable"]));
+    exit(json_encode(["ok" => false, "error" => "dfly-smtp-config.php introuvable"]));
 }
 $smtp = require $config_path;
 

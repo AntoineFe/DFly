@@ -3,10 +3,10 @@
 // Usage : require 'galerie-auth.php'; -> $session disponible
 
 function galerie_db() {
-    $cfg_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/db-config.php';
+    $cfg_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-db-config.php';
     if (!file_exists($cfg_path)) {
         http_response_code(500);
-        exit(json_encode(['ok' => false, 'error' => 'db-config.php introuvable']));
+        exit(json_encode(['ok' => false, 'error' => 'dfly-db-config.php introuvable']));
     }
     $cfg  = require $cfg_path;
     $link = @mysqli_connect($cfg['host'], $cfg['user'], $cfg['pass'], $cfg['dbname'], $cfg['port']);

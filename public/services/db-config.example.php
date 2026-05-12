@@ -1,8 +1,8 @@
 <?php
-// Copier ce fichier en db-config.php UN NIVEAU AU-DESSUS du web root
-// Ex : /home/alphoxfr/db-config.php   (serveur test alphox.fr)
-//      /home/dflyfr/db-config.php      (serveur prod dfly.fr)
-// Ne jamais committer db-config.php dans le repo.
+// Copier ce fichier en dfly-db-config.php UN NIVEAU AU-DESSUS du web root
+// Ex : /home/alphoxfr/dfly-db-config.php   (serveur test alphox.fr)
+//      /home/dflyfr/dfly-db-config.php      (serveur prod dfly.fr)
+// Ne jamais committer dfly-db-config.php dans le repo.
 
 // ── Détection automatique de l'environnement ──────────────────────────────────
 // Reproduit la logique de mbInitEnv.php : on lit le chemin du répertoire courant

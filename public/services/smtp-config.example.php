@@ -1,7 +1,7 @@
 <?php
-// Copier ce fichier en smtp-config.php UN NIVEAU AU-DESSUS du web root
-// Ex : /home/user/smtp-config.php  (jamais dans public_html/)
-// Ne jamais committer smtp-config.php dans le repo.
+// Copier ce fichier en dfly-smtp-config.php UN NIVEAU AU-DESSUS du web root
+// Ex : /home/user/dfly-smtp-config.php  (jamais dans public_html/)
+// Ne jamais committer dfly-smtp-config.php dans le repo.
 
 return [
     'host' => 'mail.dfly.fr',
