@@ -74,12 +74,6 @@ export default function Contact({ lang, setLang }) {
 
             {/* Colonne gauche — infos */}
             <div>
-              <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.75, fontWeight: 300, color: 'var(--fg-muted)', marginBottom: 48, maxWidth: 380 }}>
-                {t(
-                  'Une question, un projet, une envie — écrivez-nous. Nous vous répondons sous 48 heures.',
-                  "A question, a project, an idea — write to us. We'll get back to you within 48 hours."
-                )}
-              </p>
 
               {/* Bloc mariage → funnel */}
               <Link to="/mariage#devis" style={{
@@ -97,6 +91,15 @@ export default function Contact({ lang, setLang }) {
                   )}
                 </div>
               </Link>
+
+
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.75, fontWeight: 300, color: 'var(--fg-muted)', marginBottom: 48, maxWidth: 380 }}>
+                {t(
+                  'Une question, un projet, une envie — écrivez-nous. Nous vous répondons sous 48 heures.',
+                  "A question, a project, an idea — write to us. We'll get back to you within 48 hours."
+                )}
+              </p>
+
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
                 <div>
