@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
 
@@ -539,7 +539,13 @@ export default function GalerieAdmin() {
   const [selectedEnt, setSelectedEnt] = useState(null)
   const [entUsers, setEntUsers] = useState([])
   const [copiedId, setCopiedId] = useState(null)
-  const [activeTab, setActiveTab] = useState('galerie')
+  const location = useLocation()
+  const [activeTab, setActiveTab] = useState(() => location.hash === '#logs' ? 'logs' : 'galerie')
+
+  function switchTab(key) {
+    setActiveTab(key)
+    navigate(`#${key}`, { replace: true })
+  }
 
   useEffect(() => {
     if (!hasAuth('admin', 'R')) {
@@ -598,7 +604,7 @@ export default function GalerieAdmin() {
         {/* Onglets */}
         <div style={{ display: 'flex', gap: 0, marginBottom: 40, borderBottom: '1px solid var(--line)' }}>
           {[['galerie', 'Galerie'], ['logs', 'Logs de navigation']].map(([key, label]) => (
-            <button key={key} onClick={() => setActiveTab(key)} style={{
+            <button key={key} onClick={() => switchTab(key)} style={{
               background: 'none', border: 'none', borderBottom: activeTab === key ? '2px solid var(--fg)' : '2px solid transparent',
               padding: '10px 20px 10px 0', marginBottom: -1,
               fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.28em',
