@@ -32,6 +32,6 @@ function parse_log_file($path) {
 $lines = array_merge(parse_log_file($log_file), parse_log_file($old_file));
 
 // Sort by timestamp descending
-usort($lines, fn($a, $b) => strcmp($b['ts'], $a['ts']));
+usort($lines, function($a, $b) { return strcmp($b['ts'], $a['ts']); });
 
 echo json_encode(['ok' => true, 'lines' => array_values($lines)]);
