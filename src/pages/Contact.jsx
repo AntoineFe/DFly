@@ -88,12 +88,12 @@ export default function Contact({ lang, setLang }) {
                 textDecoration: 'none',
               }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 8 }}>
-                  {t('Projet mariage', 'Wedding project')}
+                  {t('Un Projet de mariage ?', 'Wedding project')}
                 </div>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 16, fontWeight: 300, color: 'var(--fg)', lineHeight: 1.5 }}>
                   {t(
-                    <>Vous préparez un mariage ? Estimez votre projet en quelques minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>,
-                    <>Planning a wedding? Get an estimate in a few minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>
+                    <>Estimez votre projet en quelques minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>,
+                    <>Get an estimate in a few minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>
                   )}
                 </div>
               </Link>
