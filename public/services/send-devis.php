@@ -230,7 +230,7 @@ $body .= $T['studio'] . "\n";
 $body .= "https://dfly.fr\n";
 
 // ── Email client (identique à avant, avec CC) ─────────────────────────────────
-$result = smtp_send($smtp, $to, $body, $subject, $cfg['cc']);
+$result = smtp_send($smtp, $to, $body, $subject, $smtp['cc']);
 if (!$result['ok']) {
     echo json_encode($result);
     exit;
@@ -311,7 +311,7 @@ if ($demandes) {
 }
 
 $isubject = "Devis interne — {$prenom} {$nom}";
-smtp_send($smtp, $cfg['cc'], $ibody, $isubject);
+smtp_send($smtp, $smtp['cc'], $ibody, $isubject);
 
 echo json_encode(['ok' => true]);
 
