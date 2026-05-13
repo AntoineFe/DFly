@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
@@ -79,6 +80,23 @@ export default function Contact({ lang, setLang }) {
                   "A question, a project, an idea — write to us. We'll get back to you within 48 hours."
                 )}
               </p>
+
+              {/* Bloc mariage → funnel */}
+              <Link to="/mariage#devis" style={{
+                display: 'block', marginBottom: 40, padding: '18px 20px',
+                borderLeft: '2px solid var(--fg)', background: 'var(--bg-alt)',
+                textDecoration: 'none',
+              }}>
+                <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 8 }}>
+                  {t('Projet mariage', 'Wedding project')}
+                </div>
+                <div style={{ fontFamily: 'var(--serif)', fontSize: 16, fontWeight: 300, color: 'var(--fg)', lineHeight: 1.5 }}>
+                  {t(
+                    <>Vous préparez un mariage ? Estimez votre projet en quelques minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>,
+                    <>Planning a wedding? Get an estimate in a few minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>
+                  )}
+                </div>
+              </Link>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
                 <div>

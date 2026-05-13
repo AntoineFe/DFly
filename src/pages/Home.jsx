@@ -10,6 +10,7 @@ const BASE = import.meta.env.BASE_URL
 
 const IMG = {
   hero:        `${BASE}images/mariage/mariage-preparation-mariee-nice.jpg`,
+  wedding1:    `${BASE}images/mariage-couple-portrait-cote-dazur.jpeg`,
   wedding2:    `${BASE}images/mariage-alliances-bouquet-nice.jpeg`,
   realestate1: `${BASE}images/immobilier-facade-residence-paca.jpeg`,
   realestate2: `${BASE}images/immobilier-immeuble-neuf-cote-dazur.jpeg`,
