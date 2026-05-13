@@ -18,9 +18,11 @@ if ($ent === '') {
 }
 
 $entEsc = mysqli_real_escape_string($link, $ent);
-$sql = "SELECT HU.id, HU.firstName, HU.lastName, HU.email, HU.cle
+$sql = "SELECT DISTINCT HU.id, HU.firstName, HU.lastName, HU.email, HU.cle
         FROM HabilUsers HU
-        INNER JOIN Entreprise E ON E.id = HU.idEnt
+        INNER JOIN HabilProfilUser HPU ON HPU.idUser = HU.id
+        INNER JOIN HabilProfil HP ON HP.id = HPU.idProfil
+        INNER JOIN Entreprise E ON E.id = HP.idEnt
         WHERE E.shortDesc = '$entEsc'
         ORDER BY HU.lastName, HU.firstName";
 
