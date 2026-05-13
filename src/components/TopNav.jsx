@@ -202,6 +202,11 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
               <Link to="/galerie/albums" style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', borderBottom: '1px solid var(--line)' }}>
                 Ma galerie
               </Link>
+              {galerieUser.auths?.admin && (
+                <Link to="/galerie/admin" onClick={() => setMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', borderBottom: '1px solid var(--line)' }}>
+                  Administration
+                </Link>
+              )}
               <button onClick={() => { setMenuOpen(false); setShowPwdModal(true) }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', borderBottom: '1px solid var(--line)', fontFamily: 'var(--sans)', fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '12px 0', cursor: 'pointer' }}>
                 Changer mon mot de passe
               </button>
@@ -250,6 +255,11 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             <Link to="/galerie/albums" onClick={() => setUserMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px' }}>
               Ma galerie
             </Link>
+            {galerieUser.auths?.admin && (
+              <Link to="/galerie/admin" onClick={() => setUserMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px' }}>
+                Administration
+              </Link>
+            )}
             <button onClick={() => { setUserMenuOpen(false); setShowPwdModal(true) }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
               Changer mon mot de passe
             </button>
