@@ -472,16 +472,36 @@ export default function GalerieAlbums() {
   }
 
   // ── Sélection entreprise ──────────────────────────────────────────────────
+  const [entSearch, setEntSearch] = useState('')
+
   if (multiEnt && !selectedEnt) {
+    const q = entSearch.trim().toLowerCase()
+    const filteredEnts = q
+      ? user.ents.filter(e => e.raiSoc.toLowerCase().includes(q) || e.shortDesc.toLowerCase().includes(q))
+      : user.ents
+
     return (
       <div style={{ minHeight: '100vh', padding: '0 var(--gutter) 80px', background: 'var(--bg)' }}>
         <div style={{ maxWidth: 600, margin: '0 auto' }}>
           <Header user={user} onLogout={() => { logout(); navigate('/') }} changePassword={changePassword} />
-          <h2 style={{ fontFamily: 'var(--serif-display)', fontWeight: 400, fontSize: 32, marginBottom: 40 }}>
+          <h2 style={{ fontFamily: 'var(--serif-display)', fontWeight: 400, fontSize: 32, marginBottom: 24 }}>
             Choisir un client
           </h2>
+          <input
+            type="search"
+            placeholder="Rechercher…"
+            value={entSearch}
+            onChange={e => setEntSearch(e.target.value)}
+            autoFocus
+            style={{
+              width: '100%', padding: '10px 14px', marginBottom: 32,
+              border: '1px solid var(--line)', background: 'var(--bg)',
+              color: 'var(--fg)', fontSize: 15, fontFamily: 'var(--sans)',
+              boxSizing: 'border-box', outline: 'none',
+            }}
+          />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {user.ents.map(e => (
+            {filteredEnts.map(e => (
               <button key={e.id} onClick={() => setSelectedEnt(e.shortDesc)} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 padding: '20px 0',
@@ -496,6 +516,11 @@ export default function GalerieAlbums() {
                 <span style={{ color: 'var(--fg-muted)', fontSize: 20 }}>→</span>
               </button>
             ))}
+            {filteredEnts.length === 0 && (
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--fg-muted)', padding: '20px 0' }}>
+                Aucun résultat
+              </div>
+            )}
           </div>
         </div>
       </div>
