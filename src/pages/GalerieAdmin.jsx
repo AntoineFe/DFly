@@ -335,13 +335,19 @@ function ActionBtn({ onClick, active, title, children }) {
 
 const PER_PAGE = 25
 
+const EXCLUDED_IPS_KEY = 'dfly_logs_excluded_ips'
+
 function LogsViewer({ authFetch }) {
-  const [lines,      setLines]      = useState([])
-  const [loading,    setLoading]    = useState(true)
-  const [error,      setError]      = useState(null)
-  const [filterName, setFilterName] = useState('')
-  const [filterDate, setFilterDate] = useState('')
-  const [page,       setPage]       = useState(1)
+  const [lines,       setLines]       = useState([])
+  const [loading,     setLoading]     = useState(true)
+  const [error,       setError]       = useState(null)
+  const [filterName,  setFilterName]  = useState('')
+  const [filterDate,  setFilterDate]  = useState('')
+  const [page,        setPage]        = useState(1)
+  const [excludedIps, setExcludedIps] = useState(
+    () => JSON.parse(localStorage.getItem(EXCLUDED_IPS_KEY) || '[]')
+  )
+  const [ctxMenu, setCtxMenu] = useState(null) // { x, y, ip }
 
   useEffect(() => {
     setLoading(true)
@@ -356,9 +362,32 @@ function LogsViewer({ authFetch }) {
       .finally(() => setLoading(false))
   }, [authFetch])
 
-  useEffect(() => setPage(1), [filterName, filterDate])
+  useEffect(() => setPage(1), [filterName, filterDate, excludedIps])
+
+  // Fermer le menu contextuel au clic ailleurs
+  useEffect(() => {
+    if (!ctxMenu) return
+    const close = () => setCtxMenu(null)
+    window.addEventListener('click', close)
+    window.addEventListener('scroll', close)
+    return () => { window.removeEventListener('click', close); window.removeEventListener('scroll', close) }
+  }, [ctxMenu])
+
+  function excludeIp(ip) {
+    const next = [...new Set([...excludedIps, ip])]
+    setExcludedIps(next)
+    localStorage.setItem(EXCLUDED_IPS_KEY, JSON.stringify(next))
+    setCtxMenu(null)
+  }
+
+  function restoreIp(ip) {
+    const next = excludedIps.filter(x => x !== ip)
+    setExcludedIps(next)
+    localStorage.setItem(EXCLUDED_IPS_KEY, JSON.stringify(next))
+  }
 
   const filtered = lines.filter(l => {
+    if (excludedIps.includes(l.ip)) return false
     const matchName = !filterName || l.user.toLowerCase().includes(filterName.toLowerCase())
     const matchDate = !filterDate || l.ts.startsWith(filterDate)
     return matchName && matchDate
@@ -393,6 +422,25 @@ function LogsViewer({ authFetch }) {
 
   return (
     <div>
+      {/* IPs exclues */}
+      {excludedIps.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 16, alignItems: 'center' }}>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.24em',
+            textTransform: 'uppercase', color: 'var(--fg-muted)' }}>IPs masquées :</span>
+          {excludedIps.map(ip => (
+            <span key={ip} style={{ display: 'inline-flex', alignItems: 'center', gap: 6,
+              fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)',
+              border: '1px solid var(--line)', padding: '3px 10px' }}>
+              {ip}
+              <button onClick={() => restoreIp(ip)} title="Rétablir" style={{
+                background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+                color: 'var(--fg-muted)', fontSize: 14, lineHeight: 1,
+              }}>×</button>
+            </span>
+          ))}
+        </div>
+      )}
+
       {/* Filtres */}
       <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
         <input style={inputStyle} placeholder="Filtrer par nom…"
@@ -428,8 +476,12 @@ function LogsViewer({ authFetch }) {
               color: 'var(--fg)' }}>{l.user}</div>
             <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
               color: 'var(--fg)', wordBreak: 'break-all' }}>{l.url}</div>
-            <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
-              color: 'var(--fg-muted)' }}>{l.ip}</div>
+            <div
+              onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, ip: l.ip }) }}
+              style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
+                color: 'var(--fg-muted)', cursor: 'context-menu', userSelect: 'none' }}>
+              {l.ip}
+            </div>
           </div>
         ))}
       </div>
@@ -444,6 +496,34 @@ function LogsViewer({ authFetch }) {
           </span>
           <button style={btnStyle} disabled={currentPage === totalPages}
             onClick={() => setPage(p => Math.min(totalPages, p + 1))}>Suivant ›</button>
+        </div>
+      )}
+
+      {/* Menu contextuel */}
+      {ctxMenu && (
+        <div onClick={e => e.stopPropagation()} style={{
+          position: 'fixed', top: ctxMenu.y, left: ctxMenu.x, zIndex: 1000,
+          background: 'var(--bg)', border: '1px solid var(--line)',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.12)', minWidth: 180,
+        }}>
+          <div style={{ padding: '6px 0' }}>
+            <div style={{ padding: '4px 14px 8px', fontFamily: 'var(--sans)', fontSize: 10,
+              letterSpacing: '0.24em', textTransform: 'uppercase', color: 'var(--fg-muted)',
+              borderBottom: '1px solid var(--line)', marginBottom: 4 }}>
+              {ctxMenu.ip}
+            </div>
+            <button onClick={() => excludeIp(ctxMenu.ip)} style={{
+              display: 'block', width: '100%', textAlign: 'left',
+              background: 'none', border: 'none', padding: '8px 14px',
+              fontFamily: 'var(--sans)', fontSize: 12, cursor: 'pointer',
+              color: 'var(--fg)', letterSpacing: '0.04em',
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-alt)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'none'}
+            >
+              Masquer cette IP
+            </button>
+          </div>
         </div>
       )}
     </div>
