@@ -92,7 +92,7 @@ export default function Contact({ lang, setLang }) {
                 </div>
                 <div style={{ fontFamily: 'var(--serif)', fontSize: 16, fontWeight: 300, color: 'var(--fg)', lineHeight: 1.5 }}>
                   {t(
-                    <>Estimez votre projet en quelques minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>,
+                    <>Obtenez une estimation en quelques minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>,
                     <>Get an estimate in a few minutes <span style={{ fontFamily: 'var(--sans)', fontSize: 13 }}>→</span></>
                   )}
                 </div>
