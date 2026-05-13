@@ -348,6 +348,12 @@ function LogsViewer({ authFetch }) {
     () => JSON.parse(localStorage.getItem(EXCLUDED_IPS_KEY) || '[]')
   )
   const [ctxMenu, setCtxMenu] = useState(null) // { x, y, ip }
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640)
+  useEffect(() => {
+    const fn = () => setIsMobile(window.innerWidth < 640)
+    window.addEventListener('resize', fn)
+    return () => window.removeEventListener('resize', fn)
+  }, [])
 
   useEffect(() => {
     setLoading(true)
@@ -454,10 +460,12 @@ function LogsViewer({ authFetch }) {
 
       {/* Tableau */}
       <div style={{ border: '1px solid var(--line)', overflowX: 'auto' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '160px 180px 1fr 140px',
+        <div style={{ display: 'grid',
+          gridTemplateColumns: isMobile ? '52px 1fr 92px' : '160px 180px 1fr 140px',
           background: 'var(--bg-alt)', borderBottom: '1px solid var(--line)' }}>
-          {['Date / heure', 'Utilisateur', 'URL', 'IP'].map(h => (
-            <div key={h} style={{ padding: '10px 14px', fontFamily: 'var(--sans)', fontSize: 10,
+          {(isMobile ? ['Heure', 'URL', 'IP'] : ['Date / heure', 'Utilisateur', 'URL', 'IP']).map(h => (
+            <div key={h} style={{ padding: isMobile ? '7px 8px' : '10px 14px',
+              fontFamily: 'var(--sans)', fontSize: 10,
               letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
               {h}
             </div>
@@ -467,18 +475,26 @@ function LogsViewer({ authFetch }) {
           <div style={{ padding: '32px 14px', textAlign: 'center', color: 'var(--fg-muted)',
             fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Aucune entrée</div>
         ) : visible.map((l, i) => (
-          <div key={i} style={{ display: 'grid', gridTemplateColumns: '160px 180px 1fr 140px',
+          <div key={i} style={{ display: 'grid',
+            gridTemplateColumns: isMobile ? '52px 1fr 92px' : '160px 180px 1fr 140px',
             borderBottom: '1px solid var(--line)',
             background: i % 2 === 0 ? 'var(--bg)' : 'var(--bg-alt)' }}>
-            <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
-              color: 'var(--fg-muted)' }}>{l.ts}</div>
-            <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
-              color: 'var(--fg)' }}>{l.user}</div>
-            <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
+            <div style={{ padding: isMobile ? '5px 8px' : '9px 14px',
+              fontFamily: 'var(--sans)', fontSize: isMobile ? 11 : 12,
+              color: 'var(--fg-muted)' }}>
+              {isMobile ? l.ts.slice(11, 16) : l.ts}
+            </div>
+            {!isMobile && (
+              <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
+                color: 'var(--fg)' }}>{l.user}</div>
+            )}
+            <div style={{ padding: isMobile ? '5px 8px' : '9px 14px',
+              fontFamily: 'var(--sans)', fontSize: isMobile ? 11 : 12,
               color: 'var(--fg)', wordBreak: 'break-all' }}>{l.url}</div>
             <div
               onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, ip: l.ip }) }}
-              style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
+              style={{ padding: isMobile ? '5px 8px' : '9px 14px',
+                fontFamily: 'var(--sans)', fontSize: isMobile ? 11 : 12,
                 color: 'var(--fg-muted)', cursor: 'context-menu', userSelect: 'none' }}>
               {l.ip}
             </div>
