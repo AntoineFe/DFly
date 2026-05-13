@@ -4,6 +4,7 @@ import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
 import usePageMeta from '../hooks/usePageMeta'
+import { logEvent } from '../utils/logEvent'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -76,7 +77,7 @@ export default function Contact({ lang, setLang }) {
             <div>
 
               {/* Bloc mariage → funnel */}
-              <Link to="/mariage#devis" style={{
+              <Link to="/mariage#devis" onClick={() => logEvent('Estimer mon projet', '/contact')} style={{
                 display: 'block', marginBottom: 40, padding: '18px 20px',
                 borderLeft: '2px solid var(--fg)', background: 'var(--bg-alt)',
                 textDecoration: 'none',
