@@ -51,9 +51,9 @@ $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '?';
 $ip = trim(explode(',', $ip)[0]);
 
 // Log directory (one or two levels above DOCUMENT_ROOT, same pattern as db config)
-$log_dir = dirname($_SERVER['DOCUMENT_ROOT']) . '/logs';
+$log_dir = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly_logs';
 if (!is_dir($log_dir)) {
-    $log_dir = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/logs';
+    $log_dir = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly_logs';
 }
 if (!is_dir($log_dir)) {
     @mkdir($log_dir, 0755, true);
