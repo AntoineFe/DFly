@@ -229,12 +229,94 @@ $body .= "Antoine & Rémi\n";
 $body .= $T['studio'] . "\n";
 $body .= "https://dfly.fr\n";
 
-// ── Envoi SMTP (SSL port 465) ─────────────────────────────────────────────────
-$result = smtp_send($smtp, $to, $body, $subject);
-echo json_encode($result);
+// ── Email client (identique à avant, avec CC) ─────────────────────────────────
+$result = smtp_send($smtp, $to, $body, $subject, $cfg['cc']);
+if (!$result['ok']) {
+    echo json_encode($result);
+    exit;
+}
+
+// ── Email interne — détail du calcul ──────────────────────────────────────────
+$fmt2 = function($v) { return number_format((int)round((float)$v), 0, ',', ' ') . ' €'; };
+$intentionLabel = $T['intention'][$intentionKey] ?? $intentionKey;
+
+$ibody  = "RÉCAPITULATIF INTERNE — Demande de devis\n";
+$ibody .= str_repeat("=", 50) . "\n\n";
+$ibody .= "Client    : {$prenom} {$nom}\n";
+$ibody .= "Email     : {$to}\n";
+if ($tel) $ibody .= "Téléphone : {$tel}\n";
+if ($intentionLabel) $ibody .= "Intention : {$intentionLabel}\n";
+$ibody .= "\n";
+
+foreach ($sims as $i => $sim) {
+    $simFormat  = $sim['format']  ?? '';
+    $simMoments = $sim['moments'] ?? '';
+    $simTravel  = $sim['travel']  ?? null;
+    $d          = $sim['detail']  ?? null;
+    $n          = count($sims) > 1 ? ' ' . ($i + 1) : '';
+
+    $ibody .= str_repeat("-", 50) . "\n";
+    $ibody .= "SIMULATION{$n}" . ($simFormat ? " · {$simFormat}" : "") . "\n";
+    $ibody .= str_repeat("-", 50) . "\n\n";
+    if ($simMoments) $ibody .= "Moments : {$simMoments}\n\n";
+
+    if ($d) {
+        $hasVideo = !empty($d['hasVideo']);
+        $hasPhoto = !empty($d['hasPhoto']);
+
+        $ibody .= "ANTOINE (SASU — TVA 20%)\n";
+        $ibody .= "  Captation 50%     : " . $fmt2($d['antCapHT'])    . " HT\n";
+        if ($hasVideo)
+            $ibody .= "  PP Vidéo 50%      : " . $fmt2($d['antPPVideoHT']) . " HT\n";
+        $ibody .= "  ──────────────────────────────────────\n";
+        $ibody .= "  Sous-total HT     : " . $fmt2($d['antoineHT'])   . " HT\n";
+        $ibody .= "  TVA 20%           : " . $fmt2($d['antoineTVA'])  . "\n";
+        $ibody .= "  Total TTC Antoine : " . $fmt2($d['antoineTTC'])  . " TTC\n\n";
+
+        $ibody .= "RÉMI (Micro-entreprise — sans TVA)\n";
+        $ibody .= "  Captation 50%     : " . $fmt2($d['remiCapHT']) . " HT\n";
+        if ($hasVideo)
+            $ibody .= "  PP Vidéo 50%      : " . $fmt2($d['remiPPVideoHT']) . " HT\n";
+        if ($hasPhoto)
+            $ibody .= "  PP Photo 100%     : " . $fmt2($d['remiPPPhotoHT']) . " HT\n";
+        $ibody .= "  ──────────────────────────────────────\n";
+        $ibody .= "  Prestations HT    : " . $fmt2($d['remiBaseHT']) . "\n";
+
+        $opts = $d['opts'] ?? [];
+        if (!empty($opts)) {
+            if (!empty($opts['teaser']))   $ibody .= "  + Teaser          : " . $fmt2($opts['teaser'])   . "\n";
+            if (!empty($opts['integral'])) $ibody .= "  + Intégral        : " . $fmt2($opts['integral']) . "\n";
+            if (!empty($opts['drone']))    $ibody .= "  + Drone           : " . $fmt2($opts['drone'])    . "\n";
+            if (!empty($opts['brunch']))   $ibody .= "  + Brunch          : " . $fmt2($opts['brunch'])   . "\n";
+        }
+        $ibody .= "  Total Rémi        : " . $fmt2($d['remiTTC']) . "\n\n";
+    }
+
+    $simPrice = (float)($sim['price'] ?? 0);
+    $ibody .= "  TOTAL ESTIMÉ TTC  : " . $fmt2($simPrice) . "\n";
+    if ($simTravel && !empty($simTravel['km']) && (int)$simTravel['km'] > 0) {
+        $km    = (int)$simTravel['km'];
+        $ibody .= "  Déplacement       : {$km} km A/R → " . $fmt2($simTravel['cost']) . " + péages\n";
+        $total = $simPrice + (float)($simTravel['cost'] ?? 0);
+        $ibody .= "  TOTAL GLOBAL      : " . $fmt2($total) . "\n";
+    }
+    $ibody .= "\n";
+}
+
+if ($demandes) {
+    $ibody .= str_repeat("-", 50) . "\n";
+    $ibody .= "DEMANDES PARTICULIÈRES\n";
+    $ibody .= str_repeat("-", 50) . "\n\n";
+    $ibody .= htmlspecialchars($demandes, ENT_QUOTES) . "\n\n";
+}
+
+$isubject = "Devis interne — {$prenom} {$nom}";
+smtp_send($smtp, $cfg['cc'], $ibody, $isubject);
+
+echo json_encode(['ok' => true]);
 
 // ── Fonction SMTP ─────────────────────────────────────────────────────────────
-function smtp_send(array $cfg, string $to, string $body, string $subject): array {
+function smtp_send(array $cfg, string $to, string $body, string $subject, string $cc = ''): array {
     $ctx = stream_context_create([
         'ssl' => [
             'verify_peer'      => true,
@@ -286,13 +368,13 @@ function smtp_send(array $cfg, string $to, string $body, string $subject): array
 
     $cmd("MAIL FROM:<{$cfg['from']}>");
     $cmd("RCPT TO:<{$to}>");
-    $cmd("RCPT TO:<{$cfg['cc']}>");
+    if ($cc) $cmd("RCPT TO:<{$cc}>");
     $cmd("DATA");
 
     $enc_subject = "=?UTF-8?B?" . base64_encode($subject) . "?=";
     $message  = "From: DFly <{$cfg['from']}>\r\n";
     $message .= "To: {$to}\r\n";
-    $message .= "Cc: {$cfg['cc']}\r\n";
+    if ($cc) $message .= "Cc: {$cc}\r\n";
     $message .= "Subject: {$enc_subject}\r\n";
     $message .= "MIME-Version: 1.0\r\n";
     $message .= "Content-Type: text/plain; charset=UTF-8\r\n";

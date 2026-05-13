@@ -91,33 +91,49 @@ function calcPrice(state) {
   const hasPhoto = state.format !== "video";
 
   // Antoine (SASU, TVA 20%) : moitié captation + moitié post-production vidéo
-  let antoineHT = 0;
+  let antCapHT = 0, antPPVideoHT = 0;
   if (activeH > 0) {
-    antoineHT += captationHT(activeH) * 0.5;
-    if (hasVideo) antoineHT += activeH * (PP_VIDEO_HT / FULL_DAY_H) * 0.5;
+    antCapHT = captationHT(activeH) * 0.5;
+    if (hasVideo) antPPVideoHT = activeH * (PP_VIDEO_HT / FULL_DAY_H) * 0.5;
   }
+  const antoineHT = antCapHT + antPPVideoHT;
 
-  // Rémi (micro-entreprise, sans TVA) : moitié captation + moitié PP vidéo + PP photo + options
-  let remiHT = 0;
+  // Rémi (micro-entreprise, sans TVA) : moitié captation + moitié PP vidéo + PP photo
+  let remiCapHT = 0, remiPPVideoHT = 0, remiPPPhotoHT = 0;
   if (activeH > 0) {
-    remiHT += captationHT(activeH) * 0.5;
-    if (hasVideo) remiHT += activeH * (PP_VIDEO_HT / FULL_DAY_H) * 0.5;
-    if (hasPhoto) remiHT += activeH * (PP_PHOTO_HT / FULL_DAY_H);
+    remiCapHT = captationHT(activeH) * 0.5;
+    if (hasVideo) remiPPVideoHT = activeH * (PP_VIDEO_HT / FULL_DAY_H) * 0.5;
+    if (hasPhoto) remiPPPhotoHT = activeH * (PP_PHOTO_HT / FULL_DAY_H);
   }
+  const remiBaseHT = remiCapHT + remiPPVideoHT + remiPPPhotoHT;
 
   // Options à la charge de Rémi (micro, sans TVA — les montants sont déjà TTC)
+  const opts = {};
   let optionsTTC = 0;
   if (hasVideo) {
-    if (state.teaser)   optionsTTC += TEASER_TTC;
-    if (state.integral) optionsTTC += INTEGRAL_TTC;
+    if (state.teaser)   { optionsTTC += TEASER_TTC;   opts.teaser   = TEASER_TTC; }
+    if (state.integral) { optionsTTC += INTEGRAL_TTC; opts.integral = INTEGRAL_TTC; }
   }
-  if (state.drone)           optionsTTC += DRONE_TTC;
-  if (state.extras?.brunch) optionsTTC += BRUNCH_TTC;
+  if (state.drone)           { optionsTTC += DRONE_TTC;  opts.drone  = DRONE_TTC; }
+  if (state.extras?.brunch) { optionsTTC += BRUNCH_TTC; opts.brunch = BRUNCH_TTC; }
 
-  const tva = antoineHT * 0.2;
-  const ttc = Math.round((antoineHT * 1.2 + remiHT + optionsTTC) / 10) * 10;
+  const antoineTVA = antoineHT * 0.2;
+  const antoineTTC = antoineHT * 1.2;
+  const remiTTC    = remiBaseHT + optionsTTC;
+  const ttc = Math.round((antoineTTC + remiTTC) / 10) * 10;
 
-  return { h: displayH, ttc, tva: Math.round(tva) };
+  return {
+    h: displayH,
+    ttc,
+    tva: Math.round(antoineTVA),
+    detail: {
+      activeH,
+      antCapHT, antPPVideoHT, antoineHT, antoineTVA, antoineTTC,
+      remiCapHT, remiPPVideoHT, remiPPPhotoHT, remiBaseHT,
+      optionsTTC, opts, remiTTC,
+      hasVideo, hasPhoto,
+    },
+  };
 }
 
 // ── Geocoding + routing ───────────────────────────────────────────────────────
@@ -784,12 +800,25 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
     setSending(true);
     setError("");
 
-    const allSimsEmail = [...simulations, {
-      format:  formatLabel(state, lang),
-      moments: momentsSummary(state.moments, lang),
-      price:   calcPrice(state).ttc,
-      travel,
-    }];
+    const currentCalc = calcPrice(state);
+    const allSimsEmail = [
+      ...simulations.map(function(sim) {
+        return {
+          format:  sim.format,
+          moments: sim.moments,
+          price:   sim.price,
+          travel:  null,
+          detail:  calcPrice(sim.state).detail,
+        };
+      }),
+      {
+        format:  formatLabel(state, lang),
+        moments: momentsSummary(state.moments, lang),
+        price:   currentCalc.ttc,
+        travel,
+        detail:  currentCalc.detail,
+      },
+    ];
 
     const payload = {
       prenom:      state.prenom,
