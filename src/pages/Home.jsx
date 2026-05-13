@@ -9,8 +9,7 @@ import usePageMeta from '../hooks/usePageMeta'
 const BASE = import.meta.env.BASE_URL
 
 const IMG = {
-  hero:        'https://images.unsplash.com/photo-1519741497674-611481863552?w=2400&q=85',
-  wedding1:    `${BASE}images/mariage-couple-portrait-cote-dazur.jpeg`,
+  hero:        `${BASE}images/mariage/mariage-preparation-mariee-nice.jpg`,
   wedding2:    `${BASE}images/mariage-alliances-bouquet-nice.jpeg`,
   realestate1: `${BASE}images/immobilier-facade-residence-paca.jpeg`,
   realestate2: `${BASE}images/immobilier-immeuble-neuf-cote-dazur.jpeg`,
