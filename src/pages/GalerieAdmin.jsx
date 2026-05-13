@@ -417,23 +417,9 @@ export default function GalerieAdmin() {
           </div>
         )}
 
-        {/* Arbre */}
-        {selectedEnt && (
-          <div style={{ border: '1px solid var(--line)' }}>
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)',
-              background: 'var(--bg-alt)', fontFamily: 'var(--sans)', fontSize: 10,
-              letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
-              Galerie · {selectedEnt}
-            </div>
-            <div style={{ padding: '0 16px' }}>
-              <TreeNode ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => {}} />
-            </div>
-          </div>
-        )}
-
         {/* Utilisateurs du client sélectionné */}
         {selectedEnt && entUsers.length > 0 && (
-          <div style={{ border: '1px solid var(--line)', marginTop: 24 }}>
+          <div style={{ border: '1px solid var(--line)', marginBottom: 24 }}>
             <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)',
               background: 'var(--bg-alt)', fontFamily: 'var(--sans)', fontSize: 10,
               letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
@@ -469,6 +455,20 @@ export default function GalerieAdmin() {
                 </div>
               )
             })}
+          </div>
+        )}
+
+        {/* Arbre */}
+        {selectedEnt && (
+          <div style={{ border: '1px solid var(--line)' }}>
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)',
+              background: 'var(--bg-alt)', fontFamily: 'var(--sans)', fontSize: 10,
+              letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
+              Galerie · {selectedEnt}
+            </div>
+            <div style={{ padding: '0 16px' }}>
+              <TreeNode ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => {}} />
+            </div>
           </div>
         )}
 
