@@ -12,6 +12,7 @@ import GalerieLogin from './pages/GalerieLogin'
 import GalerieAlbums from './pages/GalerieAlbums'
 import GalerieAdmin from './pages/GalerieAdmin'
 import { GalerieAuthProvider, useGalerieAuth } from './context/GalerieAuth'
+import useImageProtection from './hooks/useImageProtection'
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
@@ -43,6 +44,7 @@ function GalerieRoutes() {
 
 export default function App() {
   const [lang, setLang] = useState('FR')
+  useImageProtection()
 
   return (
     <GalerieAuthProvider>

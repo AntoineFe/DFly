@@ -263,7 +263,7 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
                 <source src={f.url} />
               </video>
             ) : (
-              <img src={f.url} alt={f.name}
+              <img src={f.url} alt={f.name} className="no-protect"
                 ref={f === curFile ? curImgRef : null}
                 onMouseDown={f === curFile && isPanMode ? e => {
                   e.preventDefault()
@@ -577,7 +577,7 @@ export default function GalerieAlbums() {
                     }}>
                       <div style={{ aspectRatio: '4/3', width: '100%', overflow: 'hidden', background: 'var(--bg-alt)' }}>
                         {dir.cover
-                          ? <img src={dir.cover} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ? <img src={dir.cover} alt="" className="no-protect" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center',
                               justifyContent: 'center', opacity: 0.2, fontSize: 40 }}>📁</div>
                         }
@@ -616,7 +616,7 @@ export default function GalerieAlbums() {
                           <span style={{ fontSize: 40, opacity: 0.6 }}>▶</span>
                         </div>
                       ) : (
-                        <img src={file.thumbUrl} alt={file.name} loading="lazy"
+                        <img src={file.thumbUrl} alt={file.name} className="no-protect" loading="lazy"
                           style={{ width: '100%', height: '100%', objectFit: 'cover',
                             transition: 'transform .3s ease' }}
                           onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
