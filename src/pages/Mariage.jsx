@@ -176,9 +176,8 @@ function Mariage({ lang, setLang }) {
             </div>
           </div>
         </div>
+        <span className="wm-text" aria-hidden="true" style={{ zIndex: 3 }}>© DFly Photographie &amp; Vidéo</span>
       </section>
-
-      {/* INTRO MANIFESTO */}
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg)" }}>
         <div className="container">
           <div className="grid-manifesto">

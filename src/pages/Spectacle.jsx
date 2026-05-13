@@ -57,9 +57,8 @@ export default function Spectacle({ lang, setLang }) {
             )}
           </h1>
         </div>
+        <span className="wm-text" aria-hidden="true" style={{ zIndex: 3 }}>© DFly Photographie &amp; Vidéo</span>
       </section>
-
-      {/* Intro */}
       <section style={{ padding: 'var(--section-y) 0', background: 'var(--bg)' }}>
         <div className="container">
           <div className="grid-manifesto">
