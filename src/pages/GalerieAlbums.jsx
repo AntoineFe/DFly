@@ -513,7 +513,7 @@ export default function GalerieAlbums() {
         <nav style={{ marginBottom: 48, display: 'flex', alignItems: 'center', gap: 8,
           fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
           textTransform: 'uppercase', color: 'var(--fg-muted)', flexWrap: 'wrap' }}>
-          <button onClick={() => navigate('/galerie/albums')} style={crumbBtn}>
+          <button onClick={() => { setSelectedEnt(null); navigate('/galerie/albums') }} style={crumbBtn}>
             {multiEnt ? 'Clients' : 'Albums'}
           </button>
           {pathParam.split('/').filter(Boolean).map((part, i, arr) => (
