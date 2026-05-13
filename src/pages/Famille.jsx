@@ -110,9 +110,9 @@ export default function Famille({ lang, setLang }) {
         <div className="container">
           <SectionLabel num="II" label={t('Quelques images', 'A few images')} />
           <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-            <img src={IMG.img1} alt={t("Portrait de couple en studio à Nice — DFly photographie", "Couple portrait in studio Nice — DFly photography")} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-            <img src={IMG.img2} alt={t("Séance photo famille sur la plage Côte d'Azur", "Family photo session on the beach Côte d'Azur")} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-            <img src={IMG.img3} alt={t("Portrait de couple dans un jardin en Provence", "Couple portrait in a garden in Provence")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)', gridColumn: 'span 2' }} />
+            <div className="wm"><img src={IMG.img1} alt={t("Portrait de couple en studio à Nice — DFly photographie", "Couple portrait in studio Nice — DFly photography")} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
+            <div className="wm"><img src={IMG.img2} alt={t("Séance photo famille sur la plage Côte d'Azur", "Family photo session on the beach Côte d'Azur")} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
+            <div className="wm" style={{ gridColumn: 'span 2' }}><img src={IMG.img3} alt={t("Portrait de couple dans un jardin en Provence", "Couple portrait in a garden in Provence")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
           </div>
         </div>
       </section>

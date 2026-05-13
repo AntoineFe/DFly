@@ -226,7 +226,7 @@ export default function Home({ lang, setLang }) {
                 <span>DGAC certifié</span><span style={{ opacity: 0.4 }}>·</span><span>Assuré professionnel</span><span style={{ opacity: 0.4 }}>·</span><span>4K · 6K</span>
               </div>
             </div>
-            <div style={{ position: 'relative' }}>
+            <div className="wm" style={{ position: 'relative' }}>
               <img src={IMG.drone} alt={t("Vue aérienne par drone d'un domaine en PACA", "Aerial drone view of an estate in PACA")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.05)' }} />
               <div className="drone-label" style={{ position: 'absolute', bottom: -30, left: -30, background: 'var(--bg-deep)', padding: '20px 28px', borderTop: '1px solid rgba(243,237,226,0.18)', borderRight: '1px solid rgba(243,237,226,0.18)' }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', opacity: 0.6, marginBottom: 6 }}>Domaine</div>
@@ -270,7 +270,7 @@ export default function Home({ lang, setLang }) {
       <section style={{ background: 'var(--bg-alt)', padding: 'var(--section-y) 0' }}>
         <div className="container">
           <div className="grid-duo">
-            <div style={{ position: 'relative' }}>
+            <div className="wm" style={{ position: 'relative' }}>
               <img src={IMG.duo} alt={t("Couple de mariés sur un escalier à Nice — Antoine & Rémi DFly", "Married couple on stairs in Nice — Antoine & Rémi DFly")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
               <div style={{ position: 'absolute', top: 24, left: 24, fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--ivory)', fontWeight: 300, textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
                 Antoine & Rémi
@@ -380,7 +380,7 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
   )
 
   const visual = (
-    <div className="domain-visual" style={{ position: 'relative' }}>
+    <div className="domain-visual wm" style={{ position: 'relative' }}>
 		<Link to={href || '#'}>
 		  <img src={image} alt={alt} className="cine domain-img" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
 		  <img src={imageAlt} alt={altThumb} className={`cine domain-thumb${reverse ? ' domain-thumb-reverse' : ''}`} style={{ position: 'absolute', width: '55%', aspectRatio: '1/1', objectFit: 'cover', bottom: -50, [reverse ? 'left' : 'right']: -40, border: '8px solid var(--bg-alt)', filter: 'saturate(0.85) contrast(1.02)', zIndex: 2 }} />

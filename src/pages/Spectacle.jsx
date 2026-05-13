@@ -109,9 +109,9 @@ export default function Spectacle({ lang, setLang }) {
         <div className="container">
           <SectionLabel num="II" label={t('Quelques images', 'A few images')} />
           <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-            <img src={IMG.img1} alt={t("Spectacle de théâtre en plein air PACA — captation vidéo", "Outdoor theatre performance PACA — video capture")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-            <img src={IMG.img2} alt={t("Cérémonie de remise de diplômes en PACA — photographe événement", "Graduation ceremony PACA — event photographer")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-            <img src={IMG.img3} alt={t("Artiste chanteur sur scène en PACA — photographie spectacle", "Singer on stage PACA — concert photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)', gridColumn: 'span 2', objectPosition: 'center 40%' }} />
+            <div className="wm"><img src={IMG.img1} alt={t("Spectacle de théâtre en plein air PACA — captation vidéo", "Outdoor theatre performance PACA — video capture")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
+            <div className="wm"><img src={IMG.img2} alt={t("Cérémonie de remise de diplômes en PACA — photographe événement", "Graduation ceremony PACA — event photographer")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
+            <div className="wm" style={{ gridColumn: 'span 2' }}><img src={IMG.img3} alt={t("Artiste chanteur sur scène en PACA — photographie spectacle", "Singer on stage PACA — concert photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)', objectPosition: 'center 40%' }} /></div>
           </div>
         </div>
       </section>

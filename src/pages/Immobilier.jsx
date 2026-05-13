@@ -110,9 +110,9 @@ export default function Immobilier({ lang, setLang }) {
         <div className="container">
           <SectionLabel num="II" label={t('Quelques images', 'A few images')} />
           <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-            <img src={IMG.img1} alt={t("Immeuble neuf Côte d'Azur — photographie immobilière", "New building Côte d'Azur — real estate photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-            <img src={IMG.img2} alt={t("Salon intérieur villa en PACA — photographie immobilière", "Villa interior living room PACA — real estate photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-            <img src={IMG.drone} alt={t("Vue drone domaine viticole dans le Var — DFly", "Drone view over vineyard estate in the Var — DFly")} style={{ width: '100%', aspectRatio: '16/9', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)', gridColumn: 'span 2' }} />
+            <div className="wm"><img src={IMG.img1} alt={t("Immeuble neuf Côte d'Azur — photographie immobilière", "New building Côte d'Azur — real estate photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
+            <div className="wm"><img src={IMG.img2} alt={t("Salon intérieur villa en PACA — photographie immobilière", "Villa interior living room PACA — real estate photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
+            <div className="wm" style={{ gridColumn: 'span 2' }}><img src={IMG.drone} alt={t("Vue drone domaine viticole dans le Var — DFly", "Drone view over vineyard estate in the Var — DFly")} style={{ width: '100%', aspectRatio: '16/9', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
           </div>
         </div>
       </section>
