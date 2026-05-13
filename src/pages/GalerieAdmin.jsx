@@ -338,16 +338,21 @@ const PER_PAGE = 25
 function LogsViewer({ authFetch }) {
   const [lines,      setLines]      = useState([])
   const [loading,    setLoading]    = useState(true)
+  const [error,      setError]      = useState(null)
   const [filterName, setFilterName] = useState('')
   const [filterDate, setFilterDate] = useState('')
   const [page,       setPage]       = useState(1)
 
   useEffect(() => {
     setLoading(true)
+    setError(null)
     authFetch('galerie-logs-read.php')
       .then(r => r.json())
-      .then(d => { if (d.ok) setLines(d.lines) })
-      .catch(() => {})
+      .then(d => {
+        if (d.ok) setLines(d.lines)
+        else setError(d.error || 'Erreur inconnue')
+      })
+      .catch(e => setError(e.message || 'Erreur réseau'))
       .finally(() => setLoading(false))
   }, [authFetch])
 
@@ -377,6 +382,13 @@ function LogsViewer({ authFetch }) {
   if (loading) return (
     <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--fg-muted)',
       fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Chargement…</div>
+  )
+
+  if (error) return (
+    <div style={{ padding: '24px', background: 'rgba(192,57,43,0.05)', border: '1px solid rgba(192,57,43,0.2)',
+      fontFamily: 'var(--sans)', fontSize: 12, color: '#c0392b' }}>
+      Erreur : {error}
+    </div>
   )
 
   return (
