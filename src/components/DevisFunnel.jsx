@@ -740,13 +740,7 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
             {eur(total)}
           </span>
         </div>
-        {tva > 0 && (
-          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13,
-            color: "var(--fg-muted)", marginTop: 6, fontFamily: "var(--serif)", fontStyle: "italic" }}>
-            <span>{t("dont TVA 20 % (prestations Antoine)", "incl. 20% VAT (Antoine's services)")}</span>
-            <span>{eur(tva)}</span>
-          </div>
-        )}
+
         <p style={{ fontSize: 13, color: "var(--fg-muted)", marginTop: 16, fontFamily: "var(--serif)", fontStyle: "italic" }}>
           {t("Estimation indicative. Devis définitif confirmé sous 48h.", "Indicative estimate. Final quote confirmed within 48h.")}
         </p>
