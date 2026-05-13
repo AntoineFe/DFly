@@ -478,7 +478,8 @@ export default function GalerieAdmin() {
 
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 48 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
+            onClick={() => navigate('/')}>
             <DflyMonogram size={28} color="var(--fg)" />
             <div>
               <div style={{ fontFamily: 'var(--serif-display)', fontSize: 20 }}>
