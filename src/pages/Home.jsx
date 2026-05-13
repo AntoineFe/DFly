@@ -52,6 +52,7 @@ export default function Home({ lang, setLang }) {
             <DflyMonogram size={44} color="rgba(243,237,226,0.95)" />
             <span>2020</span>
           </div>
+		  <br>
           <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(80px,10vw,152px)', lineHeight: 0.88, letterSpacing: '0.005em', fontWeight: 400 }}>
             D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
           </div>
