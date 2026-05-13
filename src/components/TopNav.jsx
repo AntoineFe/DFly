@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import DflyMonogram from './DflyMonogram'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import ChangePasswordModal from './ChangePasswordModal'
+import { logEvent } from '../utils/logEvent'
 
 const NAV_LINKS = {
   FR: [
@@ -121,10 +122,10 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
 
           {/* Devis — hidden on mobile (appears in mobile menu) */}
           {ctaHref?.startsWith('#')
-            ? <a href={ctaHref} className="nav-links" style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone }}>
+            ? <a href={ctaHref} className="nav-links" onClick={() => logEvent(ctaLabel ?? 'Demander un devis', location.pathname)} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone }}>
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </a>
-            : <Link to={ctaHref ?? '/contact'} className="nav-links" style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone }}>
+            : <Link to={ctaHref ?? '/contact'} className="nav-links" onClick={() => logEvent(ctaLabel ?? 'Demander un devis', location.pathname)} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone }}>
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </Link>
           }
@@ -180,10 +181,10 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             })}
           </div>
           {ctaHref?.startsWith('#')
-            ? <a href={ctaHref} onClick={() => setMenuOpen(false)} style={{ display: 'inline-block', marginTop: 32, fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em', textTransform: 'uppercase', border: '1px solid var(--fg)', padding: '12px 24px', color: 'var(--fg)' }}>
+            ? <a href={ctaHref} onClick={() => { setMenuOpen(false); logEvent(ctaLabel ?? 'Demander un devis', location.pathname) }} style={{ display: 'inline-block', marginTop: 32, fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em', textTransform: 'uppercase', border: '1px solid var(--fg)', padding: '12px 24px', color: 'var(--fg)' }}>
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </a>
-            : <Link to={ctaHref ?? '/contact'} style={{ display: 'inline-block', marginTop: 32, fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em', textTransform: 'uppercase', border: '1px solid var(--fg)', padding: '12px 24px', color: 'var(--fg)' }}>
+            : <Link to={ctaHref ?? '/contact'} onClick={() => { setMenuOpen(false); logEvent(ctaLabel ?? 'Demander un devis', location.pathname) }} style={{ display: 'inline-block', marginTop: 32, fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.32em', textTransform: 'uppercase', border: '1px solid var(--fg)', padding: '12px 24px', color: 'var(--fg)' }}>
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </Link>
           }

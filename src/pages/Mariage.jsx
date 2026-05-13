@@ -3,6 +3,7 @@ import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
 import DevisFunnel from '../components/DevisFunnel'
+import { logEvent } from '../utils/logEvent'
 import usePageMeta from '../hooks/usePageMeta'
 import WatermarkImg from '../components/WatermarkImg'
 
@@ -148,7 +149,7 @@ function Mariage({ lang, setLang }) {
                    <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300, display: 'block', marginTop: '0.12em' }}>that becomes</em><br/>memory.</>)}
               </h1>
               <div style={{ textAlign: 'center', marginTop: 32 }}>
-              <a href="#devis" style={{
+              <a href="#devis" onClick={() => logEvent('Estimer mon projet', '/mariage')} style={{
                 display: "inline-block",
                 fontFamily: "var(--sans)", fontSize: 11,
                 letterSpacing: "0.32em", textTransform: "uppercase",
