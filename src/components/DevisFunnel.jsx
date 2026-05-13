@@ -87,19 +87,37 @@ function captationHT(h) {
 function calcPrice(state) {
   const activeH  = totalHours(state.moments);
   const displayH = Math.round(activeH * (REAL_DAY_H / FULL_DAY_H) * 10) / 10;
-  const fmt = state.format === "both" ? "both" : state.format;
-  const ppRate = PP_RATE_HT[fmt] ?? PP_RATE_HT.photo;
+  const hasVideo = state.format !== "photo";
+  const hasPhoto = state.format !== "video";
 
-  let totalHT = BASE_HT + activeH * ppRate + (activeH > 0 ? captationHT(activeH) : 0);
-
-  if (state.format !== "photo") {
-    if (state.teaser)   totalHT += TEASER_TTC   / 1.2;
-    if (state.integral) totalHT += INTEGRAL_TTC / 1.2;
+  // Antoine (SASU, TVA 20%) : moitié captation + moitié post-production vidéo
+  let antoineHT = 0;
+  if (activeH > 0) {
+    antoineHT += captationHT(activeH) * 0.5;
+    if (hasVideo) antoineHT += activeH * (PP_VIDEO_HT / FULL_DAY_H) * 0.5;
   }
-  if (state.drone)           totalHT += DRONE_TTC      / 1.2;
-  if (state.extras?.brunch) totalHT += BRUNCH_TTC     / 1.2;
 
-  return { h: displayH, ttc: Math.round(totalHT * 1.2 / 10) * 10 };
+  // Rémi (micro-entreprise, sans TVA) : moitié captation + moitié PP vidéo + PP photo + options
+  let remiHT = 0;
+  if (activeH > 0) {
+    remiHT += captationHT(activeH) * 0.5;
+    if (hasVideo) remiHT += activeH * (PP_VIDEO_HT / FULL_DAY_H) * 0.5;
+    if (hasPhoto) remiHT += activeH * (PP_PHOTO_HT / FULL_DAY_H);
+  }
+
+  // Options à la charge de Rémi (micro, sans TVA — les montants sont déjà TTC)
+  let optionsTTC = 0;
+  if (hasVideo) {
+    if (state.teaser)   optionsTTC += TEASER_TTC;
+    if (state.integral) optionsTTC += INTEGRAL_TTC;
+  }
+  if (state.drone)           optionsTTC += DRONE_TTC;
+  if (state.extras?.brunch) optionsTTC += BRUNCH_TTC;
+
+  const tva = antoineHT * 0.2;
+  const ttc = Math.round((antoineHT * 1.2 + remiHT + optionsTTC) / 10) * 10;
+
+  return { h: displayH, ttc, tva: Math.round(tva) };
 }
 
 // ── Geocoding + routing ───────────────────────────────────────────────────────
@@ -650,7 +668,7 @@ function PriceLine({ label, value, muted }) {
 
 function StepEstimation({ state, set, travel, travelLoading, onExplore, simulations, lang }) {
   const t = mkT(lang);
-  const { ttc, h } = calcPrice(state);
+  const { ttc, h, tva } = calcPrice(state);
   const needsHotel = state.moments.danse === "etendue";
   const hotelCost  = needsHotel && !state.hotelPrisEnCharge ? HOTEL_TTC : 0;
   const total = ttc + (travel?.cost || 0) + hotelCost;
@@ -722,6 +740,13 @@ function StepEstimation({ state, set, travel, travelLoading, onExplore, simulati
             {eur(total)}
           </span>
         </div>
+        {tva > 0 && (
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13,
+            color: "var(--fg-muted)", marginTop: 6, fontFamily: "var(--serif)", fontStyle: "italic" }}>
+            <span>{t("dont TVA 20 % (prestations Antoine)", "incl. 20% VAT (Antoine's services)")}</span>
+            <span>{eur(tva)}</span>
+          </div>
+        )}
         <p style={{ fontSize: 13, color: "var(--fg-muted)", marginTop: 16, fontFamily: "var(--serif)", fontStyle: "italic" }}>
           {t("Estimation indicative. Devis définitif confirmé sous 48h.", "Indicative estimate. Final quote confirmed within 48h.")}
         </p>
