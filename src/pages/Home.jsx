@@ -10,18 +10,18 @@ const BASE = import.meta.env.BASE_URL
 
 const IMG = {
   hero:        'https://images.unsplash.com/photo-1519741497674-611481863552?w=2400&q=85',
-  wedding1:    `${BASE}images/079_DSC7618.jpeg`,
-  wedding2:    `${BASE}images/411_7R44813.jpeg`,
-  realestate1: `${BASE}images/_DSC4497-HDR.jpeg`,
-  realestate2: `${BASE}images/073_7R44153.jpeg`,
-  business1:   `${BASE}images/_A7R3270.jpeg`,
-  business2:   `${BASE}images/_DSC0583.jpg`,
-  event1:      `${BASE}images/051_7R42448.jpg`,
-  event2:      `${BASE}images/DSC08533_1.jpg`,
-  portrait1:   `${BASE}images/038_7R42287.jpeg`,
-  portrait2:   `${BASE}images/_DSC2009_1.jpg`,
-  drone:       `${BASE}images/YUN_0157.jpg`,
-  duo:         `${BASE}images/mariage/376_DSC0906.jpeg`,
+  wedding1:    `${BASE}images/mariage-couple-portrait-cote-dazur.jpeg`,
+  wedding2:    `${BASE}images/mariage-alliances-bouquet-nice.jpeg`,
+  realestate1: `${BASE}images/immobilier-facade-residence-paca.jpeg`,
+  realestate2: `${BASE}images/immobilier-immeuble-neuf-cote-dazur.jpeg`,
+  business1:   `${BASE}images/entreprise-chantier-nuit-paca.jpeg`,
+  business2:   `${BASE}images/entreprise-shooting-produit-studio-paca.jpg`,
+  event1:      `${BASE}images/evenement-ballet-scene-nice.jpg`,
+  event2:      `${BASE}images/evenement-theatre-spectacle-paca.jpg`,
+  portrait1:   `${BASE}images/famille-portrait-bord-de-mer-cote-dazur.jpeg`,
+  portrait2:   `${BASE}images/portrait-couple-studio-nice.jpg`,
+  drone:       `${BASE}images/drone-vue-aerienne-domaine-paca.jpg`,
+  duo:         `${BASE}images/mariage/mariage-couple-escalier-nice.jpeg`,
 }
 
 export default function Home({ lang, setLang }) {
@@ -121,6 +121,8 @@ export default function Home({ lang, setLang }) {
             )}
             keywords={[]} href="/mariage"
             image={IMG.wedding1} imageAlt={IMG.wedding2} reverse={false}
+            alt={t("Couple de mariés en portrait, Côte d'Azur", "Married couple portrait, Côte d'Azur")}
+            altThumb={t("Alliances et bouquet de mariage à Nice", "Wedding rings and bouquet, Nice")}
           />
 
           <DomainRow num="02" lang={lang}
@@ -132,6 +134,8 @@ export default function Home({ lang, setLang }) {
             )}
             keywords={[]} href="/immobilier"
             image={IMG.realestate1} imageAlt={IMG.realestate2} reverse={true}
+            alt={t("Façade de résidence immobilière en PACA", "Residential building façade, PACA")}
+            altThumb={t("Immeuble neuf Côte d'Azur", "New building, Côte d'Azur")}
           />
 
           <DomainRow num="03" lang={lang}
@@ -143,6 +147,8 @@ export default function Home({ lang, setLang }) {
             )}
             keywords={[]} href="/communication"
             image={IMG.business1} imageAlt={IMG.business2} reverse={false}
+            alt={t("Photographie de chantier de nuit en PACA", "Night construction site photography, PACA")}
+            altThumb={t("Shooting produit en studio PACA", "Product photography in studio, PACA")}
           />
 
           <DomainRow num="04" lang={lang}
@@ -154,6 +160,8 @@ export default function Home({ lang, setLang }) {
             )}
             keywords={[]} href="/spectacle"
             image={IMG.event1} imageAlt={IMG.event2} reverse={true}
+            alt={t("Ballet sur scène à Nice", "Ballet on stage, Nice")}
+            altThumb={t("Spectacle de théâtre en PACA", "Theatre performance, PACA")}
           />
 
           <DomainRow num="05" lang={lang}
@@ -165,6 +173,8 @@ export default function Home({ lang, setLang }) {
             )}
             keywords={[]} href="/famille"
             image={IMG.portrait1} imageAlt={IMG.portrait2} reverse={false} isLast
+            alt={t("Portrait famille en bord de mer, Côte d'Azur", "Family portrait by the sea, Côte d'Azur")}
+            altThumb={t("Portrait de couple en studio à Nice", "Couple portrait in studio, Nice")}
           />
         </div>
       </section>
@@ -217,7 +227,7 @@ export default function Home({ lang, setLang }) {
               </div>
             </div>
             <div style={{ position: 'relative' }}>
-              <img src={IMG.drone} alt="" className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.05)' }} />
+              <img src={IMG.drone} alt={t("Vue aérienne par drone d'un domaine en PACA", "Aerial drone view of an estate in PACA")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.05)' }} />
               <div className="drone-label" style={{ position: 'absolute', bottom: -30, left: -30, background: 'var(--bg-deep)', padding: '20px 28px', borderTop: '1px solid rgba(243,237,226,0.18)', borderRight: '1px solid rgba(243,237,226,0.18)' }}>
                 <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em', textTransform: 'uppercase', opacity: 0.6, marginBottom: 6 }}>Domaine</div>
                 <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 22, fontWeight: 300 }}>Château Réal d'Or · Massif des Maures</div>
@@ -261,7 +271,7 @@ export default function Home({ lang, setLang }) {
         <div className="container">
           <div className="grid-duo">
             <div style={{ position: 'relative' }}>
-              <img src={IMG.duo} alt="" className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+              <img src={IMG.duo} alt={t("Couple de mariés sur un escalier à Nice — Antoine & Rémi DFly", "Married couple on stairs in Nice — Antoine & Rémi DFly")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
               <div style={{ position: 'absolute', top: 24, left: 24, fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--ivory)', fontWeight: 300, textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
                 Antoine & Rémi
               </div>
@@ -343,7 +353,7 @@ export default function Home({ lang, setLang }) {
 }
 
 // ── DomainRow ────────────────────────────────────────────────────────────────
-function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, imageAlt, reverse, isLast, href }) {
+function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, imageAlt, reverse, isLast, href, alt = '', altThumb = '' }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
 
   const text = (
@@ -372,8 +382,8 @@ function DomainRow({ num, title, subtitle, body, keywords = [], lang, image, ima
   const visual = (
     <div className="domain-visual" style={{ position: 'relative' }}>
 		<Link to={href || '#'}>
-		  <img src={image} alt="" className="cine domain-img" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
-		  <img src={imageAlt} alt="" className={`cine domain-thumb${reverse ? ' domain-thumb-reverse' : ''}`} style={{ position: 'absolute', width: '55%', aspectRatio: '1/1', objectFit: 'cover', bottom: -50, [reverse ? 'left' : 'right']: -40, border: '8px solid var(--bg-alt)', filter: 'saturate(0.85) contrast(1.02)', zIndex: 2 }} />
+		  <img src={image} alt={alt} className="cine domain-img" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+		  <img src={imageAlt} alt={altThumb} className={`cine domain-thumb${reverse ? ' domain-thumb-reverse' : ''}`} style={{ position: 'absolute', width: '55%', aspectRatio: '1/1', objectFit: 'cover', bottom: -50, [reverse ? 'left' : 'right']: -40, border: '8px solid var(--bg-alt)', filter: 'saturate(0.85) contrast(1.02)', zIndex: 2 }} />
 		</Link>
 	</div>
   )

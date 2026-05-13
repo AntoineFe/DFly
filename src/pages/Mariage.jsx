@@ -7,26 +7,26 @@ import usePageMeta from '../hooks/usePageMeta'
 
 const BASE = import.meta.env.BASE_URL;
 const W_IMG = {
-  hero:        `${BASE}images/mariage/_7R41480.jpeg`,
-  bride:       `${BASE}images/mariage/434_DSC8785.jpeg`,
-  couple:      `${BASE}images/mariage/259_7R44229.jpeg`,
-  ceremony:    `${BASE}images/mariage/452_7R49775.jpeg`,
-  bouquet:     `${BASE}images/mariage/409_7R49654.jpeg`,
-  preparation: `${BASE}images/mariage/_7R44108.jpg`,
-  dance:       `${BASE}images/mariage/374_7R45410.jpeg`,
-  details:     `${BASE}images/mariage/239_7R45173_1.jpg`,
-  guests:      `${BASE}images/mariage/424_DSC8763.jpeg`,
-  table:       `${BASE}images/mariage/_7R41267.jpeg`,
-  aerial:      `${BASE}images/mariage/MAX_0011.jpeg`,
-  drone:       `${BASE}images/mariage/MAX_0035.jpeg`,
-  sortie:      `${BASE}images/mariage/090_7R43637.jpg`,
-  filmstrip1:  `${BASE}images/mariage/_DSC7546.jpeg`,
-  filmstrip2:  `${BASE}images/mariage/_7R41266_1.jpeg`,
-  filmstrip3:  `${BASE}images/mariage/_DSC7838.jpeg`,
-  filmstrip4:  `${BASE}images/mariage/397_DSC0942.jpeg`,
-  filmstrip5:  `${BASE}images/mariage/445_7R49749.jpeg`,
-  filmstrip6:  `${BASE}images/mariage/423_7R44891_1.jpeg`,
-  filmstrip7:  `${BASE}images/mariage/462_7R45062.jpeg`,
+  hero:        `${BASE}images/mariage/mariage-couple-hero-cote-dazur.jpeg`,
+  bride:       `${BASE}images/mariage/mariage-mariee-bouquet-portrait-nice.jpeg`,
+  couple:      `${BASE}images/mariage/mariage-couple-portrait-provence.jpeg`,
+  ceremony:    `${BASE}images/mariage/mariage-ceremonie-exterieur-cote-dazur.jpeg`,
+  bouquet:     `${BASE}images/mariage/mariage-couple-bouquet-coucher-soleil.jpeg`,
+  preparation: `${BASE}images/mariage/mariage-preparation-mariee-nice.jpg`,
+  dance:       `${BASE}images/mariage/mariage-premiere-danse-interieur-paca.jpeg`,
+  details:     `${BASE}images/mariage/mariage-details-bord-de-mer-cote-dazur.jpg`,
+  guests:      `${BASE}images/mariage/mariage-invites-ceremonie-paca.jpeg`,
+  table:       `${BASE}images/mariage/mariage-couple-terrasse-mer-nice.jpeg`,
+  aerial:      `${BASE}images/mariage/mariage-drone-vue-aerienne-domaine-paca.jpeg`,
+  drone:       `${BASE}images/mariage/mariage-drone-paysage-cote-dazur.jpeg`,
+  sortie:      `${BASE}images/mariage/mariage-sortie-ceremonie-cote-dazur.jpg`,
+  filmstrip1:  `${BASE}images/mariage/mariage-filmstrip-1-cote-dazur.jpeg`,
+  filmstrip2:  `${BASE}images/mariage/mariage-filmstrip-2-cote-dazur.jpeg`,
+  filmstrip3:  `${BASE}images/mariage/mariage-filmstrip-3-cote-dazur.jpeg`,
+  filmstrip4:  `${BASE}images/mariage/mariage-filmstrip-4-cote-dazur.jpeg`,
+  filmstrip5:  `${BASE}images/mariage/mariage-filmstrip-5-cote-dazur.jpeg`,
+  filmstrip6:  `${BASE}images/mariage/mariage-filmstrip-6-cote-dazur.jpeg`,
+  filmstrip7:  `${BASE}images/mariage/mariage-filmstrip-7-cote-dazur.jpeg`,
 };
 
 function Mariage({ lang, setLang }) {
@@ -253,7 +253,7 @@ function Mariage({ lang, setLang }) {
           <div className="grid-two-mediums">
             {/* Photo */}
             <div>
-              <img src={W_IMG.bride} alt=""
+              <img src={W_IMG.bride} alt={t("Mariée avec bouquet, portrait — photographe mariage Nice", "Bride with bouquet, portrait — wedding photographer Nice")}
                 style={{
                   width: "100%", aspectRatio: "4/5", objectFit: "cover",
                   filter: "saturate(0.85) contrast(1.02)",
@@ -290,7 +290,7 @@ function Mariage({ lang, setLang }) {
 
             {/* Video */}
             <div className="medium-offset" style={{ paddingTop: 100 }}>
-              <img src={W_IMG.couple} alt=""
+              <img src={W_IMG.couple} alt={t("Couple de mariés, portrait — photographe mariage Côte d'Azur", "Married couple portrait — wedding photographer Côte d'Azur")}
                 style={{
                   width: "100%", aspectRatio: "4/5", objectFit: "cover",
                   objectPosition: "70% center",
@@ -366,7 +366,7 @@ function Mariage({ lang, setLang }) {
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <SectionLabel num="IV" label={t("Un troisième regard", "A third perspective")} align="center" />
           </div>
-          <img src={W_IMG.drone} alt=""
+          <img src={W_IMG.drone} alt={t("Vue drone paysage Côte d'Azur — mariage DFly", "Drone landscape Côte d'Azur — DFly wedding")}
             style={{
               width: "100%", aspectRatio: "16/9", objectFit: "cover",
               filter: "saturate(0.85) contrast(1.02)",
@@ -406,7 +406,7 @@ function Mariage({ lang, setLang }) {
       {/* TIMELINE — the day */}
       <section style={{ padding: "var(--section-y) 0", background: "var(--bg-alt)", position: "relative", overflow: "hidden" }}>
         <img
-          src={`${BASE}images/mariage/230_7R44147.jpeg`}
+          src={`${BASE}images/mariage/mariage-alliance-rose-detail-nice.jpeg`}
           alt=""
           className="timeline-bg"
           style={{
