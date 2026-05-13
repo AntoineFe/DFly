@@ -38,6 +38,8 @@ $baseDir   = $paths['galerie_root'];
 $targetDir = $subPath !== '' ? $baseDir . '/' . $subPath : $baseDir;
 
 if (!is_dir($targetDir)) {
+    $logFile = __DIR__ . '/galerie-browse.log';
+    file_put_contents($logFile, date('Y-m-d H:i:s') . ' | 404 | targetDir=' . $targetDir . ' | baseDir=' . $baseDir . ' | pro_root=' . $cfg['pro_root'] . PHP_EOL, FILE_APPEND | LOCK_EX);
     http_response_code(404);
     exit(json_encode(['ok' => false, 'error' => 'Dossier introuvable']));
 }
