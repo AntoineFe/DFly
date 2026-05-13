@@ -198,7 +198,7 @@ function momentsSummary(moments, lang = "FR") {
     .map(m => {
       if (m.opts) {
         const o = m.opts.find(o => o.v === moments[m.id]);
-        return o ? mLabel(o, lang) : mLabel(m, lang);
+        return o ? `${mLabel(m, lang)} - ${mLabel(o, lang)}` : mLabel(m, lang);
       }
       return mLabel(m, lang);
     })
