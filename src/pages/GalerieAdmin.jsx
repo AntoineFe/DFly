@@ -331,6 +331,113 @@ function ActionBtn({ onClick, active, title, children }) {
   )
 }
 
+// ── Logs de navigation ────────────────────────────────────────────────────────
+
+const PER_PAGE = 25
+
+function LogsViewer({ authFetch }) {
+  const [lines,      setLines]      = useState([])
+  const [loading,    setLoading]    = useState(true)
+  const [filterName, setFilterName] = useState('')
+  const [filterDate, setFilterDate] = useState('')
+  const [page,       setPage]       = useState(1)
+
+  useEffect(() => {
+    setLoading(true)
+    authFetch('galerie-logs-read.php')
+      .then(r => r.json())
+      .then(d => { if (d.ok) setLines(d.lines) })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [authFetch])
+
+  useEffect(() => setPage(1), [filterName, filterDate])
+
+  const filtered = lines.filter(l => {
+    const matchName = !filterName || l.user.toLowerCase().includes(filterName.toLowerCase())
+    const matchDate = !filterDate || l.ts.startsWith(filterDate)
+    return matchName && matchDate
+  })
+
+  const totalPages  = Math.max(1, Math.ceil(filtered.length / PER_PAGE))
+  const currentPage = Math.min(page, totalPages)
+  const visible     = filtered.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE)
+
+  const inputStyle = {
+    padding: '8px 12px', border: '1px solid var(--line)',
+    background: 'var(--bg)', color: 'var(--fg)',
+    fontFamily: 'inherit', fontSize: 13,
+  }
+  const btnStyle = {
+    background: 'none', border: '1px solid var(--line)', padding: '6px 14px',
+    fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+    textTransform: 'uppercase', cursor: 'pointer', color: 'var(--fg-muted)',
+  }
+
+  if (loading) return (
+    <div style={{ padding: '40px 0', textAlign: 'center', color: 'var(--fg-muted)',
+      fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Chargement…</div>
+  )
+
+  return (
+    <div>
+      {/* Filtres */}
+      <div style={{ display: 'flex', gap: 12, marginBottom: 20, flexWrap: 'wrap', alignItems: 'center' }}>
+        <input style={inputStyle} placeholder="Filtrer par nom…"
+          value={filterName} onChange={e => setFilterName(e.target.value)} />
+        <input style={inputStyle} type="date"
+          value={filterDate} onChange={e => setFilterDate(e.target.value)} />
+        <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)', letterSpacing: '0.2em' }}>
+          {filtered.length} entrée{filtered.length !== 1 ? 's' : ''}
+        </span>
+      </div>
+
+      {/* Tableau */}
+      <div style={{ border: '1px solid var(--line)', overflowX: 'auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '160px 180px 1fr 140px',
+          background: 'var(--bg-alt)', borderBottom: '1px solid var(--line)' }}>
+          {['Date / heure', 'Utilisateur', 'URL', 'IP'].map(h => (
+            <div key={h} style={{ padding: '10px 14px', fontFamily: 'var(--sans)', fontSize: 10,
+              letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
+              {h}
+            </div>
+          ))}
+        </div>
+        {visible.length === 0 ? (
+          <div style={{ padding: '32px 14px', textAlign: 'center', color: 'var(--fg-muted)',
+            fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Aucune entrée</div>
+        ) : visible.map((l, i) => (
+          <div key={i} style={{ display: 'grid', gridTemplateColumns: '160px 180px 1fr 140px',
+            borderBottom: '1px solid var(--line)',
+            background: i % 2 === 0 ? 'var(--bg)' : 'var(--bg-alt)' }}>
+            <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
+              color: 'var(--fg-muted)' }}>{l.ts}</div>
+            <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
+              color: 'var(--fg)' }}>{l.user}</div>
+            <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
+              color: 'var(--fg)', wordBreak: 'break-all' }}>{l.url}</div>
+            <div style={{ padding: '9px 14px', fontFamily: 'var(--sans)', fontSize: 12,
+              color: 'var(--fg-muted)' }}>{l.ip}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 20, alignItems: 'center' }}>
+          <button style={btnStyle} disabled={currentPage === 1}
+            onClick={() => setPage(p => Math.max(1, p - 1))}>‹ Précédent</button>
+          <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)' }}>
+            Page {currentPage} / {totalPages}
+          </span>
+          <button style={btnStyle} disabled={currentPage === totalPages}
+            onClick={() => setPage(p => Math.min(totalPages, p + 1))}>Suivant ›</button>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Page principale admin ─────────────────────────────────────────────────────
 
 export default function GalerieAdmin() {
@@ -340,6 +447,7 @@ export default function GalerieAdmin() {
   const [selectedEnt, setSelectedEnt] = useState(null)
   const [entUsers, setEntUsers] = useState([])
   const [copiedId, setCopiedId] = useState(null)
+  const [activeTab, setActiveTab] = useState('galerie')
 
   useEffect(() => {
     if (!hasAuth('admin', 'R')) {
@@ -393,6 +501,24 @@ export default function GalerieAdmin() {
             }}>Déconnexion</button>
           </div>
         </div>
+
+        {/* Onglets */}
+        <div style={{ display: 'flex', gap: 0, marginBottom: 40, borderBottom: '1px solid var(--line)' }}>
+          {[['galerie', 'Galerie'], ['logs', 'Logs de navigation']].map(([key, label]) => (
+            <button key={key} onClick={() => setActiveTab(key)} style={{
+              background: 'none', border: 'none', borderBottom: activeTab === key ? '2px solid var(--fg)' : '2px solid transparent',
+              padding: '10px 20px 10px 0', marginBottom: -1,
+              fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.28em',
+              textTransform: 'uppercase', cursor: 'pointer',
+              color: activeTab === key ? 'var(--fg)' : 'var(--fg-muted)',
+              transition: 'color .15s',
+            }}>{label}</button>
+          ))}
+        </div>
+
+        {activeTab === 'logs' && <LogsViewer authFetch={authFetch} />}
+
+        {activeTab === 'galerie' && <>
 
         {/* Sélection client */}
         {ents.length > 1 && (
@@ -478,6 +604,8 @@ export default function GalerieAdmin() {
             Aucun client trouvé.
           </div>
         )}
+
+        </>}
       </div>
     </div>
   )

@@ -22,6 +22,23 @@ function ScrollToTop() {
   return null
 }
 
+const BASE = import.meta.env.BASE_URL
+
+function NavLogger() {
+  const { pathname } = useLocation()
+  useEffect(() => {
+    const token = localStorage.getItem('galerie_token')
+    const headers = { 'Content-Type': 'application/json' }
+    if (token) headers['Authorization'] = `Bearer ${token}`
+    fetch(`${BASE}services/galerie-log.php`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ url: pathname }),
+    }).catch(() => {})
+  }, [pathname])
+  return null
+}
+
 function ProtectedRoute({ children, adminOnly }) {
   const { user, loading } = useGalerieAuth()
   if (loading) return null
@@ -49,6 +66,7 @@ export default function App() {
   return (
     <GalerieAuthProvider>
       <ScrollToTop />
+      <NavLogger />
       <Routes>
         <Route path="/"               element={<Home          lang={lang} setLang={setLang} />} />
         <Route path="/mariage"        element={<Mariage       lang={lang} setLang={setLang} />} />
