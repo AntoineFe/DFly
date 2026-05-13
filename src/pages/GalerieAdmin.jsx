@@ -338,6 +338,8 @@ export default function GalerieAdmin() {
   const navigate = useNavigate()
   const [ents, setEnts] = useState([])
   const [selectedEnt, setSelectedEnt] = useState(null)
+  const [entUsers, setEntUsers] = useState([])
+  const [copiedId, setCopiedId] = useState(null)
 
   useEffect(() => {
     if (!hasAuth('admin', 'R')) {
@@ -353,6 +355,14 @@ export default function GalerieAdmin() {
         if (entList.length === 1) setSelectedEnt(entList[0].shortDesc)
       })
   }, [hasAuth, navigate, authFetch, user])
+
+  useEffect(() => {
+    if (!selectedEnt) { setEntUsers([]); return }
+    authFetch(`galerie-users.php?ent=${encodeURIComponent(selectedEnt)}`)
+      .then(r => r.json())
+      .then(d => { if (d.ok) setEntUsers(d.users) })
+      .catch(() => {})
+  }, [selectedEnt, authFetch])
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
@@ -418,6 +428,47 @@ export default function GalerieAdmin() {
             <div style={{ padding: '0 16px' }}>
               <TreeNode ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => {}} />
             </div>
+          </div>
+        )}
+
+        {/* Utilisateurs du client sélectionné */}
+        {selectedEnt && entUsers.length > 0 && (
+          <div style={{ border: '1px solid var(--line)', marginTop: 24 }}>
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--line)',
+              background: 'var(--bg-alt)', fontFamily: 'var(--sans)', fontSize: 10,
+              letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
+              Liens de connexion · {selectedEnt}
+            </div>
+            {entUsers.map(u => {
+              const link = `${window.location.origin}${import.meta.env.BASE_URL}galerie?cle=${u.cle}`
+              const copied = copiedId === u.id
+              return (
+                <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between',
+                  alignItems: 'center', padding: '14px 16px', borderBottom: '1px solid var(--line)' }}>
+                  <div>
+                    <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--fg)' }}>
+                      {u.firstName} {u.lastName}
+                    </div>
+                    <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)', marginTop: 2 }}>
+                      {u.email}
+                    </div>
+                  </div>
+                  <button onClick={() => {
+                    navigator.clipboard.writeText(link)
+                    setCopiedId(u.id)
+                    setTimeout(() => setCopiedId(null), 2000)
+                  }} style={{
+                    background: copied ? 'var(--fg)' : 'none',
+                    color: copied ? 'var(--bg)' : 'var(--fg)',
+                    border: '1px solid var(--line)', padding: '6px 14px',
+                    fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.2em',
+                    textTransform: 'uppercase', cursor: 'pointer', transition: 'all .2s',
+                  }}>
+                    {copied ? 'Copié ✓' : 'Copier le lien'}
+                  </button>
+                </div>
+              )
+            })}
           </div>
         )}
 
