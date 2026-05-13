@@ -26,9 +26,9 @@ if (!$d || empty($d['email'])) {
 }
 
 $to           = filter_var($d['email'], FILTER_SANITIZE_EMAIL);
-$prenom       = htmlspecialchars($d['prenom']      ?? '', ENT_QUOTES);
-$nom          = htmlspecialchars($d['nom']         ?? '', ENT_QUOTES);
-$tel          = htmlspecialchars($d['tel']         ?? '', ENT_QUOTES);
+$prenom       = trim($d['prenom']      ?? '');
+$nom          = trim($d['nom']         ?? '');
+$tel          = trim($d['tel']         ?? '');
 $demandes     = $d['demandes']     ?? '';
 $reactionKey  = $d['reactionKey']  ?? '';
 $intentionKey = $d['intentionKey'] ?? '';
@@ -180,8 +180,8 @@ $body .= "{$sectionTitle}\n";
 $body .= str_repeat("-", 40) . "\n";
 
 foreach ($sims as $i => $sim) {
-    $format  = htmlspecialchars($sim['format']  ?? '', ENT_QUOTES);
-    $moments = htmlspecialchars($sim['moments'] ?? '', ENT_QUOTES);
+    $format  = $sim['format']  ?? '';
+    $moments = $sim['moments'] ?? '';
     $price   = isset($sim['price']) ? number_format((float)$sim['price'], 0, ',', ' ') . ' €' : '';
     $travel  = $sim['travel'] ?? [];
 
@@ -216,7 +216,7 @@ if ($demandes) {
     $body .= "\n" . str_repeat("-", 40) . "\n";
     $body .= $T['special'] . "\n";
     $body .= str_repeat("-", 40) . "\n\n";
-    $body .= htmlspecialchars($demandes, ENT_QUOTES) . "\n";
+    $body .= $demandes . "\n";
 }
 
 $body .= "\n" . str_repeat("-", 40) . "\n\n";
@@ -307,7 +307,7 @@ if ($demandes) {
     $ibody .= str_repeat("-", 50) . "\n";
     $ibody .= "DEMANDES PARTICULIÈRES\n";
     $ibody .= str_repeat("-", 50) . "\n\n";
-    $ibody .= htmlspecialchars($demandes, ENT_QUOTES) . "\n\n";
+    $ibody .= $demandes . "\n\n";
 }
 
 $isubject = "Devis interne — {$prenom} {$nom}";
