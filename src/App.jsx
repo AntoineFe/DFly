@@ -17,7 +17,19 @@ import useImageProtection from './hooks/useImageProtection'
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
   useEffect(() => {
-    if (!hash) window.scrollTo(0, 0)
+    if (!hash) {
+      window.scrollTo(0, 0)
+    } else {
+      const id = hash.slice(1)
+      const el = document.getElementById(id)
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' })
+      } else {
+        setTimeout(() => {
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+        }, 100)
+      }
+    }
   }, [pathname, hash])
   return null
 }
