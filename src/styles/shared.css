@@ -87,8 +87,7 @@ img { display: block; max-width: 100%; pointer-events: none; user-select: none; 
 img.no-protect { pointer-events: auto; user-select: auto; -webkit-user-drag: auto; }
 
 .wm { position: relative; }
-.wm::after {
-  content: '© DFly Photographie & Vidéo';
+.wm-text {
   position: absolute;
   bottom: 8px;
   right: 10px;

@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
 import DevisFunnel from '../components/DevisFunnel'
 import usePageMeta from '../hooks/usePageMeta'
+import WatermarkImg from '../components/WatermarkImg'
 
 const BASE = import.meta.env.BASE_URL;
 const W_IMG = {
@@ -253,11 +254,8 @@ function Mariage({ lang, setLang }) {
           <div className="grid-two-mediums">
             {/* Photo */}
             <div>
-              <div className="wm"><img src={W_IMG.bride} alt={t("Mariée avec bouquet, portrait — photographe mariage Nice", "Bride with bouquet, portrait — wedding photographer Nice")}
-                style={{
-                  width: "100%", aspectRatio: "4/5", objectFit: "cover",
-                  filter: "saturate(0.85) contrast(1.02)",
-                }} /></div>
+              <WatermarkImg src={W_IMG.bride} alt={t("Mariée avec bouquet, portrait — photographe mariage Nice", "Bride with bouquet, portrait — wedding photographer Nice")}
+                style={{ width: "100%", aspectRatio: "4/5", objectFit: "cover", filter: "saturate(0.85) contrast(1.02)" }} />
               <div style={{ padding: "32px 0 0" }}>
                 <div className="num" style={{ marginBottom: 12 }}>— {t("Médium 01", "Medium 01")}</div>
                 <div style={{
@@ -290,12 +288,8 @@ function Mariage({ lang, setLang }) {
 
             {/* Video */}
             <div className="medium-offset" style={{ paddingTop: 100 }}>
-              <div className="wm"><img src={W_IMG.couple} alt={t("Couple de mariés, portrait — photographe mariage Côte d'Azur", "Married couple portrait — wedding photographer Côte d'Azur")}
-                style={{
-                  width: "100%", aspectRatio: "4/5", objectFit: "cover",
-                  objectPosition: "70% center",
-                  filter: "saturate(0.85) contrast(1.02)",
-                }} /></div>
+              <WatermarkImg src={W_IMG.couple} alt={t("Couple de mariés, portrait — photographe mariage Côte d'Azur", "Married couple portrait — wedding photographer Côte d'Azur")}
+                style={{ width: "100%", aspectRatio: "4/5", objectFit: "cover", objectPosition: "70% center", filter: "saturate(0.85) contrast(1.02)" }} />
               <div style={{ padding: "32px 0 0" }}>
                 <div className="num" style={{ marginBottom: 12 }}>— {t("Médium 02", "Medium 02")}</div>
                 <div style={{
@@ -366,11 +360,8 @@ function Mariage({ lang, setLang }) {
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <SectionLabel num="IV" label={t("Un troisième regard", "A third perspective")} align="center" />
           </div>
-          <div className="wm"><img src={W_IMG.drone} alt={t("Vue drone paysage Côte d'Azur — mariage DFly", "Drone landscape Côte d'Azur — DFly wedding")}
-            style={{
-              width: "100%", aspectRatio: "16/9", objectFit: "cover",
-              filter: "saturate(0.85) contrast(1.02)",
-            }} /></div>
+          <WatermarkImg src={W_IMG.drone} alt={t("Vue drone paysage Côte d'Azur — mariage DFly", "Drone landscape Côte d'Azur — DFly wedding")}
+            style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", filter: "saturate(0.85) contrast(1.02)" }} />
           <div style={{ textAlign: "center", marginTop: 40 }}>
             <div className="num" style={{ marginBottom: 12 }}>— {t("Médium 03", "Medium 03")}</div>
             <div style={{
@@ -507,15 +498,13 @@ function Mariage({ lang, setLang }) {
             padding: "0 var(--gutter)",
           }}>
             {[W_IMG.filmstrip1, W_IMG.filmstrip2, W_IMG.filmstrip3, W_IMG.filmstrip4, W_IMG.filmstrip5, W_IMG.filmstrip6, W_IMG.filmstrip7].map((src, i) => (
-              <div key={i} className="wm" style={{
-                flex: "1 0 280px", height: 200,
-                position: "relative",
-              }}>
+              <div key={i} style={{ flex: "1 0 280px", height: 200, position: "relative" }}>
                 <img src={src} alt=""
                   style={{
                     width: "100%", height: "100%", objectFit: "cover",
                     filter: "saturate(0.85) contrast(1.05) brightness(0.95)",
                   }} />
+                <span className="wm-text" aria-hidden="true">© DFly Photographie &amp; Vidéo</span>
               </div>
             ))}
           </div>
@@ -665,7 +654,7 @@ function Mariage({ lang, setLang }) {
 
 function GridImg({ src, cols, rows, pos = "center", zoom = 1 }) {
   return (
-    <div className="wm" style={{ gridColumn: cols, gridRow: rows, overflow: "hidden" }}>
+    <div style={{ gridColumn: cols, gridRow: rows, overflow: "hidden", position: "relative" }}>
       <img src={src} alt="" style={{
         width: "100%", height: "100%",
         objectFit: "cover",
@@ -673,6 +662,7 @@ function GridImg({ src, cols, rows, pos = "center", zoom = 1 }) {
         transform: `scale(${zoom})`,
         filter: "saturate(0.85) contrast(1.02)",
       }} />
+      <span className="wm-text" aria-hidden="true">© DFly Photographie &amp; Vidéo</span>
     </div>
   );
 }

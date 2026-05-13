@@ -3,6 +3,7 @@ import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
 import usePageMeta from '../hooks/usePageMeta'
+import WatermarkImg from '../components/WatermarkImg'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -109,9 +110,9 @@ export default function Communication({ lang, setLang }) {
         <div className="container">
           <SectionLabel num="II" label={t('Quelques images', 'A few images')} />
           <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-            <div className="wm"><img src={IMG.img1} alt={t("Shooting produit en studio PACA — photographie entreprise", "Product photography in studio PACA — business photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
-            <div className="wm"><img src={IMG.img2} alt={t("Shooting parfum avec modèle en PACA — photographie commerciale", "Perfume shooting with model PACA — commercial photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
-            <div className="wm" style={{ gridColumn: 'span 2' }}><img src={IMG.img3} alt={t("Flacon de parfum — photographie produit cosmétique PACA", "Perfume bottle — cosmetic product photography PACA")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)', objectPosition: 'center 30%' }} /></div>
+            <WatermarkImg src={IMG.img1} alt={t("Shooting produit en studio PACA — photographie entreprise", "Product photography in studio PACA — business photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+            <WatermarkImg src={IMG.img2} alt={t("Shooting parfum avec modèle en PACA — photographie commerciale", "Perfume shooting with model PACA — commercial photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+            <WatermarkImg src={IMG.img3} alt={t("Flacon de parfum — photographie produit cosmétique PACA", "Perfume bottle — cosmetic product photography PACA")} wrapStyle={{ gridColumn: 'span 2' }} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)', objectPosition: 'center 30%' }} />
           </div>
         </div>
       </section>

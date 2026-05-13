@@ -3,6 +3,7 @@ import TopNav from '../components/TopNav'
 import Footer from '../components/Footer'
 import SectionLabel from '../components/SectionLabel'
 import usePageMeta from '../hooks/usePageMeta'
+import WatermarkImg from '../components/WatermarkImg'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -109,9 +110,9 @@ export default function Spectacle({ lang, setLang }) {
         <div className="container">
           <SectionLabel num="II" label={t('Quelques images', 'A few images')} />
           <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
-            <div className="wm"><img src={IMG.img1} alt={t("Spectacle de théâtre en plein air PACA — captation vidéo", "Outdoor theatre performance PACA — video capture")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
-            <div className="wm"><img src={IMG.img2} alt={t("Cérémonie de remise de diplômes en PACA — photographe événement", "Graduation ceremony PACA — event photographer")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} /></div>
-            <div className="wm" style={{ gridColumn: 'span 2' }}><img src={IMG.img3} alt={t("Artiste chanteur sur scène en PACA — photographie spectacle", "Singer on stage PACA — concert photography")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)', objectPosition: 'center 40%' }} /></div>
+            <WatermarkImg src={IMG.img1} alt={t("Spectacle de théâtre en plein air PACA — captation vidéo", "Outdoor theatre performance PACA — video capture")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+            <WatermarkImg src={IMG.img2} alt={t("Cérémonie de remise de diplômes en PACA — photographe événement", "Graduation ceremony PACA — event photographer")} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+            <WatermarkImg src={IMG.img3} alt={t("Artiste chanteur sur scène en PACA — photographie spectacle", "Singer on stage PACA — concert photography")} wrapStyle={{ gridColumn: 'span 2' }} style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)', objectPosition: 'center 40%' }} />
           </div>
         </div>
       </section>
