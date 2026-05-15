@@ -527,8 +527,7 @@ function LogsViewer({ authFetch }) {
           )}
           </Fragment>
           )
-        })
-        ))}
+        })}
       </div>
 
       {/* Pagination */}
