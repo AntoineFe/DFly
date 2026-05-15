@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
@@ -347,7 +347,8 @@ function LogsViewer({ authFetch }) {
   const [excludedIps, setExcludedIps] = useState(
     () => JSON.parse(localStorage.getItem(EXCLUDED_IPS_KEY) || '[]')
   )
-  const [ctxMenu, setCtxMenu] = useState(null) // { x, y, ip }
+  const [ctxMenu,      setCtxMenu]      = useState(null) // { x, y, ip }
+  const [expandedIdx,  setExpandedIdx]  = useState(null)
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640)
   useEffect(() => {
     const fn = () => setIsMobile(window.innerWidth < 640)
@@ -474,11 +475,21 @@ function LogsViewer({ authFetch }) {
         {visible.length === 0 ? (
           <div style={{ padding: '32px 14px', textAlign: 'center', color: 'var(--fg-muted)',
             fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Aucune entrée</div>
-        ) : visible.map((l, i) => (
-          <div key={i} style={{ display: 'grid',
+        ) : visible.map((l, i) => {
+          const isDevis    = l.url.startsWith('[devis]')
+          const isExpanded = expandedIdx === i
+          const devisParts = isDevis ? l.url.replace('[devis] ', '').split(' · ') : []
+          const rowBg      = isDevis
+            ? (i % 2 === 0 ? 'color-mix(in srgb, var(--bg) 85%, #7a9e7e)' : 'color-mix(in srgb, var(--bg-alt) 85%, #7a9e7e)')
+            : (i % 2 === 0 ? 'var(--bg)' : 'var(--bg-alt)')
+          return (
+          <Fragment key={i}>
+          <div style={{ display: 'grid',
             gridTemplateColumns: isMobile ? '44px 70px 1fr 80px' : '160px 180px 1fr 140px',
-            borderBottom: '1px solid var(--line)',
-            background: i % 2 === 0 ? 'var(--bg)' : 'var(--bg-alt)' }}>
+            borderBottom: isExpanded ? 'none' : '1px solid var(--line)',
+            background: rowBg,
+            cursor: isDevis ? 'pointer' : 'default' }}
+            onClick={isDevis ? () => setExpandedIdx(isExpanded ? null : i) : undefined}>
             <div style={{ padding: isMobile ? '5px 6px' : '9px 14px',
               fontFamily: 'var(--sans)', fontSize: isMobile ? 11 : 12,
               color: 'var(--fg-muted)' }}>
@@ -491,16 +502,32 @@ function LogsViewer({ authFetch }) {
             </div>
             <div style={{ padding: isMobile ? '5px 6px' : '9px 14px',
               fontFamily: 'var(--sans)', fontSize: isMobile ? 11 : 12,
-              color: 'var(--fg)', wordBreak: 'break-all' }}>{l.url}</div>
+              color: isDevis ? '#3a6e3a' : 'var(--fg)', wordBreak: 'break-all',
+              fontWeight: isDevis ? 500 : 400 }}>{l.url}</div>
             <div
-              onContextMenu={e => { e.preventDefault(); setCtxMenu({ x: e.clientX, y: e.clientY, ip: l.ip }) }}
+              onContextMenu={e => { e.preventDefault(); e.stopPropagation(); setCtxMenu({ x: e.clientX, y: e.clientY, ip: l.ip }) }}
               style={{ padding: isMobile ? '5px 6px' : '9px 14px',
                 fontFamily: 'var(--sans)', fontSize: isMobile ? 11 : 12,
-                color: 'var(--fg-muted)', cursor: 'context-menu', userSelect: 'none',
+                color: 'var(--fg-muted)', cursor: isDevis ? 'pointer' : 'context-menu', userSelect: 'none',
                 overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: isMobile ? 'nowrap' : 'normal' }}>
               {l.ip}
             </div>
           </div>
+          {isExpanded && isDevis && (
+            <div style={{ padding: '10px 14px 12px', background: rowBg,
+              borderBottom: '1px solid var(--line)', display: 'flex', gap: 32, flexWrap: 'wrap' }}>
+              {[['Format', devisParts[0]], ['Prix TTC', devisParts[1]], ['Moments', devisParts[2]]].map(([label, val]) => val && (
+                <div key={label}>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 9, letterSpacing: '0.28em',
+                    textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 3 }}>{label}</div>
+                  <div style={{ fontFamily: 'var(--serif)', fontSize: 14, color: 'var(--fg)' }}>{val}</div>
+                </div>
+              ))}
+            </div>
+          )}
+          </Fragment>
+          )
+        })
         ))}
       </div>
 

@@ -39,6 +39,7 @@ const BASE = import.meta.env.BASE_URL
 function NavLogger() {
   const { pathname } = useLocation()
   useEffect(() => {
+    if (pathname.startsWith('/galerie')) return
     const token = localStorage.getItem('galerie_token')
     const headers = { 'Content-Type': 'application/json' }
     if (token) headers['Authorization'] = `Bearer ${token}`

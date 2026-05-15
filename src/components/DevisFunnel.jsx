@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { logDevis } from "../utils/logEvent";
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
@@ -1030,6 +1031,8 @@ export default function DevisFunnel({ lang = "FR" }) {
   useEffect(() => {
     if (isFirstRender.current) { isFirstRender.current = false; return; }
     if (step === 6) {
+      const { ttc } = calcPrice(state);
+      logDevis(formatLabel(state, lang), ttc, momentsSummary(state.moments, lang));
       setTravelLoading(true);
       calcTravel(state.lieux, state.moments).then(t => {
         setTravel(t);
