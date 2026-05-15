@@ -1,6 +1,44 @@
+Options -MultiViews
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # Redirections 301 - Anciennes pages photo.php
+  RewriteCond %{QUERY_STRING} dir=Immobilier
+  RewriteRule ^photo\.php$ /immobilier? [R=301,L]
+
+  RewriteCond %{QUERY_STRING} dir=Evenements
+  RewriteRule ^photo\.php$ /spectacle? [R=301,L]
+
+  RewriteCond %{QUERY_STRING} dir=Book\ actrice
+  RewriteRule ^photo\.php$ /spectacle? [R=301,L]
+
+  RewriteCond %{QUERY_STRING} dir=BTP
+  RewriteRule ^photo\.php$ /communication? [R=301,L]
+
+  RewriteCond %{QUERY_STRING} dir=Nuit
+  RewriteRule ^photo\.php$ /immobilier? [R=301,L]
+
+  # /Galerie : page privée → 403
+  RewriteCond %{QUERY_STRING} dir=Galerie
+  RewriteRule ^photo\.php$ - [F,L]
+
+  # Ancienne page contact
+  RewriteRule ^contact\.php$ /contact? [R=301,L]
+
+  # React Router - réécriture interne vers index.html
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^ index.html [QSA,L]
+
 </IfModule>
+
+# Cache - index.html jamais mis en cache
+<FilesMatch "^index\.html$">
+  Header set Cache-Control "no-cache, no-store, must-revalidate"
+</FilesMatch>
+
+# Cache - assets JS/CSS indéfiniment (hash Vite)
+<FilesMatch "\.(js|css)$">
+  Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>

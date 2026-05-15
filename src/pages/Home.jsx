@@ -9,7 +9,7 @@ import usePageMeta from '../hooks/usePageMeta'
 const BASE = import.meta.env.BASE_URL
 
 const IMG = {
-  hero:        `${BASE}images/mariage/mariage-preparation-mariee-nice.jpg`,
+  hero:        `${BASE}images/mariage/mariage-couple-terrasse-mer-nice.jpeg`,
   wedding1:    `${BASE}images/mariage-couple-portrait-cote-dazur.jpeg`,
   wedding2:    `${BASE}images/mariage-alliances-bouquet-nice.jpeg`,
   realestate1: `${BASE}images/immobilier-facade-residence-paca.jpeg`,
@@ -37,7 +37,7 @@ export default function Home({ lang, setLang }) {
 
       {/* ── HERO ── */}
       <section className="hero-section" style={{ position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', color: 'var(--ivory)' }}>
-        <img src={IMG.hero} alt="" className="cine" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.55) saturate(0.85) contrast(1.05)' }} />
+        <img src={IMG.hero} alt="" className="cine" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: '53% center', filter: 'brightness(0.55) saturate(0.85) contrast(1.05)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,22,18,0.55) 0%, rgba(20,22,18,0.25) 40%, rgba(20,22,18,0.7) 100%)' }} />
 
         <div className="hero-corner-label" style={{ position: 'absolute', top: 110, left: 'var(--gutter)', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85 }}>
@@ -274,7 +274,7 @@ export default function Home({ lang, setLang }) {
             <div style={{ position: 'relative' }}>
               <img src={IMG.duo} alt={t("Couple de mariés sur un escalier à Nice — Antoine & Rémi DFly", "Married couple on stairs in Nice — Antoine & Rémi DFly")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
               <div style={{ position: 'absolute', top: 24, left: 24, fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--ivory)', fontWeight: 300, textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
-                Antoine & Rémi
+                .
               </div>
               <span className="wm-text" aria-hidden="true">© DFly Photographie &amp; Vidéo</span>
             </div>

@@ -16,10 +16,56 @@ const IMG = {
 
 export default function Communication({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
-  usePageMeta({
-    title: t('Photo & Vidéo Entreprise — DFly · PACA', 'Business Photography & Film — DFly · French Riviera'),
-    description: t('Photos et vidéos pour artisans, entreprises et marques en Provence Alpes Côte d\'Azur. Reportage, portraits corporate, contenu réseaux sociaux.', 'Photography and film for craftsmen, businesses and brands in the French Riviera. Corporate portraits, social media content.'),
-  })
+	usePageMeta({
+	  title: t(
+		'Photographe Vidéaste Entreprise PACA | Communication & Marque — DFly',
+		'Business Photographer & Videographer PACA | Communication & Brand — DFly'
+	  ),
+	  description: t(
+		'Photos et vidéos pour entreprises, artisans et marques en PACA. Reportage, portraits, réseaux sociaux, publicité. Déplacement dans toute la région. Devis gratuit.',
+		'Photography and video for businesses and brands across the French Riviera. Corporate reportage, portraits, social media, advertising. Request a free quote.'
+	  ),
+	  schema: {
+		'@context': 'https://schema.org',
+		'@type': 'Service',
+		name: t('Photographe vidéaste entreprise PACA', 'Corporate photographer videographer French Riviera'),
+		url: 'https://dfly.fr/communication',
+		image: [
+		  'https://dfly.fr/images/entreprise-shooting-parfum-flacon-paca.jpeg',
+		  'https://dfly.fr/images/entreprise-chantier-nuit-paca.jpeg',
+		],
+		description: t(
+		  'Photos et vidéos pour entreprises, artisans et marques en PACA. Reportage corporate, portraits, réseaux sociaux et publicité.',
+		  'Photography and video for businesses and brands in the French Riviera. Corporate reportage, portraits, social media and advertising.'
+		),
+		provider: {
+		  '@type': 'LocalBusiness',
+		  name: 'DFly Photographie & Vidéo',
+		  url: 'https://dfly.fr',
+		},
+		areaServed: [
+		  { '@type': 'City', name: 'Cannes' },
+		  { '@type': 'City', name: 'Antibes' },
+		  { '@type': 'City', name: 'Nice' },
+		  { '@type': 'City', name: 'Cagnes-sur-Mer' },
+		  { '@type': 'City', name: 'Grasse' },
+		  { '@type': 'City', name: 'Sophia Antipolis' },
+		  { '@type': 'AdministrativeArea', name: 'Alpes-Maritimes' },
+		  { '@type': 'AdministrativeArea', name: 'Var' },
+		],
+		serviceType: t('Photographie et vidéo entreprise', 'Business photography and videography'),
+		offers: {
+		  '@type': 'Offer',
+		  availability: 'https://schema.org/InStock',
+		  areaServed: 'Provence-Alpes-Côte d\'Azur',
+		  url: 'https://dfly.fr/contact',
+		  priceSpecification: {
+			'@type': 'PriceSpecification',
+			priceCurrency: 'EUR',
+		  }
+		},
+	  }
+	})
 
   return (
     <div>

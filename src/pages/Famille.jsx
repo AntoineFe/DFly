@@ -16,10 +16,59 @@ const IMG = {
 
 export default function Famille({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
-  usePageMeta({
-    title: t('Portrait & Famille — DFly Photographie · PACA', 'Portrait & Family Photography — DFly · French Riviera'),
-    description: t('Séances photo portrait et famille en Provence Alpes Côte d\'Azur. Des images simples, vraies et durables.', 'Portrait and family photo sessions in the French Riviera. Simple, true and lasting images.'),
-  })
+	usePageMeta({
+	  title: t(
+		'Photographe Famille & Portrait PACA | Séance Photo — DFly',
+		'Family & Portrait Photographer French Riviera | Photo Session — DFly'
+	  ),
+	  description: t(
+		'Séances photo famille, portrait et book en PACA. En extérieur ou en intérieur. Des images simples, vraies et durables. Devis gratuit.',
+		'Family, portrait and model portfolio sessions in the French Riviera. Outdoors or indoors. Simple, true and lasting images. Request a free quote.'
+	  ),
+	  schema: {
+		'@context': 'https://schema.org',
+		'@type': 'Service',
+		name: t('Photographe famille et portrait PACA', 'Family and portrait photographer French Riviera'),
+		url: 'https://dfly.fr/famille',
+		image: [
+		  'https://dfly.fr/images/famille-plage-portrait-cote-dazur.jpeg',
+		  'https://dfly.fr/images/famille-couple-jardin-provence.jpeg',
+		],
+		description: t(
+		  'Séances photo famille, portrait et book en PACA. En extérieur ou en intérieur, entre Nice et Cannes.',
+		  'Family, portrait and model portfolio sessions in the French Riviera. Outdoors or indoors, between Nice and Cannes.'
+		),
+		provider: {
+		  '@type': 'LocalBusiness',
+		  name: 'DFly Photographie & Vidéo',
+		  url: 'https://dfly.fr',
+		},
+		areaServed: [
+		  { '@type': 'City', name: 'Cannes' },
+		  { '@type': 'City', name: 'Antibes' },
+		  { '@type': 'City', name: 'Juan-les-Pins' },
+		  { '@type': 'City', name: 'Nice' },
+		  { '@type': 'City', name: 'Cagnes-sur-Mer' },
+		  { '@type': 'City', name: 'Villeneuve-Loubet' },
+		  { '@type': 'City', name: 'Saint-Laurent-du-Var' },
+		  { '@type': 'City', name: 'Vallauris' },
+		  { '@type': 'City', name: 'Golfe-Juan' },
+		  { '@type': 'City', name: 'Mandelieu-la-Napoule' },
+		  { '@type': 'AdministrativeArea', name: 'Alpes-Maritimes' },
+		],
+		serviceType: t('Photographie famille et portrait', 'Family and portrait photography'),
+		offers: {
+		  '@type': 'Offer',
+		  availability: 'https://schema.org/InStock',
+		  areaServed: 'Alpes-Maritimes',
+		  url: 'https://dfly.fr/contact',
+		  priceSpecification: {
+			'@type': 'PriceSpecification',
+			priceCurrency: 'EUR',
+		  }
+		},
+	  }
+	})
 
   return (
     <div>

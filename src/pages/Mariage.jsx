@@ -39,13 +39,18 @@ function Mariage({ lang, setLang }) {
       'Wedding Photographer & Videographer Nice · French Riviera — DFly'
     ),
     description: t(
-      'Photographe et vidéaste mariage à Nice, Cannes, Antibes, Monaco, Grasse et dans les Alpes-Maritimes. Style reportage naturel, approche cinéma. Photo + vidéo par père et fils.',
-      'Wedding photographer and videographer in Nice, Cannes, Antibes, Monaco. French Riviera & Côte d\'Azur. Natural documentary style, cinematic approach.'
+      'Photographe et vidéaste mariage à Nice, Cannes, Antibes, Monaco, Grasse et dans les Alpes-Maritimes. Style reportage naturel, approche cinéma. Photo + vidéo par père et fils. Devis gratuit.',
+      'Wedding photographer and videographer in Nice, Cannes, Antibes, Monaco. French Riviera & Côte d\'Azur. Natural documentary style, cinematic approach. Request a free quote.'
     ),
     schema: {
       '@context': 'https://schema.org',
       '@type': 'Service',
       name: t('Photographe vidéaste mariage Côte d\'Azur', 'Wedding photographer videographer French Riviera'),
+	  url: 'https://dfly.fr/mariage',
+	  image: [
+		  'https://dfly.fr/images/mariage/mariage-preparation-mariee-nice.jpg',
+		  'https://dfly.fr/images/mariage/mariage-drone-vue-aerienne-domaine-paca.jpeg',
+		],
       description: t(
         'Prestation photo et vidéo de mariage à Nice, Cannes, Antibes, Cagnes-sur-Mer, Monaco, Grasse et dans les Alpes-Maritimes. Style reportage naturel et cinématographique.',
         'Wedding photography and videography in Nice, Cannes, Antibes, Monaco, Grasse and the French Riviera. Natural documentary and cinematic style.'
@@ -66,6 +71,16 @@ function Mariage({ lang, setLang }) {
         { '@type': 'AdministrativeArea', name: 'Côte d\'Azur' },
       ],
       serviceType: t('Photographie et vidéo de mariage', 'Wedding photography and videography'),
+	  offers: {
+		  '@type': 'Offer',
+		  availability: 'https://schema.org/InStock',
+		  areaServed: 'Provence-Alpes-Côte d\'Azur',
+		  url: 'https://dfly.fr/mariage#devis', 
+		  priceSpecification: {
+			'@type': 'PriceSpecification',
+			priceCurrency: 'EUR',
+		  }
+		},
     },
   })
 

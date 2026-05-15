@@ -20,10 +20,16 @@ const inputStyle = {
 
 export default function Contact({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
-  usePageMeta({
-    title: t('Contact — DFly Photographie & Vidéo · PACA', 'Contact — DFly Photography & Film · French Riviera'),
-    description: t('Contactez DFly pour votre projet photo ou vidéo en Provence Alpes Côte d\'Azur.', 'Contact DFly for your photography or film project in the French Riviera.'),
-  })
+	usePageMeta({
+	  title: t(
+		'Contact & Devis Gratuit | DFly Photographe Vidéaste PACA',
+		'Contact & Free Quote | DFly Photographer Videographer French Riviera'
+	  ),
+	  description: t(
+		'Contactez Antoine & Rémi Ferrera pour votre projet photo ou vidéo en PACA. Réponse sous 48h, devis gratuit et sans engagement.',
+		'Contact Antoine & Rémi Ferrera for your photo or video project in the French Riviera. Reply within 48h, free quote, no commitment.'
+	  ),
+	})
 
   const [form, setForm] = useState({ prenom: '', nom: '', email: '', tel: '', sujet: '', message: '' })
   const [sending,  setSending]  = useState(false)

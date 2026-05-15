@@ -16,10 +16,61 @@ const IMG = {
 
 export default function Spectacle({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
-  usePageMeta({
-    title: t('Photo & Vidéo Événement — DFly · PACA', 'Event Photography & Film — DFly · French Riviera'),
-    description: t('Captation photo et vidéo d\'événements et spectacles en Provence Alpes Côte d\'Azur. Multi-caméra, live, concerts, conférences.', 'Event and live performance photography and film in the French Riviera. Multi-camera, concerts, conferences.'),
-  })
+	usePageMeta({
+	  title: t(
+		'Photographe Vidéaste Spectacle & Événement PACA — DFly',
+		'Event & Show Photographer Videographer French Riviera — DFly'
+	  ),
+	  description: t(
+		'Photo et vidéo de spectacles, concerts, conférences et événements en PACA. Captation multi-caméra, live, reportage. De Menton à Toulon. Devis gratuit.',
+		'Photography and video for shows, concerts, conferences and events in the French Riviera. Multi-camera, live coverage, reportage. Request a free quote.'
+	  ),
+	  schema: {
+		'@context': 'https://schema.org',
+		'@type': 'Service',
+		name: t('Photographe vidéaste spectacle et événement PACA', 'Event and show photographer videographer French Riviera'),
+		url: 'https://dfly.fr/spectacle',
+		image: [
+		  'https://dfly.fr/images/evenement-ballet-scene-nice.jpg',
+		  'https://dfly.fr/images/evenement-theatre-spectacle-paca.jpg',
+		],
+		description: t(
+		  'Photo et vidéo de spectacles, concerts, conférences et événements en PACA. Captation multi-caméra et live. De Menton à Toulon.',
+		  'Photography and video for shows, concerts, conferences and events across the French Riviera. Multi-camera and live coverage.'
+		),
+		provider: {
+		  '@type': 'LocalBusiness',
+		  name: 'DFly Photographie & Vidéo',
+		  url: 'https://dfly.fr',
+		},
+		areaServed: [
+		  { '@type': 'City', name: 'Nice' },
+		  { '@type': 'City', name: 'Cannes' },
+		  { '@type': 'City', name: 'Toulon' },
+		  { '@type': 'City', name: 'Antibes' },
+		  { '@type': 'City', name: 'Juan-les-Pins' },
+		  { '@type': 'City', name: 'Fréjus' },
+		  { '@type': 'City', name: 'Saint-Raphaël' },
+		  { '@type': 'City', name: 'Saint-Tropez' },
+		  { '@type': 'City', name: 'Hyères' },
+		  { '@type': 'City', name: 'Grasse' },
+		  { '@type': 'City', name: 'Menton' },
+		  { '@type': 'AdministrativeArea', name: 'Alpes-Maritimes' },
+		  { '@type': 'AdministrativeArea', name: 'Var' },
+		],
+		serviceType: t('Photographie et vidéo spectacle et événement', 'Event and show photography and videography'),
+		offers: {
+		  '@type': 'Offer',
+		  availability: 'https://schema.org/InStock',
+		  areaServed: 'Provence-Alpes-Côte d\'Azur',
+		  url: 'https://dfly.fr/contact',
+		  priceSpecification: {
+			'@type': 'PriceSpecification',
+			priceCurrency: 'EUR',
+		  }
+		},
+	  }
+	})
 
   return (
     <div>
@@ -52,7 +103,7 @@ export default function Spectacle({ lang, setLang }) {
             lineHeight: 0.9, fontWeight: 400, margin: 0, letterSpacing: '-0.005em',
           }}>
             {t(
-              <>{t('Le moment', 'The moment')}<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>{t('ne revient pas.', 'does not repeat.')}</em></>,
+              <>{t('L\'énergie', 'The ernergy')}<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>{t('du moment.', 'of the moment.')}</em></>,
               <>The moment<br /><em style={{ fontStyle: 'italic', fontWeight: 300 }}>does not repeat.</em></>
             )}
           </h1>

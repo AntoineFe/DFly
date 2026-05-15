@@ -18,10 +18,61 @@ const IMG = {
 export default function Immobilier({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
   usePageMeta({
-    title: t('Photographie Immobilière — DFly · PACA', 'Real Estate Photography — DFly · French Riviera'),
-    description: t('Photos et vidéos immobilières professionnelles en Provence Alpes Côte d\'Azur. Intérieurs, extérieurs, vues aériennes par drone.', 'Professional real estate photography and film in the French Riviera. Interiors, exteriors, aerial drone shots.'),
+    title: t('Photographe Immobilier PACA | Photos & Vidéos de biens — DFly', 'Real Estate Photographer PACA | Photos & Videos — DFly'),
+    description: t(
+      'Photos et vidéos immobilières professionnelles en PACA. Agences, promoteurs, architectes et particuliers. Intérieurs, drone, livraison 72h. Devis gratuit.',
+      'Professional real estate photography & video in the French Riviera. Interiors, exteriors, aerial drone. Delivered within 72h. Request a free quote.'
+    ),
+    schema: {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: t('Photographe vidéaste immobilier PACA', 'Real estate photographer videographer French Riviera'),
+      url: 'https://dfly.fr/immobilier',
+      image: [
+        'https://dfly.fr/images/immobilier-facade-residence-paca.jpeg',
+        'https://dfly.fr/images/immobilier-drone-domaine-vignes-var.jpg',
+      ],
+      description: t(
+        'Photos et vidéos immobilières professionnelles en PACA. Intérieurs, extérieurs, drone. Pour agences, promoteurs, architectes et particuliers.',
+        'Professional real estate photography and video in the French Riviera. Interiors, exteriors, drone. For agencies, developers, architects and private owners.'
+      ),
+      provider: {
+        '@type': 'LocalBusiness',
+        name: 'DFly Photographie & Vidéo',
+        url: 'https://dfly.fr',
+      },
+      areaServed: [
+        { '@type': 'AdministrativeArea', name: 'Provence-Alpes-Côte d\'Azur' },
+        { '@type': 'AdministrativeArea', name: 'Alpes-Maritimes' },
+        { '@type': 'AdministrativeArea', name: 'Var' },
+      ],
+      serviceType: t('Photographie et vidéo immobilière', 'Real estate photography and videography'),
+      offers: {
+        '@type': 'Offer',
+        availability: 'https://schema.org/InStock',
+        areaServed: [
+		  { '@type': 'City', name: 'Cannes' },
+		  { '@type': 'City', name: 'Antibes' },
+		  { '@type': 'City', name: 'Nice' },
+		  { '@type': 'City', name: 'Juan-les-Pins' },
+		  { '@type': 'City', name: 'Golfe-Juan' },
+		  { '@type': 'City', name: 'Mandelieu-la-Napoule' },
+		  { '@type': 'City', name: 'Menton' },
+		  { '@type': 'City', name: 'Cagnes-sur-Mer' },
+		  { '@type': 'City', name: 'Vallauris' },
+		  { '@type': 'City', name: 'Villeneuve-Loubet' },
+		  { '@type': 'AdministrativeArea', name: 'Alpes-Maritimes' },
+		  { '@type': 'AdministrativeArea', name: 'Var' },
+		],
+        url: 'https://dfly.fr/contact',
+        priceSpecification: {
+          '@type': 'PriceSpecification',
+          priceCurrency: 'EUR',
+        }
+      },
+    }
   })
-
+  
   return (
     <div>
       <TopNav scheme="over-hero" lang={lang} setLang={setLang} />
