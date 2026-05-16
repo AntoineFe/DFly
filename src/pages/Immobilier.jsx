@@ -23,6 +23,7 @@ export default function Immobilier({ lang, setLang }) {
       'Photos et vidéos immobilières professionnelles en PACA. Agences, promoteurs, architectes et particuliers. Intérieurs, drone, livraison 72h. Devis gratuit.',
       'Professional real estate photography & video in the French Riviera. Interiors, exteriors, aerial drone. Delivered within 72h. Request a free quote.'
     ),
+    ogImage: 'og-accueil.jpg',
     schema: {
       '@context': 'https://schema.org',
       '@type': 'Service',

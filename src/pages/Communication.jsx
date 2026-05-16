@@ -25,6 +25,7 @@ export default function Communication({ lang, setLang }) {
 		'Photos et vidéos pour entreprises, artisans et marques en PACA. Reportage, portraits, réseaux sociaux, publicité. Déplacement dans toute la région. Devis gratuit.',
 		'Photography and video for businesses and brands across the French Riviera. Corporate reportage, portraits, social media, advertising. Request a free quote.'
 	  ),
+	  ogImage: 'og-accueil.jpg',
 	  schema: {
 		'@context': 'https://schema.org',
 		'@type': 'Service',

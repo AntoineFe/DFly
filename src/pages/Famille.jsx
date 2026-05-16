@@ -25,6 +25,7 @@ export default function Famille({ lang, setLang }) {
 		'Séances photo famille, portrait et book en PACA. En extérieur ou en intérieur. Des images simples, vraies et durables. Devis gratuit.',
 		'Family, portrait and model portfolio sessions in the French Riviera. Outdoors or indoors. Simple, true and lasting images. Request a free quote.'
 	  ),
+	  ogImage: 'og-accueil.jpg',
 	  schema: {
 		'@context': 'https://schema.org',
 		'@type': 'Service',

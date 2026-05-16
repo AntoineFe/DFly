@@ -25,6 +25,7 @@ export default function Spectacle({ lang, setLang }) {
 		'Photo et vidéo de spectacles, concerts, conférences et événements en PACA. Captation multi-caméra, live, reportage. De Menton à Toulon. Devis gratuit.',
 		'Photography and video for shows, concerts, conferences and events in the French Riviera. Multi-camera, live coverage, reportage. Request a free quote.'
 	  ),
+	  ogImage: 'og-accueil.jpg',
 	  schema: {
 		'@context': 'https://schema.org',
 		'@type': 'Service',

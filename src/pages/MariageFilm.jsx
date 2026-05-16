@@ -11,6 +11,7 @@ export default function MariageFilm({ lang, setLang }) {
   usePageMeta({
     title: t('Film de mariage — DFly · PACA', 'Wedding Film — DFly · French Riviera'),
     description: t('Films de mariage cinématographiques en Provence Alpes Côte d\'Azur. Teaser, film intégral, drone.', 'Cinematic wedding films in the French Riviera. Teaser, full film, drone footage.'),
+    ogImage: 'og-mariage.jpg',
   })
 
   return (

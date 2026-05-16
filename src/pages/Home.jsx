@@ -29,6 +29,7 @@ export default function Home({ lang, setLang }) {
   usePageMeta({
     title: t('DFly — Photographie & Vidéo · Provence Alpes Côte d\'Azur', 'DFly — Photography & Film · French Riviera'),
     description: t('Mariage, immobilier, entreprise, événement, portrait. Photo et vidéo en Provence Alpes Côte d\'Azur.', 'Wedding, real estate, business, events, portraits. Photography and film in the French Riviera.'),
+    ogImage: 'og-accueil.jpg',
   })
 
   return (

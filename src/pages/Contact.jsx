@@ -29,6 +29,7 @@ export default function Contact({ lang, setLang }) {
 		'Contactez Antoine & Rémi Ferrera pour votre projet photo ou vidéo en PACA. Réponse sous 48h, devis gratuit et sans engagement.',
 		'Contact Antoine & Rémi Ferrera for your photo or video project in the French Riviera. Reply within 48h, free quote, no commitment.'
 	  ),
+	  ogImage: 'og-accueil.jpg',
 	})
 
   const [form, setForm] = useState({ prenom: '', nom: '', email: '', tel: '', sujet: '', message: '' })

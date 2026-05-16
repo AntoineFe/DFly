@@ -1,10 +1,18 @@
 import { useEffect } from 'react'
 
-export default function usePageMeta({ title, description, schema }) {
+const SITE_URL = import.meta.env.VITE_SITE_URL || 'https://dfly.fr'
+
+export default function usePageMeta({ title, description, ogImage, schema }) {
   useEffect(() => {
     document.title = title
-    const el = document.querySelector('meta[name="description"]')
-    if (el) el.setAttribute('content', description)
+    const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val) }
+    setMeta('meta[name="description"]', description)
+
+    if (ogImage) {
+      const url = `${SITE_URL}/assets/${ogImage}`
+      setMeta('meta[property="og:image"]', url)
+      setMeta('meta[name="twitter:image"]', url)
+    }
 
     let scriptEl = document.getElementById('page-schema')
     if (schema) {
@@ -18,5 +26,5 @@ export default function usePageMeta({ title, description, schema }) {
     } else if (scriptEl) {
       scriptEl.remove()
     }
-  }, [title, description, schema])
+  }, [title, description, ogImage, schema])
 }

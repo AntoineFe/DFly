@@ -42,6 +42,7 @@ function Mariage({ lang, setLang }) {
       'Photographe et vidéaste mariage à Nice, Cannes, Antibes, Monaco, Grasse et dans les Alpes-Maritimes. Style reportage naturel, approche cinéma. Photo + vidéo par père et fils. Devis gratuit.',
       'Wedding photographer and videographer in Nice, Cannes, Antibes, Monaco. French Riviera & Côte d\'Azur. Natural documentary style, cinematic approach. Request a free quote.'
     ),
+    ogImage: 'og-mariage.jpg',
     schema: {
       '@context': 'https://schema.org',
       '@type': 'Service',
