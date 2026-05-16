@@ -10,17 +10,17 @@ $PAGES = [
   '/mariage' => [
     'image'       => 'og-mariage.jpg',
     'title'       => 'Photographe Vidéaste Mariage Nice · Côte d\'Azur — DFly',
-    'description' => 'Photographe et vidéaste mariage à Nice, Cannes, Antibes, Monaco. Style reportage naturel, approche cinéma. Photo + vidéo par père et fils. Devis gratuit.',
+    'description' => 'Photographe et vidéaste mariage à Nice, Cannes, Antibes, Monaco. Style reportage naturel, approche cinéma. Devis gratuit.',
   ],
   '/mariage/film' => [
     'image'       => 'og-mariage.jpg',
     'title'       => 'Film de mariage — DFly · PACA',
-    'description' => 'Films de mariage cinématographiques en Provence Alpes Côte d\'Azur. Teaser, film intégral, drone.',
+    'description' => 'Films de mariage cinématographiques en Provence Alpes Côte d\'Azur. Teaser, film souvenir, drone.',
   ],
   '/immobilier' => [
     'image'       => 'og-accueil.jpg',
     'title'       => 'Photographe Immobilier PACA | Photos & Vidéos de biens — DFly',
-    'description' => 'Photos et vidéos immobilières professionnelles en PACA. Intérieurs, drone, livraison 72h. Devis gratuit.',
+    'description' => 'Photos et vidéos immobilières professionnelles en PACA, Cagnes-sur-mer, Antibes, Nice, Cannes... Intérieurs, extérieurs, drone, livraison 72h. Devis gratuit.',
   ],
   '/communication' => [
     'image'       => 'og-accueil.jpg',
