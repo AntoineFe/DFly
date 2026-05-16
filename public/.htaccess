@@ -26,10 +26,10 @@ Options -MultiViews
   # Ancienne page contact
   RewriteRule ^contact\.php$ /contact? [R=301,L]
 
-  # React Router - réécriture interne vers index.html
+  # React Router - réécriture interne vers og-router.php (injection OG par page)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^ index.html [QSA,L]
+  RewriteRule ^ og-router.php [QSA,L]
 
 </IfModule>
 
