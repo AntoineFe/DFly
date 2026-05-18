@@ -22,8 +22,8 @@ const MOMENTS = [
   { id: "preparatifs", label: "Préparatifs",                       en: "Getting ready",                       h: 1.5   },
   { id: "mairie",      label: "Mairie",                            en: "Civil ceremony",                      h: 1   },
   { id: "ceremonie",   label: "Cérémonie religieuse ou laïque",    en: "Religious or civil ceremony",         h: 1.5 },
-  { id: "groupes",     label: "Photos de groupes",                 en: "Group photos",                        h: 0.5 },
-  { id: "couple",      label: "Photos de couple",                  en: "Couple portraits",                    h: 0.5 },
+  { id: "groupes",     label: "Séance photo de groupes",              en: "Group photo session",                 h: 0.5 },
+  { id: "couple",      label: "Séance photo de couple",               en: "Couple photo session",                h: 0.5 },
   { id: "cocktail",    label: "Cocktail / Vin d'honneur",          en: "Cocktail hour", opts: [
     { v: "complet", label: "Couverture complète",          en: "Full coverage",        h: 1.5   },
     { v: "debut",   label: "Jusqu'au début seulement",     en: "Beginning only",       h: 0.5 },
