@@ -87,7 +87,7 @@ function ResendBlock() {
           </button>
         </div>
       ) : step === 'done' ? (
-        <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 15,
+        <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 19,
           color: 'var(--fg-muted)', lineHeight: 1.65, textAlign: 'center' }}>
           {message}
         </p>
@@ -112,9 +112,9 @@ function ResendBlock() {
         </form>
       ) : (
         <form onSubmit={submitName}>
-          <p style={{ fontFamily: 'var(--serif)', fontSize: 14, color: 'var(--fg-muted)',
+          <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
             fontStyle: 'italic', marginBottom: 20, lineHeight: 1.6 }}>
-            Cet email n'est pas reconnu. Indiquez votre nom pour que nous vous identifions.
+            Cet email n'est pas reconnu.<br>Indiquez votre nom pour que nous vous identifions.
           </p>
           <label style={labelStyle}>Votre nom</label>
           <input
