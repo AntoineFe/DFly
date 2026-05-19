@@ -19,20 +19,28 @@ function MetaForm({ ent, path, meta, onSave, onClose, authFetch }) {
   })
   const [saving,  setSaving]  = useState(false)
   const [success, setSuccess] = useState(false)
+  const [saveErr, setSaveErr] = useState('')
 
   const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
 
   async function save() {
     setSaving(true)
     setSuccess(false)
-    const r = await authFetch('galerie-meta.php', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ ent, path, meta: form }),
-    })
-    const d = await r.json()
-    setSaving(false)
-    if (d.ok) { setSuccess(true); onSave(d.meta) }
+    setSaveErr('')
+    try {
+      const r = await authFetch('galerie-meta.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ ent, path, meta: form }),
+      })
+      const d = await r.json()
+      if (d.ok) { setSuccess(true); onSave(d.meta) }
+      else setSaveErr(d.error || 'Erreur inconnue')
+    } catch (e) {
+      setSaveErr(e.message || 'Erreur réseau')
+    } finally {
+      setSaving(false)
+    }
   }
 
   const labelStyle = { fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.28em',
@@ -91,7 +99,11 @@ function MetaForm({ ent, path, meta, onSave, onClose, authFetch }) {
         }}>Fermer</button>
         {success && (
           <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic',
-            fontSize: 13, color: 'var(--sage)' }}>✓ Enregistré</span>
+            fontSize: 13, color: 'green' }}>✓ Enregistré</span>
+        )}
+        {saveErr && (
+          <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic',
+            fontSize: 13, color: '#c0392b' }}>✗ {saveErr}</span>
         )}
       </div>
     </div>
@@ -196,18 +208,25 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
   const path = dir?.path || ''
   const name = dir?.name || ent
 
-  async function loadChildren() {
+  const load = useCallback(async () => {
     if (data) return
     setLoading(true)
     const qs = new URLSearchParams({ ent, path })
     const r  = await authFetch(`galerie-browse.php?${qs}`)
     const d  = await r.json()
-    if (d.ok) setData(d)
+    if (d.ok) {
+      setData(d)
+      if (d.meta) setMeta(d.meta)
+    }
     setLoading(false)
-  }
+  }, [data, ent, path, authFetch])
+
+  useEffect(() => {
+    if (depth === 0) load()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function toggle() {
-    if (!open) loadChildren()
+    if (!open) load()
     setOpen(o => !o)
   }
 
