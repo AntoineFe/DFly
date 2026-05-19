@@ -73,9 +73,9 @@ function ResendBlock() {
     <div style={{ marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 32 }}>
       {!open ? (
         <div style={{ textAlign: 'center' }}>
-          <p style={{ fontFamily: 'var(--serif)', fontSize: 14, color: 'var(--fg-muted)',
+          <p style={{ fontFamily: 'var(--serif)', fontSize: 16, color: 'var(--fg-muted)',
             fontWeight: 300, lineHeight: 1.6, marginBottom: 16 }}>
-            Vous n'avez pas reçu votre lien d'accès ?
+            Vous ne connaissez pas vos codes utilisateur et mote de passe et ne trouvez pas votre lien d'accès ?
           </p>
           <button onClick={() => setOpen(true)} style={{
             background: 'none', border: '1px solid var(--line)',
