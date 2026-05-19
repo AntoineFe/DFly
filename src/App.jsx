@@ -54,8 +54,12 @@ function NavLogger() {
 
 function ProtectedRoute({ children, adminOnly }) {
   const { user, loading } = useGalerieAuth()
+  const location = useLocation()
   if (loading) return null
-  if (!user)   return <Navigate to="/galerie" replace />
+  if (!user) {
+    const redirect = encodeURIComponent(location.pathname + location.search)
+    return <Navigate to={`/galerie?redirect=${redirect}`} replace />
+  }
   if (adminOnly && !user.auths?.admin?.includes('R')) return <Navigate to="/galerie/albums" replace />
   return children
 }

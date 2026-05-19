@@ -12,6 +12,15 @@ export default function GalerieLogin() {
   const [error,    setError]    = useState('')
   const [loading,  setLoading]  = useState(false)
 
+  const redirect = searchParams.get('redirect')
+  function dest() {
+    if (redirect) {
+      const decoded = decodeURIComponent(redirect)
+      if (decoded.startsWith('/galerie')) return decoded
+    }
+    return '/galerie/albums'
+  }
+
   // Connexion automatique via lien ?cle=
   useEffect(() => {
     const cle = searchParams.get('cle')
@@ -19,7 +28,7 @@ export default function GalerieLogin() {
     setLoading(true)
     loginWithCle(cle)
       .then(d => {
-        if (d.ok) navigate('/galerie/albums', { replace: true })
+        if (d.ok) navigate(dest(), { replace: true })
         else setError('Lien invalide ou expiré')
       })
       .catch(() => setError('Erreur de connexion'))
@@ -33,7 +42,7 @@ export default function GalerieLogin() {
     const d = await login(login_, password).catch(() => ({ ok: false }))
     setLoading(false)
     if (d.ok) {
-      navigate('/galerie/albums')
+      navigate(dest())
     } else {
       setError(d.error || 'Identifiant ou mot de passe incorrect')
     }
