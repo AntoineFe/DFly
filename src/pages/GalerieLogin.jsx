@@ -4,6 +4,8 @@ import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
 
 const BASE = import.meta.env.BASE_URL
+const isEN = navigator.language?.startsWith('en') ?? false
+const t = (fr, en) => isEN ? en : fr
 
 const inputStyle = {
   width: '100%', padding: '12px 14px', boxSizing: 'border-box',
@@ -32,16 +34,16 @@ function ResendBlock() {
       })
       const d = await res.json()
       if (d.ok) {
-        setMessage(`Votre lien a été envoyé à ${email}. Pensez à vérifier vos spams.`)
+        setMessage(t(`Votre lien a été envoyé à ${email}. Pensez à vérifier vos spams.`, `Your link has been sent to ${email}. Please check your spam folder.`))
         setStep('done')
       } else if (d.notFound) {
         setStep('name')
       } else {
-        setMessage("Une erreur s'est produite. Contactez-nous directement.")
+        setMessage(t("Une erreur s'est produite. Contactez-nous directement.", 'An error occurred. Please contact us directly.'))
         setStep('done')
       }
     } catch {
-      setMessage("Une erreur s'est produite. Contactez-nous directement.")
+      setMessage(t("Une erreur s'est produite. Contactez-nous directement.", 'An error occurred. Please contact us directly.'))
       setStep('done')
     } finally {
       setBusy(false)
@@ -59,7 +61,7 @@ function ResendBlock() {
       })
     } catch { /* best-effort */ }
     setBusy(false)
-    setMessage('Nous vous enverrons votre lien dans les meilleurs délais.')
+    setMessage(t('Nous vous enverrons votre lien dans les meilleurs délais.', 'We will send you your link as soon as possible.'))
     setStep('done')
   }
 
@@ -75,7 +77,7 @@ function ResendBlock() {
         <div style={{ textAlign: 'center' }}>
           <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
             fontWeight: 300, lineHeight: 1.6, marginBottom: 16 }}>
-            Vous ne connaissez pas vos codes utilisateur et mot de passe et ne trouvez pas votre lien d'accès ?
+            {t("Vous ne connaissez pas vos codes utilisateur et mot de passe et ne trouvez pas votre lien d'accès ?", "Don't know your login credentials and can't find your access link?")}
           </p>
           <button onClick={() => setOpen(true)} style={{
             background: 'none', border: '1px solid var(--line)',
@@ -83,7 +85,7 @@ function ResendBlock() {
             fontFamily: 'var(--sans)', fontSize: 10.5,
             letterSpacing: '0.24em', textTransform: 'uppercase', color: 'var(--fg)',
           }}>
-            Cliquez ici, nous vous le renvoyons
+            {t('Cliquez ici, nous vous le renvoyons', 'Click here, we will send it again')}
           </button>
         </div>
       ) : step === 'done' ? (
@@ -93,7 +95,7 @@ function ResendBlock() {
         </p>
       ) : step === 'email' ? (
         <form onSubmit={submitEmail}>
-          <label style={labelStyle}>Votre adresse email</label>
+          <label style={labelStyle}>{t('Votre adresse email', 'Your email address')}</label>
           <input
             type="email" required autoFocus
             value={email} onChange={e => setEmail(e.target.value)}
@@ -107,16 +109,19 @@ function ResendBlock() {
             letterSpacing: '0.28em', textTransform: 'uppercase',
             cursor: busy || !email ? 'default' : 'pointer',
           }}>
-            {busy ? 'Envoi…' : 'Recevoir mon lien'}
+            {busy ? t('Envoi…', 'Sending…') : t('Recevoir mon lien', 'Send me my link')}
           </button>
         </form>
       ) : (
         <form onSubmit={submitName}>
           <p style={{ fontFamily: 'var(--serif)', fontSize: 14, color: 'var(--fg-muted)',
             fontStyle: 'italic', marginBottom: 20, lineHeight: 1.6 }}>
-            Cet email n'est pas reconnu. Indiquez votre nom pour que nous vous identifions.
+            {t(
+              'Cet email n\'est pas reconnu. Indiquez votre nom pour que nous vous identifions.',
+              'This email is not recognised. Please enter your name so we can identify you.'
+            )}
           </p>
-          <label style={labelStyle}>Votre nom</label>
+          <label style={labelStyle}>{t('Votre nom', 'Your name')}</label>
           <input
             type="text" required autoFocus
             value={name} onChange={e => setName(e.target.value)}
@@ -130,7 +135,7 @@ function ResendBlock() {
             letterSpacing: '0.28em', textTransform: 'uppercase',
             cursor: busy || !name ? 'default' : 'pointer',
           }}>
-            {busy ? 'Envoi…' : 'Envoyer ma demande'}
+            {busy ? t('Envoi…', 'Sending…') : t('Envoyer ma demande', 'Submit my request')}
           </button>
         </form>
       )}
@@ -166,9 +171,9 @@ export default function GalerieLogin() {
     loginWithCle(cle)
       .then(d => {
         if (d.ok) navigate(dest(), { replace: true })
-        else setError('Lien invalide ou expiré')
+        else setError(t('Lien invalide ou expiré', 'Invalid or expired link'))
       })
-      .catch(() => setError('Erreur de connexion'))
+      .catch(() => setError(t('Erreur de connexion', 'Connection error')))
       .finally(() => setLoading(false))
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -181,7 +186,7 @@ export default function GalerieLogin() {
     if (d.ok) {
       navigate(dest())
     } else {
-      setError(d.error || 'Identifiant ou mot de passe incorrect')
+      setError(d.error || t('Identifiant ou mot de passe incorrect', 'Incorrect username or password'))
     }
   }
 
@@ -200,7 +205,7 @@ export default function GalerieLogin() {
           </Link>
           <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em',
             textTransform: 'uppercase', color: 'var(--fg-muted)', marginTop: 6 }}>
-            Galerie privée
+            {t('Galerie privée', 'Private gallery')}
           </div>
         </div>
 
@@ -208,7 +213,7 @@ export default function GalerieLogin() {
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.28em',
               textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 8 }}>
-              Identifiant
+              {t('Identifiant', 'Username')}
             </div>
             <input
               type="text" value={login_} onChange={e => setLogin(e.target.value)}
@@ -220,7 +225,7 @@ export default function GalerieLogin() {
           <div style={{ marginBottom: 32 }}>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.28em',
               textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 8 }}>
-              Mot de passe
+              {t('Mot de passe', 'Password')}
             </div>
             <input
               type="password" value={password} onChange={e => setPassword(e.target.value)}
@@ -244,7 +249,7 @@ export default function GalerieLogin() {
             letterSpacing: '0.32em', textTransform: 'uppercase',
             cursor: loading ? 'default' : 'pointer',
           }}>
-            {loading ? 'Connexion…' : 'Se connecter'}
+            {loading ? t('Connexion…', 'Signing in…') : t('Se connecter', 'Sign in')}
           </button>
         </form>
 
