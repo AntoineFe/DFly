@@ -3,6 +3,143 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
 
+const BASE = import.meta.env.BASE_URL
+
+const inputStyle = {
+  width: '100%', padding: '12px 14px', boxSizing: 'border-box',
+  border: '1px solid var(--line)', background: 'var(--bg)',
+  color: 'var(--fg)', fontSize: 15, fontFamily: 'inherit', outline: 'none',
+}
+
+// ── Bloc "renvoi de lien" ─────────────────────────────────────────────────────
+
+function ResendBlock() {
+  const [open,    setOpen]    = useState(false)
+  const [email,   setEmail]   = useState('')
+  const [name,    setName]    = useState('')
+  const [step,    setStep]    = useState('email')  // 'email' | 'name' | 'done'
+  const [busy,    setBusy]    = useState(false)
+  const [message, setMessage] = useState('')
+
+  async function submitEmail(e) {
+    e.preventDefault()
+    setBusy(true)
+    try {
+      const res = await fetch(`${BASE}services/galerie-resend-link.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      const d = await res.json()
+      if (d.ok) {
+        setMessage(`Votre lien a été envoyé à ${email}. Pensez à vérifier vos spams.`)
+        setStep('done')
+      } else if (d.notFound) {
+        setStep('name')
+      } else {
+        setMessage("Une erreur s'est produite. Contactez-nous directement.")
+        setStep('done')
+      }
+    } catch {
+      setMessage("Une erreur s'est produite. Contactez-nous directement.")
+      setStep('done')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function submitName(e) {
+    e.preventDefault()
+    setBusy(true)
+    try {
+      await fetch(`${BASE}services/galerie-resend-link.php`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, name }),
+      })
+    } catch { /* best-effort */ }
+    setBusy(false)
+    setMessage('Nous vous enverrons votre lien dans les meilleurs délais.')
+    setStep('done')
+  }
+
+  const labelStyle = {
+    display: 'block', fontFamily: 'var(--sans)', fontSize: 10.5,
+    letterSpacing: '0.28em', textTransform: 'uppercase',
+    color: 'var(--fg-muted)', marginBottom: 8,
+  }
+
+  return (
+    <div style={{ marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 32 }}>
+      {!open ? (
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontFamily: 'var(--serif)', fontSize: 14, color: 'var(--fg-muted)',
+            fontWeight: 300, lineHeight: 1.6, marginBottom: 16 }}>
+            Vous n'avez pas reçu votre lien d'accès ?
+          </p>
+          <button onClick={() => setOpen(true)} style={{
+            background: 'none', border: '1px solid var(--line)',
+            padding: '10px 20px', cursor: 'pointer',
+            fontFamily: 'var(--sans)', fontSize: 10.5,
+            letterSpacing: '0.24em', textTransform: 'uppercase', color: 'var(--fg)',
+          }}>
+            Cliquez ici, nous vous le renvoyons
+          </button>
+        </div>
+      ) : step === 'done' ? (
+        <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 15,
+          color: 'var(--fg-muted)', lineHeight: 1.65, textAlign: 'center' }}>
+          {message}
+        </p>
+      ) : step === 'email' ? (
+        <form onSubmit={submitEmail}>
+          <label style={labelStyle}>Votre adresse email</label>
+          <input
+            type="email" required autoFocus
+            value={email} onChange={e => setEmail(e.target.value)}
+            style={{ ...inputStyle, marginBottom: 16 }}
+          />
+          <button type="submit" disabled={busy || !email} style={{
+            width: '100%', padding: '12px',
+            background: busy || !email ? 'var(--line)' : 'var(--fg)',
+            color: busy || !email ? 'var(--fg-muted)' : 'var(--bg)',
+            border: 'none', fontFamily: 'var(--sans)', fontSize: 11,
+            letterSpacing: '0.28em', textTransform: 'uppercase',
+            cursor: busy || !email ? 'default' : 'pointer',
+          }}>
+            {busy ? 'Envoi…' : 'Recevoir mon lien'}
+          </button>
+        </form>
+      ) : (
+        <form onSubmit={submitName}>
+          <p style={{ fontFamily: 'var(--serif)', fontSize: 14, color: 'var(--fg-muted)',
+            fontStyle: 'italic', marginBottom: 20, lineHeight: 1.6 }}>
+            Cet email n'est pas reconnu. Indiquez votre nom pour que nous vous identifions.
+          </p>
+          <label style={labelStyle}>Votre nom</label>
+          <input
+            type="text" required autoFocus
+            value={name} onChange={e => setName(e.target.value)}
+            style={{ ...inputStyle, marginBottom: 16 }}
+          />
+          <button type="submit" disabled={busy || !name} style={{
+            width: '100%', padding: '12px',
+            background: busy || !name ? 'var(--line)' : 'var(--fg)',
+            color: busy || !name ? 'var(--fg-muted)' : 'var(--bg)',
+            border: 'none', fontFamily: 'var(--sans)', fontSize: 11,
+            letterSpacing: '0.28em', textTransform: 'uppercase',
+            cursor: busy || !name ? 'default' : 'pointer',
+          }}>
+            {busy ? 'Envoi…' : 'Envoyer ma demande'}
+          </button>
+        </form>
+      )}
+    </div>
+  )
+}
+
+// ── Page login ────────────────────────────────────────────────────────────────
+
 export default function GalerieLogin() {
   const { login, loginWithCle } = useGalerieAuth()
   const navigate       = useNavigate()
@@ -76,11 +213,7 @@ export default function GalerieLogin() {
             <input
               type="text" value={login_} onChange={e => setLogin(e.target.value)}
               autoComplete="username" required
-              style={{
-                width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                border: '1px solid var(--line)', background: 'var(--bg)',
-                color: 'var(--fg)', fontSize: 15, fontFamily: 'inherit',
-              }}
+              style={inputStyle}
             />
           </div>
 
@@ -92,11 +225,7 @@ export default function GalerieLogin() {
             <input
               type="password" value={password} onChange={e => setPassword(e.target.value)}
               autoComplete="current-password" required
-              style={{
-                width: '100%', padding: '12px 14px', boxSizing: 'border-box',
-                border: '1px solid var(--line)', background: 'var(--bg)',
-                color: 'var(--fg)', fontSize: 15, fontFamily: 'inherit',
-              }}
+              style={inputStyle}
             />
           </div>
 
@@ -118,6 +247,8 @@ export default function GalerieLogin() {
             {loading ? 'Connexion…' : 'Se connecter'}
           </button>
         </form>
+
+        <ResendBlock />
       </div>
     </div>
   )
