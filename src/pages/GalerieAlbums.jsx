@@ -388,12 +388,19 @@ export default function GalerieAlbums() {
   const [searchParams] = useSearchParams()
   const pathParam      = searchParams.get('path') || ''
 
-  const entParam       = searchParams.get('ent') || ''
+  const entIdParam     = searchParams.get('i') || ''
 
   const [data,        setData]        = useState(null)
   const [loading,     setLoading]     = useState(true)
   const [lightbox,    setLightbox]    = useState(null)
-  const [selectedEnt, setSelectedEnt] = useState(entId || entParam || null)
+  const [selectedEnt, setSelectedEnt] = useState(() => {
+    if (entId) return entId
+    if (entIdParam && user?.ents) {
+      const found = user.ents.find(e => String(e.id) === entIdParam)
+      return found?.shortDesc || null
+    }
+    return null
+  })
   const defaultCols = () => {
     const available = Math.min(window.innerWidth, 1200) - 80
     return Math.max(2, Math.floor(available / 200))
@@ -462,7 +469,9 @@ export default function GalerieAlbums() {
   useEffect(() => { load() }, [load])
 
   function entQs() {
-    return selectedEnt && !entId ? `&ent=${encodeURIComponent(selectedEnt)}` : ''
+    if (!selectedEnt || entId) return ''
+    const found = user?.ents?.find(e => e.shortDesc === selectedEnt)
+    return found ? `&i=${found.id}` : ''
   }
 
   function openDir(name) {
@@ -508,7 +517,7 @@ export default function GalerieAlbums() {
           />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {filteredEnts.map(e => (
-              <button key={e.id} onClick={() => { setSelectedEnt(e.shortDesc); navigate(`/galerie/albums?ent=${encodeURIComponent(e.shortDesc)}`) }} style={{
+              <button key={e.id} onClick={() => { setSelectedEnt(e.shortDesc); navigate(`/galerie/albums?i=${e.id}`) }} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 padding: '20px 0',
                 background: 'none', border: 'none', borderBottom: '1px solid var(--line)',
