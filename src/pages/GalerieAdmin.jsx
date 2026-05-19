@@ -209,7 +209,6 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
   const name = dir?.name || ent
 
   const load = useCallback(async () => {
-    if (data) return
     setLoading(true)
     const qs = new URLSearchParams({ ent, path })
     const r  = await authFetch(`galerie-browse.php?${qs}`)
@@ -219,14 +218,14 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
       if (d.meta) setMeta(d.meta)
     }
     setLoading(false)
-  }, [data, ent, path, authFetch])
+  }, [ent, path, authFetch])
 
   useEffect(() => {
     if (depth === 0) load()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function toggle() {
-    if (!open) load()
+    if (!open && !data) load()
     setOpen(o => !o)
   }
 
@@ -242,7 +241,7 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
       setNewDirName('')
       setShowMkdir(false)
       setData(null)
-      loadChildren()
+      load()
     }
   }
 
@@ -289,7 +288,7 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
       {showUpload && (
         <div style={{ paddingLeft: indent + 24, paddingBottom: 16 }}>
           <UploadZone ent={ent} path={path} authFetch={authFetch}
-            onDone={() => { setData(null); loadChildren() }} />
+            onDone={() => { setData(null); load() }} />
         </div>
       )}
 
