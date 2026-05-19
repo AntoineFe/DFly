@@ -114,7 +114,7 @@ function ResendBlock() {
         <form onSubmit={submitName}>
           <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
             fontStyle: 'italic', marginBottom: 20, lineHeight: 1.6 }}>
-            Cet email n'est pas reconnu.<br>Indiquez votre nom pour que nous vous identifions.
+            Cet email n'est pas reconnu.<br />Indiquez votre nom pour que nous vous identifions.
           </p>
           <label style={labelStyle}>Votre nom</label>
           <input
