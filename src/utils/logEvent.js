@@ -17,3 +17,7 @@ export function logEvent(action, pathname) {
 export function logDevis(format, ttc, moments) {
   post(`[devis] ${format} · ${ttc} € · ${moments}`)
 }
+
+export function logGalerie(event) {
+  post(`[galerie] ${event}`)
+}

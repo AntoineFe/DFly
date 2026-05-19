@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
+import { logGalerie } from '../utils/logEvent'
 
 const BASE = import.meta.env.BASE_URL
 
@@ -114,7 +115,7 @@ function ResendBlock() {
         <form onSubmit={submitName}>
           <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
             fontStyle: 'italic', marginBottom: 20, lineHeight: 1.6 }}>
-            Cet email n'est pas reconnu.<br>Indiquez votre nom pour que nous vous identifions.
+            Cet email n'est pas reconnu.<br />Indiquez votre nom pour que nous vous identifions.
           </p>
           <label style={labelStyle}>Votre nom</label>
           <input
@@ -165,7 +166,7 @@ export default function GalerieLogin() {
     setLoading(true)
     loginWithCle(cle)
       .then(d => {
-        if (d.ok) navigate(dest(), { replace: true })
+        if (d.ok) { logGalerie('connexion (lien)'); navigate(dest(), { replace: true }) }
         else setError('Lien invalide ou expiré')
       })
       .catch(() => setError('Erreur de connexion'))
@@ -179,6 +180,7 @@ export default function GalerieLogin() {
     const d = await login(login_, password).catch(() => ({ ok: false }))
     setLoading(false)
     if (d.ok) {
+      logGalerie('connexion (mot de passe)')
       navigate(dest())
     } else {
       setError(d.error || 'Identifiant ou mot de passe incorrect')
