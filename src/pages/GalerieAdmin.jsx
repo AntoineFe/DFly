@@ -755,7 +755,7 @@ export default function GalerieAdmin() {
               Galerie · {selectedEnt}
             </div>
             <div style={{ padding: '0 16px' }}>
-              <TreeNode ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => {}} />
+              <TreeNode key={selectedEnt} ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => {}} />
             </div>
           </div>
         )}
