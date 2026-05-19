@@ -70,12 +70,12 @@ function ResendBlock() {
   }
 
   return (
-    <div style={{ marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 32 }}>
+    <div style={{ marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 0 }}>
       {!open ? (
         <div style={{ textAlign: 'center' }}>
           <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
             fontWeight: 300, lineHeight: 1.6, marginBottom: 16 }}>
-            Vous ne connaissez pas vos codes utilisateur et mote de passe et ne trouvez pas votre lien d'accès ?
+            Vous ne connaissez pas vos codes utilisateur et mot de passe et ne trouvez pas votre lien d'accès ?
           </p>
           <button onClick={() => setOpen(true)} style={{
             background: 'none', border: '1px solid var(--line)',
@@ -187,11 +187,11 @@ export default function GalerieLogin() {
 
   return (
     <div style={{
-      minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center',
       background: 'var(--bg)', padding: '0 var(--gutter)',
     }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
-        <div style={{ textAlign: 'center', marginBottom: 48 }}>
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <Link to="/" style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', color: 'var(--fg)' }}>
             <DflyMonogram size={40} color="var(--fg)" />
             <div style={{ fontFamily: 'var(--serif-display)', fontSize: 28, marginTop: 16 }}>
