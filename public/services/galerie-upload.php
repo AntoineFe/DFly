@@ -29,7 +29,8 @@ if (!is_dir($destDir)) {
 
 if (!is_dir($thumbDir)) @mkdir($thumbDir, 0755, true);
 
-$THUMB_SIZE  = 460; // px (côté le plus long)
+$THUMB_SHORT = 230;   // px — côté court miniature
+$WEB_SHORT   = 1440;  // px — côté court grand format
 $IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 $results = [];
@@ -40,19 +41,27 @@ foreach ($_FILES as $file) {
         continue;
     }
 
-    $origName = basename($file['name']);
-    $mime     = mime_content_type($file['tmp_name']);
-    $dest     = $destDir . '/' . $origName;
+    $origName  = basename($file['name']);
+    $mime      = mime_content_type($file['tmp_name']);
+    $dest      = $destDir  . '/' . $origName;
+    $thumbPath = $thumbDir . '/' . $origName;
 
-    if (!move_uploaded_file($file['tmp_name'], $dest)) {
+    // Sauvegarder l'upload dans un fichier temporaire
+    $tmpPath = $destDir . '/_tmp_' . $origName;
+    if (!move_uploaded_file($file['tmp_name'], $tmpPath)) {
         $results[] = ['name' => $origName, 'ok' => false, 'error' => 'Déplacement fichier impossible'];
         continue;
     }
 
-    // Générer miniature pour les images
     if (in_array($mime, $IMAGE_TYPES)) {
-        $thumbPath = $thumbDir . '/' . $origName;
-        galerie_make_thumb($dest, $thumbPath, $THUMB_SIZE, $mime);
+        // Grand format : 1440px côté court → dossier galerie
+        galerie_resize($tmpPath, $dest, $WEB_SHORT, $mime, 92);
+        // Miniature : 230px côté court → dossier thumbnails
+        galerie_resize($tmpPath, $thumbPath, $THUMB_SHORT, $mime, 82);
+        @unlink($tmpPath);
+    } else {
+        // Vidéo ou autre : déplacer directement
+        rename($tmpPath, $dest);
     }
 
     $relPath = ($subPath !== '' ? $subPath . '/' : '') . $origName;
@@ -66,9 +75,9 @@ foreach ($_FILES as $file) {
 
 echo json_encode(['ok' => true, 'files' => $results]);
 
-// ── Génération miniature ──────────────────────────────────────────────────────
+// ── Redimensionnement ─────────────────────────────────────────────────────────
 
-function galerie_make_thumb($src, $dest, $maxSize, $mime) {
+function galerie_resize($src, $dest, $minShort, $mime, $quality = 85) {
     switch ($mime) {
         case 'image/jpeg': $img = @imagecreatefromjpeg($src); break;
         case 'image/png':  $img = @imagecreatefrompng($src);  break;
@@ -78,43 +87,50 @@ function galerie_make_thumb($src, $dest, $maxSize, $mime) {
     }
     if (!$img) return false;
 
-    $w = imagesx($img);
-    $h = imagesy($img);
-
-    if ($w >= $h) {
-        $nw = $maxSize;
-        $nh = (int)round($h * $maxSize / $w);
-    } else {
-        $nh = $maxSize;
-        $nw = (int)round($w * $maxSize / $h);
-    }
-
-    $thumb = imagecreatetruecolor($nw, $nh);
-
-    // Conserver la transparence pour PNG
-    if ($mime === 'image/png') {
-        imagealphablending($thumb, false);
-        imagesavealpha($thumb, true);
-    }
-
-    imagecopyresampled($thumb, $img, 0, 0, 0, 0, $nw, $nh, $w, $h);
-
-    // Lire l'orientation EXIF et corriger
+    // Corriger l'orientation EXIF avant redimensionnement
     if ($mime === 'image/jpeg' && function_exists('exif_read_data')) {
-        $exif = @exif_read_data($src);
+        $exif        = @exif_read_data($src);
         $orientation = $exif['Orientation'] ?? 1;
         switch ($orientation) {
-            case 3: $thumb = imagerotate($thumb, 180, 0); break;
-            case 6: $thumb = imagerotate($thumb, -90, 0); break;
-            case 8: $thumb = imagerotate($thumb, 90, 0);  break;
+            case 3: $img = imagerotate($img, 180, 0);  break;
+            case 6: $img = imagerotate($img, -90, 0); break;
+            case 8: $img = imagerotate($img, 90, 0);  break;
         }
     }
 
-    switch ($mime) {
-        case 'image/jpeg': return imagejpeg($thumb, $dest, 85);
-        case 'image/png':  return imagepng($thumb, $dest, 6);
-        case 'image/webp': return imagewebp($thumb, $dest, 85);
-        case 'image/gif':  return imagegif($thumb, $dest);
+    $w = imagesx($img);
+    $h = imagesy($img);
+
+    // Redimensionner selon le côté court
+    $short = min($w, $h);
+    if ($short <= $minShort) {
+        // Déjà plus petit que la cible — sauvegarder tel quel
+        $nw = $w;
+        $nh = $h;
+    } elseif ($w <= $h) {
+        $nw = $minShort;
+        $nh = (int)round($h * $minShort / $w);
+    } else {
+        $nh = $minShort;
+        $nw = (int)round($w * $minShort / $h);
     }
+
+    $out = imagecreatetruecolor($nw, $nh);
+
+    if ($mime === 'image/png') {
+        imagealphablending($out, false);
+        imagesavealpha($out, true);
+    }
+
+    imagecopyresampled($out, $img, 0, 0, 0, 0, $nw, $nh, $w, $h);
+    imagedestroy($img);
+
+    switch ($mime) {
+        case 'image/jpeg': return imagejpeg($out, $dest, $quality);
+        case 'image/png':  return imagepng($out, $dest, 6);
+        case 'image/webp': return imagewebp($out, $dest, $quality);
+        case 'image/gif':  return imagegif($out, $dest);
+    }
+    imagedestroy($out);
     return false;
 }
