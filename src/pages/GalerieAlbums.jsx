@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import DflyMonogram from '../components/DflyMonogram'
 import ChangePasswordModal from '../components/ChangePasswordModal'
+import { logGalerie } from '../utils/logEvent'
 
 // ── Lightbox ──────────────────────────────────────────────────────────────────
 
@@ -461,7 +462,12 @@ export default function GalerieAlbums() {
     const qs = new URLSearchParams({ ent: activeEnt, path: pathParam })
     authFetch(`galerie-browse.php?${qs}`)
       .then(r => r.json())
-      .then(d => { if (d.ok) setData(d) })
+      .then(d => {
+        if (d.ok) {
+          setData(d)
+          logGalerie(`album : ${activeEnt}${pathParam ? ' / ' + pathParam : ''}`)
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [activeEnt, pathParam, authFetch])
