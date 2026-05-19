@@ -7,7 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 require 'galerie-auth.php';
 $session = galerie_require_auth();
-galerie_require_level($session, 'upload', 'C');
+if (!galerie_has_auth($session, 'admin', 'R') && !galerie_has_auth($session, 'upload', 'C')) {
+    http_response_code(403);
+    exit(json_encode(['ok' => false, 'error' => 'Accès refusé']));
+}
 
 list(, $cfg) = galerie_db();
 
