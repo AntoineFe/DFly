@@ -77,12 +77,12 @@ export default function Home({ lang, setLang }) {
           }}>
             {t('Demander un devis', 'Request a quote')}
           </Link>
+          <div style={{ marginTop: 48, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.7, textAlign: 'center' }}>
+            <div style={{ marginBottom: 10 }}>{t('Découvrir', 'Scroll')}</div>
+            <div style={{ width: 1, height: 36, background: 'currentColor', margin: '0 auto', opacity: 0.6 }} />
+          </div>
         </div>
 
-        <div style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.7, textAlign: 'center' }}>
-          <div style={{ marginBottom: 10 }}>{t('Découvrir', 'Scroll')}</div>
-          <div style={{ width: 1, height: 36, background: 'currentColor', margin: '0 auto', opacity: 0.6 }} />
-        </div>
       </section>
 
       {/* ── INTRO ── */}
