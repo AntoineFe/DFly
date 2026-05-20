@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import DflyMonogram from './DflyMonogram'
 
 export default function Footer({ lang = 'FR' }) {
@@ -44,10 +45,13 @@ export default function Footer({ lang = 'FR' }) {
         </div>
 
         {/* Bas de page */}
-        <div className="footer-bottom" style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.55 }}>
+        <div className="footer-bottom" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12, fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em', textTransform: 'uppercase', opacity: 0.55 }}>
           <span>© {new Date().getFullYear()} DFly — Tous droits réservés</span>
           <span>Pilote drone certifié · DGAC</span>
-          <span>dfly.fr V3.0.0</span>
+          <span style={{ display: 'flex', gap: 20 }}>
+            <Link to="/mentions-legales" style={{ color: 'inherit', textDecoration: 'none', borderBottom: '1px solid rgba(243,237,226,0.3)' }}>Mentions légales</Link>
+            <Link to="/confidentialite"  style={{ color: 'inherit', textDecoration: 'none', borderBottom: '1px solid rgba(243,237,226,0.3)' }}>Confidentialité</Link>
+          </span>
         </div>
 
       </div>

@@ -11,6 +11,8 @@ import Contact from './pages/Contact'
 import GalerieLogin from './pages/GalerieLogin'
 import GalerieAlbums from './pages/GalerieAlbums'
 import GalerieAdmin from './pages/GalerieAdmin'
+import MentionsLegales from './pages/MentionsLegales'
+import Confidentialite from './pages/Confidentialite'
 import { GalerieAuthProvider, useGalerieAuth } from './context/GalerieAuth'
 import useImageProtection from './hooks/useImageProtection'
 
@@ -93,8 +95,10 @@ export default function App() {
         <Route path="/spectacle"      element={<Spectacle     lang={lang} setLang={setLang} />} />
         <Route path="/evenements"     element={<Navigate to="/spectacle" replace />} />
         <Route path="/famille"        element={<Famille       lang={lang} setLang={setLang} />} />
-        <Route path="/contact"        element={<Contact       lang={lang} setLang={setLang} />} />
-        <Route path="/galerie/*"      element={<GalerieRoutes />} />
+        <Route path="/contact"           element={<Contact          lang={lang} setLang={setLang} />} />
+        <Route path="/mentions-legales" element={<MentionsLegales  lang={lang} setLang={setLang} />} />
+        <Route path="/confidentialite"  element={<Confidentialite  lang={lang} setLang={setLang} />} />
+        <Route path="/galerie/*"        element={<GalerieRoutes />} />
       </Routes>
     </GalerieAuthProvider>
   )

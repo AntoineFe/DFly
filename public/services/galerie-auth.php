@@ -67,7 +67,7 @@ function galerie_require_auth() {
             INNER JOIN Entreprise E  ON E.id  = HU.idEnt
             WHERE HS.token = '$t'
               AND HS.tsCloseSession IS NULL
-              AND HS.tsLastAccess > DATE_SUB(NOW(), INTERVAL 8 HOUR)";
+              AND HS.tsLastAccess > DATE_SUB(NOW(), INTERVAL 90 DAY)";
 
     $res = mysqli_query($link, $sql);
     if (!$res || mysqli_num_rows($res) === 0) {
