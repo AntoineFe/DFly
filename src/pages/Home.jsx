@@ -273,7 +273,7 @@ export default function Home({ lang, setLang }) {
         <div className="container">
           <div className="grid-duo">
             <div style={{ position: 'relative' }}>
-              <img src={IMG.duo} alt={t("Couple de mariés sur un escalier à Nice — Antoine & Rémi DFly", "Married couple on stairs in Nice — Antoine & Rémi DFly")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+              <img src={IMG.duo} alt={t("Antoine & Rémi DFly - Photographes et vidéastes", "Antoine & Rémi DFly - Photographes et vidéastes")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
               <div style={{ position: 'absolute', top: 24, left: 24, fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--ivory)', fontWeight: 300, textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
                 .
               </div>
