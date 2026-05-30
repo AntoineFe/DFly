@@ -21,7 +21,7 @@ const IMG = {
   portrait1:   `${BASE}images/famille-portrait-bord-de-mer-cote-dazur.jpeg`,
   portrait2:   `${BASE}images/portrait-couple-studio-nice.jpg`,
   drone:       `${BASE}images/drone-vue-aerienne-domaine-paca.jpg`,
-  duo:         `${BASE}images/mariage/mariage-couple-escalier-nice.jpeg`,
+  duo:         `${BASE}images/Antoine-et-Rémi-Photographes-Vidéastes.jpg`,
 }
 
 export default function Home({ lang, setLang }) {
