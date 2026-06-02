@@ -48,7 +48,7 @@ export default function Home({ lang, setLang }) {
           {t('Provence Alpes Côte d\'Azur', 'Provence Alpes Côte d\'Azur')}
         </div>
 
-        <div style={{ position: 'sticky', zIndex: 2, textAlign: 'center', padding: '0 var(--gutter)', top: 100px }}>
+        <div style={{ position: 'sticky', zIndex: 2, textAlign: 'center', padding: '0 var(--gutter)', top: '100px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85, marginBottom: 28 }}>
             <span>{t('Depuis', 'Since')}</span>
             <DflyMonogram size={44} color="rgba(243,237,226,0.95)" />
