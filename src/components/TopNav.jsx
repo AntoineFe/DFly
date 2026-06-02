@@ -68,7 +68,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
       {/* Main bar */}
       <div className="topnav-bar" style={{
         padding: '16px var(--gutter)',
-        display: 'grid', gridTemplateColumns: '1fr auto 1fr',
+        display: 'grid', gridTemplateColumns: minimal ? '1fr auto' : '1fr auto 1fr',
         alignItems: 'center', gap: 24,
       }}>
         {/* Logo */}
