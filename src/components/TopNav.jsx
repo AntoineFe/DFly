@@ -121,63 +121,13 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
 
           {/* Devis — hidden on mobile (appears in mobile menu) */}
           {ctaHref?.startsWith('#')
-            ? <a href={ctaHref} className="nav-links nav-cta" onClick={() => logEvent(ctaLabel ?? 'Demander un devis', location.pathname)} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone }}>
+            ? <a href={ctaHref} className="nav-links nav-cta" onClick={() => logEvent(ctaLabel ?? 'Demander un devis', location.pathname)} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone, whiteSpace: 'nowrap' }}>
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </a>
-            : <Link to={ctaHref ?? '/contact'} className="nav-links nav-cta" onClick={() => logEvent(ctaLabel ?? 'Demander un devis', location.pathname)} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone }}>
+            : <Link to={ctaHref ?? '/contact'} className="nav-links nav-cta" onClick={() => logEvent(ctaLabel ?? 'Demander un devis', location.pathname)} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone, whiteSpace: 'nowrap' }}>
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </Link>
           }
-
-          {/* Connexion / Prénom — desktop only (mobile : dans le menu hamburger) */}
-          {!galerieUser && (
-            <Link to="/galerie" className="nav-links" style={{
-              fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
-              textTransform: 'uppercase',
-              color: menuOpen ? 'var(--fg)' : tone,
-              textDecoration: 'none',
-            }}>
-              {lang === 'FR' ? 'Connexion' : 'Login'}
-            </Link>
-          )}
-          {galerieUser && (
-            <div ref={userMenuRef} className="nav-links" style={{ position: 'relative', alignItems: 'center' }}>
-              <button
-                onClick={() => setUserMenuOpen(o => !o)}
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
-                  textTransform: 'uppercase',
-                  color: menuOpen ? 'var(--fg)' : tone,
-                  padding: '8px 0',
-                }}
-              >
-                {galerieUser.firstName}
-              </button>
-              {userMenuOpen && (
-                <div style={{
-                  position: 'absolute', top: '100%', right: 0,
-                  background: 'var(--bg)', border: '1px solid var(--line)',
-                  minWidth: 200, padding: '8px 0',
-                }}>
-                  <Link to="/galerie/albums" onClick={() => setUserMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px' }}>
-                    Ma galerie
-                  </Link>
-                  {galerieUser.auths?.admin && (
-                    <Link to="/galerie/admin" onClick={() => setUserMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px' }}>
-                      Administration
-                    </Link>
-                  )}
-                  <button onClick={() => { setUserMenuOpen(false); setShowPwdModal(true) }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
-                    Changer mon mot de passe
-                  </button>
-                  <button onClick={() => { setUserMenuOpen(false); logout(); navigate('/') }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
-                    Me déconnecter
-                  </button>
-                </div>
-              )}
-            </div>
-          )}
 
           {/* Hamburger button */}
           <button
@@ -196,6 +146,61 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
           </button>
         </div>
       </div>
+
+      {/* Connexion / Prénom — desktop only, positionné en absolu à droite du header */}
+      {!galerieUser && (
+        <Link to="/galerie" className="nav-links" style={{
+          position: 'absolute', top: 0, right: 'var(--gutter)',
+          height: '100%', alignItems: 'center',
+          fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
+          textTransform: 'uppercase',
+          color: menuOpen ? 'var(--fg)' : tone,
+          textDecoration: 'none',
+        }}>
+          {lang === 'FR' ? 'Connexion' : 'Login'}
+        </Link>
+      )}
+      {galerieUser && (
+        <div ref={userMenuRef} className="nav-links" style={{
+          position: 'absolute', top: 0, right: 'var(--gutter)',
+          height: '100%', alignItems: 'center',
+        }}>
+          <button
+            onClick={() => setUserMenuOpen(o => !o)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
+              textTransform: 'uppercase',
+              color: menuOpen ? 'var(--fg)' : tone,
+              padding: '8px 0',
+            }}
+          >
+            {galerieUser.firstName}
+          </button>
+          {userMenuOpen && (
+            <div style={{
+              position: 'absolute', top: '100%', right: 0,
+              background: 'var(--bg)', border: '1px solid var(--line)',
+              minWidth: 200, padding: '8px 0',
+            }}>
+              <Link to="/galerie/albums" onClick={() => setUserMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px' }}>
+                Ma galerie
+              </Link>
+              {galerieUser.auths?.admin && (
+                <Link to="/galerie/admin" onClick={() => setUserMenuOpen(false)} style={{ display: 'block', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px' }}>
+                  Administration
+                </Link>
+              )}
+              <button onClick={() => { setUserMenuOpen(false); setShowPwdModal(true) }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
+                Changer mon mot de passe
+              </button>
+              <button onClick={() => { setUserMenuOpen(false); logout(); navigate('/') }} style={{ display: 'block', width: '100%', textAlign: 'left', background: 'none', border: 'none', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)', padding: '10px 20px', cursor: 'pointer' }}>
+                Me déconnecter
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Mobile menu panel */}
       {menuOpen && (
