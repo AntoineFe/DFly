@@ -629,6 +629,21 @@ export default function GalerieAlbums() {
           <button onClick={() => { setSelectedEnt(null); navigate('/galerie/albums', { replace: true }) }} style={crumbBtn}>
             {multiEnt ? 'Clients' : 'Albums'}
           </button>
+          {activeEnt && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ opacity: 0.4 }}>›</span>
+              {pathParam ? (
+                <button onClick={() => {
+                  const qs = entQs()
+                  navigate(`/galerie/albums${entId ? `/${entId}` : ''}${qs ? '?' + qs.slice(1) : ''}`)
+                }} style={crumbBtn}>
+                  {activeEnt}
+                </button>
+              ) : (
+                <span style={{ color: 'var(--fg)' }}>{activeEnt}</span>
+              )}
+            </span>
+          )}
           {pathParam.split('/').filter(Boolean).map((part, i, arr) => (
             <span key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ opacity: 0.4 }}>›</span>
