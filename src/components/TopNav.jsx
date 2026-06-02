@@ -67,7 +67,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
     }}>
       {/* Main bar */}
       <div className="topnav-bar" style={{
-        maxWidth: 'var(--maxw)', margin: '0 auto', padding: '16px var(--gutter)',
+        padding: '16px var(--gutter)',
         display: 'grid', gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center', gap: 24,
       }}>
@@ -119,15 +119,15 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
             ))}
           </div>}
 
-          {/* Devis — hidden on mobile (appears in mobile menu) */}
-          {ctaHref?.startsWith('#')
+          {/* Devis — hidden on mobile and in minimal mode */}
+          {!minimal && (ctaHref?.startsWith('#')
             ? <a href={ctaHref} className="nav-links nav-cta" onClick={() => logEvent(ctaLabel ?? 'Demander un devis', location.pathname)} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone, whiteSpace: 'nowrap' }}>
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </a>
             : <Link to={ctaHref ?? '/contact'} className="nav-links nav-cta" onClick={() => logEvent(ctaLabel ?? 'Demander un devis', location.pathname)} style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.32em', textTransform: 'uppercase', border: `1px solid ${tone}`, padding: '10px 18px', color: tone, whiteSpace: 'nowrap' }}>
                 {ctaLabel ?? (lang === 'FR' ? 'Demander un devis' : 'Request a quote')}
               </Link>
-          }
+          )}
 
           {/* Connexion / Prénom — desktop only (mobile : dans le menu hamburger) */}
           {!galerieUser && (
