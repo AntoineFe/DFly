@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
-import DflyMonogram from '../components/DflyMonogram'
+import TopNav from '../components/TopNav'
 
 const BASE = import.meta.env.BASE_URL
 const API  = path => `${BASE}services/${path}`
@@ -634,34 +634,8 @@ export default function GalerieAdmin() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
+      <TopNav minimal />
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px var(--gutter) 120px' }}>
-
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 48 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}
-            onClick={() => navigate('/')}>
-            <DflyMonogram size={28} color="var(--fg)" />
-            <div>
-              <div style={{ fontFamily: 'var(--serif-display)', fontSize: 20 }}>
-                D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
-              </div>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: 9, letterSpacing: '0.32em',
-                textTransform: 'uppercase', color: 'var(--fg-muted)' }}>Administration</div>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <button onClick={() => navigate('/galerie/albums')} style={{
-              background: 'none', border: '1px solid var(--line)', padding: '7px 16px',
-              fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em',
-              textTransform: 'uppercase', cursor: 'pointer', color: 'var(--fg-muted)',
-            }}>Galerie client</button>
-            <button onClick={() => { logout(); navigate('/') }} style={{
-              background: 'none', border: '1px solid var(--line)', padding: '7px 16px',
-              fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.24em',
-              textTransform: 'uppercase', cursor: 'pointer', color: 'var(--fg-muted)',
-            }}>Déconnexion</button>
-          </div>
-        </div>
 
         {/* Onglets */}
         <div style={{ display: 'flex', gap: 0, marginBottom: 40, borderBottom: '1px solid var(--line)' }}>
