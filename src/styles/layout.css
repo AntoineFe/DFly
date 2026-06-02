@@ -108,13 +108,9 @@
   gap: 24px;
 }
 
-/* ── Large desktop squeeze (< 1550px) : réduire le gap de nav ── */
-@media (max-width: 1550px) {
+/* ── Large desktop squeeze (< 1650px) : réduire le gap de nav + masquer CTA ── */
+@media (max-width: 1650px) {
   .nav-links-gap { gap: 18px !important; }
-}
-
-/* ── Medium desktop (< 1400px) : masquer le bouton CTA ── */
-@media (max-width: 1400px) {
   .nav-cta { display: none !important; }
 }
 
