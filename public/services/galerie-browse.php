@@ -76,10 +76,15 @@ foreach (scandir($targetDir) as $item) {
 
         $relPath  = ($subPath !== '' ? $subPath . '/' : '') . $item;
         $thumbUrl = null;
+        $hdUrl    = null;
         if ($type === 'image') {
             $thumbPath = $paths['thumbnails_root'] . '/' . $relPath;
             if (file_exists($thumbPath)) {
                 $thumbUrl = $paths['thumbnails_url'] . '/' . $relPath;
+            }
+            $hdPath = $paths['hd_root'] . '/' . $relPath;
+            if (file_exists($hdPath)) {
+                $hdUrl = $paths['hd_url'] . '/' . $relPath;
             }
         }
         $files[] = [
@@ -87,6 +92,7 @@ foreach (scandir($targetDir) as $item) {
             'type'     => $type,
             'url'      => $paths['galerie_url'] . '/' . $relPath,
             'thumbUrl' => $thumbUrl ?? ($paths['galerie_url'] . '/' . $relPath),
+            'hdUrl'    => $hdUrl,
         ];
     }
 }

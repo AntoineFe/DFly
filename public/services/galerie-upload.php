@@ -21,6 +21,7 @@ $subPath = trim($subPath, '/');
 $paths    = galerie_ent_paths($cfg, $ent);
 $destDir  = $paths['galerie_root']    . ($subPath !== '' ? '/' . $subPath : '');
 $thumbDir = $paths['thumbnails_root'] . ($subPath !== '' ? '/' . $subPath : '');
+$hdDir    = $paths['hd_root']         . ($subPath !== '' ? '/' . $subPath : '');
 
 if (!is_dir($destDir)) {
     http_response_code(400);
@@ -28,6 +29,7 @@ if (!is_dir($destDir)) {
 }
 
 if (!is_dir($thumbDir)) @mkdir($thumbDir, 0755, true);
+if (!is_dir($hdDir))    @mkdir($hdDir,    0755, true);
 
 $THUMB_SHORT = 230;   // px — côté court miniature
 $WEB_SHORT   = 1440;  // px — côté court grand format
@@ -45,6 +47,7 @@ foreach ($_FILES as $file) {
     $mime      = mime_content_type($file['tmp_name']);
     $dest      = $destDir  . '/' . $origName;
     $thumbPath = $thumbDir . '/' . $origName;
+    $hdPath    = $hdDir    . '/' . $origName;
 
     // Sauvegarder l'upload dans un fichier temporaire
     $tmpPath = $destDir . '/_tmp_' . $origName;
@@ -54,13 +57,14 @@ foreach ($_FILES as $file) {
     }
 
     if (in_array($mime, $IMAGE_TYPES)) {
+        // HD original : déplacer le fichier temporaire dans galerie_hd
+        rename($tmpPath, $hdPath);
         // Grand format : 1440px côté court → dossier galerie
-        galerie_resize($tmpPath, $dest, $WEB_SHORT, $mime, 92);
+        galerie_resize($hdPath, $dest, $WEB_SHORT, $mime, 92);
         // Miniature : 230px côté court → dossier thumbnails
-        galerie_resize($tmpPath, $thumbPath, $THUMB_SHORT, $mime, 82);
-        @unlink($tmpPath);
+        galerie_resize($hdPath, $thumbPath, $THUMB_SHORT, $mime, 82);
     } else {
-        // Vidéo ou autre : déplacer directement
+        // Vidéo ou autre : déplacer directement dans galerie (pas de HD)
         rename($tmpPath, $dest);
     }
 
@@ -70,6 +74,7 @@ foreach ($_FILES as $file) {
         'ok'       => true,
         'url'      => $paths['galerie_url']    . '/' . $relPath,
         'thumbUrl' => $paths['thumbnails_url'] . '/' . $relPath,
+        'hdUrl'    => in_array($mime, $IMAGE_TYPES) ? $paths['hd_url'] . '/' . $relPath : null,
     ];
 }
 

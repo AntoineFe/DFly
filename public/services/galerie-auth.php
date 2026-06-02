@@ -38,8 +38,10 @@ function galerie_ent_paths($cfg, $ent) {
     return [
         'galerie_root'    => $base    . '/galerie',
         'thumbnails_root' => $base    . '/galerie_thumbnails',
+        'hd_root'         => $base    . '/galerie_hd',
         'galerie_url'     => $baseUrl . '/galerie',
         'thumbnails_url'  => $baseUrl . '/galerie_thumbnails',
+        'hd_url'          => $baseUrl . '/galerie_hd',
     ];
 }
 
