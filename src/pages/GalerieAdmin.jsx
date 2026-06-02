@@ -116,6 +116,7 @@ function UploadZone({ ent, path, onDone, authFetch }) {
   const [dragging,  setDragging]  = useState(false)
   const [uploading, setUploading] = useState(false)
   const [results,   setResults]   = useState([])
+  const [progress,  setProgress]  = useState({ done: 0, total: 0 })
   const inputRef = useRef()
 
   async function uploadFiles(fileList) {
@@ -124,6 +125,8 @@ function UploadZone({ ent, path, onDone, authFetch }) {
     const files = Array.from(fileList).filter(f =>
       f.type.startsWith('image/') || f.type.startsWith('video/'))
     if (!files.length) { setUploading(false); return }
+
+    setProgress({ done: 0, total: files.length })
 
     const batchSize = 5
     const allResults = []
@@ -137,6 +140,7 @@ function UploadZone({ ent, path, onDone, authFetch }) {
       const d = await r.json()
       allResults.push(...(d.files || []))
       setResults([...allResults])
+      setProgress({ done: Math.min(i + batchSize, files.length), total: files.length })
     }
 
     setUploading(false)
@@ -168,12 +172,27 @@ function UploadZone({ ent, path, onDone, authFetch }) {
         <div style={{ fontSize: 28, marginBottom: 8, opacity: 0.4 }}>↑</div>
         <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.28em',
           textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
-          {uploading ? 'Upload en cours…' : 'Glisser les photos ici ou cliquer pour parcourir'}
+          {uploading
+            ? `${progress.done} / ${progress.total} photo${progress.total > 1 ? 's' : ''} traitée${progress.total > 1 ? 's' : ''}`
+            : 'Glisser les photos ici ou cliquer pour parcourir'}
         </div>
-        <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 13,
-          color: 'var(--fg-muted)', marginTop: 8 }}>
-          JPG, JPEG, PNG, WEBP · Miniatures générées automatiquement
-        </div>
+        {uploading && (
+          <div style={{ marginTop: 12, width: '100%', maxWidth: 320, margin: '12px auto 0' }}>
+            <div style={{ height: 3, background: 'var(--line)', borderRadius: 2, overflow: 'hidden' }}>
+              <div style={{
+                height: '100%', background: 'var(--fg)', borderRadius: 2,
+                width: `${progress.total ? (progress.done / progress.total) * 100 : 0}%`,
+                transition: 'width 0.3s ease',
+              }} />
+            </div>
+          </div>
+        )}
+        {!uploading && (
+          <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 13,
+            color: 'var(--fg-muted)', marginTop: 8 }}>
+            JPG, JPEG, PNG, WEBP · Miniatures générées automatiquement
+          </div>
+        )}
       </div>
 
       {results.length > 0 && (
