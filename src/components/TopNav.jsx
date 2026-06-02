@@ -22,7 +22,7 @@ const NAV_LINKS = {
   ],
 }
 
-export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabel, ctaHref }) {
+export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabel, ctaHref, minimal = false }) {
   const { user: galerieUser, logout, changePassword } = useGalerieAuth()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -50,7 +50,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
     return () => document.removeEventListener('mousedown', onDown)
   }, [userMenuOpen])
 
-  const isOverHero = scheme === 'over-hero' && !scrolled && !menuOpen
+  const isOverHero = scheme === 'over-hero' && !scrolled && !menuOpen && !minimal
   const tone   = isOverHero ? 'rgba(243,237,226,0.95)' : 'var(--fg)'
   const bg     = isOverHero ? 'transparent' : 'var(--bg)'
   const border = isOverHero ? 'rgba(243,237,226,0.18)' : 'var(--line)'
@@ -85,7 +85,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
         </Link>
 
         {/* Navigation desktop */}
-        <nav className="nav-links nav-links-gap" style={{ gap: 28, alignItems: 'center', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase' }}>
+        {!minimal && <nav className="nav-links nav-links-gap" style={{ gap: 28, alignItems: 'center', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.28em', textTransform: 'uppercase' }}>
           {NAV_LINKS[lang].map((l) => {
             const active = location.pathname === l.path
             return (
@@ -100,12 +100,12 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
               </Link>
             )
           })}
-        </nav>
+        </nav>}
 
         {/* Right: Lang + Contact (desktop) + Hamburger (mobile) */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 18 }}>
-          {/* Lang switcher — always visible */}
-          <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em', display: 'flex', gap: 10 }}>
+          {/* Lang switcher — masqué en mode minimal */}
+          {!minimal && <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em', display: 'flex', gap: 10 }}>
             {['FR', 'EN'].map((l, i) => (
               <span key={l} style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                 {i > 0 && <span style={{ opacity: 0.4 }}>·</span>}
@@ -117,7 +117,7 @@ export default function TopNav({ scheme = 'light', lang = 'FR', setLang, ctaLabe
                 }}>{l}</button>
               </span>
             ))}
-          </div>
+          </div>}
 
           {/* Devis — hidden on mobile (appears in mobile menu) */}
           {ctaHref?.startsWith('#')
