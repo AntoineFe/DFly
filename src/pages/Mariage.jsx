@@ -162,7 +162,7 @@ function Mariage({ lang, setLang }) {
                 letterSpacing: "-0.005em",
               }}>
                 {t(<>Le jour<br/><em style={{ fontStyle: "italic", fontWeight: 300, display: 'block', marginTop: '0.12em' }}>qui devient mémoire.</em></>,
-                   <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300, display: 'block', marginTop: '0.12em' }}>that becomes</em><br/>memory.</>)}
+                   <>The day<br/><em style={{ fontStyle: "italic", fontWeight: 300, display: 'block', marginTop: '0.12em' }}>that becomes</em><br/>a memory.</>)}
               </h1>
               <div style={{ textAlign: 'center', marginTop: 32 }}>
               <a href="#devis" onClick={() => logEvent('Estimer mon projet', '/mariage')} style={{

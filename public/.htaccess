@@ -32,6 +32,13 @@ Options -MultiViews
   # Ancienne page nous
   RewriteRule ^nous\.php$ /? [R=301,L]
 
+  # Ancienne page photo
+  RewriteRule ^photo\.php$ /? [R=301,L]
+
+  # Ancienne page video
+  RewriteRule ^video\.php$ /? [R=301,L]
+
+
   # React Router - réécriture interne vers og-router.php (injection OG par page)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
