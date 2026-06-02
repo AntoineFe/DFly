@@ -23,13 +23,14 @@ $destDir  = $paths['galerie_root']    . ($subPath !== '' ? '/' . $subPath : '');
 $thumbDir = $paths['thumbnails_root'] . ($subPath !== '' ? '/' . $subPath : '');
 $hdDir    = $paths['hd_root']         . ($subPath !== '' ? '/' . $subPath : '');
 
-if (!is_dir($destDir)) {
-    http_response_code(400);
-    exit(json_encode(['ok' => false, 'error' => 'Dossier destination introuvable']));
-}
-
+if (!is_dir($destDir))  @mkdir($destDir,  0755, true);
 if (!is_dir($thumbDir)) @mkdir($thumbDir, 0755, true);
 if (!is_dir($hdDir))    @mkdir($hdDir,    0755, true);
+
+if (!is_dir($destDir)) {
+    http_response_code(500);
+    exit(json_encode(['ok' => false, 'error' => 'Impossible de créer le dossier destination']));
+}
 
 $THUMB_SHORT = 230;   // px — côté court miniature
 $WEB_SHORT   = 1440;  // px — côté court grand format
