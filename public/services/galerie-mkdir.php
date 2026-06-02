@@ -29,13 +29,14 @@ $subPath  = trim($subPath, '/');
 $paths    = galerie_ent_paths($cfg, $ent);
 $newDir   = $paths['galerie_root']    . ($subPath !== '' ? '/' . $subPath : '') . '/' . $name;
 $newThumb = $paths['thumbnails_root'] . ($subPath !== '' ? '/' . $subPath : '') . '/' . $name;
+$newHd    = $paths['hd_root']         . ($subPath !== '' ? '/' . $subPath : '') . '/' . $name;
 
 if (is_dir($newDir)) {
     http_response_code(409);
     exit(json_encode(['ok' => false, 'error' => 'Ce dossier existe déjà']));
 }
 
-if (!@mkdir($newDir, 0755, true) || !@mkdir($newThumb, 0755, true)) {
+if (!@mkdir($newDir, 0755, true) || !@mkdir($newThumb, 0755, true) || !@mkdir($newHd, 0755, true)) {
     http_response_code(500);
     exit(json_encode(['ok' => false, 'error' => 'Création dossier impossible']));
 }
