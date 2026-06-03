@@ -79,23 +79,29 @@ try {
     mysqli_query($link, "INSERT INTO HabilProfilUser (idUser, idProfil) VALUES ($idUser, $idProfil)");
 
     // 5. Habiliter tous les admins sur ce nouveau client
-    // Trouver tous les profils admin:R (auths contient "admin")
+    // L'admin connecté est toujours inclus ; on ajoute aussi tous les autres admins
+    $currentUserId = (int)$session['userId'];
     $adminRes = mysqli_query($link, "
         SELECT DISTINCT HPU.idUser
         FROM HabilProfilUser HPU
         INNER JOIN HabilProfil HP ON HP.id = HPU.idProfil
-        WHERE HP.auths LIKE '%\"admin\"%'
+        WHERE JSON_SEARCH(HP.auths, 'one', 'admin', NULL, '$[*].rsrc') IS NOT NULL
     ");
-    $adminUserIds = [];
-    while ($r = mysqli_fetch_assoc($adminRes)) {
-        $adminUserIds[] = (int)$r['idUser'];
+    $adminUserIds = [$currentUserId];
+    if ($adminRes) {
+        while ($r = mysqli_fetch_assoc($adminRes)) {
+            $adminUserIds[] = (int)$r['idUser'];
+        }
     }
+    $adminUserIds = array_unique($adminUserIds);
 
     // Pour chaque admin, créer un profil galerie:R pour ce nouveau client et le lier
     foreach ($adminUserIds as $auid) {
         mysqli_query($link, "INSERT INTO HabilProfil (idEnt, auths) VALUES ($idEnt, '$authsEsc')");
         $aProfilId = mysqli_insert_id($link);
-        mysqli_query($link, "INSERT INTO HabilProfilUser (idUser, idProfil) VALUES ($auid, $aProfilId)");
+        if ($aProfilId) {
+            mysqli_query($link, "INSERT INTO HabilProfilUser (idUser, idProfil) VALUES ($auid, $aProfilId)");
+        }
     }
 
     // 6. Créer le dossier images/Pro/{slug}/
