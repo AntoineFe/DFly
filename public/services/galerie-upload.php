@@ -44,14 +44,17 @@ if (isset($_FILES['file_web'])) {
 
     $ok = true;
 
-    // HD original
-    if (isset($_FILES['file_hd']) && $_FILES['file_hd']['error'] === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($_FILES['file_hd']['tmp_name'], $hdDir . '/' . $origName)) $ok = false;
-    }
-    // Version web
+    // Version web → galerie/
     if ($_FILES['file_web']['error'] === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($_FILES['file_web']['tmp_name'], $destDir . '/' . $origName)) $ok = false;
+        $webDest = $destDir . '/' . $origName;
+        if (!move_uploaded_file($_FILES['file_web']['tmp_name'], $webDest)) {
+            $ok = false;
+        } else {
+            // Copier le web comme HD aussi (le vrai original reste chez le photographe)
+            @copy($webDest, $hdDir . '/' . $origName);
+        }
     } else { $ok = false; }
+
     // Miniature
     if (isset($_FILES['file_thumb']) && $_FILES['file_thumb']['error'] === UPLOAD_ERR_OK) {
         move_uploaded_file($_FILES['file_thumb']['tmp_name'], $thumbDir . '/' . $origName);

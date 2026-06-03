@@ -198,9 +198,8 @@ function UploadZone({ ent, path, onDone, authFetch }) {
           if (isImage) {
             const resized = await clientResize(file)
             if (resized) {
-              fd.append('file_hd',    file,               file.name)
-              fd.append('file_web',   resized.webBlob,    file.name)
-              fd.append('file_thumb', resized.thumbBlob,  file.name)
+              fd.append('file_web',   resized.webBlob,   file.name)
+              fd.append('file_thumb', resized.thumbBlob, file.name)
               fd.append('ratio',      String(resized.ratio))
             } else {
               // Fallback : envoyer l'original, serveur redimensionnera
