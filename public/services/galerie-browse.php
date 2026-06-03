@@ -6,6 +6,24 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 require 'galerie-auth.php';
+
+function find_cover($dir, $urlBase, $imageExt, $depth = 0) {
+    if ($depth > 3 || !is_dir($dir)) return null;
+    $subdirs = [];
+    foreach (scandir($dir) as $f) {
+        if ($f === '.' || $f === '..') continue;
+        $fullPath = $dir . '/' . $f;
+        if (is_file($fullPath) && in_array(strtolower(pathinfo($f, PATHINFO_EXTENSION)), $imageExt)) {
+            return $urlBase . '/' . $f;
+        }
+        if (is_dir($fullPath)) $subdirs[] = $f;
+    }
+    foreach ($subdirs as $sub) {
+        $found = find_cover($dir . '/' . $sub, $urlBase . '/' . $sub, $imageExt, $depth + 1);
+        if ($found) return $found;
+    }
+    return null;
+}
 $session = galerie_require_auth();
 galerie_require_level($session, 'galerie', 'R');
 
@@ -52,18 +70,9 @@ foreach (scandir($targetDir) as $item) {
     if ($item === '.' || $item === '..') continue;
     $full = $targetDir . '/' . $item;
     if (is_dir($full)) {
-        // Image de couverture : première image du sous-dossier (thumbnails)
+        // Image de couverture : première image du sous-dossier (thumbnails), récursif si nécessaire
         $thumbDir = $paths['thumbnails_root'] . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item;
-        $cover    = null;
-        if (is_dir($thumbDir)) {
-            foreach (scandir($thumbDir) as $tf) {
-                $ext = strtolower(pathinfo($tf, PATHINFO_EXTENSION));
-                if (in_array($ext, $IMAGE_EXT)) {
-                    $cover = $paths['thumbnails_url'] . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item . '/' . $tf;
-                    break;
-                }
-            }
-        }
+        $cover    = find_cover($thumbDir, $paths['thumbnails_url'] . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item, $IMAGE_EXT);
         // Lire meta si présent
         $metaFile = $full . '/_meta.json';
         $meta     = file_exists($metaFile) ? json_decode(file_get_contents($metaFile), true) : null;
