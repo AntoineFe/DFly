@@ -639,6 +639,147 @@ function ActionBtn({ onClick, active, title, children }) {
   )
 }
 
+// ── Formulaire nouveau client ─────────────────────────────────────────────────
+
+function CreateClientForm({ authFetch, onCreated }) {
+  const empty = { raiSoc: '', shortDesc: '', firstName: '', lastName: '', email: '', login: '', lang: 'FR' }
+  const [form,    setForm]    = useState(empty)
+  const [saving,  setSaving]  = useState(false)
+  const [result,  setResult]  = useState(null) // { tempPassword, cle }
+  const [error,   setError]   = useState('')
+
+  const upd = (k, v) => setForm(f => ({ ...f, [k]: v }))
+
+  async function submit(e) {
+    e.preventDefault()
+    setSaving(true)
+    setError('')
+    setResult(null)
+    try {
+      const payload = { ...form, login: form.login || form.email }
+      const r = await authFetch('galerie-create-client.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      })
+      const d = await r.json()
+      if (d.ok) {
+        setResult(d)
+        setForm(empty)
+        onCreated?.()
+      } else {
+        setError(d.error || 'Erreur inconnue')
+      }
+    } catch (err) {
+      setError(err.message || 'Erreur réseau')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const labelStyle = { fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.28em',
+    textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 6, display: 'block' }
+  const inputStyle = { width: '100%', padding: '9px 12px', boxSizing: 'border-box',
+    border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--fg)',
+    fontSize: 14, fontFamily: 'inherit', marginBottom: 16 }
+  const row2 = { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 0 }
+
+  return (
+    <div style={{ border: '1px solid var(--line)', padding: 24 }}>
+      <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.3em',
+        textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 24 }}>
+        Nouveau client
+      </div>
+
+      {result && (
+        <div style={{ background: 'rgba(0,120,0,0.05)', border: '1px solid rgba(0,120,0,0.2)',
+          padding: '16px 20px', marginBottom: 24 }}>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
+            textTransform: 'uppercase', color: 'green', marginBottom: 12 }}>
+            ✓ Client créé
+          </div>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--fg)', marginBottom: 6 }}>
+            <strong>Mot de passe temporaire :</strong>{' '}
+            <code style={{ fontFamily: 'monospace', background: 'var(--bg-alt)', padding: '2px 6px' }}>
+              {result.tempPassword}
+            </code>
+          </div>
+          <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 12, color: 'var(--fg-muted)' }}>
+            À communiquer au client. Il pourra se connecter avec son email et ce mot de passe.
+          </div>
+        </div>
+      )}
+
+      <form onSubmit={submit}>
+        <div style={row2}>
+          <div>
+            <label style={labelStyle}>Raison sociale *</label>
+            <input style={inputStyle} value={form.raiSoc}
+              onChange={e => upd('raiSoc', e.target.value)} required placeholder="Dupont Productions" />
+          </div>
+          <div>
+            <label style={labelStyle}>Identifiant court (shortDesc) *</label>
+            <input style={inputStyle} value={form.shortDesc}
+              onChange={e => upd('shortDesc', e.target.value.replace(/\s/g, ''))} required
+              placeholder="dupontprod" />
+          </div>
+        </div>
+
+        <div style={row2}>
+          <div>
+            <label style={labelStyle}>Prénom *</label>
+            <input style={inputStyle} value={form.firstName}
+              onChange={e => upd('firstName', e.target.value)} required placeholder="Marie" />
+          </div>
+          <div>
+            <label style={labelStyle}>Nom *</label>
+            <input style={inputStyle} value={form.lastName}
+              onChange={e => upd('lastName', e.target.value)} required placeholder="Dupont" />
+          </div>
+        </div>
+
+        <label style={labelStyle}>Email *</label>
+        <input style={inputStyle} type="email" value={form.email}
+          onChange={e => { upd('email', e.target.value); if (!form.login) upd('login', e.target.value) }}
+          required placeholder="marie@dupont.fr" />
+
+        <label style={labelStyle}>Login (laisser vide = email)</label>
+        <input style={inputStyle} value={form.login}
+          onChange={e => upd('login', e.target.value)}
+          placeholder={form.email || 'marie@dupont.fr'} />
+
+        <label style={labelStyle}>Langue</label>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
+          {['FR', 'EN'].map(l => (
+            <button key={l} type="button" onClick={() => upd('lang', l)} style={{
+              padding: '7px 20px', border: '1px solid var(--line)',
+              background: form.lang === l ? 'var(--fg)' : 'none',
+              color: form.lang === l ? 'var(--bg)' : 'var(--fg)',
+              fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+              cursor: 'pointer',
+            }}>{l}</button>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <button type="submit" disabled={saving} style={{
+            background: 'var(--fg)', color: 'var(--bg)', border: 'none',
+            padding: '10px 28px', fontFamily: 'var(--sans)', fontSize: 10.5,
+            letterSpacing: '0.28em', textTransform: 'uppercase', cursor: 'pointer',
+          }}>
+            {saving ? 'Création…' : 'Créer le client'}
+          </button>
+          {error && (
+            <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 13, color: '#c0392b' }}>
+              ✗ {error}
+            </span>
+          )}
+        </div>
+      </form>
+    </div>
+  )
+}
+
 // ── Logs de navigation ────────────────────────────────────────────────────────
 
 const PER_PAGE = 25
@@ -893,7 +1034,11 @@ export default function GalerieAdmin() {
   const [copiedId,   setCopiedId]   = useState(null)
   const rootRefresh = useRef(null)
   const location = useLocation()
-  const [activeTab, setActiveTab] = useState(() => location.hash === '#logs' ? 'logs' : 'galerie')
+  const [activeTab, setActiveTab] = useState(() => {
+    if (location.hash === '#logs') return 'logs'
+    if (location.hash === '#clients') return 'clients'
+    return 'galerie'
+  })
 
   function switchTab(key) {
     setActiveTab(key)
@@ -930,7 +1075,7 @@ export default function GalerieAdmin() {
 
         {/* Onglets */}
         <div style={{ display: 'flex', gap: 0, marginBottom: 40, borderBottom: '1px solid var(--line)' }}>
-          {[['galerie', 'Galerie'], ['logs', 'Logs de navigation']].map(([key, label]) => (
+          {[['galerie', 'Galerie'], ['clients', 'Clients'], ['logs', 'Logs de navigation']].map(([key, label]) => (
             <button key={key} onClick={() => switchTab(key)} style={{
               background: 'none', border: 'none', borderBottom: activeTab === key ? '2px solid var(--fg)' : '2px solid transparent',
               padding: '10px 20px 10px 0', marginBottom: -1,
@@ -943,6 +1088,18 @@ export default function GalerieAdmin() {
         </div>
 
         {activeTab === 'logs' && <LogsViewer authFetch={authFetch} />}
+
+        {activeTab === 'clients' && (
+          <CreateClientForm authFetch={authFetch} onCreated={() => {
+            authFetch('galerie-browse.php?listEnts=1')
+              .then(r => r.json())
+              .then(() => {
+                const entList = user?.ents || []
+                setEnts(entList)
+              })
+              .catch(() => {})
+          }} />
+        )}
 
         {activeTab === 'galerie' && <>
 
