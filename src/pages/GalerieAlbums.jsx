@@ -335,74 +335,6 @@ function Lightbox({ files, index, onClose, onPrev, onNext }) {
   )
 }
 
-// ── HD Download ───────────────────────────────────────────────────────────────
-
-const BATCH_SIZE = 30
-
-function HdDownloadSection({ files, ent, path, authFetch }) {
-  const hdFiles  = files.filter(f => f.hdUrl)
-  const [downloading, setDownloading] = useState({})
-
-  if (hdFiles.length === 0) return null
-
-  const batches = Math.ceil(hdFiles.length / BATCH_SIZE)
-
-  async function download(offset, batchIndex) {
-    const key = `${offset}`
-    setDownloading(prev => ({ ...prev, [key]: true }))
-    try {
-      const qs = new URLSearchParams({ ent, path, offset, limit: BATCH_SIZE })
-      const res = await authFetch(`galerie-download.php?${qs}`)
-      if (!res.ok) throw new Error('Erreur serveur')
-      const blob = await res.blob()
-      const url  = URL.createObjectURL(blob)
-      const a    = document.createElement('a')
-      const folderName = path ? path.split('/').pop() : ent
-      const suffix = batches > 1 ? `_lot${batchIndex + 1}` : ''
-      a.href     = url
-      a.download = `${folderName}${suffix}_HD.zip`
-      a.click()
-      URL.revokeObjectURL(url)
-    } catch {
-      alert('Le téléchargement a échoué. Veuillez réessayer.')
-    } finally {
-      setDownloading(prev => ({ ...prev, [key]: false }))
-    }
-  }
-
-  return (
-    <div style={{ marginTop: 64, paddingTop: 40, borderTop: '1px solid var(--line)' }}>
-      <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.28em',
-        textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 16 }}>
-        Photos HD — {hdFiles.length} fichier{hdFiles.length > 1 ? 's' : ''}
-      </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, alignItems: 'center' }}>
-        {Array.from({ length: batches }).map((_, i) => {
-          const offset = i * BATCH_SIZE
-          const count  = Math.min(BATCH_SIZE, hdFiles.length - offset)
-          const key    = `${offset}`
-          const busy   = !!downloading[key]
-          return (
-            <button key={i} onClick={() => download(offset, i)} disabled={busy} style={{
-              fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
-              textTransform: 'uppercase', padding: '10px 20px',
-              border: '1px solid var(--fg)', background: 'none',
-              color: busy ? 'var(--fg-muted)' : 'var(--fg)',
-              cursor: busy ? 'default' : 'pointer', whiteSpace: 'nowrap',
-            }}>
-              {busy ? 'Préparation…' : (
-                batches > 1
-                  ? `Télécharger lot ${i + 1} (${count} photos)`
-                  : `Télécharger les ${count} photos HD`
-              )}
-            </button>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
 // ── Header meta ───────────────────────────────────────────────────────────────
 
 function AlbumHeader({ meta }) {
@@ -760,11 +692,8 @@ export default function GalerieAlbums() {
           }} className="select-bar-desktop">
             {!selectMode ? (
               <>
-                <button onClick={() => downloadAll('hd')} disabled={!!dlBusy} style={selBtn}>
-                  {dlBusy === 'all-hd' ? 'Préparation…' : 'Tout télécharger HD'}
-                </button>
                 <button onClick={() => downloadAll('web')} disabled={!!dlBusy} style={selBtn}>
-                  {dlBusy === 'all-web' ? 'Préparation…' : 'Tout télécharger 1440p'}
+                  {dlBusy === 'all-web' ? 'Préparation…' : 'Tout télécharger'}
                 </button>
                 <button onClick={() => setSelectMode(true)} disabled={!!dlBusy} style={{ ...selBtn, borderColor: 'var(--line)', color: 'var(--fg-muted)' }}>
                   Sélectionner
@@ -785,11 +714,8 @@ export default function GalerieAlbums() {
                 </span>
                 {selected.size > 0 && (
                   <>
-                    <button onClick={() => downloadSelected('hd')} disabled={!!dlBusy} style={selBtn}>
-                      Télécharger HD
-                    </button>
                     <button onClick={() => downloadSelected('web')} disabled={!!dlBusy} style={selBtn}>
-                      Télécharger 1440p
+                      Télécharger
                     </button>
                   </>
                 )}
@@ -942,11 +868,8 @@ export default function GalerieAlbums() {
                   </span>
                   {selected.size > 0 && (
                     <>
-                      <button onClick={() => downloadSelected('hd')} disabled={!!dlBusy} style={selBtn}>
-                        {dlBusy === 'hd' ? '…' : 'HD'}
-                      </button>
                       <button onClick={() => downloadSelected('web')} disabled={!!dlBusy} style={selBtn}>
-                        {dlBusy === 'web' ? '…' : '1440p'}
+                        {dlBusy === 'web' ? '…' : 'Télécharger'}
                       </button>
                     </>
                   )}
@@ -964,12 +887,6 @@ export default function GalerieAlbums() {
               </div>
             )}
 
-            <HdDownloadSection
-              files={data.files}
-              ent={activeEnt}
-              path={pathParam}
-              authFetch={authFetch}
-            />
 
           </>
         )}
