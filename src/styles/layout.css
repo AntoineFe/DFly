@@ -347,3 +347,18 @@
 @media (min-width: 768px) {
   .select-bar-mobile { display: none !important; }
 }
+
+/* ── Upload spinner ── */
+@keyframes upload-spin {
+  to { transform: rotate(360deg); }
+}
+.upload-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--line);
+  border-top-color: var(--fg);
+  border-radius: 50%;
+  animation: upload-spin 0.7s linear infinite;
+  flex-shrink: 0;
+}

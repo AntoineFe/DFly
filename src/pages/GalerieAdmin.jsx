@@ -112,40 +112,57 @@ function MetaForm({ ent, path, meta, onSave, onClose, authFetch }) {
 
 // ── Zone d'upload drag & drop ─────────────────────────────────────────────────
 
+const UPLOAD_CONCURRENCY = 3
+
 function UploadZone({ ent, path, onDone, authFetch }) {
-  const [dragging,  setDragging]  = useState(false)
-  const [uploading, setUploading] = useState(false)
-  const [results,   setResults]   = useState([])
-  const [progress,  setProgress]  = useState({ done: 0, total: 0 })
+  const [dragging,     setDragging]     = useState(false)
+  const [fileStatuses, setFileStatuses] = useState({}) // name → 'pending'|'uploading'|'done'|'error'
+  const [uploading,    setUploading]    = useState(false)
   const inputRef = useRef()
 
+  const setStatus = (name, status) =>
+    setFileStatuses(prev => ({ ...prev, [name]: status }))
+
   async function uploadFiles(fileList) {
-    setUploading(true)
-    setResults([])
     const files = Array.from(fileList).filter(f =>
       f.type.startsWith('image/') || f.type.startsWith('video/'))
-    if (!files.length) { setUploading(false); return }
+    if (!files.length) return
 
-    setProgress({ done: 0, total: files.length })
+    setUploading(true)
+    const initial = {}
+    files.forEach(f => { initial[f.name] = 'pending' })
+    setFileStatuses(initial)
 
-    const batchSize = 5
-    const allResults = []
-    for (let i = 0; i < files.length; i += batchSize) {
-      const batch = files.slice(i, i + batchSize)
-      const fd = new FormData()
-      fd.append('ent', ent)
-      fd.append('path', path)
-      batch.forEach(f => fd.append(f.name, f))
-      const r = await authFetch('galerie-upload.php', { method: 'POST', body: fd })
-      const d = await r.json()
-      allResults.push(...(d.files || []))
-      setResults([...allResults])
-      setProgress({ done: Math.min(i + batchSize, files.length), total: files.length })
+    let idx = 0
+    let doneCount = 0
+
+    // Upload UPLOAD_CONCURRENCY fichiers en parallèle
+    const worker = async () => {
+      while (true) {
+        const i = idx++
+        if (i >= files.length) break
+        const file = files[i]
+        setStatus(file.name, 'uploading')
+        try {
+          const fd = new FormData()
+          fd.append('ent', ent)
+          fd.append('path', path)
+          fd.append(file.name, file)
+          const r = await authFetch('galerie-upload.php', { method: 'POST', body: fd })
+          const d = await r.json()
+          const ok = d.files?.[0]?.ok ?? false
+          setStatus(file.name, ok ? 'done' : 'error')
+          if (ok) doneCount++
+        } catch {
+          setStatus(file.name, 'error')
+        }
+      }
     }
 
+    await Promise.all(Array.from({ length: Math.min(UPLOAD_CONCURRENCY, files.length) }, worker))
+
     setUploading(false)
-    const ok = allResults.filter(r => r.ok).length
-    if (ok > 0) onDone()
+    if (doneCount > 0) onDone()
   }
 
   function onDrop(e) {
@@ -153,17 +170,22 @@ function UploadZone({ ent, path, onDone, authFetch }) {
     uploadFiles(e.dataTransfer.files)
   }
 
+  const entries = Object.entries(fileStatuses)
+  const total   = entries.length
+  const done    = entries.filter(([, s]) => s === 'done' || s === 'error').length
+
   return (
     <div style={{ marginTop: 8 }}>
       <div
         onDragOver={e => { e.preventDefault(); setDragging(true) }}
         onDragLeave={() => setDragging(false)}
         onDrop={onDrop}
-        onClick={() => inputRef.current?.click()}
+        onClick={() => !uploading && inputRef.current?.click()}
         style={{
           border: `2px dashed ${dragging ? 'var(--fg)' : 'var(--line)'}`,
           background: dragging ? 'var(--bg-alt)' : 'var(--bg)',
-          padding: '32px 20px', textAlign: 'center', cursor: 'pointer',
+          padding: '24px 20px', textAlign: 'center',
+          cursor: uploading ? 'default' : 'pointer',
           transition: 'all .15s',
         }}
       >
@@ -173,21 +195,20 @@ function UploadZone({ ent, path, onDone, authFetch }) {
         <div style={{ fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.28em',
           textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
           {uploading
-            ? `${progress.done} / ${progress.total} photo${progress.total > 1 ? 's' : ''} traitée${progress.total > 1 ? 's' : ''}`
+            ? `${done} / ${total} traité${total > 1 ? 's' : ''}`
             : 'Glisser les photos ici ou cliquer pour parcourir'}
         </div>
-        {uploading && (
-          <div style={{ marginTop: 12, width: '100%', maxWidth: 320, margin: '12px auto 0' }}>
+        {uploading && total > 0 && (
+          <div style={{ marginTop: 10, maxWidth: 320, margin: '10px auto 0' }}>
             <div style={{ height: 3, background: 'var(--line)', borderRadius: 2, overflow: 'hidden' }}>
               <div style={{
                 height: '100%', background: 'var(--fg)', borderRadius: 2,
-                width: `${progress.total ? (progress.done / progress.total) * 100 : 0}%`,
-                transition: 'width 0.3s ease',
+                width: `${(done / total) * 100}%`, transition: 'width 0.3s ease',
               }} />
             </div>
           </div>
         )}
-        {!uploading && (
+        {!uploading && total === 0 && (
           <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 13,
             color: 'var(--fg-muted)', marginTop: 8 }}>
             JPG, JPEG, PNG, WEBP · Miniatures générées automatiquement
@@ -195,15 +216,26 @@ function UploadZone({ ent, path, onDone, authFetch }) {
         )}
       </div>
 
-      {results.length > 0 && (
-        <div style={{ marginTop: 12, display: 'flex', flexDirection: 'column', gap: 4, maxHeight: 180, overflowY: 'auto' }}>
-          {results.map((r, i) => (
-            <div key={i} style={{ display: 'flex', justifyContent: 'space-between',
-              fontSize: 12, fontFamily: 'var(--sans)', padding: '4px 8px',
-              background: r.ok ? 'rgba(0,0,0,0.03)' : 'rgba(192,57,43,0.05)',
-              color: r.ok ? 'var(--fg-muted)' : '#c0392b' }}>
-              <span>{r.name}</span>
-              <span>{r.ok ? '✓' : r.error}</span>
+      {entries.length > 0 && (
+        <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 0,
+          maxHeight: 240, overflowY: 'auto', border: '1px solid var(--line)', borderTop: 'none' }}>
+          {entries.map(([name, status]) => (
+            <div key={name} style={{
+              display: 'flex', alignItems: 'center', gap: 10,
+              padding: '5px 10px', borderBottom: '1px solid var(--line)',
+              background: status === 'error' ? 'rgba(192,57,43,0.04)' : 'transparent',
+            }}>
+              <div style={{ width: 16, height: 16, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {status === 'uploading' && <span className="upload-spinner" />}
+                {status === 'done'      && <span style={{ color: 'green',   fontSize: 13 }}>✓</span>}
+                {status === 'error'     && <span style={{ color: '#c0392b', fontSize: 13 }}>✗</span>}
+                {status === 'pending'   && <span style={{ color: 'var(--line)', fontSize: 11 }}>·</span>}
+              </div>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 12,
+                color: status === 'error' ? '#c0392b' : 'var(--fg-muted)',
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {name}
+              </span>
             </div>
           ))}
         </div>
