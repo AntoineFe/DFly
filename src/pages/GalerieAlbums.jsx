@@ -578,6 +578,7 @@ export default function GalerieAlbums() {
 
   function handleLongPressStart(name) {
     longPressTimer.current = setTimeout(() => {
+      navigator.vibrate?.(50)
       setSelectMode(true)
       setSelected(new Set([name]))
     }, 500)
@@ -806,6 +807,7 @@ export default function GalerieAlbums() {
                       onTouchStart={() => file.type === 'image' && handleLongPressStart(file.name)}
                       onTouchEnd={handleLongPressCancel}
                       onTouchMove={handleLongPressCancel}
+                      onContextMenu={e => e.preventDefault()}
                       style={{ breakInside: 'avoid', marginBottom: 4, cursor: 'pointer',
                         overflow: 'hidden', background: 'var(--bg-alt)', position: 'relative' }}>
                       {file.type === 'video' ? (
