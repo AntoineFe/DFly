@@ -406,12 +406,15 @@ export default function GalerieAlbums() {
     }
     return null
   })
+  const THUMB_COL_W = 230 // largeur naturelle des vignettes — ne pas agrandir
+  const THUMB_GAP   = 4
+
   const defaultCols = () => {
-    const available = Math.min(window.innerWidth, 1200) - 80
-    return Math.max(2, Math.floor(available / 200))
+    const available = window.innerWidth - 2 * 20 // marges latérales min
+    return Math.max(2, Math.floor((available + THUMB_GAP) / (THUMB_COL_W + THUMB_GAP)))
   }
 
-  const clampCols = (n) => Math.max(2, Math.min(n, defaultCols() + 2))
+  const clampCols = (n) => Math.max(2, Math.min(n, defaultCols()))
 
   const [colsDirs,   setColsDirs]   = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || defaultCols()))
   const [colsPhotos, setColsPhotos] = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_photos')) || defaultCols()))
@@ -784,9 +787,10 @@ export default function GalerieAlbums() {
                 colItems[col].push(file)
               })
               return (
-              <div ref={gridPhotosRef} style={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
+              <div ref={gridPhotosRef} style={{ display: 'flex', gap: THUMB_GAP, alignItems: 'flex-start',
+                width: colsPhotos * THUMB_COL_W + (colsPhotos - 1) * THUMB_GAP, maxWidth: '100%' }}>
                 {colItems.map((col, ci) => (
-                  <div key={ci} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+                  <div key={ci} style={{ width: THUMB_COL_W, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: THUMB_GAP }}>
                     {col.map(file => {
                   const imgIndex   = imageFiles.indexOf(file)
                   const isSelected = selected.has(file.name)
