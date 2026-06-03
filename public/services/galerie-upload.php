@@ -36,17 +36,6 @@ $THUMB_SHORT = 230;   // px — côté court miniature
 $WEB_SHORT   = 1440;  // px — côté court grand format
 $IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
-$useImagick = extension_loaded('imagick');
-
-// Laisser suffisamment de temps pour traiter les lots
-@set_time_limit(300);
-
-// Limiter la mémoire Imagick par opération (256 MB)
-if ($useImagick) {
-    Imagick::setResourceLimit(Imagick::RESOURCETYPE_MEMORY, 256);
-    Imagick::setResourceLimit(Imagick::RESOURCETYPE_MAP,    512);
-}
-
 $results = [];
 
 foreach ($_FILES as $file) {
@@ -70,32 +59,31 @@ foreach ($_FILES as $file) {
     if (in_array($mime, $IMAGE_TYPES)) {
         rename($tmpPath, $hdPath);
 
-        if ($useImagick) {
-            galerie_resize_imagick($hdPath, $dest,      $WEB_SHORT,   92);
-            galerie_resize_imagick($hdPath, $thumbPath, $THUMB_SHORT, 82);
-        } else {
-            galerie_resize_gd($hdPath, $dest,      $WEB_SHORT,   $mime, 92);
-            galerie_resize_gd($hdPath, $thumbPath, $THUMB_SHORT, $mime, 82);
-        }
+        // Charger l'image HD une seule fois
+        $img = galerie_load_gd($hdPath, $mime);
+        if ($img) {
+            // Version web (1440p) depuis HD
+            $webImg = galerie_scale_gd($img, $WEB_SHORT);
+            galerie_save_gd($webImg, $dest, $mime, 88);
 
-        // Stocker le ratio largeur/hauteur de la version web
-        if ($useImagick) {
-            try {
-                $im = new Imagick($dest);
-                $w  = $im->getImageWidth();
-                $h  = $im->getImageHeight();
-                $im->destroy();
-            } catch (Exception $e) { $w = 0; $h = 0; }
-        } else {
-            $img = @imagecreatefromstring(file_get_contents($dest));
-            if ($img) { $w = imagesx($img); $h = imagesy($img); imagedestroy($img); }
-            else { $w = 0; $h = 0; }
-        }
-        if ($w > 0 && $h > 0) {
-            $metaFilesPath = $destDir . '/_meta_files.json';
-            $ratios = file_exists($metaFilesPath) ? (json_decode(file_get_contents($metaFilesPath), true) ?? []) : [];
-            $ratios[$origName] = round($w / $h, 4);
-            file_put_contents($metaFilesPath, json_encode($ratios), LOCK_EX);
+            // Ratio depuis la version web
+            $w = imagesx($webImg);
+            $h = imagesy($webImg);
+
+            // Miniature depuis la version web déjà réduite (beaucoup plus rapide)
+            $thumbImg = galerie_scale_gd($webImg, $THUMB_SHORT);
+            galerie_save_gd($thumbImg, $thumbPath, $mime, 82);
+
+            imagedestroy($img);
+            imagedestroy($webImg);
+            imagedestroy($thumbImg);
+
+            if ($w > 0 && $h > 0) {
+                $metaFilesPath = $destDir . '/_meta_files.json';
+                $ratios = file_exists($metaFilesPath) ? (json_decode(file_get_contents($metaFilesPath), true) ?? []) : [];
+                $ratios[$origName] = round($w / $h, 4);
+                file_put_contents($metaFilesPath, json_encode($ratios), LOCK_EX);
+            }
         }
     } else {
         rename($tmpPath, $dest);
@@ -113,53 +101,9 @@ foreach ($_FILES as $file) {
 
 echo json_encode(['ok' => true, 'files' => $results]);
 
-// ── Redimensionnement Imagick ─────────────────────────────────────────────────
+// ── Helpers GD ────────────────────────────────────────────────────────────────
 
-function galerie_resize_imagick($src, $dest, $minShort, $quality = 85) {
-    try {
-        $im = new Imagick();
-        // Hint JPEG : décoder directement à ~2× la taille cible → 4-8× moins de mémoire
-        $hint = ($minShort * 3) . 'x' . ($minShort * 3);
-        $im->setOption('jpeg:size', $hint);
-        $im->readImage($src);
-        // Auto-rotation EXIF
-        $im->autoOrient();
-        // Strip métadonnées (gain de poids)
-        $im->stripImage();
-
-        $w = $im->getImageWidth();
-        $h = $im->getImageHeight();
-
-        if (min($w, $h) > $minShort) {
-            if ($w <= $h) {
-                $nw = $minShort;
-                $nh = (int)round($h * $minShort / $w);
-            } else {
-                $nh = $minShort;
-                $nw = (int)round($w * $minShort / $h);
-            }
-            $im->resizeImage($nw, $nh, Imagick::FILTER_LANCZOS, 1);
-        }
-
-        $format = strtolower($im->getImageFormat());
-        if ($format === 'jpeg' || $format === 'jpg') {
-            $im->setImageCompressionQuality($quality);
-            $im->setInterlaceScheme(Imagick::INTERLACE_JPEG); // JPEG progressif
-        } elseif ($format === 'webp') {
-            $im->setImageCompressionQuality($quality);
-        }
-
-        $im->writeImage($dest);
-        $im->destroy();
-        return true;
-    } catch (Exception $e) {
-        return false;
-    }
-}
-
-// ── Redimensionnement GD (fallback) ──────────────────────────────────────────
-
-function galerie_resize_gd($src, $dest, $minShort, $mime, $quality = 85) {
+function galerie_load_gd($src, $mime) {
     switch ($mime) {
         case 'image/jpeg': $img = @imagecreatefromjpeg($src); break;
         case 'image/png':  $img = @imagecreatefrompng($src);  break;
@@ -169,6 +113,7 @@ function galerie_resize_gd($src, $dest, $minShort, $mime, $quality = 85) {
     }
     if (!$img) return false;
 
+    // Correction orientation EXIF
     if ($mime === 'image/jpeg' && function_exists('exif_read_data')) {
         $exif        = @exif_read_data($src);
         $orientation = $exif['Orientation'] ?? 1;
@@ -178,14 +123,16 @@ function galerie_resize_gd($src, $dest, $minShort, $mime, $quality = 85) {
             case 8: $img = imagerotate($img, 90, 0);  break;
         }
     }
+    return $img;
+}
 
+function galerie_scale_gd($img, $minShort) {
     $w = imagesx($img);
     $h = imagesy($img);
 
-    $short = min($w, $h);
-    if ($short <= $minShort) {
-        $nw = $w; $nh = $h;
-    } elseif ($w <= $h) {
+    if (min($w, $h) <= $minShort) return $img; // déjà plus petit
+
+    if ($w <= $h) {
         $nw = $minShort;
         $nh = (int)round($h * $minShort / $w);
     } else {
@@ -194,16 +141,16 @@ function galerie_resize_gd($src, $dest, $minShort, $mime, $quality = 85) {
     }
 
     $out = imagecreatetruecolor($nw, $nh);
-    if ($mime === 'image/png') { imagealphablending($out, false); imagesavealpha($out, true); }
     imagecopyresampled($out, $img, 0, 0, 0, 0, $nw, $nh, $w, $h);
-    imagedestroy($img);
+    return $out;
+}
 
+function galerie_save_gd($img, $dest, $mime, $quality = 85) {
     switch ($mime) {
-        case 'image/jpeg': return imagejpeg($out, $dest, $quality);
-        case 'image/png':  return imagepng($out, $dest, 6);
-        case 'image/webp': return imagewebp($out, $dest, $quality);
-        case 'image/gif':  return imagegif($out, $dest);
+        case 'image/jpeg': return imagejpeg($img, $dest, $quality);
+        case 'image/png':  return imagepng($img, $dest, 6);
+        case 'image/webp': return imagewebp($img, $dest, $quality);
+        case 'image/gif':  return imagegif($img, $dest);
     }
-    imagedestroy($out);
     return false;
 }
