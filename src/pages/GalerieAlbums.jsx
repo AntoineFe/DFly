@@ -606,6 +606,7 @@ export default function GalerieAlbums() {
                  + (version === 'hd' ? '_HD' : '_1440p') + (selected.size > 1 ? '.zip' : '.' + [...selected][0].split('.').pop())
       a.click()
       URL.revokeObjectURL(url)
+      exitSelectMode()
     } catch {
       alert('Le téléchargement a échoué.')
     } finally {
@@ -741,12 +742,18 @@ export default function GalerieAlbums() {
                 {selected.size > 0 && (
                   <>
                     <button onClick={() => downloadSelected('hd')} disabled={!!dlBusy} style={selBtn}>
-                      {dlBusy === 'hd' ? 'Préparation…' : 'Télécharger HD'}
+                      Télécharger HD
                     </button>
                     <button onClick={() => downloadSelected('web')} disabled={!!dlBusy} style={selBtn}>
-                      {dlBusy === 'web' ? 'Préparation…' : 'Télécharger 1440p'}
+                      Télécharger 1440p
                     </button>
                   </>
+                )}
+                {dlBusy && (
+                  <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic',
+                    fontSize: 13, color: 'var(--fg-muted)' }}>
+                    Préparation du téléchargement…
+                  </span>
                 )}
               </>
             )}
@@ -849,26 +856,33 @@ export default function GalerieAlbums() {
               <div className="select-bar-mobile" style={{
                 position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
                 background: 'var(--bg)', borderTop: '1px solid var(--line)',
-                padding: '12px var(--gutter)', display: 'flex',
-                alignItems: 'center', gap: 12, flexWrap: 'wrap',
+                padding: '12px var(--gutter)', display: 'flex', flexDirection: 'column', gap: 10,
               }}>
-                <span style={{ fontFamily: 'var(--sans)', fontSize: 11,
-                  letterSpacing: '0.2em', color: 'var(--fg-muted)', flex: 1 }}>
-                  {selected.size} photo{selected.size > 1 ? 's' : ''}
-                </span>
-                {selected.size > 0 && (
-                  <>
-                    <button onClick={() => downloadSelected('hd')} disabled={!!dlBusy} style={selBtn}>
-                      {dlBusy === 'hd' ? '…' : 'HD'}
-                    </button>
-                    <button onClick={() => downloadSelected('web')} disabled={!!dlBusy} style={selBtn}>
-                      {dlBusy === 'web' ? '…' : '1440p'}
-                    </button>
-                  </>
+                {dlBusy && (
+                  <div style={{ textAlign: 'center', fontFamily: 'var(--serif)', fontStyle: 'italic',
+                    fontSize: 13, color: 'var(--fg-muted)' }}>
+                    Préparation du téléchargement…
+                  </div>
                 )}
-                <button onClick={exitSelectMode} style={{ ...selBtn, borderColor: 'var(--fg-muted)', color: 'var(--fg-muted)' }}>
-                  Annuler
-                </button>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  <span style={{ fontFamily: 'var(--sans)', fontSize: 11,
+                    letterSpacing: '0.2em', color: 'var(--fg-muted)', flex: 1 }}>
+                    {selected.size} photo{selected.size > 1 ? 's' : ''}
+                  </span>
+                  {selected.size > 0 && (
+                    <>
+                      <button onClick={() => downloadSelected('hd')} disabled={!!dlBusy} style={selBtn}>
+                        {dlBusy === 'hd' ? '…' : 'HD'}
+                      </button>
+                      <button onClick={() => downloadSelected('web')} disabled={!!dlBusy} style={selBtn}>
+                        {dlBusy === 'web' ? '…' : '1440p'}
+                      </button>
+                    </>
+                  )}
+                  <button onClick={exitSelectMode} disabled={!!dlBusy} style={{ ...selBtn, borderColor: 'var(--fg-muted)', color: 'var(--fg-muted)' }}>
+                    Annuler
+                  </button>
+                </div>
               </div>
             )}
 
