@@ -1045,20 +1045,25 @@ export default function GalerieAdmin() {
     navigate(`#${key}`, { replace: true })
   }
 
+  function loadEnts() {
+    return authFetch('galerie-list-ents.php')
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) {
+          setEnts(d.ents)
+          if (d.ents.length === 1) setSelectedEnt(d.ents[0].shortDesc)
+        }
+      })
+      .catch(() => {})
+  }
+
   useEffect(() => {
     if (!hasAuth('admin', 'R')) {
       navigate('/galerie/albums')
       return
     }
-    // Charger la liste des entreprises
-    authFetch('galerie-browse.php?listEnts=1')
-      .then(r => r.json())
-      .then(d => {
-        const entList = user?.ents || []
-        setEnts(entList)
-        if (entList.length === 1) setSelectedEnt(entList[0].shortDesc)
-      })
-  }, [hasAuth, navigate, authFetch, user])
+    loadEnts()
+  }, [hasAuth, navigate, authFetch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!selectedEnt) { setEntUsers([]); return }
@@ -1090,15 +1095,7 @@ export default function GalerieAdmin() {
         {activeTab === 'logs' && <LogsViewer authFetch={authFetch} />}
 
         {activeTab === 'clients' && (
-          <CreateClientForm authFetch={authFetch} onCreated={() => {
-            authFetch('galerie-browse.php?listEnts=1')
-              .then(r => r.json())
-              .then(() => {
-                const entList = user?.ents || []
-                setEnts(entList)
-              })
-              .catch(() => {})
-          }} />
+          <CreateClientForm authFetch={authFetch} onCreated={loadEnts} />
         )}
 
         {activeTab === 'galerie' && <>
