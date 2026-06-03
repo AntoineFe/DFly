@@ -679,6 +679,39 @@ export default function GalerieAlbums() {
           ))}
         </nav>
 
+        {/* Barre fratrie */}
+        {data?.siblings?.length > 0 && (() => {
+          const parts   = pathParam.split('/').filter(Boolean)
+          const current = parts[parts.length - 1]
+          const parentPath = parts.slice(0, -1).join('/')
+          return (
+            <div style={{
+              maxWidth: 'min(1000px, 100%)', margin: '0 auto 32px',
+              display: 'flex', gap: 0, flexWrap: 'wrap',
+              borderBottom: '1px solid var(--line)',
+            }}>
+              {data.siblings.map(s => {
+                const sibPath = parentPath ? `${parentPath}/${s}` : s
+                const isActive = s === current
+                return (
+                  <button key={s}
+                    onClick={() => navigate(`/galerie/albums${entId ? `/${entId}` : ''}?path=${encodeURIComponent(sibPath)}${entQs()}`)}
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.22em',
+                      textTransform: 'uppercase', padding: '8px 14px 10px',
+                      color: isActive ? 'var(--fg)' : 'var(--fg-muted)',
+                      borderBottom: isActive ? '2px solid var(--fg)' : '2px solid transparent',
+                      marginBottom: -1,
+                    }}>
+                    {s}
+                  </button>
+                )
+              })}
+            </div>
+          )
+        })()}
+
         {loading && (
           <div style={{ textAlign: 'center', padding: '80px 0', color: 'var(--fg-muted)',
             fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Chargement…</div>

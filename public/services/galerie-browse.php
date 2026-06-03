@@ -116,11 +116,28 @@ foreach (scandir($targetDir) as $item) {
 $metaFile    = $targetDir . '/_meta.json';
 $currentMeta = file_exists($metaFile) ? json_decode(file_get_contents($metaFile), true) : null;
 
+// Dossiers frères (siblings) — dossiers du parent au même niveau
+$siblings = [];
+if ($subPath !== '') {
+    $parts     = explode('/', $subPath);
+    $current   = array_pop($parts);
+    $parentDir = count($parts) > 0 ? $baseDir . '/' . implode('/', $parts) : $baseDir;
+    if (is_dir($parentDir)) {
+        foreach (scandir($parentDir) as $item) {
+            if ($item === '.' || $item === '..') continue;
+            if (is_dir($parentDir . '/' . $item) && substr($item, 0, 1) !== '_') {
+                $siblings[] = $item;
+            }
+        }
+    }
+}
+
 echo json_encode([
-    'ok'      => true,
-    'path'    => $subPath,
-    'ent'     => $entSlug,
-    'meta'    => $currentMeta,
-    'dirs'    => $dirs,
-    'files'   => $files,
+    'ok'       => true,
+    'path'     => $subPath,
+    'ent'      => $entSlug,
+    'meta'     => $currentMeta,
+    'dirs'     => $dirs,
+    'files'    => $files,
+    'siblings' => $siblings,
 ]);

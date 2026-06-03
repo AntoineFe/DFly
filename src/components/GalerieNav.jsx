@@ -3,17 +3,17 @@ import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import ChangePasswordModal from './ChangePasswordModal'
 
-const APP_NAME    = import.meta.env.VITE_APP_NAME    || 'Galerie'
-const APP_TAGLINE = import.meta.env.VITE_APP_TAGLINE || ''
-const APP_HOME    = import.meta.env.VITE_APP_HOME_URL || '/'
-const LOGO_URL    = import.meta.env.VITE_APP_LOGO_URL || ''
+const APP_NAME    = import.meta.env.VITE_APP_NAME       || 'Galerie'
+const APP_TAGLINE = import.meta.env.VITE_APP_TAGLINE    || ''
+const APP_HOME    = import.meta.env.VITE_APP_HOME_URL   || '/'
+const LOGO_URL    = import.meta.env.VITE_APP_LOGO_URL   || ''
+const LOGO_EMOJI  = import.meta.env.VITE_APP_LOGO_EMOJI || ''
 
 function AppLogo({ size = 32 }) {
-  if (!LOGO_URL) return null
-  return (
-    <img src={LOGO_URL} alt={APP_NAME}
-      style={{ width: size, height: size, objectFit: 'contain', display: 'block' }} />
-  )
+  if (LOGO_URL)   return <img src={LOGO_URL} alt={APP_NAME}
+    style={{ width: size, height: size, objectFit: 'contain', display: 'block' }} />
+  if (LOGO_EMOJI) return <span style={{ fontSize: size * 0.85, lineHeight: 1 }}>{LOGO_EMOJI}</span>
+  return null
 }
 
 export default function GalerieNav() {
