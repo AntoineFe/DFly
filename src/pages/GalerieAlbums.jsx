@@ -620,7 +620,7 @@ export default function GalerieAlbums() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <TopNav minimal />
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: '80px var(--gutter) 120px' }}>
+      <div style={{ padding: '80px var(--gutter) 120px' }}>
 
         {/* Fil d'ariane */}
         <nav style={{ marginBottom: 48, display: 'flex', alignItems: 'center', gap: 8,
