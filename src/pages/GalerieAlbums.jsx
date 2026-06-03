@@ -851,7 +851,10 @@ export default function GalerieAlbums() {
                         if (selectMode && file.type === 'image') toggleSelect(file.name)
                         else if (!selectMode) setLightbox(imgIndex >= 0 ? imgIndex : null)
                       }}
-                      onTouchStart={() => file.type === 'image' && handleLongPressStart(file.name)}
+                      onTouchStart={e => {
+                        if (e.touches.length > 1) { handleLongPressCancel(); return }
+                        file.type === 'image' && handleLongPressStart(file.name)
+                      }}
                       onTouchEnd={handleLongPressCancel}
                       onTouchMove={handleLongPressCancel}
                       onContextMenu={e => e.preventDefault()}
