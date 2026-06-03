@@ -212,6 +212,247 @@ function UploadZone({ ent, path, onDone, authFetch }) {
   )
 }
 
+// ── Sélecteur de dossier destination ─────────────────────────────────────────
+
+function FolderRow({ ent, path, label, depth, excludePath, selected, onSelect, authFetch }) {
+  const [open,    setOpen]    = useState(false)
+  const [subdirs, setSubdirs] = useState(null)
+
+  const isExcluded = excludePath && path !== '' &&
+    (path === excludePath || path.startsWith(excludePath + '/'))
+  if (isExcluded) return null
+
+  async function toggle() {
+    if (!open && subdirs === null) {
+      const qs = new URLSearchParams({ ent, path })
+      const r  = await authFetch(`galerie-browse.php?${qs}`)
+      const d  = await r.json()
+      if (d.ok) setSubdirs(d.dirs)
+    }
+    setOpen(o => !o)
+  }
+
+  const isSelected = selected === path
+  const pl = 10 + depth * 16
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8,
+        padding: `7px 12px 7px ${pl}px`,
+        background: isSelected ? 'var(--bg-alt)' : 'transparent',
+        borderBottom: '1px solid var(--line)' }}>
+        <button onClick={toggle} style={{ background: 'none', border: 'none',
+          cursor: 'pointer', fontSize: 11, color: 'var(--fg-muted)', width: 14,
+          flexShrink: 0, padding: 0 }}>
+          {path !== '' ? (open ? '▾' : '▸') : ''}
+        </button>
+        <span style={{ flex: 1, fontFamily: 'var(--sans)', fontSize: 12,
+          color: 'var(--fg)', fontStyle: path === '' ? 'italic' : 'normal' }}>
+          {label}
+        </span>
+        <button onClick={() => onSelect(path)} style={{
+          background: isSelected ? 'var(--fg)' : 'none',
+          color: isSelected ? 'var(--bg)' : 'var(--fg)',
+          border: '1px solid var(--line)', padding: '3px 10px',
+          fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.2em',
+          textTransform: 'uppercase', cursor: 'pointer',
+        }}>
+          {isSelected ? '✓ Ici' : 'Ici'}
+        </button>
+      </div>
+      {open && subdirs && subdirs.map(d => (
+        <FolderRow key={d.name} ent={ent}
+          path={path ? path + '/' + d.name : d.name}
+          label={d.meta?.title || d.name}
+          depth={depth + 1} excludePath={excludePath}
+          selected={selected} onSelect={onSelect} authFetch={authFetch} />
+      ))}
+    </div>
+  )
+}
+
+function FolderPicker({ ent, excludePath, selected, onSelect, authFetch }) {
+  const [topDirs, setTopDirs] = useState(null)
+
+  useEffect(() => {
+    const qs = new URLSearchParams({ ent, path: '' })
+    authFetch(`galerie-browse.php?${qs}`)
+      .then(r => r.json())
+      .then(d => { if (d.ok) setTopDirs(d.dirs) })
+  }, [ent, authFetch])
+
+  return (
+    <div style={{ border: '1px solid var(--line)', maxHeight: 240, overflowY: 'auto', marginTop: 12 }}>
+      <FolderRow ent={ent} path='' label='Racine (niveau principal)' depth={0}
+        excludePath={excludePath} selected={selected} onSelect={onSelect} authFetch={authFetch} />
+      {topDirs && topDirs.map(d => (
+        <FolderRow key={d.name} ent={ent} path={d.name}
+          label={d.meta?.title || d.name} depth={0}
+          excludePath={excludePath} selected={selected} onSelect={onSelect} authFetch={authFetch} />
+      ))}
+    </div>
+  )
+}
+
+// ── Panneau déplacement ───────────────────────────────────────────────────────
+
+function MovePanel({ ent, srcPath, srcName, type, dataFiles, onDone, onClose, authFetch }) {
+  // type='folder': déplacer le dossier srcName (dans srcPath) vers destPath
+  // type='files' : déplacer des fichiers de srcPath vers destPath
+  const folderFullPath = type === 'folder'
+    ? (srcPath ? srcPath + '/' + srcName : srcName)
+    : null
+
+  const [step,          setStep]          = useState(type === 'folder' ? 'dest' : 'select')
+  const [selectedFiles, setSelectedFiles] = useState(null) // null = tous
+  const [destPath,      setDestPath]      = useState(null)
+  const [moving,        setMoving]        = useState(false)
+  const [hoveredThumb,  setHoveredThumb]  = useState(null) // { url, x, y }
+
+  const imageFiles = (dataFiles || []).filter(f => f.type === 'image' || f.type === 'video')
+
+  function toggleFile(name) {
+    setSelectedFiles(prev => {
+      const base = prev ?? imageFiles.map(f => f.name)
+      const next = new Set(base)
+      next.has(name) ? next.delete(name) : next.add(name)
+      return [...next]
+    })
+  }
+
+  async function doMove() {
+    if (destPath === null) return
+    setMoving(true)
+    try {
+      const body = type === 'folder'
+        ? { ent, type: 'folder', srcPath: folderFullPath, destPath }
+        : { ent, type: 'files',  srcPath, destPath, files: selectedFiles ?? [] }
+      const r = await authFetch('galerie-move.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(body),
+      })
+      const d = await r.json()
+      if (d.ok) onDone()
+      else alert(d.error || 'Erreur lors du déplacement')
+    } finally {
+      setMoving(false)
+    }
+  }
+
+  const labelStyle = { fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.28em',
+    textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 8, display: 'block' }
+
+  return (
+    <div style={{ padding: '16px 0', position: 'relative' }}>
+
+      {/* Étape 1 : sélection des fichiers (type=files uniquement) */}
+      {step === 'select' && (
+        <div>
+          <span style={labelStyle}>Sélectionner les fichiers à déplacer</span>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+            <button onClick={() => { setSelectedFiles(null); setStep('dest') }} style={moveBtnStyle}>
+              Tous les fichiers ({imageFiles.length})
+            </button>
+            <button onClick={() => { setSelectedFiles([]); }} style={{
+              ...moveBtnStyle,
+              background: selectedFiles !== null ? 'var(--fg)' : 'none',
+              color: selectedFiles !== null ? 'var(--bg)' : 'var(--fg)',
+            }}>
+              Sélectionner
+            </button>
+          </div>
+
+          {selectedFiles !== null && (
+            <>
+              <div style={{ border: '1px solid var(--line)', maxHeight: 200, overflowY: 'auto', marginBottom: 12 }}>
+                {imageFiles.map(f => {
+                  const checked = selectedFiles.includes(f.name)
+                  return (
+                    <div key={f.name}
+                      style={{ display: 'flex', alignItems: 'center', gap: 10,
+                        padding: '6px 12px', borderBottom: '1px solid var(--line)',
+                        cursor: 'pointer', background: checked ? 'var(--bg-alt)' : 'transparent' }}
+                      onClick={() => toggleFile(f.name)}
+                      onMouseEnter={e => {
+                        if (f.thumbUrl) {
+                          const rect = e.currentTarget.getBoundingClientRect()
+                          setHoveredThumb({ url: f.thumbUrl, x: rect.right + 8, y: rect.top })
+                        }
+                      }}
+                      onMouseLeave={() => setHoveredThumb(null)}>
+                      <div style={{ width: 16, height: 16, border: '1px solid var(--line)',
+                        background: checked ? 'var(--fg)' : 'transparent', flexShrink: 0,
+                        display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {checked && <span style={{ color: 'var(--bg)', fontSize: 11 }}>✓</span>}
+                      </div>
+                      <span style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--fg)' }}>
+                        {f.name}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+              <button onClick={() => setStep('dest')} disabled={selectedFiles.length === 0}
+                style={{ ...moveBtnStyle, background: 'var(--fg)', color: 'var(--bg)', border: 'none' }}>
+                Suivant ({selectedFiles.length} fichier{selectedFiles.length > 1 ? 's' : ''})
+              </button>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Étape 2 : choix de la destination */}
+      {step === 'dest' && (
+        <div>
+          <span style={labelStyle}>
+            {type === 'folder'
+              ? `Déplacer le dossier « ${srcName} » vers :`
+              : `Déplacer ${selectedFiles === null ? 'tous les fichiers' : selectedFiles.length + ' fichier(s)'} vers :`}
+          </span>
+          <FolderPicker
+            ent={ent}
+            excludePath={type === 'folder' ? folderFullPath : srcPath}
+            selected={destPath ?? ''}
+            onSelect={setDestPath}
+            authFetch={authFetch}
+          />
+          <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+            {type === 'files' && (
+              <button onClick={() => setStep('select')} style={moveBtnStyle}>← Retour</button>
+            )}
+            <button onClick={doMove} disabled={destPath === null || moving} style={{
+              ...moveBtnStyle, background: 'var(--fg)', color: 'var(--bg)', border: 'none',
+              opacity: destPath === null ? 0.4 : 1,
+            }}>
+              {moving ? 'Déplacement…' : 'Déplacer'}
+            </button>
+            <button onClick={onClose} style={{ ...moveBtnStyle, color: 'var(--fg-muted)', borderColor: 'var(--line)' }}>
+              Annuler
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Vignette au survol */}
+      {hoveredThumb && (
+        <div style={{ position: 'fixed', top: hoveredThumb.y, left: hoveredThumb.x,
+          zIndex: 1000, pointerEvents: 'none',
+          boxShadow: '0 4px 16px rgba(0,0,0,0.2)', background: 'var(--bg)' }}>
+          <img src={hoveredThumb.url} alt="" style={{ width: 160, height: 'auto', display: 'block' }} />
+        </div>
+      )}
+    </div>
+  )
+}
+
+const moveBtnStyle = {
+  fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.22em',
+  textTransform: 'uppercase', padding: '7px 14px',
+  border: '1px solid var(--fg)', background: 'none',
+  color: 'var(--fg)', cursor: 'pointer',
+}
+
 // ── Nœud de l'arbre ───────────────────────────────────────────────────────────
 
 function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
@@ -221,6 +462,8 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
   const [showMeta,    setShowMeta]    = useState(false)
   const [showUpload,  setShowUpload]  = useState(false)
   const [showMkdir,   setShowMkdir]   = useState(false)
+  const [showMove,    setShowMove]    = useState(false)
+  const [moveType,    setMoveType]    = useState('folder') // 'folder' | 'files'
   const [newDirName,  setNewDirName]  = useState('')
   const [meta,        setMeta]        = useState(dir?.meta || null)
 
@@ -286,12 +529,16 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
 
         {/* Actions */}
         <div style={{ display: 'flex', gap: 6, flexShrink: 0 }}>
-          <ActionBtn onClick={() => { setShowMeta(m => !m); setShowUpload(false); setShowMkdir(false) }}
+          <ActionBtn onClick={() => { setShowMeta(m => !m); setShowUpload(false); setShowMkdir(false); setShowMove(false) }}
             active={showMeta} title="Modifier les informations">✏️</ActionBtn>
-          <ActionBtn onClick={() => { setShowUpload(u => !u); setShowMeta(false); setShowMkdir(false) }}
+          <ActionBtn onClick={() => { setShowUpload(u => !u); setShowMeta(false); setShowMkdir(false); setShowMove(false) }}
             active={showUpload} title="Uploader des photos">⬆</ActionBtn>
-          <ActionBtn onClick={() => { setShowMkdir(m => !m); setShowMeta(false); setShowUpload(false) }}
+          <ActionBtn onClick={() => { setShowMkdir(m => !m); setShowMeta(false); setShowUpload(false); setShowMove(false) }}
             active={showMkdir} title="Créer un sous-dossier">📁+</ActionBtn>
+          {depth > 0 && (
+            <ActionBtn onClick={() => { setMoveType('folder'); setShowMove(m => !m); setShowMeta(false); setShowUpload(false); setShowMkdir(false) }}
+              active={showMove && moveType === 'folder'} title="Déplacer ce dossier">↗</ActionBtn>
+          )}
         </div>
       </div>
 
@@ -308,6 +555,22 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
         <div style={{ paddingLeft: indent + 24, paddingBottom: 16 }}>
           <UploadZone ent={ent} path={path} authFetch={authFetch}
             onDone={() => { setData(null); load() }} />
+        </div>
+      )}
+
+      {/* Panneau déplacement */}
+      {showMove && (
+        <div style={{ paddingLeft: indent + 24, paddingBottom: 16, paddingTop: 8 }}>
+          <MovePanel
+            ent={ent}
+            srcPath={moveType === 'folder' ? (path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '') : path}
+            srcName={moveType === 'folder' ? name : ''}
+            type={moveType}
+            dataFiles={data?.files || []}
+            authFetch={authFetch}
+            onDone={() => { setShowMove(false); setData(null); load(); onRefresh() }}
+            onClose={() => setShowMove(false)}
+          />
         </div>
       )}
 
@@ -345,9 +608,14 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
           ))}
           {data && data.files.length > 0 && (
             <div style={{ paddingLeft: indent + 24, paddingTop: 4, paddingBottom: 8,
-              fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)',
-              letterSpacing: '0.2em' }}>
-              {data.files.length} fichier{data.files.length > 1 ? 's' : ''}
+              display: 'flex', alignItems: 'center', gap: 10 }}>
+              <span style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)',
+                letterSpacing: '0.2em' }}>
+                {data.files.length} fichier{data.files.length > 1 ? 's' : ''}
+              </span>
+              <ActionBtn
+                onClick={() => { setMoveType('files'); setShowMove(m => !m); setShowMeta(false); setShowUpload(false); setShowMkdir(false) }}
+                active={showMove && moveType === 'files'} title="Déplacer des fichiers">↗</ActionBtn>
             </div>
           )}
         </div>
