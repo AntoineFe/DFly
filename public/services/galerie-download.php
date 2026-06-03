@@ -78,6 +78,7 @@ if ($zip->open($tmpZip, ZipArchive::CREATE) !== true) {
 
 foreach ($batch as $filename) {
     $zip->addFile($hdDir . '/' . $filename, $filename);
+    $zip->setCompressionName($filename, ZipArchive::CM_STORE);
 }
 $zip->close();
 

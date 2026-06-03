@@ -63,6 +63,7 @@ foreach ($files as $filename) {
     }
     if (file_exists($fullPath)) {
         $zip->addFile($fullPath, $filename);
+        $zip->setCompressionName($filename, ZipArchive::CM_STORE);
         $added++;
     }
 }
