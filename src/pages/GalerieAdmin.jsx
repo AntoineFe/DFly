@@ -455,7 +455,7 @@ const moveBtnStyle = {
 
 // ── Nœud de l'arbre ───────────────────────────────────────────────────────────
 
-function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
+function TreeNode({ ent, dir, depth, authFetch, onRefresh, registerRefresh }) {
   const [open,        setOpen]        = useState(depth === 0)
   const [data,        setData]        = useState(null)
   const [loading,     setLoading]     = useState(false)
@@ -483,7 +483,10 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
   }, [ent, path, authFetch])
 
   useEffect(() => {
-    if (depth === 0) load()
+    if (depth === 0) {
+      load()
+      registerRefresh?.(load)
+    }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   function toggle() {
@@ -568,7 +571,7 @@ function TreeNode({ ent, dir, depth, authFetch, onRefresh }) {
             type={moveType}
             dataFiles={data?.files || []}
             authFetch={authFetch}
-            onDone={() => { setShowMove(false); setData(null); load(); onRefresh() }}
+            onDone={() => { setShowMove(false); setData(null); load(); onRefresh?.() }}
             onClose={() => setShowMove(false)}
           />
         </div>
@@ -887,8 +890,8 @@ export default function GalerieAdmin() {
   const [ents, setEnts] = useState([])
   const [selectedEnt, setSelectedEnt] = useState(null)
   const [entUsers, setEntUsers] = useState([])
-  const [copiedId, setCopiedId] = useState(null)
-  const [treeKey,  setTreeKey]  = useState(0)
+  const [copiedId,   setCopiedId]   = useState(null)
+  const rootRefresh = useRef(null)
   const location = useLocation()
   const [activeTab, setActiveTab] = useState(() => location.hash === '#logs' ? 'logs' : 'galerie')
 
@@ -1016,7 +1019,7 @@ export default function GalerieAdmin() {
               Galerie · {selectedEnt}
             </div>
             <div style={{ padding: '0 16px' }}>
-              <TreeNode key={selectedEnt + treeKey} ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => setTreeKey(k => k + 1)} />
+              <TreeNode key={selectedEnt} ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => rootRefresh.current?.()} registerRefresh={fn => { rootRefresh.current = fn }} />
             </div>
           </div>
         )}
