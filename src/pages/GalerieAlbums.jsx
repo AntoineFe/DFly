@@ -410,42 +410,44 @@ export default function GalerieAlbums() {
   const THUMB_GAP   = 4
   const MOBILE_BP   = 768
 
-  const [winWidth, setWinWidth] = useState(window.innerWidth)
+  const mobile = window.innerWidth < MOBILE_BP
 
-  useEffect(() => {
-    const onResize = () => setWinWidth(window.innerWidth)
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
-
-  const mobile = winWidth < MOBILE_BP
-
-  // Nombre de colonnes qui tiennent dans la fenêtre
-  const maxCols = (w) => {
-    if (w < MOBILE_BP) return Math.max(2, Math.floor((w - 40 + THUMB_GAP) / (150 + THUMB_GAP)))
-    return Math.max(2, Math.floor((w - 40 + THUMB_GAP) / (THUMB_COL_W + THUMB_GAP)))
-  }
-
-  const clampCols = (n, w = winWidth) => Math.max(2, Math.min(n, maxCols(w)))
-
-  const [colsDirs,   setColsDirs]   = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || maxCols(window.innerWidth), window.innerWidth))
-  const [colsPhotos, setColsPhotos] = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_photos')) || maxCols(window.innerWidth), window.innerWidth))
-
-  // Recalcule les colonnes à chaque changement de largeur
-  useEffect(() => {
-    setColsDirs(c   => clampCols(c, winWidth))
-    setColsPhotos(c => clampCols(c, winWidth))
-  }, [winWidth]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Largeur réelle d'une colonne : remplit exactement la grille sans marge résiduelle
-  const actualColW = (cols) => {
-    if (mobile) return null // flex sur mobile
-    const available = winWidth - 40
-    return Math.floor((available - (cols - 1) * THUMB_GAP) / cols)
-  }
+  // Largeur réelle du conteneur grille (mesurée par ResizeObserver)
+  const [gridW, setGridW] = useState(0)
 
   const gridDirsRef   = useRef(null)
   const gridPhotosRef = useRef(null)
+
+  // Nombre de colonnes qui tiennent dans la largeur du conteneur
+  const maxColsForW = (w) => {
+    if (w <= 0) return 2
+    if (w < MOBILE_BP) return Math.max(2, Math.floor((w + THUMB_GAP) / (150 + THUMB_GAP)))
+    return Math.max(2, Math.floor((w + THUMB_GAP) / (THUMB_COL_W + THUMB_GAP)))
+  }
+
+  const [colsDirs,   setColsDirs]   = useState(() => parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || 2)
+  const [colsPhotos, setColsPhotos] = useState(() => parseInt(localStorage.getItem('galerie_grid_cols_photos')) || 2)
+
+  // Mesure le conteneur et recalcule les colonnes à chaque resize
+  useEffect(() => {
+    const el = gridPhotosRef.current
+    if (!el) return
+    const ro = new ResizeObserver(entries => {
+      const w = entries[0].contentRect.width
+      setGridW(w)
+      const mc = maxColsForW(w)
+      setColsDirs(c   => Math.max(2, Math.min(c || mc, mc)))
+      setColsPhotos(c => Math.max(2, Math.min(c || mc, mc)))
+    })
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Largeur exacte d'une colonne pour remplir le conteneur sans marge résiduelle (≤ 230px)
+  const actualColW = (cols) => {
+    if (gridW <= 0 || mobile) return null
+    return Math.floor((gridW - (cols - 1) * THUMB_GAP) / cols)
+  }
 
   function useGridPinch(ref, cols, setCols, maxCols, storageKey) {
     const pinch = useRef({ active: false, startDist: 0, startCols: cols })
@@ -666,7 +668,7 @@ export default function GalerieAlbums() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <TopNav minimal />
-      <div style={{ padding: '80px var(--gutter) 120px' }}>
+      <div ref={gridPhotosRef} style={{ padding: '80px var(--gutter) 120px' }}>
 
         {/* Fil d'ariane */}
         <nav style={{ marginBottom: 48, display: 'flex', alignItems: 'center', gap: 8,
@@ -812,7 +814,7 @@ export default function GalerieAlbums() {
                 colItems[col].push(file)
               })
               return (
-              <div ref={gridPhotosRef} style={{ display: 'flex', gap: THUMB_GAP, alignItems: 'flex-start', width: '100%' }}>
+              <div style={{ display: 'flex', gap: THUMB_GAP, alignItems: 'flex-start', width: '100%' }}>
                 {colItems.map((col, ci) => (
                   <div key={ci} style={{ display: 'flex', flexDirection: 'column', gap: THUMB_GAP,
                     ...(mobile
