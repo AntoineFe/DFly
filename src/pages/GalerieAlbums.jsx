@@ -478,8 +478,10 @@ export default function GalerieAlbums() {
     return Math.max(2, Math.floor(available / 200))
   }
 
-  const [colsDirs,   setColsDirs]   = useState(() => parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || defaultCols())
-  const [colsPhotos, setColsPhotos] = useState(() => parseInt(localStorage.getItem('galerie_grid_cols_photos')) || defaultCols())
+  const clampCols = (n) => Math.max(2, Math.min(n, defaultCols() + 2))
+
+  const [colsDirs,   setColsDirs]   = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || defaultCols()))
+  const [colsPhotos, setColsPhotos] = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_photos')) || defaultCols()))
 
   const gridDirsRef   = useRef(null)
   const gridPhotosRef = useRef(null)
