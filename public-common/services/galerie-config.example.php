@@ -22,6 +22,13 @@ return array_merge($site, [
     'app_base'    => '/galerie',
 
     // ── Emails ────────────────────────────────────────────────────────────
+    'smtp_host'   => 'mail.dfly.fr',
+    'smtp_port'   => 465,
+    'smtp_user'   => 'contact@dfly.fr',
+    'smtp_pass'   => 'MOT_DE_PASSE_SMTP',
+    'smtp_from'   => 'contact@dfly.fr',
+    'smtp_cc'     => 'contact@dfly.fr',
+
     'email_sign'  => 'Antoine & Rémi',
     'email_site'  => 'https://dfly.fr',
 

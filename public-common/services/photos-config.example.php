@@ -22,6 +22,13 @@ return array_merge($site, [
     'app_base'    => '/photos',
 
     // ── Emails ────────────────────────────────────────────────────────────
+    'smtp_host'   => 'mail.alphox.fr',
+    'smtp_port'   => 465,
+    'smtp_user'   => 'contact@alphox.fr',
+    'smtp_pass'   => 'MOT_DE_PASSE_SMTP',
+    'smtp_from'   => 'contact@alphox.fr',
+    'smtp_cc'     => 'contact@alphox.fr',
+
     'email_sign'  => 'Antoine & Hélène',
     'email_site'  => 'https://alphox.fr',
 
