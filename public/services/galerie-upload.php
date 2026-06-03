@@ -38,6 +38,15 @@ $IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 
 $useImagick = extension_loaded('imagick');
 
+// Laisser suffisamment de temps pour traiter les lots
+@set_time_limit(300);
+
+// Limiter la mémoire Imagick par opération (256 MB)
+if ($useImagick) {
+    Imagick::setResourceLimit(Imagick::RESOURCETYPE_MEMORY, 256);
+    Imagick::setResourceLimit(Imagick::RESOURCETYPE_MAP,    512);
+}
+
 $results = [];
 
 foreach ($_FILES as $file) {
@@ -108,7 +117,11 @@ echo json_encode(['ok' => true, 'files' => $results]);
 
 function galerie_resize_imagick($src, $dest, $minShort, $quality = 85) {
     try {
-        $im = new Imagick($src);
+        $im = new Imagick();
+        // Hint JPEG : décoder directement à ~2× la taille cible → 4-8× moins de mémoire
+        $hint = ($minShort * 3) . 'x' . ($minShort * 3);
+        $im->setOption('jpeg:size', $hint);
+        $im->readImage($src);
         // Auto-rotation EXIF
         $im->autoOrient();
         // Strip métadonnées (gain de poids)

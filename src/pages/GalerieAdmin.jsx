@@ -112,7 +112,7 @@ function MetaForm({ ent, path, meta, onSave, onClose, authFetch }) {
 
 // ── Zone d'upload drag & drop ─────────────────────────────────────────────────
 
-const UPLOAD_CONCURRENCY = 3
+const UPLOAD_CONCURRENCY = 2
 
 function UploadZone({ ent, path, onDone, authFetch }) {
   const [dragging,     setDragging]     = useState(false)
