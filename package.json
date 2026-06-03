@@ -7,6 +7,7 @@
     "build": "vite build",
     "build:prod": "vite build --mode production",
     "build:staging": "cross-env VITE_BASE=/dflyclaude/ vite build --mode staging",
+    "build:photos": "vite build --mode photos",
     "preview": "vite preview"
   },
   "fund": false,
