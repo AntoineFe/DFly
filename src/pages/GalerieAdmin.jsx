@@ -770,7 +770,7 @@ function ActionBtn({ onClick, active, title, children }) {
 // ── Formulaire nouveau client ─────────────────────────────────────────────────
 
 function CreateClientForm({ authFetch, onCreated }) {
-  const empty = { raiSoc: '', shortDesc: '', firstName: '', lastName: '', email: '', login: '', lang: 'FR' }
+  const empty = { raiSoc: '', shortDesc: '', firstName: '', lastName: '', email: '', login: '', lang: 'FR', profil: 'lecteur' }
   const [form,    setForm]    = useState(empty)
   const [saving,  setSaving]  = useState(false)
   const [result,  setResult]  = useState(null) // { tempPassword, cle }
@@ -876,17 +876,32 @@ function CreateClientForm({ authFetch, onCreated }) {
           onChange={e => upd('login', e.target.value)}
           placeholder={form.email || 'marie@dupont.fr'} />
 
-        <label style={labelStyle}>Langue</label>
-        <div style={{ display: 'flex', gap: 8, marginBottom: 24 }}>
-          {['FR', 'EN'].map(l => (
-            <button key={l} type="button" onClick={() => upd('lang', l)} style={{
-              padding: '7px 20px', border: '1px solid var(--line)',
-              background: form.lang === l ? 'var(--fg)' : 'none',
-              color: form.lang === l ? 'var(--bg)' : 'var(--fg)',
-              fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
-              cursor: 'pointer',
-            }}>{l}</button>
-          ))}
+        <div style={row2}>
+          <div>
+            <label style={labelStyle}>Langue</label>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+              {['FR', 'EN'].map(l => (
+                <button key={l} type="button" onClick={() => upd('lang', l)} style={{
+                  padding: '7px 20px', border: '1px solid var(--line)',
+                  background: form.lang === l ? 'var(--fg)' : 'none',
+                  color: form.lang === l ? 'var(--bg)' : 'var(--fg)',
+                  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+                  cursor: 'pointer',
+                }}>{l}</button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label style={labelStyle}>Profil</label>
+            <select value={form.profil} onChange={e => upd('profil', e.target.value)} style={{
+              width: '100%', padding: '9px 12px', boxSizing: 'border-box',
+              border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--fg)',
+              fontSize: 14, fontFamily: 'inherit', marginBottom: 16, cursor: 'pointer',
+            }}>
+              <option value="lecteur">Lecteur — accès en lecture seule</option>
+              <option value="admin">Administrateur — gestion complète de sa galerie</option>
+            </select>
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>

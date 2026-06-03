@@ -10,14 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 require 'galerie-auth.php';
 
-$config_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-smtp-config.php';
-if (!file_exists($config_path))
-    $config_path = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-smtp-config.php';
-if (!file_exists($config_path)) {
-    http_response_code(500);
-    exit(json_encode(['ok' => false, 'error' => 'Config SMTP introuvable']));
-}
-$smtp = require $config_path;
+$cfg  = galerie_load_config();
+$smtp = [
+    'host' => $cfg['smtp_host'],
+    'port' => $cfg['smtp_port'],
+    'user' => $cfg['smtp_user'],
+    'pass' => $cfg['smtp_pass'],
+    'from' => $cfg['smtp_from'],
+    'cc'   => $cfg['smtp_cc'],
+];
 
 $body  = json_decode(file_get_contents('php://input'), true);
 $email = trim(filter_var($body['email'] ?? '', FILTER_SANITIZE_EMAIL));
@@ -30,8 +31,7 @@ if (!$email) {
 
 $ip = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '?')[0]);
 
-$log_dir = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-logs';
-if (!is_dir($log_dir)) $log_dir = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-logs';
+$log_dir  = $cfg['log_dir'] ?? dirname($_SERVER['DOCUMENT_ROOT']) . '/galerie-logs';
 if (!is_dir($log_dir)) @mkdir($log_dir, 0755, true);
 $log_file = $log_dir . '/navigation.log';
 
@@ -65,17 +65,20 @@ $user = mysqli_fetch_assoc($res);
 mysqli_close($db);
 
 $prenom     = $user['firstName'];
-$access_url = 'https://dfly.fr/galerie?cle=' . urlencode($user['cle']);
+$access_url = rtrim($cfg['app_url'], '/') . ($cfg['app_base'] ?? '/galerie') . '?cle=' . urlencode($user['cle']);
+$app_name   = $cfg['app_name']    ?? 'Galerie';
+$app_sign   = $cfg['email_sign']  ?? $app_name;
+$app_site   = $cfg['email_site']  ?? $cfg['app_url'];
 
-$subject = 'Votre accès à votre galerie — DFly';
+$subject = 'Votre accès à votre galerie — ' . $app_name;
 $msgBody  = "Bonjour {$prenom},\n\n";
 $msgBody .= "Voici votre lien d'accès personnel à votre galerie privée :\n\n";
 $msgBody .= "{$access_url}\n\n";
 $msgBody .= "Ce lien est personnel et vous est réservé. Ne le partagez pas.\n\n";
 $msgBody .= "À très bientôt,\n";
-$msgBody .= "Antoine & Rémi\n";
-$msgBody .= "DFly — Photographie & Vidéo\n";
-$msgBody .= "https://dfly.fr\n";
+$msgBody .= "{$app_sign}\n";
+if ($cfg['app_tagline'] ?? '') $msgBody .= $app_name . ' — ' . $cfg['app_tagline'] . "\n";
+$msgBody .= "{$app_site}\n";
 
 $result = resend_smtp_send($smtp, $email, $subject, $msgBody);
 
@@ -112,7 +115,8 @@ function resend_smtp_send(array $cfg, string $to, string $subject, string $body)
     $cmd("RCPT TO:<{$to}>");
     $cmd("DATA");
     $enc = "=?UTF-8?B?" . base64_encode($subject) . "?=";
-    $msg  = "From: DFly <{$cfg['from']}>\r\nTo: {$to}\r\nSubject: {$enc}\r\n";
+    $displayName = $cfg['app_name'] ?? 'Galerie';
+    $msg  = "From: {$displayName} <{$cfg['from']}>\r\nTo: {$to}\r\nSubject: {$enc}\r\n";
     $msg .= "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n";
     $msg .= "Content-Transfer-Encoding: base64\r\n\r\n";
     $msg .= chunk_split(base64_encode($body)) . "\r\n.";

@@ -22,6 +22,7 @@ $lastName  = trim($body['lastName']  ?? '');
 $email     = trim($body['email']     ?? '');
 $login     = trim($body['login']     ?? $email);
 $lang      = strtolower(in_array(strtoupper($body['lang'] ?? ''), ['FR', 'EN']) ? $body['lang'] : 'fr');
+$profil    = in_array($body['profil'] ?? '', ['lecteur', 'admin']) ? $body['profil'] : 'lecteur';
 
 if (!$raiSoc || !$shortDesc || !$firstName || !$lastName || !$email) {
     http_response_code(400);
@@ -66,11 +67,25 @@ try {
     $idUser   = $idEnt * 10;
     $idProfil = $idEnt * 10;
 
-    // 2. Profil galerie:R — id explicite = idEnt×10
-    $auths    = json_encode([['rsrc' => 'galerie', 'levels' => ['R']]]);
+    // 2. Profil selon le choix du super admin
+    if ($profil === 'admin') {
+        $profilDesc  = 'ADMIN';
+        $profilLong  = 'Administrateur de la galerie';
+        $authsArr    = [
+            ['rsrc' => 'galerie',       'levels' => ['R', 'C', 'U', 'D']],
+            ['rsrc' => 'galerie_admin', 'levels' => ['R', 'C', 'U', 'D']],
+        ];
+    } else {
+        $profilDesc  = 'LECTEUR';
+        $profilLong  = 'Accès en lecture seule';
+        $authsArr    = [
+            ['rsrc' => 'galerie', 'levels' => ['R']],
+        ];
+    }
+    $auths    = json_encode($authsArr);
     $authsEsc = mysqli_real_escape_string($link, $auths);
     if (!mysqli_query($link, "INSERT INTO HabilProfil (id, shortDesc, longDesc, idEnt, auths)
-        VALUES ($idProfil, 'VISUALL', 'Accès à toutes les ressources de l entreprise', $idEnt, '$authsEsc')"))
+        VALUES ($idProfil, '$profilDesc', '$profilLong', $idEnt, '$authsEsc')"))
         throw new Exception('HabilProfil : ' . mysqli_error($link));
 
     // 3. Utilisateur client — id explicite = idEnt×10

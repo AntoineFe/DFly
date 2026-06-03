@@ -2,32 +2,34 @@
 // Include partagé — valide le token Bearer et retourne les infos de session.
 // Usage : require 'galerie-auth.php'; -> $session disponible
 
-function galerie_db() {
-    $cfg_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-db-config.php';
-    if (!file_exists($cfg_path))
-        $cfg_path = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-db-config.php';
-    if (!file_exists($cfg_path)) {
-        http_response_code(500);
-        exit(json_encode(['ok' => false, 'error' => 'dfly-db-config.php introuvable']));
+function galerie_load_config() {
+    // Cherche galerie-config.php d'abord dans le dossier services, puis un niveau au-dessus
+    $paths = [
+        __DIR__ . '/galerie-config.php',
+        dirname(__DIR__) . '/galerie-config.php',
+        dirname(dirname(__DIR__)) . '/galerie-config.php',
+    ];
+    foreach ($paths as $p) {
+        if (file_exists($p)) return require $p;
     }
-    $cfg  = require $cfg_path;
-    $link = @mysqli_connect($cfg['host'], $cfg['user'], $cfg['pass'], $cfg['dbname'], $cfg['port']);
+    http_response_code(500);
+    exit(json_encode(['ok' => false, 'error' => 'galerie-config.php introuvable']));
+}
+
+function galerie_db() {
+    $cfg  = galerie_load_config();
+    $link = @mysqli_connect(
+        $cfg['db_host'],
+        $cfg['db_user'],
+        $cfg['db_pass'],
+        $cfg['db_name'],
+        $cfg['db_port'] ?? 3306
+    );
     if (!$link) {
         http_response_code(500);
         exit(json_encode(['ok' => false, 'error' => 'Connexion base de données impossible']));
     }
     mysqli_set_charset($link, 'utf8mb4');
-
-    // Calcul dynamique du répertoire Pro selon l'environnement
-    $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
-    $cwd     = getcwd();
-    $i       = strpos($cwd, 'public_html');
-    $after   = $i !== false ? substr($cwd, $i + 11) : '';
-    $prefix  = (strpos($after, '/dflyclaude') === 0 || strpos($after, '/dfly_dev') === 0) ? '/dflyclaude' : '';
-
-    $cfg['pro_root'] = $docRoot . $prefix . '/images/Pro';
-    $cfg['pro_url']  = $prefix . '/images/Pro';
-
     return [$link, $cfg];
 }
 
