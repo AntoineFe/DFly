@@ -8,6 +8,8 @@ function galerie_load_config() {
         __DIR__ . '/galerie-config.php',
         dirname(__DIR__) . '/galerie-config.php',
         dirname(dirname(__DIR__)) . '/galerie-config.php',
+        dirname(dirname(dirname(__DIR__))) . '/galerie-config.php',
+        dirname(dirname(dirname(dirname(__DIR__)))) . '/galerie-config.php',
     ];
     foreach ($paths as $p) {
         if (file_exists($p)) return require $p;
