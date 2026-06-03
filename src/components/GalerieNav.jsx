@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import ChangePasswordModal from './ChangePasswordModal'
 
@@ -121,6 +121,18 @@ export default function GalerieNav() {
                     background: 'var(--bg)', border: '1px solid var(--line)',
                     minWidth: 180, zIndex: 200,
                   }}>
+                    <Link to="/galerie/albums" onClick={() => setUserMenuOpen(false)}
+                      style={{ ...btnBase, display: 'block', padding: '12px 20px',
+                        borderBottom: '1px solid var(--line)', textDecoration: 'none' }}>
+                      Ma galerie
+                    </Link>
+                    {user.auths?.admin && (
+                      <Link to="/galerie/admin" onClick={() => setUserMenuOpen(false)}
+                        style={{ ...btnBase, display: 'block', padding: '12px 20px',
+                          borderBottom: '1px solid var(--line)', textDecoration: 'none' }}>
+                        Administration
+                      </Link>
+                    )}
                     <button onClick={() => { setUserMenuOpen(false); setShowPwdModal(true) }}
                       style={{ ...btnBase, display: 'block', width: '100%',
                         textAlign: 'left', padding: '12px 20px', fontSize: 11,
@@ -165,6 +177,18 @@ export default function GalerieNav() {
                   marginBottom: 20, color: 'var(--fg-muted)' }}>
                   {user.firstName} {user.lastName}
                 </div>
+                <Link to="/galerie/albums" onClick={() => setMenuOpen(false)}
+                  style={{ ...btnBase, display: 'block', padding: '12px 0',
+                    borderBottom: '1px solid var(--line)', textDecoration: 'none' }}>
+                  Ma galerie
+                </Link>
+                {user.auths?.admin && (
+                  <Link to="/galerie/admin" onClick={() => setMenuOpen(false)}
+                    style={{ ...btnBase, display: 'block', padding: '12px 0',
+                      borderBottom: '1px solid var(--line)', textDecoration: 'none' }}>
+                    Administration
+                  </Link>
+                )}
                 <button onClick={() => { setMenuOpen(false); setShowPwdModal(true) }}
                   style={{ ...btnBase, display: 'block', padding: '12px 0',
                     borderBottom: '1px solid var(--line)', width: '100%', textAlign: 'left' }}>
