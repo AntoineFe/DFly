@@ -6,15 +6,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit(json_encode(["ok" => false]));
 }
 
-// ── Config SMTP (hors web root) ───────────────────────────────────────────────
-$config_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-smtp-config.php';
-if (!file_exists($config_path))
-    $config_path = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-smtp-config.php';
-if (!file_exists($config_path)) {
-    http_response_code(500);
-    exit(json_encode(["ok" => false, "error" => "dfly-smtp-config.php introuvable"]));
-}
-$smtp = require $config_path;
+// ── Config SMTP ───────────────────────────────────────────────────────────────
+require_once __DIR__ . '/site-config.php';
+$smtp = site_load_config();
 
 // ── Données POST ──────────────────────────────────────────────────────────────
 $raw = file_get_contents("php://input");

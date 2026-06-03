@@ -3,16 +3,19 @@
 // Usage : require 'galerie-auth.php'; -> $session disponible
 
 function galerie_load_config(bool $silent = false) {
-    // Cherche galerie-config.php d'abord dans le dossier services, puis remonte jusqu'à 4 niveaux
-    $paths = [
-        __DIR__ . '/galerie-config.php',
-        dirname(__DIR__) . '/galerie-config.php',
-        dirname(dirname(__DIR__)) . '/galerie-config.php',
-        dirname(dirname(dirname(__DIR__))) . '/galerie-config.php',
-        dirname(dirname(dirname(dirname(__DIR__)))) . '/galerie-config.php',
+    // Cherche galerie-config.php ou photos-config.php, en remontant jusqu'à 4 niveaux
+    $dirs = [
+        __DIR__,
+        dirname(__DIR__),
+        dirname(dirname(__DIR__)),
+        dirname(dirname(dirname(__DIR__))),
+        dirname(dirname(dirname(dirname(__DIR__)))),
     ];
-    foreach ($paths as $p) {
-        if (file_exists($p)) return require $p;
+    foreach ($dirs as $dir) {
+        foreach (['galerie-config.php', 'photos-config.php'] as $name) {
+            $p = $dir . '/' . $name;
+            if (file_exists($p)) return require $p;
+        }
     }
     if ($silent) return null;
     http_response_code(500);

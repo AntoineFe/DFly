@@ -1,5 +1,9 @@
 node_modules/
 dist/
 .DS_Store
-smtp-config.php
+
+# Fichiers de config secrets (hors repo)
+alphox-config.php
+galerie-config.php
+photos-config.php
 public/services/galerie-config.php
