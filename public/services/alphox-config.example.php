@@ -22,7 +22,4 @@ return [
     'smtp_from' => 'contact@alphox.fr',
     'smtp_cc'   => 'contact@alphox.fr',
 
-    // ── Logs ──────────────────────────────────────────────────────────────
-    'log_dir'   => '/home/alphoxfr/logs',
-
 ];

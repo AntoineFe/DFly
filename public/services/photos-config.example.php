@@ -25,4 +25,7 @@ return array_merge($site, [
     'email_sign'  => 'Antoine & Hélène',
     'email_site'  => 'https://alphox.fr',
 
+    // ── Logs ──────────────────────────────────────────────────────────────
+    'log_dir'     => '/home/alphoxfr/photos-logs',
+
 ]);

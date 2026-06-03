@@ -25,4 +25,7 @@ return array_merge($site, [
     'email_sign'  => 'Antoine & Rémi',
     'email_site'  => 'https://dfly.fr',
 
+    // ── Logs ──────────────────────────────────────────────────────────────
+    'log_dir'     => '/home/alphoxfr/dfly-logs',
+
 ]);
