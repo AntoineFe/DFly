@@ -814,7 +814,7 @@ export default function GalerieAlbums() {
                     <button key={dir.name} onClick={() => openDir(dir.name)} style={{
                       background: 'none', border: '1px solid var(--line)',
                       cursor: 'pointer', textAlign: 'left', padding: 0,
-                      width: '100%', display: 'flex', flexDirection: 'column',
+                      width: '100%', minWidth: 0, display: 'flex', flexDirection: 'column',
                     }}>
                       <div style={{ aspectRatio: '4/3', width: '100%', overflow: 'hidden', background: 'var(--bg-alt)' }}>
                         {dir.cover
