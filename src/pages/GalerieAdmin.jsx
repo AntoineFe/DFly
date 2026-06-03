@@ -125,8 +125,46 @@ function scaleDims(w, h, minShort) {
 function bitmapToBlob(source, w, h, quality) {
   const canvas = document.createElement('canvas')
   canvas.width = w; canvas.height = h
-  canvas.getContext('2d').drawImage(source, 0, 0, w, h)
+  const ctx = canvas.getContext('2d')
+  ctx.imageSmoothingEnabled = true
+  ctx.imageSmoothingQuality = 'high'
+  ctx.drawImage(source, 0, 0, w, h)
   return new Promise(res => canvas.toBlob(res, 'image/jpeg', quality))
+}
+
+// Descente multi-étapes pour les grandes réductions (évite le bruit bilinéaire)
+function stepDownToBlob(source, srcW, srcH, targetW, targetH, quality) {
+  let cur = document.createElement('canvas')
+  cur.width = srcW; cur.height = srcH
+  const ctx0 = cur.getContext('2d')
+  ctx0.imageSmoothingEnabled = true
+  ctx0.imageSmoothingQuality = 'high'
+  ctx0.drawImage(source, 0, 0, srcW, srcH)
+
+  let w = srcW, h = srcH
+  while (w > targetW * 1.5 || h > targetH * 1.5) {
+    const nw = Math.max(Math.round(w / 2), targetW)
+    const nh = Math.max(Math.round(h / 2), targetH)
+    const next = document.createElement('canvas')
+    next.width = nw; next.height = nh
+    const ctx = next.getContext('2d')
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    ctx.drawImage(cur, 0, 0, nw, nh)
+    cur = next; w = nw; h = nh
+  }
+
+  if (w !== targetW || h !== targetH) {
+    const fin = document.createElement('canvas')
+    fin.width = targetW; fin.height = targetH
+    const ctx = fin.getContext('2d')
+    ctx.imageSmoothingEnabled = true
+    ctx.imageSmoothingQuality = 'high'
+    ctx.drawImage(cur, 0, 0, targetW, targetH)
+    cur = fin
+  }
+
+  return new Promise(res => cur.toBlob(res, 'image/jpeg', quality))
 }
 
 async function clientResize(file) {
@@ -142,7 +180,7 @@ async function clientResize(file) {
 
     const webBlob   = await bitmapToBlob(bitmap, ww, wh, 0.88)
     const t2 = performance.now()
-    const thumbBlob = await bitmapToBlob(bitmap, tw, th, 0.82)
+    const thumbBlob = await stepDownToBlob(bitmap, ow, oh, tw, th, 0.82)
     const t3 = performance.now()
 
     bitmap.close()
