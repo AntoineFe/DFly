@@ -821,14 +821,16 @@ export default function GalerieAlbums() {
                               justifyContent: 'center', opacity: 0.2, fontSize: 40 }}>📁</div>
                         }
                       </div>
-                      <div style={{ padding: '8px 10px' }}>
+                      <div style={{ padding: '8px 10px', minHeight: 44 }}>
                         <div style={{ fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.04em',
-                          color: 'var(--fg)', lineHeight: 1.35 }}>
+                          color: 'var(--fg)', lineHeight: 1.35,
+                          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {dir.meta?.title || dir.name}
                         </div>
                         {dir.meta?.subtitle && (
                           <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)',
-                            marginTop: 2, opacity: 0.7 }}>
+                            marginTop: 2, opacity: 0.7,
+                            overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                             {dir.meta.subtitle}
                           </div>
                         )}
