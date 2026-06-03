@@ -705,33 +705,30 @@ export default function GalerieAlbums() {
 
             {/* Photos */}
             {data.files.length > 0 && (
-              <div ref={gridPhotosRef} style={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
-                {Array.from({ length: colsPhotos }).map((_, col) => (
-                  <div key={col} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4 }}>
-                    {data.files.filter((_, i) => i % colsPhotos === col).map(file => {
-                      const imgIndex = imageFiles.indexOf(file)
-                      return (
-                        <div key={file.name} onClick={() => setLightbox(imgIndex >= 0 ? imgIndex : null)}
-                          style={{ overflow: 'hidden', cursor: 'pointer', background: 'var(--bg-alt)' }}>
-                          {file.type === 'video' ? (
-                            <div style={{ aspectRatio: '16/9', display: 'flex',
-                              alignItems: 'center', justifyContent: 'center',
-                              background: 'var(--bg-deep)', color: 'var(--ivory)' }}>
-                              <span style={{ fontSize: 40, opacity: 0.6 }}>▶</span>
-                            </div>
-                          ) : (
-                            <img src={file.thumbUrl} alt={file.name} className="no-protect" loading="lazy"
-                              style={{ width: '100%', height: 'auto', display: 'block',
-                                transition: 'transform .3s ease' }}
-                              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
-                              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
-                            />
-                          )}
+              <div ref={gridPhotosRef} style={{ columnCount: colsPhotos, columnGap: 4 }}>
+                {data.files.map(file => {
+                  const imgIndex = imageFiles.indexOf(file)
+                  return (
+                    <div key={file.name} onClick={() => setLightbox(imgIndex >= 0 ? imgIndex : null)}
+                      style={{ breakInside: 'avoid', marginBottom: 4, cursor: 'pointer',
+                        overflow: 'hidden', background: 'var(--bg-alt)' }}>
+                      {file.type === 'video' ? (
+                        <div style={{ aspectRatio: '16/9', display: 'flex',
+                          alignItems: 'center', justifyContent: 'center',
+                          background: 'var(--bg-deep)', color: 'var(--ivory)' }}>
+                          <span style={{ fontSize: 40, opacity: 0.6 }}>▶</span>
                         </div>
-                      )
-                    })}
-                  </div>
-                ))}
+                      ) : (
+                        <img src={file.thumbUrl} alt={file.name} className="no-protect" loading="lazy"
+                          style={{ width: '100%', height: 'auto', display: 'block',
+                            transition: 'transform .3s ease' }}
+                          onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
+                          onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                        />
+                      )}
+                    </div>
+                  )
+                })}
               </div>
             )}
 
