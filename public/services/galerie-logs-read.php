@@ -5,10 +5,8 @@ require 'galerie-auth.php';
 $session = galerie_require_auth();
 galerie_require_level($session, 'admin', 'R');
 
-$log_dir  = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-logs';
-if (!is_dir($log_dir)) {
-    $log_dir = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-logs';
-}
+$cfg      = galerie_load_config();
+$log_dir  = $cfg['log_dir'] ?? (dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-logs');
 
 $log_file = $log_dir . '/navigation.log';
 $old_file = $log_dir . '/navigation.old.log';
