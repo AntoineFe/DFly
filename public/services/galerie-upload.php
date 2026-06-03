@@ -64,6 +64,17 @@ foreach ($_FILES as $file) {
         galerie_resize($hdPath, $dest, $WEB_SHORT, $mime, 92);
         // Miniature : 230px côté court → dossier thumbnails
         galerie_resize($hdPath, $thumbPath, $THUMB_SHORT, $mime, 82);
+
+        // Stocker le ratio largeur/hauteur de la version web
+        $img = @imagecreatefromstring(file_get_contents($dest));
+        if ($img) {
+            $w = imagesx($img); $h = imagesy($img);
+            imagedestroy($img);
+            $metaFilesPath = $destDir . '/_meta_files.json';
+            $ratios = file_exists($metaFilesPath) ? (json_decode(file_get_contents($metaFilesPath), true) ?? []) : [];
+            $ratios[$origName] = round($w / max(1, $h), 4);
+            file_put_contents($metaFilesPath, json_encode($ratios), LOCK_EX);
+        }
     } else {
         // Vidéo ou autre : déplacer directement dans galerie (pas de HD)
         rename($tmpPath, $dest);

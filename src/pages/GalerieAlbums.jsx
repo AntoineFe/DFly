@@ -844,9 +844,22 @@ export default function GalerieAlbums() {
             )}
 
             {/* Photos */}
-            {data.files.length > 0 && (
-              <div ref={gridPhotosRef} style={{ columnCount: colsPhotos, columnGap: 4 }}>
-                {data.files.map(file => {
+            {data.files.length > 0 && (() => {
+              // Répartition masonry gauche→droite, colonne la plus courte en premier
+              const DEFAULT_RATIO = 1.5
+              const colHeights = Array(colsPhotos).fill(0)
+              const colItems   = Array.from({ length: colsPhotos }, () => [])
+              data.files.forEach(file => {
+                const ratio  = file.ratio || DEFAULT_RATIO
+                const col    = colHeights.indexOf(Math.min(...colHeights))
+                colHeights[col] += 1 / ratio
+                colItems[col].push(file)
+              })
+              return (
+              <div ref={gridPhotosRef} style={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
+                {colItems.map((col, ci) => (
+                  <div key={ci} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+                    {col.map(file => {
                   const imgIndex   = imageFiles.indexOf(file)
                   const isSelected = selected.has(file.name)
                   return (
@@ -895,8 +908,11 @@ export default function GalerieAlbums() {
                     </div>
                   )
                 })}
+                  </div>
+                ))}
               </div>
-            )}
+              )
+            })()}
 
             {/* Barre sélection mobile (sticky en bas) */}
             {selectMode && (

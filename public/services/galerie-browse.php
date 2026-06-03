@@ -66,6 +66,10 @@ $VIDEO_EXT = ['mp4', 'mov', 'avi', 'webm'];
 $dirs  = [];
 $files = [];
 
+// Charger les ratios stockés
+$metaFilesPath = $targetDir . '/_meta_files.json';
+$storedRatios  = file_exists($metaFilesPath) ? (json_decode(file_get_contents($metaFilesPath), true) ?? []) : [];
+
 foreach (scandir($targetDir) as $item) {
     if ($item === '.' || $item === '..') continue;
     $full = $targetDir . '/' . $item;
@@ -103,6 +107,7 @@ foreach (scandir($targetDir) as $item) {
             'url'      => $paths['galerie_url'] . '/' . $relPath,
             'thumbUrl' => $thumbUrl ?? ($paths['galerie_url'] . '/' . $relPath),
             'hdUrl'    => $hdUrl,
+            'ratio'    => $storedRatios[$item] ?? null,
         ];
     }
 }
