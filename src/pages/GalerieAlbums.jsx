@@ -461,6 +461,7 @@ export default function GalerieAlbums() {
   const [data,        setData]        = useState(null)
   const [loading,     setLoading]     = useState(true)
   const [lightbox,    setLightbox]    = useState(null)
+  const [liveRatios,  setLiveRatios]  = useState({})
   const [selectMode,  setSelectMode]  = useState(false)
   const [selected,    setSelected]    = useState(new Set())
   const [dlBusy,      setDlBusy]      = useState(null) // 'hd' | 'web' | null
@@ -532,6 +533,7 @@ export default function GalerieAlbums() {
   const load = useCallback(() => {
     if (!activeEnt) return
     setLoading(true)
+    setLiveRatios({})
     const qs = new URLSearchParams({ ent: activeEnt, path: pathParam })
     authFetch(`galerie-browse.php?${qs}`)
       .then(r => r.json())
@@ -850,7 +852,7 @@ export default function GalerieAlbums() {
               const colHeights = Array(colsPhotos).fill(0)
               const colItems   = Array.from({ length: colsPhotos }, () => [])
               data.files.forEach(file => {
-                const ratio  = file.ratio || DEFAULT_RATIO
+                const ratio  = liveRatios[file.name] || file.ratio || DEFAULT_RATIO
                 const col    = colHeights.indexOf(Math.min(...colHeights))
                 colHeights[col] += 1 / ratio
                 colItems[col].push(file)
@@ -888,6 +890,12 @@ export default function GalerieAlbums() {
                           style={{ width: '100%', height: 'auto', display: 'block',
                             transition: 'transform .3s ease',
                             opacity: selectMode && !isSelected ? 0.5 : 1 }}
+                          onLoad={e => {
+                            const { naturalWidth: w, naturalHeight: h } = e.target
+                            if (w && h && !liveRatios[file.name]) {
+                              setLiveRatios(prev => ({ ...prev, [file.name]: w / h }))
+                            }
+                          }}
                           onMouseEnter={e => !selectMode && (e.currentTarget.style.transform = 'scale(1.04)')}
                           onMouseLeave={e => !selectMode && (e.currentTarget.style.transform = 'scale(1)')}
                           onContextMenu={e => e.preventDefault()}
