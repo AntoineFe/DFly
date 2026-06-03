@@ -419,6 +419,15 @@ export default function GalerieAlbums() {
   const [colsDirs,   setColsDirs]   = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || defaultCols()))
   const [colsPhotos, setColsPhotos] = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_photos')) || defaultCols()))
 
+  useEffect(() => {
+    const onResize = () => {
+      setColsDirs(c   => clampCols(c))
+      setColsPhotos(c => clampCols(c))
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   const gridDirsRef   = useRef(null)
   const gridPhotosRef = useRef(null)
 
