@@ -112,7 +112,52 @@ function MetaForm({ ent, path, meta, onSave, onClose, authFetch }) {
 
 // ── Zone d'upload drag & drop ─────────────────────────────────────────────────
 
-const UPLOAD_CONCURRENCY = 1
+const UPLOAD_CONCURRENCY = 3
+const WEB_SHORT   = 1440
+const THUMB_SHORT = 230
+
+function scaleCanvas(source, minShort) {
+  const sw = source.naturalWidth  || source.width
+  const sh = source.naturalHeight || source.height
+  let nw, nh
+  if (Math.min(sw, sh) <= minShort) { nw = sw; nh = sh }
+  else if (sw <= sh) { nw = minShort; nh = Math.round(sh * minShort / sw) }
+  else               { nh = minShort; nw = Math.round(sw * minShort / sh) }
+  const canvas = document.createElement('canvas')
+  canvas.width = nw; canvas.height = nh
+  canvas.getContext('2d').drawImage(source, 0, 0, nw, nh)
+  return canvas
+}
+
+async function canvasToBlob(canvas, quality) {
+  return new Promise(res => canvas.toBlob(res, 'image/jpeg', quality))
+}
+
+async function loadImage(src) {
+  return new Promise((res, rej) => {
+    const img = new Image()
+    img.onload = () => res(img)
+    img.onerror = rej
+    img.src = src
+  })
+}
+
+async function clientResize(file) {
+  const url = URL.createObjectURL(file)
+  try {
+    const img      = await loadImage(url)                      // EXIF auto-corrigé par le navigateur
+    const webCanvas   = scaleCanvas(img, WEB_SHORT)
+    const thumbCanvas = scaleCanvas(webCanvas, THUMB_SHORT)    // thumb depuis web, pas depuis HD
+    const webBlob   = await canvasToBlob(webCanvas,   0.88)
+    const thumbBlob = await canvasToBlob(thumbCanvas, 0.82)
+    const ratio = +(webCanvas.width / webCanvas.height).toFixed(4)
+    return { webBlob, thumbBlob, ratio }
+  } catch {
+    return null
+  } finally {
+    URL.revokeObjectURL(url)
+  }
+}
 
 function UploadZone({ ent, path, onDone, authFetch }) {
   const [dragging,     setDragging]     = useState(false)
@@ -144,10 +189,27 @@ function UploadZone({ ent, path, onDone, authFetch }) {
         const file = files[i]
         setStatus(file.name, 'uploading')
         try {
+          const isImage = file.type.startsWith('image/')
           const fd = new FormData()
           fd.append('ent', ent)
           fd.append('path', path)
-          fd.append(file.name, file)
+          fd.append('filename', file.name)
+
+          if (isImage) {
+            const resized = await clientResize(file)
+            if (resized) {
+              fd.append('file_hd',    file,               file.name)
+              fd.append('file_web',   resized.webBlob,    file.name)
+              fd.append('file_thumb', resized.thumbBlob,  file.name)
+              fd.append('ratio',      String(resized.ratio))
+            } else {
+              // Fallback : envoyer l'original, serveur redimensionnera
+              fd.append(file.name, file)
+            }
+          } else {
+            fd.append(file.name, file)
+          }
+
           const r = await authFetch('galerie-upload.php', { method: 'POST', body: fd })
           const d = await r.json()
           const ok = d.files?.[0]?.ok ?? false
