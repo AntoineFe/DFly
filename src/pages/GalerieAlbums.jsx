@@ -823,6 +823,7 @@ export default function GalerieAlbums() {
                             opacity: selectMode && !isSelected ? 0.5 : 1 }}
                           onMouseEnter={e => !selectMode && (e.currentTarget.style.transform = 'scale(1.04)')}
                           onMouseLeave={e => !selectMode && (e.currentTarget.style.transform = 'scale(1)')}
+                          onContextMenu={e => e.preventDefault()}
                         />
                       )}
                       {selectMode && file.type === 'image' && (
