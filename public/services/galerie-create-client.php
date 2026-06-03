@@ -69,11 +69,11 @@ try {
     $idProfil = mysqli_insert_id($link);
     if (!$idProfil) throw new Exception('Impossible de créer le profil');
 
-    // 3. Utilisateur client
-    mysqli_query($link, "INSERT INTO HabilUsers (firstName, lastName, email, login, password, idEnt, lang, cle)
-        VALUES ('$fn', '$ln', '$em', '$lo', '$hashedPw', $idEnt, '$la', '$cl')");
-    $idUser = mysqli_insert_id($link);
-    if (!$idUser) throw new Exception('Impossible de créer l\'utilisateur');
+    // 3. Utilisateur client — id = idEnt × 10
+    $idUser = $idEnt * 10;
+    mysqli_query($link, "INSERT INTO HabilUsers (id, firstName, lastName, email, login, password, idEnt, lang, cle)
+        VALUES ($idUser, '$fn', '$ln', '$em', '$lo', '$hashedPw', $idEnt, '$la', '$cl')");
+    if (!mysqli_affected_rows($link)) throw new Exception('Impossible de créer l\'utilisateur');
 
     // 4. Lier l'utilisateur au profil galerie
     mysqli_query($link, "INSERT INTO HabilProfilUser (idUser, idProfil) VALUES ($idUser, $idProfil)");
