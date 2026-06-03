@@ -888,10 +888,11 @@ export default function GalerieAdmin() {
   const [selectedEnt, setSelectedEnt] = useState(null)
   const [entUsers, setEntUsers] = useState([])
   const [copiedId, setCopiedId] = useState(null)
+  const [treeKey,  setTreeKey]  = useState(0)
   const location = useLocation()
   const [activeTab, setActiveTab] = useState(() => location.hash === '#logs' ? 'logs' : 'galerie')
 
-  function switchTab(key) {
+  const [treeKey, setTreeKey] = useState(0)
     setActiveTab(key)
     navigate(`#${key}`, { replace: true })
   }
@@ -1015,7 +1016,7 @@ export default function GalerieAdmin() {
               Galerie · {selectedEnt}
             </div>
             <div style={{ padding: '0 16px' }}>
-              <TreeNode key={selectedEnt} ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => {}} />
+              <TreeNode key={selectedEnt + treeKey} ent={selectedEnt} dir={null} depth={0} authFetch={authFetch} onRefresh={() => setTreeKey(k => k + 1)} />
             </div>
           </div>
         )}
