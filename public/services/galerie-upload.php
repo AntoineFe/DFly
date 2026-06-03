@@ -38,32 +38,26 @@ $VIDEO_EXT   = ['mp4', 'mov', 'avi', 'webm'];
 $results = [];
 $_tReqStart = microtime(true);
 
-// ── Mode client-resize : file_hd + file_web + file_thumb envoyés pré-construits
+// ── Mode client-resize : file_web envoyé pré-redimensionné, vignette générée côté serveur
 if (isset($_FILES['file_web'])) {
     $origName = basename($_POST['filename'] ?? ($_FILES['file_web']['name'] ?? 'photo.jpg'));
     $ratio    = isset($_POST['ratio']) ? (float)$_POST['ratio'] : null;
 
     $ok = true;
-    $_tFilesReady = microtime(true);
-
-    // HD original
-    $_t0 = microtime(true);
-    if (isset($_FILES['file_hd']) && $_FILES['file_hd']['error'] === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($_FILES['file_hd']['tmp_name'], $hdDir . '/' . $origName)) $ok = false;
-    }
-    $_tHD = microtime(true);
 
     // Version web
+    $webDest = $destDir . '/' . $origName;
     if ($_FILES['file_web']['error'] === UPLOAD_ERR_OK) {
-        if (!move_uploaded_file($_FILES['file_web']['tmp_name'], $destDir . '/' . $origName)) $ok = false;
+        if (!move_uploaded_file($_FILES['file_web']['tmp_name'], $webDest)) $ok = false;
     } else { $ok = false; }
-    $_tWeb = microtime(true);
 
-    // Miniature
-    if (isset($_FILES['file_thumb']) && $_FILES['file_thumb']['error'] === UPLOAD_ERR_OK) {
-        move_uploaded_file($_FILES['file_thumb']['tmp_name'], $thumbDir . '/' . $origName);
+    // Vignette générée par GD depuis le 1440p (réduction modeste → bonne qualité)
+    if ($ok) {
+        $mime = mime_content_type($webDest);
+        $w = 0; $h = 0;
+        galerie_process_gd($webDest, $webDest, $thumbDir . '/' . $origName, $mime, 99999, 230, $w, $h);
+        if ($ratio === null && $w > 0 && $h > 0) $ratio = $w / $h;
     }
-    $_tThumb = microtime(true);
 
     // Stocker le ratio
     if ($ratio && $ok) {
@@ -74,23 +68,11 @@ if (isset($_FILES['file_web'])) {
     }
 
     $relPath = ($subPath !== '' ? $subPath . '/' : '') . $origName;
-    $_tTotal = microtime(true) - $_tReqStart;
     $results[] = [
         'name'     => $origName,
         'ok'       => $ok,
         'url'      => $paths['galerie_url']    . '/' . $relPath,
         'thumbUrl' => $paths['thumbnails_url'] . '/' . $relPath,
-        'hdUrl'    => $paths['hd_url']         . '/' . $relPath,
-        '_timing'  => [
-            'req_to_php_ms'    => round(($_tFilesReady - $_tReqStart) * 1000),
-            'move_hd_ms'       => round(($_tHD    - $_t0)            * 1000),
-            'move_web_ms'      => round(($_tWeb   - $_tHD)           * 1000),
-            'move_thumb_ms'    => round(($_tThumb - $_tWeb)          * 1000),
-            'total_ms'         => round($_tTotal                     * 1000),
-            'hd_size_kb'       => isset($_FILES['file_hd'])    ? round($_FILES['file_hd']['size']    / 1024) : null,
-            'web_size_kb'      => isset($_FILES['file_web'])   ? round($_FILES['file_web']['size']   / 1024) : null,
-            'thumb_size_kb'    => isset($_FILES['file_thumb']) ? round($_FILES['file_thumb']['size'] / 1024) : null,
-        ],
     ];
 
 // ── Mode legacy : serveur redimensionne (vidéos + fallback)

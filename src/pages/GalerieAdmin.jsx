@@ -176,21 +176,16 @@ async function clientResize(file) {
     const oh = bitmap.height
 
     const [ww, wh] = scaleDims(ow, oh, WEB_SHORT)
-    const [tw, th] = scaleDims(ww, wh, THUMB_SHORT)
 
-    const webBlob   = await bitmapToBlob(bitmap, ww, wh, 0.88)
+    const webBlob = await bitmapToBlob(bitmap, ww, wh, 0.88)
     const t2 = performance.now()
-    const thumbBlob = await stepDownToBlob(bitmap, ow, oh, tw, th, 0.82)
-    const t3 = performance.now()
 
     bitmap.close()
     console.log(`[upload] ${file.name} (${(file.size/1024/1024).toFixed(1)}MB ${ow}×${oh})`
       + ` | decode: ${(t1-t0).toFixed(0)}ms`
       + ` | web-encode: ${(t2-t1).toFixed(0)}ms`
-      + ` | thumb-encode: ${(t3-t2).toFixed(0)}ms`
-      + ` | resize total: ${(t3-t0).toFixed(0)}ms`
-      + ` | web: ${(webBlob.size/1024).toFixed(0)}KB thumb: ${(thumbBlob.size/1024).toFixed(0)}KB`)
-    return { webBlob, thumbBlob, ratio: +(ww / wh).toFixed(4) }
+      + ` | web: ${(webBlob.size/1024).toFixed(0)}KB`)
+    return { webBlob, ratio: +(ww / wh).toFixed(4) }
   } catch {
     return null
   }
@@ -236,7 +231,6 @@ function UploadZone({ ent, path, onDone, authFetch }) {
             const resized = await clientResize(file)
             if (resized) {
               fd.append('file_web',   resized.webBlob,    file.name)
-              fd.append('file_thumb', resized.thumbBlob,  file.name)
               fd.append('ratio',      String(resized.ratio))
             } else {
               // Fallback : envoyer l'original, serveur redimensionnera
