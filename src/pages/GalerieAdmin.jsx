@@ -892,7 +892,7 @@ export default function GalerieAdmin() {
   const location = useLocation()
   const [activeTab, setActiveTab] = useState(() => location.hash === '#logs' ? 'logs' : 'galerie')
 
-  const [treeKey, setTreeKey] = useState(0)
+  function switchTab(key) {
     setActiveTab(key)
     navigate(`#${key}`, { replace: true })
   }
