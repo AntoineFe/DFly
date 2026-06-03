@@ -614,6 +614,33 @@ export default function GalerieAlbums() {
     }
   }
 
+  async function downloadAll(version) {
+    const allImages = (data?.files || []).filter(f => f.type === 'image').map(f => f.name)
+    if (!allImages.length) return
+    const key = version === 'hd' ? 'all-hd' : 'all-web'
+    setDlBusy(key)
+    try {
+      const res = await authFetch('galerie-download-selection.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ ent: activeEnt, path: pathParam, files: allImages, version }),
+      })
+      if (!res.ok) throw new Error()
+      const blob = await res.blob()
+      const url  = URL.createObjectURL(blob)
+      const a    = document.createElement('a')
+      const label = pathParam ? pathParam.split('/').pop() : activeEnt
+      a.href     = url
+      a.download = label + (version === 'hd' ? '_HD' : '_1440p') + '.zip'
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      alert('Le téléchargement a échoué.')
+    } finally {
+      setDlBusy(null)
+    }
+  }
+
   // ── Sélection entreprise ──────────────────────────────────────────────────
   const [entSearch, setEntSearch] = useState('')
 
@@ -720,18 +747,31 @@ export default function GalerieAlbums() {
         )}
 
         {/* Barre sélection desktop (sticky sous TopNav) */}
-        {data?.files?.length > 0 && (
+        {data?.files?.filter(f => f.type === 'image').length > 0 && (
           <div style={{
             position: 'sticky', top: 57, zIndex: 90,
             background: 'var(--bg)', borderBottom: '1px solid var(--line)',
-            display: 'flex', alignItems: 'center', gap: 16,
+            display: 'flex', alignItems: 'center', gap: 12,
             padding: '10px 0', marginBottom: 24,
-            '@media (maxWidth: 767px)': { display: 'none' },
           }} className="select-bar-desktop">
             {!selectMode ? (
-              <button onClick={() => setSelectMode(true)} style={selBtn}>
-                Sélectionner
-              </button>
+              <>
+                <button onClick={() => downloadAll('hd')} disabled={!!dlBusy} style={selBtn}>
+                  {dlBusy === 'all-hd' ? 'Préparation…' : 'Tout télécharger HD'}
+                </button>
+                <button onClick={() => downloadAll('web')} disabled={!!dlBusy} style={selBtn}>
+                  {dlBusy === 'all-web' ? 'Préparation…' : 'Tout télécharger 1440p'}
+                </button>
+                <button onClick={() => setSelectMode(true)} disabled={!!dlBusy} style={{ ...selBtn, borderColor: 'var(--line)', color: 'var(--fg-muted)' }}>
+                  Sélectionner
+                </button>
+                {dlBusy && (
+                  <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic',
+                    fontSize: 13, color: 'var(--fg-muted)' }}>
+                    Préparation du téléchargement…
+                  </span>
+                )}
+              </>
             ) : (
               <>
                 <button onClick={exitSelectMode} style={selBtn}>Annuler</button>
