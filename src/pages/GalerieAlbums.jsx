@@ -343,7 +343,8 @@ function AlbumHeader({ meta }) {
   if (!title && !subtitle && !message && !videoHtml && !printUrl) return null
 
   return (
-    <div style={{ marginBottom: 60, paddingBottom: 48, borderBottom: '1px solid var(--line)' }}>
+    <div style={{ marginBottom: 60, paddingBottom: 48, borderBottom: '1px solid var(--line)',
+      maxWidth: 'min(1000px, 100%)', margin: '0 auto 60px' }}>
       {title && (
         <h1 style={{ fontFamily: 'var(--serif-display)', fontWeight: 400,
           fontSize: 'clamp(28px, 3.5vw, 48px)', marginBottom: 8 }}>
@@ -643,7 +644,8 @@ export default function GalerieAlbums() {
         {/* Fil d'ariane */}
         <nav style={{ marginBottom: 48, display: 'flex', alignItems: 'center', gap: 8,
           fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
-          textTransform: 'uppercase', color: 'var(--fg-muted)', flexWrap: 'wrap' }}>
+          textTransform: 'uppercase', color: 'var(--fg-muted)', flexWrap: 'wrap',
+          maxWidth: 'min(1000px, 100%)', margin: '0 auto 48px' }}>
           <button onClick={() => { setSelectedEnt(null); navigate('/galerie/albums', { replace: true }) }} style={crumbBtn}>
             {multiEnt ? 'Clients' : 'Albums'}
           </button>
@@ -688,7 +690,8 @@ export default function GalerieAlbums() {
             position: 'sticky', top: 57, zIndex: 90,
             background: 'var(--bg)', borderBottom: '1px solid var(--line)',
             display: 'flex', alignItems: 'center', gap: 12,
-            padding: '10px 0', marginBottom: 24,
+            padding: '10px 0',
+            maxWidth: 'min(1000px, 100%)', margin: '0 auto 24px',
           }} className="select-bar-desktop">
             {!selectMode ? (
               <>
@@ -736,7 +739,7 @@ export default function GalerieAlbums() {
 
             {/* Dossiers */}
             {data.dirs.length > 0 && (
-              <div ref={gridDirsRef} style={{ marginBottom: 60 }}>
+              <div ref={gridDirsRef} style={{ marginBottom: 60, maxWidth: 'min(1600px, 100%)', margin: '0 auto 60px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: `repeat(${colsDirs}, 1fr)`, gap: 12 }}>
                   {data.dirs.map(dir => (
                     <button key={dir.name} onClick={() => openDir(dir.name)} style={{
