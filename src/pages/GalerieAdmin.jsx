@@ -131,8 +131,9 @@ function bitmapToBlob(source, w, h, quality) {
 
 async function clientResize(file) {
   try {
-    // Décode le JPEG de façon asynchrone et accélérée matériellement
+    const t0 = performance.now()
     const bitmap = await createImageBitmap(file)
+    const t1 = performance.now()
     const ow = bitmap.width
     const oh = bitmap.height
 
@@ -140,9 +141,17 @@ async function clientResize(file) {
     const [tw, th] = scaleDims(ww, wh, THUMB_SHORT)
 
     const webBlob   = await bitmapToBlob(bitmap, ww, wh, 0.88)
+    const t2 = performance.now()
     const thumbBlob = await bitmapToBlob(bitmap, tw, th, 0.82)
+    const t3 = performance.now()
 
     bitmap.close()
+    console.log(`[upload] ${file.name} (${(file.size/1024/1024).toFixed(1)}MB ${ow}×${oh})`
+      + ` | decode: ${(t1-t0).toFixed(0)}ms`
+      + ` | web-encode: ${(t2-t1).toFixed(0)}ms`
+      + ` | thumb-encode: ${(t3-t2).toFixed(0)}ms`
+      + ` | resize total: ${(t3-t0).toFixed(0)}ms`
+      + ` | web: ${(webBlob.size/1024).toFixed(0)}KB thumb: ${(thumbBlob.size/1024).toFixed(0)}KB`)
     return { webBlob, thumbBlob, ratio: +(ww / wh).toFixed(4) }
   } catch {
     return null
@@ -200,8 +209,12 @@ function UploadZone({ ent, path, onDone, authFetch }) {
             fd.append(file.name, file)
           }
 
+          const tFetchStart = performance.now()
+          console.log(`[upload] ${file.name} → fetch start (hd: ${(file.size/1024/1024).toFixed(1)}MB)`)
           const r = await authFetch('galerie-upload.php', { method: 'POST', body: fd })
+          const tFetchEnd = performance.now()
           const d = await r.json()
+          console.log(`[upload] ${file.name} → fetch done in ${((tFetchEnd-tFetchStart)/1000).toFixed(2)}s`)
           const ok = d.files?.[0]?.ok ?? false
           setStatus(file.name, ok ? 'done' : 'error')
           if (ok) doneCount++
