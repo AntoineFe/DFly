@@ -461,6 +461,10 @@ export default function GalerieAlbums() {
   const [data,        setData]        = useState(null)
   const [loading,     setLoading]     = useState(true)
   const [lightbox,    setLightbox]    = useState(null)
+  const [selectMode,  setSelectMode]  = useState(false)
+  const [selected,    setSelected]    = useState(new Set())
+  const [dlBusy,      setDlBusy]      = useState(null) // 'hd' | 'web' | null
+  const longPressTimer = useRef(null)
   const [selectedEnt, setSelectedEnt] = useState(() => {
     if (entId) return entId
     if (entIdParam && user?.ents) {
@@ -557,6 +561,55 @@ export default function GalerieAlbums() {
     parts.pop()
     const newPath = parts.join('/')
     navigate(`/galerie/albums${entId ? `/${entId}` : ''}?path=${encodeURIComponent(newPath)}${entQs()}`)
+  }
+
+  function exitSelectMode() {
+    setSelectMode(false)
+    setSelected(new Set())
+  }
+
+  function toggleSelect(name) {
+    setSelected(prev => {
+      const next = new Set(prev)
+      next.has(name) ? next.delete(name) : next.add(name)
+      return next
+    })
+  }
+
+  function handleLongPressStart(name) {
+    longPressTimer.current = setTimeout(() => {
+      setSelectMode(true)
+      setSelected(new Set([name]))
+    }, 500)
+  }
+
+  function handleLongPressCancel() {
+    clearTimeout(longPressTimer.current)
+  }
+
+  async function downloadSelected(version) {
+    if (selected.size === 0) return
+    setDlBusy(version)
+    try {
+      const res = await authFetch('galerie-download-selection.php', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ ent: activeEnt, path: pathParam, files: [...selected], version }),
+      })
+      if (!res.ok) throw new Error()
+      const blob = await res.blob()
+      const url  = URL.createObjectURL(blob)
+      const a    = document.createElement('a')
+      a.href     = url
+      a.download = (selected.size === 1 ? [...selected][0].replace(/\.[^.]+$/, '') : (pathParam ? pathParam.split('/').pop() : activeEnt))
+                 + (version === 'hd' ? '_HD' : '_1440p') + (selected.size > 1 ? '.zip' : '.' + [...selected][0].split('.').pop())
+      a.click()
+      URL.revokeObjectURL(url)
+    } catch {
+      alert('Le téléchargement a échoué.')
+    } finally {
+      setDlBusy(null)
+    }
   }
 
   // ── Sélection entreprise ──────────────────────────────────────────────────
@@ -664,6 +717,41 @@ export default function GalerieAlbums() {
             fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Chargement…</div>
         )}
 
+        {/* Barre sélection desktop (sticky sous TopNav) */}
+        {data?.files?.length > 0 && (
+          <div style={{
+            position: 'sticky', top: 57, zIndex: 90,
+            background: 'var(--bg)', borderBottom: '1px solid var(--line)',
+            display: 'flex', alignItems: 'center', gap: 16,
+            padding: '10px 0', marginBottom: 24,
+            '@media (maxWidth: 767px)': { display: 'none' },
+          }} className="select-bar-desktop">
+            {!selectMode ? (
+              <button onClick={() => setSelectMode(true)} style={selBtn}>
+                Sélectionner
+              </button>
+            ) : (
+              <>
+                <button onClick={exitSelectMode} style={selBtn}>Annuler</button>
+                <span style={{ fontFamily: 'var(--sans)', fontSize: 11,
+                  letterSpacing: '0.2em', color: 'var(--fg-muted)' }}>
+                  {selected.size} photo{selected.size > 1 ? 's' : ''} sélectionnée{selected.size > 1 ? 's' : ''}
+                </span>
+                {selected.size > 0 && (
+                  <>
+                    <button onClick={() => downloadSelected('hd')} disabled={!!dlBusy} style={selBtn}>
+                      {dlBusy === 'hd' ? 'Préparation…' : 'Télécharger HD'}
+                    </button>
+                    <button onClick={() => downloadSelected('web')} disabled={!!dlBusy} style={selBtn}>
+                      {dlBusy === 'web' ? 'Préparation…' : 'Télécharger 1440p'}
+                    </button>
+                  </>
+                )}
+              </>
+            )}
+          </div>
+        )}
+
         {!loading && data && (
           <>
             <AlbumHeader meta={data.meta} />
@@ -707,11 +795,19 @@ export default function GalerieAlbums() {
             {data.files.length > 0 && (
               <div ref={gridPhotosRef} style={{ columnCount: colsPhotos, columnGap: 4 }}>
                 {data.files.map(file => {
-                  const imgIndex = imageFiles.indexOf(file)
+                  const imgIndex   = imageFiles.indexOf(file)
+                  const isSelected = selected.has(file.name)
                   return (
-                    <div key={file.name} onClick={() => setLightbox(imgIndex >= 0 ? imgIndex : null)}
+                    <div key={file.name}
+                      onClick={() => {
+                        if (selectMode && file.type === 'image') toggleSelect(file.name)
+                        else if (!selectMode) setLightbox(imgIndex >= 0 ? imgIndex : null)
+                      }}
+                      onTouchStart={() => file.type === 'image' && handleLongPressStart(file.name)}
+                      onTouchEnd={handleLongPressCancel}
+                      onTouchMove={handleLongPressCancel}
                       style={{ breakInside: 'avoid', marginBottom: 4, cursor: 'pointer',
-                        overflow: 'hidden', background: 'var(--bg-alt)' }}>
+                        overflow: 'hidden', background: 'var(--bg-alt)', position: 'relative' }}>
                       {file.type === 'video' ? (
                         <div style={{ aspectRatio: '16/9', display: 'flex',
                           alignItems: 'center', justifyContent: 'center',
@@ -721,14 +817,55 @@ export default function GalerieAlbums() {
                       ) : (
                         <img src={file.thumbUrl} alt={file.name} className="no-protect" loading="lazy"
                           style={{ width: '100%', height: 'auto', display: 'block',
-                            transition: 'transform .3s ease' }}
-                          onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
-                          onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+                            transition: 'transform .3s ease',
+                            opacity: selectMode && !isSelected ? 0.5 : 1 }}
+                          onMouseEnter={e => !selectMode && (e.currentTarget.style.transform = 'scale(1.04)')}
+                          onMouseLeave={e => !selectMode && (e.currentTarget.style.transform = 'scale(1)')}
                         />
+                      )}
+                      {selectMode && file.type === 'image' && (
+                        <div style={{
+                          position: 'absolute', top: 8, left: 8,
+                          width: 22, height: 22, borderRadius: '50%',
+                          border: '2px solid white',
+                          background: isSelected ? 'var(--fg)' : 'rgba(0,0,0,0.3)',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.4)',
+                        }}>
+                          {isSelected && <span style={{ color: 'var(--bg)', fontSize: 13, lineHeight: 1 }}>✓</span>}
+                        </div>
                       )}
                     </div>
                   )
                 })}
+              </div>
+            )}
+
+            {/* Barre sélection mobile (sticky en bas) */}
+            {selectMode && (
+              <div className="select-bar-mobile" style={{
+                position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 200,
+                background: 'var(--bg)', borderTop: '1px solid var(--line)',
+                padding: '12px var(--gutter)', display: 'flex',
+                alignItems: 'center', gap: 12, flexWrap: 'wrap',
+              }}>
+                <span style={{ fontFamily: 'var(--sans)', fontSize: 11,
+                  letterSpacing: '0.2em', color: 'var(--fg-muted)', flex: 1 }}>
+                  {selected.size} photo{selected.size > 1 ? 's' : ''}
+                </span>
+                {selected.size > 0 && (
+                  <>
+                    <button onClick={() => downloadSelected('hd')} disabled={!!dlBusy} style={selBtn}>
+                      {dlBusy === 'hd' ? '…' : 'HD'}
+                    </button>
+                    <button onClick={() => downloadSelected('web')} disabled={!!dlBusy} style={selBtn}>
+                      {dlBusy === 'web' ? '…' : '1440p'}
+                    </button>
+                  </>
+                )}
+                <button onClick={exitSelectMode} style={{ ...selBtn, borderColor: 'var(--fg-muted)', color: 'var(--fg-muted)' }}>
+                  Annuler
+                </button>
               </div>
             )}
 
@@ -763,6 +900,13 @@ export default function GalerieAlbums() {
   )
 }
 
+
+const selBtn = {
+  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.22em',
+  textTransform: 'uppercase', padding: '7px 16px',
+  border: '1px solid var(--fg)', background: 'none',
+  color: 'var(--fg)', cursor: 'pointer', whiteSpace: 'nowrap',
+}
 
 const crumbBtn = {
   background: 'none', border: 'none', cursor: 'pointer',

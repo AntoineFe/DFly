@@ -339,3 +339,11 @@
     grid-auto-rows: 100px;
   }
 }
+
+/* ── Galerie : barres sélection ── */
+@media (max-width: 767px) {
+  .select-bar-desktop { display: none !important; }
+}
+@media (min-width: 768px) {
+  .select-bar-mobile { display: none !important; }
+}
