@@ -14,35 +14,31 @@ if (!$url) {
     exit(json_encode(['ok' => false, 'error' => 'url manquante']));
 }
 
+require_once __DIR__ . '/galerie-auth.php';
+
+$cfg = galerie_load_config(true);
+
 // Try to identify user from Bearer token (best-effort, never aborts the logging)
 $userName = 'Anonyme';
 $header   = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-if (preg_match('/^Bearer\s+(.+)$/i', $header, $m)) {
-    // Verify DB config exists before calling galerie_db() — it calls exit() on missing config
-    $cfg_path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-db-config.php';
-    if (!file_exists($cfg_path))
-        $cfg_path = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-db-config.php';
-
-    if (file_exists($cfg_path)) {
-        $cfg  = require $cfg_path;
-        $link = @mysqli_connect($cfg['host'], $cfg['user'], $cfg['pass'], $cfg['dbname'], $cfg['port']);
-        if ($link) {
-            mysqli_set_charset($link, 'utf8mb4');
-            $t   = mysqli_real_escape_string($link, $m[1]);
-            $sql = "SELECT HU.firstName, HU.lastName
-                    FROM HabilSessions HS
-                    INNER JOIN HabilUsers HU ON HU.id = HS.userId
-                    WHERE HS.token = '$t'
-                      AND HS.tsCloseSession IS NULL
-                      AND HS.tsLastAccess > DATE_SUB(NOW(), INTERVAL 8 HOUR)
-                    LIMIT 1";
-            $res = mysqli_query($link, $sql);
-            if ($res && mysqli_num_rows($res) > 0) {
-                $row      = mysqli_fetch_assoc($res);
-                $userName = trim($row['firstName'] . ' ' . $row['lastName']);
-            }
-            mysqli_close($link);
+if ($cfg && preg_match('/^Bearer\s+(.+)$/i', $header, $m)) {
+    $link = @mysqli_connect($cfg['db_host'], $cfg['db_user'], $cfg['db_pass'], $cfg['db_name'], $cfg['db_port'] ?? 3306);
+    if ($link) {
+        mysqli_set_charset($link, 'utf8mb4');
+        $t   = mysqli_real_escape_string($link, $m[1]);
+        $sql = "SELECT HU.firstName, HU.lastName
+                FROM HabilSessions HS
+                INNER JOIN HabilUsers HU ON HU.id = HS.userId
+                WHERE HS.token = '$t'
+                  AND HS.tsCloseSession IS NULL
+                  AND HS.tsLastAccess > DATE_SUB(NOW(), INTERVAL 8 HOUR)
+                LIMIT 1";
+        $res = mysqli_query($link, $sql);
+        if ($res && mysqli_num_rows($res) > 0) {
+            $row      = mysqli_fetch_assoc($res);
+            $userName = trim($row['firstName'] . ' ' . $row['lastName']);
         }
+        mysqli_close($link);
     }
 }
 
@@ -50,14 +46,8 @@ if (preg_match('/^Bearer\s+(.+)$/i', $header, $m)) {
 $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '?';
 $ip = trim(explode(',', $ip)[0]);
 
-// Log directory (one or two levels above DOCUMENT_ROOT, same pattern as db config)
-$log_dir = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-logs';
-if (!is_dir($log_dir)) {
-    $log_dir = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-logs';
-}
-if (!is_dir($log_dir)) {
-    @mkdir($log_dir, 0755, true);
-}
+$log_dir = $cfg['log_dir'] ?? (dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-logs');
+if (!is_dir($log_dir)) @mkdir($log_dir, 0755, true);
 
 $log_file = $log_dir . '/navigation.log';
 $old_file = $log_dir . '/navigation.old.log';

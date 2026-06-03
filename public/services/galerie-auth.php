@@ -2,8 +2,8 @@
 // Include partagé — valide le token Bearer et retourne les infos de session.
 // Usage : require 'galerie-auth.php'; -> $session disponible
 
-function galerie_load_config() {
-    // Cherche galerie-config.php d'abord dans le dossier services, puis un niveau au-dessus
+function galerie_load_config(bool $silent = false) {
+    // Cherche galerie-config.php d'abord dans le dossier services, puis remonte jusqu'à 4 niveaux
     $paths = [
         __DIR__ . '/galerie-config.php',
         dirname(__DIR__) . '/galerie-config.php',
@@ -14,6 +14,7 @@ function galerie_load_config() {
     foreach ($paths as $p) {
         if (file_exists($p)) return require $p;
     }
+    if ($silent) return null;
     http_response_code(500);
     exit(json_encode(['ok' => false, 'error' => 'galerie-config.php introuvable']));
 }
