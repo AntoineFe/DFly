@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
-import TopNav from '../components/TopNav'
+import GalerieNav from '../components/GalerieNav'
 
 const BASE = import.meta.env.BASE_URL
 const API  = path => `${BASE}services/${path}`
@@ -1218,7 +1218,7 @@ export default function GalerieAdmin() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-      <TopNav minimal />
+      <GalerieNav />
       <div style={{ maxWidth: 900, margin: '0 auto', padding: '80px var(--gutter) 120px' }}>
 
         {/* Onglets */}

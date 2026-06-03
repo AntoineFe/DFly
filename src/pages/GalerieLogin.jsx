@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, useSearchParams, Link } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
-import DflyMonogram from '../components/DflyMonogram'
 
-const BASE = import.meta.env.BASE_URL
+const BASE        = import.meta.env.BASE_URL
+const APP_NAME    = import.meta.env.VITE_APP_NAME    || 'Galerie'
+const APP_TAGLINE = import.meta.env.VITE_APP_TAGLINE || 'Galerie privée'
+const APP_HOME    = import.meta.env.VITE_APP_HOME_URL || '/'
+const LOGO_URL    = import.meta.env.VITE_APP_LOGO_URL || ''
 
 const inputStyle = {
   width: '100%', padding: '12px 14px', boxSizing: 'border-box',
@@ -192,16 +195,21 @@ export default function GalerieLogin() {
     }}>
       <div style={{ width: '100%', maxWidth: 400 }}>
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
-          <Link to="/" style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', color: 'var(--fg)' }}>
-            <DflyMonogram size={40} color="var(--fg)" />
-            <div style={{ fontFamily: 'var(--serif-display)', fontSize: 28, marginTop: 16 }}>
-              D<span style={{ fontStyle: 'italic', fontWeight: 300 }}>Fly</span>
+          <a href={APP_HOME} style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center',
+            color: 'var(--fg)', textDecoration: 'none' }}>
+            {LOGO_URL
+              ? <img src={LOGO_URL} alt={APP_NAME} style={{ width: 40, height: 40, objectFit: 'contain' }} />
+              : null}
+            <div style={{ fontFamily: 'var(--serif-display)', fontSize: 28, marginTop: LOGO_URL ? 16 : 0 }}>
+              {APP_NAME}
             </div>
-          </Link>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em',
-            textTransform: 'uppercase', color: 'var(--fg-muted)', marginTop: 6 }}>
-            Galerie privée
-          </div>
+          </a>
+          {APP_TAGLINE && (
+            <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.36em',
+              textTransform: 'uppercase', color: 'var(--fg-muted)', marginTop: 6 }}>
+              {APP_TAGLINE}
+            </div>
+          )}
         </div>
 
         <form onSubmit={handleSubmit}>

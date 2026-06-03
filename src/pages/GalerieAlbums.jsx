@@ -1,7 +1,7 @@
 import { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react'
 import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
-import TopNav from '../components/TopNav'
+import GalerieNav from '../components/GalerieNav'
 import { logGalerie } from '../utils/logEvent'
 
 // ── Lightbox ──────────────────────────────────────────────────────────────────
@@ -588,7 +588,7 @@ export default function GalerieAlbums() {
 
     return (
       <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-        <TopNav minimal />
+        <GalerieNav />
         <div style={{ maxWidth: 600, margin: '0 auto', padding: '80px var(--gutter) 80px' }}>
           <h2 style={{ fontFamily: 'var(--serif-display)', fontWeight: 400, fontSize: 32, marginBottom: 24 }}>
             Choisir un client
@@ -637,7 +637,7 @@ export default function GalerieAlbums() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
-      <TopNav minimal />
+      <GalerieNav />
       <div style={{ padding: '80px var(--gutter) 120px' }}>
 
         {/* Fil d'ariane */}
