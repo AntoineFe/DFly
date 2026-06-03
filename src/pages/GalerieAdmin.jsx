@@ -116,46 +116,36 @@ const UPLOAD_CONCURRENCY = 3
 const WEB_SHORT   = 1440
 const THUMB_SHORT = 230
 
-function scaleCanvas(source, minShort) {
-  const sw = source.naturalWidth  || source.width
-  const sh = source.naturalHeight || source.height
-  let nw, nh
-  if (Math.min(sw, sh) <= minShort) { nw = sw; nh = sh }
-  else if (sw <= sh) { nw = minShort; nh = Math.round(sh * minShort / sw) }
-  else               { nh = minShort; nw = Math.round(sw * minShort / sh) }
-  const canvas = document.createElement('canvas')
-  canvas.width = nw; canvas.height = nh
-  canvas.getContext('2d').drawImage(source, 0, 0, nw, nh)
-  return canvas
+function scaleDims(w, h, minShort) {
+  if (Math.min(w, h) <= minShort) return [w, h]
+  if (w <= h) return [minShort, Math.round(h * minShort / w)]
+  return [Math.round(w * minShort / h), minShort]
 }
 
-async function canvasToBlob(canvas, quality) {
+function bitmapToBlob(source, w, h, quality) {
+  const canvas = document.createElement('canvas')
+  canvas.width = w; canvas.height = h
+  canvas.getContext('2d').drawImage(source, 0, 0, w, h)
   return new Promise(res => canvas.toBlob(res, 'image/jpeg', quality))
 }
 
-async function loadImage(src) {
-  return new Promise((res, rej) => {
-    const img = new Image()
-    img.onload = () => res(img)
-    img.onerror = rej
-    img.src = src
-  })
-}
-
 async function clientResize(file) {
-  const url = URL.createObjectURL(file)
   try {
-    const img      = await loadImage(url)                      // EXIF auto-corrigé par le navigateur
-    const webCanvas   = scaleCanvas(img, WEB_SHORT)
-    const thumbCanvas = scaleCanvas(webCanvas, THUMB_SHORT)    // thumb depuis web, pas depuis HD
-    const webBlob   = await canvasToBlob(webCanvas,   0.88)
-    const thumbBlob = await canvasToBlob(thumbCanvas, 0.82)
-    const ratio = +(webCanvas.width / webCanvas.height).toFixed(4)
-    return { webBlob, thumbBlob, ratio }
+    // Décode le JPEG de façon asynchrone et accélérée matériellement
+    const bitmap = await createImageBitmap(file)
+    const ow = bitmap.width
+    const oh = bitmap.height
+
+    const [ww, wh] = scaleDims(ow, oh, WEB_SHORT)
+    const [tw, th] = scaleDims(ww, wh, THUMB_SHORT)
+
+    const webBlob   = await bitmapToBlob(bitmap, ww, wh, 0.88)
+    const thumbBlob = await bitmapToBlob(bitmap, tw, th, 0.82)
+
+    bitmap.close()
+    return { webBlob, thumbBlob, ratio: +(ww / wh).toFixed(4) }
   } catch {
     return null
-  } finally {
-    URL.revokeObjectURL(url)
   }
 }
 
