@@ -3,7 +3,12 @@
 // Usage : require 'galerie-auth.php'; -> $session disponible
 
 function galerie_load_config(bool $silent = false) {
-    // Cherche galerie-config.php ou photos-config.php, en remontant jusqu'à 4 niveaux
+    // Détermine le nom du config selon le dossier de déploiement
+    // public_html/photos/ → photos-config.php, sinon → galerie-config.php
+    $deployPath = str_replace('\\', '/', __DIR__);
+    $preferred  = strpos($deployPath, '/photos/') !== false ? 'photos-config.php' : 'galerie-config.php';
+    $fallback   = $preferred === 'photos-config.php' ? 'galerie-config.php' : 'photos-config.php';
+
     $dirs = [
         __DIR__,
         dirname(__DIR__),
@@ -11,8 +16,9 @@ function galerie_load_config(bool $silent = false) {
         dirname(dirname(dirname(__DIR__))),
         dirname(dirname(dirname(dirname(__DIR__)))),
     ];
-    foreach ($dirs as $dir) {
-        foreach (['galerie-config.php', 'photos-config.php'] as $name) {
+    // Cherche d'abord le fichier préféré, puis le fallback
+    foreach ([$preferred, $fallback] as $name) {
+        foreach ($dirs as $dir) {
             $p = $dir . '/' . $name;
             if (file_exists($p)) return require $p;
         }
