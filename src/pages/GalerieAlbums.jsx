@@ -406,11 +406,20 @@ export default function GalerieAlbums() {
     }
     return null
   })
-  const THUMB_COL_W = 230 // largeur naturelle des vignettes — ne pas agrandir
+  const THUMB_COL_W = 230 // largeur naturelle des vignettes — ne pas agrandir sur desktop
   const THUMB_GAP   = 4
+  const MOBILE_BP   = 768 // en dessous : colonnes flexibles (comportement original)
+
+  const isMobile = () => window.innerWidth < MOBILE_BP
 
   const defaultCols = () => {
-    const available = window.innerWidth - 2 * 20 // marges latérales min
+    if (isMobile()) {
+      // Mobile : comportement original, colonnes flexibles
+      const available = window.innerWidth - 40
+      return Math.max(2, Math.floor(available / 150))
+    }
+    // Desktop : colonnes fixes à 230px, pas d'agrandissement
+    const available = window.innerWidth - 40
     return Math.max(2, Math.floor((available + THUMB_GAP) / (THUMB_COL_W + THUMB_GAP)))
   }
 
@@ -797,9 +806,10 @@ export default function GalerieAlbums() {
               })
               return (
               <div ref={gridPhotosRef} style={{ display: 'flex', gap: THUMB_GAP, alignItems: 'flex-start',
-                width: colsPhotos * THUMB_COL_W + (colsPhotos - 1) * THUMB_GAP, maxWidth: '100%' }}>
+                ...(isMobile() ? {} : { width: colsPhotos * THUMB_COL_W + (colsPhotos - 1) * THUMB_GAP, maxWidth: '100%' }) }}>
                 {colItems.map((col, ci) => (
-                  <div key={ci} style={{ width: THUMB_COL_W, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: THUMB_GAP }}>
+                  <div key={ci} style={{ display: 'flex', flexDirection: 'column', gap: THUMB_GAP,
+                    ...(isMobile() ? { flex: 1, minWidth: 0 } : { width: THUMB_COL_W, flexShrink: 0 }) }}>
                     {col.map(file => {
                   const imgIndex   = imageFiles.indexOf(file)
                   const isSelected = selected.has(file.name)
