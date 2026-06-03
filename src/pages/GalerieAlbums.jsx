@@ -877,7 +877,7 @@ export default function GalerieAlbums() {
                       onTouchEnd={handleLongPressCancel}
                       onTouchMove={handleLongPressCancel}
                       onContextMenu={e => e.preventDefault()}
-                      style={{ breakInside: 'avoid', marginBottom: 4, cursor: 'pointer',
+                      style={{ cursor: 'pointer',
                         overflow: 'hidden', background: 'var(--bg-alt)', position: 'relative' }}>
                       {file.type === 'video' ? (
                         <div style={{ aspectRatio: '16/9', display: 'flex',
