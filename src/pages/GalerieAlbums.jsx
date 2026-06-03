@@ -406,36 +406,43 @@ export default function GalerieAlbums() {
     }
     return null
   })
-  const THUMB_COL_W = 230 // largeur naturelle des vignettes — ne pas agrandir sur desktop
+  const THUMB_COL_W = 230 // largeur max des vignettes sur desktop
   const THUMB_GAP   = 4
-  const MOBILE_BP   = 768 // en dessous : colonnes flexibles (comportement original)
+  const MOBILE_BP   = 768
 
-  const isMobile = () => window.innerWidth < MOBILE_BP
-
-  const defaultCols = () => {
-    if (isMobile()) {
-      // Mobile : comportement original, colonnes flexibles
-      const available = window.innerWidth - 40
-      return Math.max(2, Math.floor(available / 150))
-    }
-    // Desktop : colonnes fixes à 230px, pas d'agrandissement
-    const available = window.innerWidth - 40
-    return Math.max(2, Math.floor((available + THUMB_GAP) / (THUMB_COL_W + THUMB_GAP)))
-  }
-
-  const clampCols = (n) => Math.max(2, Math.min(n, defaultCols()))
-
-  const [colsDirs,   setColsDirs]   = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || defaultCols()))
-  const [colsPhotos, setColsPhotos] = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_photos')) || defaultCols()))
+  const [winWidth, setWinWidth] = useState(window.innerWidth)
 
   useEffect(() => {
-    const onResize = () => {
-      setColsDirs(c   => clampCols(c))
-      setColsPhotos(c => clampCols(c))
-    }
+    const onResize = () => setWinWidth(window.innerWidth)
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
+
+  const mobile = winWidth < MOBILE_BP
+
+  // Nombre de colonnes qui tiennent dans la fenêtre
+  const maxCols = (w) => {
+    if (w < MOBILE_BP) return Math.max(2, Math.floor((w - 40 + THUMB_GAP) / (150 + THUMB_GAP)))
+    return Math.max(2, Math.floor((w - 40 + THUMB_GAP) / (THUMB_COL_W + THUMB_GAP)))
+  }
+
+  const clampCols = (n, w = winWidth) => Math.max(2, Math.min(n, maxCols(w)))
+
+  const [colsDirs,   setColsDirs]   = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || maxCols(window.innerWidth), window.innerWidth))
+  const [colsPhotos, setColsPhotos] = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_photos')) || maxCols(window.innerWidth), window.innerWidth))
+
+  // Recalcule les colonnes à chaque changement de largeur
+  useEffect(() => {
+    setColsDirs(c   => clampCols(c, winWidth))
+    setColsPhotos(c => clampCols(c, winWidth))
+  }, [winWidth]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Largeur réelle d'une colonne : remplit exactement la grille sans marge résiduelle
+  const actualColW = (cols) => {
+    if (mobile) return null // flex sur mobile
+    const available = winWidth - 40
+    return Math.floor((available - (cols - 1) * THUMB_GAP) / cols)
+  }
 
   const gridDirsRef   = useRef(null)
   const gridPhotosRef = useRef(null)
@@ -805,11 +812,12 @@ export default function GalerieAlbums() {
                 colItems[col].push(file)
               })
               return (
-              <div ref={gridPhotosRef} style={{ display: 'flex', gap: THUMB_GAP, alignItems: 'flex-start',
-                ...(isMobile() ? {} : { width: colsPhotos * THUMB_COL_W + (colsPhotos - 1) * THUMB_GAP, maxWidth: '100%' }) }}>
+              <div ref={gridPhotosRef} style={{ display: 'flex', gap: THUMB_GAP, alignItems: 'flex-start', width: '100%' }}>
                 {colItems.map((col, ci) => (
                   <div key={ci} style={{ display: 'flex', flexDirection: 'column', gap: THUMB_GAP,
-                    ...(isMobile() ? { flex: 1, minWidth: 0 } : { width: THUMB_COL_W, flexShrink: 0 }) }}>
+                    ...(mobile
+                      ? { flex: 1, minWidth: 0 }
+                      : { width: actualColW(colsPhotos), flexShrink: 0 }) }}>
                     {col.map(file => {
                   const imgIndex   = imageFiles.indexOf(file)
                   const isSelected = selected.has(file.name)
