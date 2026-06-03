@@ -406,48 +406,18 @@ export default function GalerieAlbums() {
     }
     return null
   })
-  const THUMB_COL_W = 230 // largeur max des vignettes sur desktop
-  const THUMB_GAP   = 4
-  const MOBILE_BP   = 768
+  const defaultCols = () => {
+    const available = Math.min(window.innerWidth, 1200) - 80
+    return Math.max(2, Math.floor(available / 200))
+  }
 
-  const mobile = window.innerWidth < MOBILE_BP
+  const clampCols = (n) => Math.max(2, Math.min(n, defaultCols() + 2))
 
-  // Largeur réelle du conteneur grille (mesurée par ResizeObserver)
-  const [gridW, setGridW] = useState(0)
+  const [colsDirs,   setColsDirs]   = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || defaultCols()))
+  const [colsPhotos, setColsPhotos] = useState(() => clampCols(parseInt(localStorage.getItem('galerie_grid_cols_photos')) || defaultCols()))
 
   const gridDirsRef   = useRef(null)
   const gridPhotosRef = useRef(null)
-
-  // Nombre de colonnes qui tiennent dans la largeur du conteneur
-  const maxColsForW = (w) => {
-    if (w <= 0) return 2
-    if (w < MOBILE_BP) return Math.max(2, Math.floor((w + THUMB_GAP) / (150 + THUMB_GAP)))
-    return Math.max(2, Math.floor((w + THUMB_GAP) / (THUMB_COL_W + THUMB_GAP)))
-  }
-
-  const [colsDirs,   setColsDirs]   = useState(() => parseInt(localStorage.getItem('galerie_grid_cols_dirs'))   || 2)
-  const [colsPhotos, setColsPhotos] = useState(() => parseInt(localStorage.getItem('galerie_grid_cols_photos')) || 2)
-
-  // Mesure le conteneur et recalcule les colonnes à chaque resize
-  useEffect(() => {
-    const el = gridPhotosRef.current
-    if (!el) return
-    const ro = new ResizeObserver(entries => {
-      const w = entries[0].contentRect.width
-      setGridW(w)
-      const mc = maxColsForW(w)
-      setColsDirs(c   => Math.max(2, Math.min(c || mc, mc)))
-      setColsPhotos(c => Math.max(2, Math.min(c || mc, mc)))
-    })
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  // Largeur exacte d'une colonne pour remplir le conteneur sans marge résiduelle (≤ 230px)
-  const actualColW = (cols) => {
-    if (gridW <= 0 || mobile) return null
-    return Math.floor((gridW - (cols - 1) * THUMB_GAP) / cols)
-  }
 
   function useGridPinch(ref, cols, setCols, maxCols, storageKey) {
     const pinch = useRef({ active: false, startDist: 0, startCols: cols })
@@ -668,7 +638,7 @@ export default function GalerieAlbums() {
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg)' }}>
       <TopNav minimal />
-      <div ref={gridPhotosRef} style={{ padding: '80px var(--gutter) 120px' }}>
+      <div style={{ padding: '80px var(--gutter) 120px' }}>
 
         {/* Fil d'ariane */}
         <nav style={{ marginBottom: 48, display: 'flex', alignItems: 'center', gap: 8,
@@ -814,12 +784,9 @@ export default function GalerieAlbums() {
                 colItems[col].push(file)
               })
               return (
-              <div style={{ display: 'flex', gap: THUMB_GAP, alignItems: 'flex-start', width: '100%' }}>
+              <div ref={gridPhotosRef} style={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
                 {colItems.map((col, ci) => (
-                  <div key={ci} style={{ display: 'flex', flexDirection: 'column', gap: THUMB_GAP,
-                    ...(mobile
-                      ? { flex: 1, minWidth: 0 }
-                      : { width: actualColW(colsPhotos), flexShrink: 0 }) }}>
+                  <div key={ci} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
                     {col.map(file => {
                   const imgIndex   = imageFiles.indexOf(file)
                   const isSelected = selected.has(file.name)
