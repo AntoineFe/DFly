@@ -73,6 +73,7 @@ foreach (scandir($targetDir) as $item) {
         // Image de couverture : première image du sous-dossier (thumbnails), récursif si nécessaire
         $thumbDir = $paths['thumbnails_root'] . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item;
         $cover    = find_cover($thumbDir, $paths['thumbnails_url'] . '/' . ($subPath !== '' ? $subPath . '/' : '') . $item, $IMAGE_EXT);
+        error_log("find_cover: dir=$thumbDir cover=" . ($cover ?? 'null'));
         // Lire meta si présent
         $metaFile = $full . '/_meta.json';
         $meta     = file_exists($metaFile) ? json_decode(file_get_contents($metaFile), true) : null;
