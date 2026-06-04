@@ -382,6 +382,8 @@ function AlbumHeader({ meta }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
+const ALBUMS_BASE = import.meta.env.VITE_APP_MODE === 'galerie' ? '/albums' : '/galerie/albums'
+
 export default function GalerieAlbums() {
   const { authFetch, user, logout, changePassword } = useGalerieAuth()
   const navigate       = useNavigate()
@@ -490,14 +492,14 @@ export default function GalerieAlbums() {
 
   function openDir(name) {
     const newPath = pathParam ? `${pathParam}/${name}` : name
-    navigate(`/galerie/albums${entId ? `/${entId}` : ''}?path=${encodeURIComponent(newPath)}${entQs()}`)
+    navigate(`${ALBUMS_BASE}${entId ? `/${entId}` : ''}?path=${encodeURIComponent(newPath)}${entQs()}`)
   }
 
   function goUp() {
     const parts = pathParam.split('/').filter(Boolean)
     parts.pop()
     const newPath = parts.join('/')
-    navigate(`/galerie/albums${entId ? `/${entId}` : ''}?path=${encodeURIComponent(newPath)}${entQs()}`)
+    navigate(`${ALBUMS_BASE}${entId ? `/${entId}` : ''}?path=${encodeURIComponent(newPath)}${entQs()}`)
   }
 
   function exitSelectMode() {
@@ -609,7 +611,7 @@ export default function GalerieAlbums() {
           />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {filteredEnts.map(e => (
-              <button key={e.id} onClick={() => { setSelectedEnt(e.shortDesc); navigate(`/galerie/albums?i=${e.id}`) }} style={{
+              <button key={e.id} onClick={() => { setSelectedEnt(e.shortDesc); navigate(`${ALBUMS_BASE}?i=${e.id}`) }} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 padding: '20px 0',
                 background: 'none', border: 'none', borderBottom: '1px solid var(--line)',
@@ -646,7 +648,7 @@ export default function GalerieAlbums() {
           fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
           textTransform: 'uppercase', color: 'var(--fg-muted)', flexWrap: 'wrap',
           maxWidth: 'min(1000px, 100%)', margin: '0 auto 48px' }}>
-          <button onClick={() => { setSelectedEnt(null); navigate('/galerie/albums', { replace: true }) }} style={crumbBtn}>
+          <button onClick={() => { setSelectedEnt(null); navigate(ALBUMS_BASE, { replace: true }) }} style={crumbBtn}>
             {multiEnt ? 'Clients' : 'Albums'}
           </button>
           {activeEnt && (
@@ -655,7 +657,7 @@ export default function GalerieAlbums() {
               {pathParam ? (
                 <button onClick={() => {
                   const qs = entQs()
-                  navigate(`/galerie/albums${entId ? `/${entId}` : ''}${qs ? '?' + qs.slice(1) : ''}`)
+                  navigate(`${ALBUMS_BASE}${entId ? `/${entId}` : ''}${qs ? '?' + qs.slice(1) : ''}`)
                 }} style={crumbBtn}>
                   {activeEnt}
                 </button>
@@ -670,7 +672,7 @@ export default function GalerieAlbums() {
               {i < arr.length - 1 ? (
                 <button onClick={() => {
                   const p = arr.slice(0, i + 1).join('/')
-                  navigate(`/galerie/albums?path=${encodeURIComponent(p)}${entQs()}`)
+                  navigate(`${ALBUMS_BASE}?path=${encodeURIComponent(p)}${entQs()}`)
                 }} style={crumbBtn}>{part}</button>
               ) : (
                 <span style={{ color: 'var(--fg)' }}>{part}</span>
@@ -695,7 +697,7 @@ export default function GalerieAlbums() {
                 const isActive = s === current
                 return (
                   <button key={s}
-                    onClick={() => navigate(`/galerie/albums${entId ? `/${entId}` : ''}?path=${encodeURIComponent(sibPath)}${entQs()}`)}
+                    onClick={() => navigate(`${ALBUMS_BASE}${entId ? `/${entId}` : ''}?path=${encodeURIComponent(sibPath)}${entQs()}`)}
                     style={{
                       background: 'none', border: 'none', cursor: 'pointer',
                       fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.22em',

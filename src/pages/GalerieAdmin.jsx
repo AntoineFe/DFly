@@ -1202,7 +1202,7 @@ export default function GalerieAdmin() {
 
   useEffect(() => {
     if (!hasAuth('admin', 'R')) {
-      navigate('/galerie/albums')
+      navigate(import.meta.env.VITE_APP_MODE === 'galerie' ? '/albums' : '/galerie/albums')
       return
     }
     loadEnts()
