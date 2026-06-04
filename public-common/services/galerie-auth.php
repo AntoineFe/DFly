@@ -3,6 +3,11 @@
 // Usage : require 'galerie-auth.php'; -> $session disponible
 
 function galerie_load_config(bool $silent = false) {
+    // Lit le nom de l'appli généré au moment du build
+    $appNameFile = __DIR__ . '/app-name.php';
+    $appName     = file_exists($appNameFile) ? require $appNameFile : 'dfly';
+    $configName  = $appName . '-config.php';
+
     $dirs = [
         __DIR__,
         dirname(__DIR__),
@@ -10,12 +15,9 @@ function galerie_load_config(bool $silent = false) {
         dirname(dirname(dirname(__DIR__))),
         dirname(dirname(dirname(dirname(__DIR__)))),
     ];
-    // photos-config.php en priorité, puis galerie-config.php
-    foreach (['photos-config.php', 'galerie-config.php'] as $name) {
-        foreach ($dirs as $dir) {
-            $p = $dir . '/' . $name;
-            if (file_exists($p)) return require $p;
-        }
+    foreach ($dirs as $dir) {
+        $p = $dir . '/' . $configName;
+        if (file_exists($p)) return require $p;
     }
     if ($silent) return null;
     http_response_code(500);
