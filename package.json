@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:dfly": "vite build --mode dfly",
-    "build:staging": "cross-env VITE_BASE=/dflyclaude/ vite build --mode staging",
+    "build:dflyclaude": "cross-env VITE_BASE=/dflyclaude/ vite build --mode staging",
     "build:photos": "cross-env VITE_BASE=/photos/ vite build --mode photos",
     "preview": "vite preview"
   },
