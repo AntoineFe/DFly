@@ -1280,13 +1280,10 @@ export default function GalerieAdmin() {
               return (
                 <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between',
                   alignItems: 'center', padding: '8px 16px', borderBottom: '1px solid var(--line)' }}>
-                  <div>
-                    <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--fg)' }}>
-                      {u.firstName} {u.lastName}
-                    </div>
-                    <div style={{ fontFamily: 'var(--sans)', fontSize: 11, color: 'var(--fg-muted)', marginTop: 2 }}>
-                      {u.email}
-                    </div>
+                  <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--fg)' }}>
+                    {u.firstName} {u.lastName}
+                    <span style={{ color: 'var(--fg-muted)', margin: '0 6px' }}>·</span>
+                    <span style={{ fontSize: 11, color: 'var(--fg-muted)' }}>{u.email}</span>
                   </div>
                   <button onClick={() => {
                     navigator.clipboard.writeText(link)
