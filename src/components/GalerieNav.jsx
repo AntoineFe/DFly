@@ -9,6 +9,7 @@ const APP_HOME    = import.meta.env.VITE_APP_HOME_URL   || '/'
 const LOGO_URL    = import.meta.env.VITE_APP_LOGO_URL   || ''
 const LOGO_EMOJI  = import.meta.env.VITE_APP_LOGO_EMOJI || ''
 const GALERIE_ROOT = import.meta.env.VITE_APP_MODE === 'galerie' ? '/albums' : '/galerie'
+const ADMIN_PATH   = import.meta.env.VITE_APP_MODE === 'galerie' ? '/admin' : '/galerie/admin'
 
 function AppLogo({ size = 32 }) {
   if (LOGO_URL)   return <img src={LOGO_URL} alt={APP_NAME}
@@ -128,7 +129,7 @@ export default function GalerieNav() {
                       Ma galerie
                     </Link>
                     {user.auths?.admin && (
-                      <Link to="/galerie/admin" onClick={() => setUserMenuOpen(false)}
+                      <Link to={ADMIN_PATH} onClick={() => setUserMenuOpen(false)}
                         style={{ ...btnBase, display: 'block', padding: '12px 20px',
                           borderBottom: '1px solid var(--line)', textDecoration: 'none' }}>
                         Administration
@@ -184,7 +185,7 @@ export default function GalerieNav() {
                   Ma galerie
                 </Link>
                 {user.auths?.admin && (
-                  <Link to="/galerie/admin" onClick={() => setMenuOpen(false)}
+                  <Link to={ADMIN_PATH} onClick={() => setMenuOpen(false)}
                     style={{ ...btnBase, display: 'block', padding: '12px 0',
                       borderBottom: '1px solid var(--line)', textDecoration: 'none' }}>
                     Administration
