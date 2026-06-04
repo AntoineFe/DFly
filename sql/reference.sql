@@ -37,12 +37,12 @@ VALUES (
 
 -- ── Lister les utilisateurs d'une entité ──────────────────────────────────
 
-SELECT HU.id, HU.firstName, HU.lastName, HU.email, HP.name AS profil
+SELECT HU.firstName, HU.lastName, HU.email, HP.shortDesc AS profil, HU.id
 FROM HabilUsers HU
 INNER JOIN HabilProfilUser HPU ON HPU.idUser = HU.id
 INNER JOIN HabilProfil HP ON HP.id = HPU.idProfil
-WHERE HP.idEnt = <id_entreprise>
-ORDER BY HU.lastName;
+WHERE HP.idEnt = 1
+ORDER BY HU.firstName, HU.lastName;
 
 
 -- ── Supprimer un utilisateur d'une entité (sans supprimer le compte) ──────
