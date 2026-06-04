@@ -45,7 +45,18 @@ WHERE HP.idEnt = 1
 ORDER BY HU.firstName, HU.lastName;
 
 
--- ── Supprimer un utilisateur d'une entité (sans supprimer le compte) ──────
+-- ── Supprimer définitivement un utilisateur ───────────────────────────────
+
+-- Vérifier avant de supprimer
+SELECT id, firstName, lastName, email FROM HabilUsers WHERE id = <id_user>;
+
+-- Supprimer dans l'ordre (contraintes de clés étrangères)
+DELETE FROM HabilSessions    WHERE userId  = <id_user>;
+DELETE FROM HabilProfilUser  WHERE idUser  = <id_user>;
+DELETE FROM HabilUsers       WHERE id      = <id_user>;
+
+
+
 
 DELETE FROM HabilProfilUser
 WHERE idUser = <id_user>
