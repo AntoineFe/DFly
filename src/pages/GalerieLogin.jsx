@@ -145,16 +145,23 @@ function ResendBlock() {
 // ── Page login ────────────────────────────────────────────────────────────────
 
 export default function GalerieLogin() {
-  const { login, loginWithCle } = useGalerieAuth()
+  const { login, loginWithCle, user, loading: authLoading } = useGalerieAuth()
   const navigate       = useNavigate()
   const [searchParams] = useSearchParams()
+
+  const isGalerieMode = import.meta.env.VITE_APP_MODE === 'galerie'
+  const albumsDest    = isGalerieMode ? '/albums' : '/galerie/albums'
+
+  // Déjà connecté → rediriger vers albums
+  useEffect(() => {
+    if (!authLoading && user) navigate(albumsDest, { replace: true })
+  }, [user, authLoading])
   const [login_,   setLogin]    = useState('')
   const [password, setPassword] = useState('')
   const [error,    setError]    = useState('')
   const [loading,  setLoading]  = useState(false)
 
   const redirect = searchParams.get('redirect')
-  const isGalerieMode = import.meta.env.VITE_APP_MODE === 'galerie'
   function dest() {
     if (redirect) {
       const decoded = decodeURIComponent(redirect)
