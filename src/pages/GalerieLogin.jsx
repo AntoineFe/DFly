@@ -154,12 +154,13 @@ export default function GalerieLogin() {
   const [loading,  setLoading]  = useState(false)
 
   const redirect = searchParams.get('redirect')
+  const isGalerieMode = import.meta.env.VITE_APP_MODE === 'galerie'
   function dest() {
     if (redirect) {
       const decoded = decodeURIComponent(redirect)
-      if (decoded.startsWith('/galerie')) return decoded
+      if (isGalerieMode || decoded.startsWith('/galerie')) return decoded
     }
-    return '/galerie/albums'
+    return isGalerieMode ? '/albums' : '/galerie/albums'
   }
 
   // Connexion automatique via lien ?cle=

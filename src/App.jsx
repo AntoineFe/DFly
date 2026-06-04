@@ -60,9 +60,11 @@ function ProtectedRoute({ children, adminOnly }) {
   if (loading) return null
   if (!user) {
     const redirect = encodeURIComponent(location.pathname + location.search)
-    return <Navigate to={`/galerie?redirect=${redirect}`} replace />
+    const loginBase = import.meta.env.VITE_APP_MODE === 'galerie' ? '/' : '/galerie'
+    return <Navigate to={`${loginBase}?redirect=${redirect}`} replace />
   }
-  if (adminOnly && !user.auths?.admin?.includes('R')) return <Navigate to="/galerie/albums" replace />
+  const albumsBase = import.meta.env.VITE_APP_MODE === 'galerie' ? '/albums' : '/galerie/albums'
+  if (adminOnly && !user.auths?.admin?.includes('R')) return <Navigate to={albumsBase} replace />
   return children
 }
 
@@ -87,18 +89,24 @@ export default function App() {
       <ScrollToTop />
       <NavLogger />
       <Routes>
-        <Route path="/"               element={<Home          lang={lang} setLang={setLang} />} />
-        <Route path="/mariage"        element={<Mariage       lang={lang} setLang={setLang} />} />
-        <Route path="/mariage/film"   element={<MariageFilm   lang={lang} setLang={setLang} />} />
-        <Route path="/immobilier"     element={<Immobilier    lang={lang} setLang={setLang} />} />
-        <Route path="/communication"  element={<Communication lang={lang} setLang={setLang} />} />
-        <Route path="/spectacle"      element={<Spectacle     lang={lang} setLang={setLang} />} />
-        <Route path="/evenements"     element={<Navigate to="/spectacle" replace />} />
-        <Route path="/famille"        element={<Famille       lang={lang} setLang={setLang} />} />
-        <Route path="/contact"           element={<Contact          lang={lang} setLang={setLang} />} />
-        <Route path="/mentions-legales" element={<MentionsLegales  lang={lang} setLang={setLang} />} />
-        <Route path="/confidentialite"  element={<Confidentialite  lang={lang} setLang={setLang} />} />
-        <Route path="/galerie/*"        element={<GalerieRoutes />} />
+        {import.meta.env.VITE_APP_MODE === 'galerie' ? (
+          <Route path="/*" element={<GalerieRoutes />} />
+        ) : (
+          <>
+            <Route path="/"               element={<Home          lang={lang} setLang={setLang} />} />
+            <Route path="/mariage"        element={<Mariage       lang={lang} setLang={setLang} />} />
+            <Route path="/mariage/film"   element={<MariageFilm   lang={lang} setLang={setLang} />} />
+            <Route path="/immobilier"     element={<Immobilier    lang={lang} setLang={setLang} />} />
+            <Route path="/communication"  element={<Communication lang={lang} setLang={setLang} />} />
+            <Route path="/spectacle"      element={<Spectacle     lang={lang} setLang={setLang} />} />
+            <Route path="/evenements"     element={<Navigate to="/spectacle" replace />} />
+            <Route path="/famille"        element={<Famille       lang={lang} setLang={setLang} />} />
+            <Route path="/contact"           element={<Contact          lang={lang} setLang={setLang} />} />
+            <Route path="/mentions-legales" element={<MentionsLegales  lang={lang} setLang={setLang} />} />
+            <Route path="/confidentialite"  element={<Confidentialite  lang={lang} setLang={setLang} />} />
+            <Route path="/galerie/*"        element={<GalerieRoutes />} />
+          </>
+        )}
       </Routes>
     </GalerieAuthProvider>
   )
