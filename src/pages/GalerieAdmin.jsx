@@ -1279,7 +1279,7 @@ export default function GalerieAdmin() {
               const copied = copiedId === u.id
               return (
                 <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between',
-                  alignItems: 'center', padding: '14px 16px', borderBottom: '1px solid var(--line)' }}>
+                  alignItems: 'center', padding: '8px 16px', borderBottom: '1px solid var(--line)' }}>
                   <div>
                     <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--fg)' }}>
                       {u.firstName} {u.lastName}
