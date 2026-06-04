@@ -4,8 +4,8 @@
 
 function galerie_load_config(bool $silent = false) {
     // Détermine le nom du config selon le dossier de déploiement
-    // public_html/photos/ → photos-config.php, sinon → galerie-config.php
-    $deployPath = str_replace('\\', '/', __DIR__);
+    // Utilise SCRIPT_FILENAME pour éviter les faux chemins via symlinks
+    $deployPath = str_replace('\\', '/', $_SERVER['SCRIPT_FILENAME'] ?? __DIR__);
     $preferred  = strpos($deployPath, '/photos/') !== false ? 'photos-config.php' : 'galerie-config.php';
     $fallback   = $preferred === 'photos-config.php' ? 'galerie-config.php' : 'photos-config.php';
 
