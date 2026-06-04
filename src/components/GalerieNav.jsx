@@ -8,6 +8,7 @@ const APP_TAGLINE = import.meta.env.VITE_APP_TAGLINE    || ''
 const APP_HOME    = import.meta.env.VITE_APP_HOME_URL   || '/'
 const LOGO_URL    = import.meta.env.VITE_APP_LOGO_URL   || ''
 const LOGO_EMOJI  = import.meta.env.VITE_APP_LOGO_EMOJI || ''
+const GALERIE_ROOT = import.meta.env.VITE_APP_MODE === 'galerie' ? '/albums' : '/galerie'
 
 function AppLogo({ size = 32 }) {
   if (LOGO_URL)   return <img src={LOGO_URL} alt={APP_NAME}
@@ -52,7 +53,7 @@ export default function GalerieNav() {
     setUserMenuOpen(false)
     setMenuOpen(false)
     await logout()
-    navigate('/galerie')
+    navigate(GALERIE_ROOT)
   }
 
   const navStyle = {
@@ -85,9 +86,9 @@ export default function GalerieNav() {
         <div style={barStyle}>
 
           {/* ── Logo + nom app ── */}
-          <a href={APP_HOME} style={{
+          <a onClick={e => { e.preventDefault(); navigate(GALERIE_ROOT) }} href={GALERIE_ROOT} style={{
             display: 'flex', alignItems: 'center', gap: 12,
-            color: 'var(--fg)', textDecoration: 'none', flexShrink: 0,
+            color: 'var(--fg)', textDecoration: 'none', flexShrink: 0, cursor: 'pointer',
           }}>
             {LOGO_URL && <AppLogo size={32} />}
             <div>
@@ -106,7 +107,7 @@ export default function GalerieNav() {
           {/* ── Droite : connexion / prénom (desktop) ── */}
           <div className="nav-links" style={{ alignItems: 'center', gap: 0 }}>
             {!user ? (
-              <button onClick={() => navigate('/galerie')} style={btnBase}>
+              <button onClick={() => navigate(GALERIE_ROOT)} style={btnBase}>
                 Connexion
               </button>
             ) : (
@@ -166,7 +167,7 @@ export default function GalerieNav() {
             background: 'var(--bg)',
           }}>
             {!user ? (
-              <button onClick={() => { setMenuOpen(false); navigate('/galerie') }}
+              <button onClick={() => { setMenuOpen(false); navigate(GALERIE_ROOT) }}
                 style={{ ...btnBase, display: 'block', padding: '12px 0',
                   borderBottom: '1px solid var(--line)', width: '100%', textAlign: 'left' }}>
                 Connexion
