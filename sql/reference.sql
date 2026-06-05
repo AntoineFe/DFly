@@ -55,8 +55,19 @@ DELETE FROM HabilSessions    WHERE userId  = <id_user>;
 DELETE FROM HabilProfilUser  WHERE idUser  = <id_user>;
 DELETE FROM HabilUsers       WHERE id      = <id_user>;
 
+-- ── Supprimer les profils orphelins ───────────────────────────────────────
 
+START TRANSACTION;
 
+SELECT * FROM HabilProfilUser
+WHERE idUser NOT IN (SELECT id FROM HabilUsers);
+
+DELETE FROM HabilProfilUser 
+WHERE idUser NOT IN (SELECT id FROM HabilUsers);
+
+SELECT * FROM HabilUsers;
+
+COMMIT;
 
 DELETE FROM HabilProfilUser
 WHERE idUser = <id_user>

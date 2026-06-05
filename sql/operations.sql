@@ -6,4 +6,4 @@
 
 
 -- [2026-06-04] alphoxfr_photos — Ajout colonne ip manquante dans HabilSessions
-ALTER TABLE HabilSessions ADD COLUMN ip VARCHAR(45) DEFAULT NULL;
+ALTER TABLE HabilSessions ADD COLUMN ip VARCHAR(15) DEFAULT NULL;
