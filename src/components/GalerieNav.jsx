@@ -87,7 +87,7 @@ export default function GalerieNav() {
         <div style={barStyle}>
 
           {/* ── Logo + nom app ── */}
-          <a onClick={e => { e.preventDefault(); navigate(GALERIE_ROOT) }} href={GALERIE_ROOT} style={{
+          <a onClick={e => { e.preventDefault(); navigate(import.meta.env.VITE_APP_MODE === 'galerie' ? GALERIE_ROOT : '/') }} href="/" style={{
             display: 'flex', alignItems: 'center', gap: 12,
             color: 'var(--fg)', textDecoration: 'none', flexShrink: 0, cursor: 'pointer',
           }}>
