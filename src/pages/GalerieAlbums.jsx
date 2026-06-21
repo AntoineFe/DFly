@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams, Link } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import GalerieNav from '../components/GalerieNav'
 import { logGalerie } from '../utils/logEvent'
+import useNoIndex from '../hooks/useNoIndex'
 
 // ── Lightbox ──────────────────────────────────────────────────────────────────
 
@@ -421,6 +422,9 @@ export default function GalerieAlbums() {
 
   const gridDirsRef   = useRef(null)
   const gridPhotosRef = useRef(null)
+  
+  // Ne pas indéxer cette page
+  useNoIndex()  
 
   function useGridPinch(ref, cols, setCols, maxCols, storageKey) {
     const pinch = useRef({ active: false, startDist: 0, startCols: cols })

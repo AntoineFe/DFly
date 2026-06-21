@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /photo.php?dir=Galerie
-
+Disallow: /galerie
 Sitemap: https://dfly.fr/sitemap.xml

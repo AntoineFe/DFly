@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
+import useNoIndex from '../hooks/useNoIndex'
 
 const BASE        = import.meta.env.BASE_URL
 const APP_NAME    = import.meta.env.VITE_APP_NAME       || 'Galerie'
@@ -79,7 +80,7 @@ function ResendBlock() {
         <div style={{ textAlign: 'center' }}>
           <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
             fontWeight: 300, lineHeight: 1.6, marginBottom: 16 }}>
-            Pas d'Identifiant ?
+            Pas d'identifiant ?
           </p>
           <button onClick={() => setOpen(true)} style={{
             background: 'none', border: '1px solid var(--line)',
@@ -151,6 +152,9 @@ export default function GalerieLogin() {
 
   const isGalerieMode = import.meta.env.VITE_APP_MODE === 'galerie'
   const albumsDest    = isGalerieMode ? '/albums' : '/galerie/albums'
+  
+  // Ne pas indéxer cette page
+  useNoIndex()
 
   // Déjà connecté → rediriger vers albums
   useEffect(() => {
