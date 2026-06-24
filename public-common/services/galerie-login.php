@@ -62,7 +62,8 @@ $eSql = "SELECT DISTINCT E.id, E.shortDesc, E.raiSoc
          FROM Entreprise E
          INNER JOIN HabilProfil HP ON HP.idEnt = E.id
          INNER JOIN HabilProfilUser HPU ON HPU.idProfil = HP.id
-         WHERE HPU.idUser = $uid";
+         WHERE HPU.idUser = $uid
+         ORDER BY E.id DESC";
 $eRes = mysqli_query($link, $eSql);
 $ents = [];
 while ($e = mysqli_fetch_assoc($eRes)) { $ents[] = $e; }
