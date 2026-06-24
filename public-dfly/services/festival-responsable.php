@@ -11,6 +11,7 @@ $body    = json_decode(file_get_contents('php://input'), true) ?? [];
 $harmonie = trim($body['harmonie'] ?? '');
 $nom      = trim($body['nom']     ?? '');
 $email    = trim($body['email']   ?? '');
+$tel      = trim($body['tel']     ?? '');
 $adresse  = trim($body['adresse'] ?? '');
 
 if (!$harmonie || !in_array($harmonie, FESTIVAL_HARMONIES)) {
@@ -24,7 +25,7 @@ list($link) = festival_db();
 $row  = festival_get_row($link, $harmonie);
 $data = $row['data'] ?? ['responsable' => null, 'commandes' => [], 'total' => 0.0];
 
-$data['responsable'] = ['nom' => $nom, 'email' => $email, 'adresse' => $adresse];
+$data['responsable'] = ['nom' => $nom, 'email' => $email, 'tel' => $tel, 'adresse' => $adresse];
 festival_save_row($link, $harmonie, $data, $row ? $row['statut_global'] : 'ouvert');
 mysqli_close($link);
 

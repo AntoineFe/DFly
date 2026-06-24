@@ -137,10 +137,10 @@ function QtyInput({ value, onChange }) {
   )
 }
 
-// ── Bloc Responsable ──────────────────────────────────────────────────────────
+// ── Bloc Contact livraison ────────────────────────────────────────────────────
 function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
   const [ui, setUi]     = useState('closed') // closed | form | editing
-  const [form, setForm] = useState({ nom: '', email: '', adresse: '' })
+  const [form, setForm] = useState({ nom: '', email: '', tel: '', adresse: '' })
   const [busy, setBusy] = useState(false)
   const [err,  setErr]  = useState('')
 
@@ -149,7 +149,9 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
 
   useEffect(() => {
     setUi('closed')
-    setForm(resp ? { nom: resp.nom, email: resp.email, adresse: resp.adresse } : { nom: '', email: '', adresse: '' })
+    setForm(resp
+      ? { nom: resp.nom, email: resp.email, tel: resp.tel || '', adresse: resp.adresse }
+      : { nom: '', email: '', tel: '', adresse: '' })
     setErr('')
   }, [harmonie])
 
@@ -172,18 +174,19 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
   return (
     <div style={{ marginTop: 60, borderTop: '2px solid var(--line)', paddingTop: 32 }}>
       <div style={{ fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
-                    color: 'var(--fg-muted)', marginBottom: 16 }}>Espace responsable d'orchestre</div>
+                    color: 'var(--fg-muted)', marginBottom: 16 }}>Contact pour la livraison groupée</div>
 
       {ui === 'closed' && !resp && (
         <button style={st.btnSecondary} onClick={() => setUi('form')}>
-          Je prends en charge la commande groupée de mon orchestre
+          Je prends en charge la livraison groupée de mon orchestre
         </button>
       )}
 
       {ui === 'closed' && resp && (
         <div>
           <div style={{ fontSize: 13, color: 'var(--fg)', marginBottom: 4 }}>
-            Responsable : <strong>{resp.nom}</strong> — {resp.email}
+            Contact : <strong>{resp.nom}</strong> — {resp.email}
+            {resp.tel && <span> — {resp.tel}</span>}
           </div>
           <div style={{ fontSize: 13, color: 'var(--fg-muted)', marginBottom: 12 }}>{resp.adresse}</div>
           <button style={st.btnSecondary} onClick={() => setUi('editing')}>Modifier</button>
@@ -199,6 +202,10 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
           <div>
             <label style={st.label}>Email</label>
             <input style={st.input} type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} required />
+          </div>
+          <div>
+            <label style={st.label}>Téléphone <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0 }}>(facultatif)</span></label>
+            <input style={st.input} type="tel" value={form.tel} onChange={e => setForm(f => ({ ...f, tel: e.target.value }))} />
           </div>
           <div>
             <label style={st.label}>Adresse de livraison</label>

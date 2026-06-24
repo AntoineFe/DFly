@@ -111,17 +111,22 @@ function festival_save_row($link, $harmonie, $data, $statut) {
     ");
 }
 
-function festival_smtp_send($to, $subject, $body, $replyTo = '') {
+function festival_smtp_send($to, $subject, $body, $replyTo = '', $cc = '') {
     $path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-smtp-config.php';
     if (!file_exists($path))
         $path = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-smtp-config.php';
     if (!file_exists($path))
         return ['ok' => false, 'error' => 'dfly-smtp-config.php introuvable'];
     $smtp = require $path;
-    return festival_smtp_raw($smtp, $to, $subject, $body, $replyTo);
+    return festival_smtp_raw($smtp, $to, $subject, $body, $replyTo, $cc);
 }
 
-function festival_smtp_raw($cfg, $to, $subject, $body, $replyTo = '') {
+function festival_cc() {
+    $cfg = galerie_load_config(true);
+    return $cfg['smtp_cc'] ?? $cfg['smtp_from'] ?? '';
+}
+
+function festival_smtp_raw($cfg, $to, $subject, $body, $replyTo = '', $cc = '') {
     $ctx  = stream_context_create(['ssl' => ['verify_peer' => true, 'verify_peer_name' => true]]);
     $sock = @stream_socket_client("ssl://{$cfg['host']}:{$cfg['port']}", $errno, $errstr, 15, STREAM_CLIENT_CONNECT, $ctx);
     if (!$sock) {
@@ -144,10 +149,12 @@ function festival_smtp_raw($cfg, $to, $subject, $body, $replyTo = '') {
     if (strpos($auth, '235') === false) { fclose($sock); return ['ok' => false, 'error' => 'Auth SMTP échouée']; }
     $cmd("MAIL FROM:<{$cfg['from']}>");
     $cmd("RCPT TO:<{$to}>");
+    if ($cc) $cmd("RCPT TO:<{$cc}>");
     $cmd("DATA");
     $enc = "=?UTF-8?B?" . base64_encode($subject) . "?=";
     $msg  = "From: " . FESTIVAL_FROM_NAME . " <{$cfg['from']}>\r\n";
     $msg .= "To: {$to}\r\n";
+    if ($cc) $msg .= "Cc: {$cc}\r\n";
     if ($replyTo) $msg .= "Reply-To: {$replyTo}\r\n";
     $msg .= "Subject: {$enc}\r\n";
     $msg .= "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: base64\r\n\r\n";

@@ -105,7 +105,7 @@ if ($method === 'POST') {
     $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
     $body_email .= "À bientôt,\nDFly";
 
-    festival_smtp_send($email, "Votre commande — " . FESTIVAL_NOM, $body_email);
+    festival_smtp_send($email, "Votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
 
     exit(json_encode(['ok' => true, 'numero' => $numero, 'sous_total' => $sous_total, 'port' => $port, 'total' => $total]));
 }

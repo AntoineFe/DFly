@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $row = festival_get_row($link, $harmonie);
     mysqli_close($link);
     if (!$row) { http_response_code(404); exit(json_encode(['ok' => false, 'error' => 'Aucune donnée pour cet orchestre'])); }
-    if (!$row['data']['responsable']) { http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Aucun responsable désigné'])); }
+    if (!$row['data']['responsable']) { http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Aucun contact de livraison désigné'])); }
 
     $commandes_en_cours = array_values(array_filter($row['data']['commandes'], function($c) { return $c['statut'] === 'en_cours'; }));
     $total = array_sum(array_column($commandes_en_cours, 'total'));
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     list($link) = festival_db();
     $row = festival_get_row($link, $harmonie);
     if (!$row || !$row['data']['responsable']) {
-        mysqli_close($link); http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Responsable manquant']));
+        mysqli_close($link); http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Contact de livraison manquant']));
     }
     if ($row['statut_global'] !== 'ouvert') {
         mysqli_close($link); http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Commande déjà lancée']));
@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body_email .= "Pour toute difficulté : https://dfly.fr/contact\n\n";
     $body_email .= "À bientôt,\nDFly";
 
-    festival_smtp_send($resp['email'], "Commande groupée " . FESTIVAL_NOM . " — récapitulatif et virement", $body_email);
+    festival_smtp_send($resp['email'], "Commande groupée " . FESTIVAL_NOM . " — récapitulatif et virement", $body_email, '', festival_cc());
 
     exit(json_encode(['ok' => true]));
 }
