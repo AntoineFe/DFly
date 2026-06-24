@@ -93,14 +93,9 @@ if ($method === 'POST') {
     $body_email .= "Votre commande pour le " . FESTIVAL_NOM . " a bien été enregistrée.\n\n";
     $body_email .= "Numéro de commande : {$numero}\n\n";
     $body_email .= "Récapitulatif :\n{$recap}\n";
-    $body_email .= "Sous-total produits : " . number_format($sous_total, 2, ',', ' ') . " €\n";
-    if ($port['posters'] > 0)
-        $body_email .= "Frais de port posters (Saal) : " . number_format($port['posters'], 2, ',', ' ') . " €\n";
-    else if ($sous_total > 0)
-        $body_email .= "Frais de port posters : offerts (commande > 10 €)\n";
-    if ($port['usb'] > 0)
-        $body_email .= "Frais de port clé USB : " . number_format($port['usb'], 2, ',', ' ') . " €\n";
-    $body_email .= "Total : " . number_format($total, 2, ',', ' ') . " €\n\n";
+    $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+    $body_email .= "Les frais de port seront calculés et répartis entre les membres de votre orchestre au moment du lancement de la commande groupée.\n";
+    $body_email .= "(Posters : offerts si commande > 10 € ; sinon 6 €. Clés USB : 3 € par lot de 2.)\n\n";
     $body_email .= "Votre commande sera expédiée dès qu'un responsable de votre orchestre se sera désigné et aura effectué le virement groupé.\n\n";
     $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
     $body_email .= "À bientôt,\nDFly";
