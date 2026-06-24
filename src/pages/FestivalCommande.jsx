@@ -428,14 +428,13 @@ export default function FestivalCommande() {
     const d = await r.json()
     setBusy(false)
     if (d.ok) {
-      if (action === 'reactiver') {
-        // Recharger la commande pour afficher le détail à jour
+      if (action === 'reactiver' || action === 'annuler') {
         const r2 = await fetch(API(`festival-order.php?numero=${encodeURIComponent(modifyOrder.commande.numero)}`))
         const d2 = await r2.json()
         if (d2.ok) { setModifyOrder(d2); setProduits(d2.commande.produits) }
-        setReactivated(true)
+        if (action === 'reactiver') setReactivated(true)
       } else {
-        setModifyDone(action === 'annuler' ? 'annulee' : 'modifiee')
+        setModifyDone('modifiee')
       }
     }
     else setErr(d.error || 'Une erreur est survenue')
@@ -507,7 +506,7 @@ export default function FestivalCommande() {
 
       {numeroParam && modifyDone && (
         <div style={st.success}>
-          {modifyDone === 'annulee' ? 'Votre commande a bien été annulée.' : 'Vos modifications ont bien été enregistrées.'}
+          Vos modifications ont bien été enregistrées.
         </div>
       )}
 
