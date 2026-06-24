@@ -66,7 +66,8 @@ $eSql = "SELECT DISTINCT E.id, E.shortDesc, E.raiSoc
          FROM Entreprise E
          INNER JOIN HabilProfil HP ON HP.idEnt = E.id
          INNER JOIN HabilProfilUser HPU ON HPU.idProfil = HP.id
-         WHERE HPU.idUser = $uid";
+         WHERE HPU.idUser = $uid
+         ORDER BY E.id DESC";
 $eRes = mysqli_query($link, $eSql);
 if (!$eRes) {
     file_put_contents($logFile, date('Y-m-d H:i:s') . ' | SELECT entreprises FAIL | uid=' . $uid . ' | error=' . mysqli_error($link) . PHP_EOL, FILE_APPEND | LOCK_EX);
