@@ -95,7 +95,7 @@ if ($method === 'POST') {
     $body_email .= "Récapitulatif :\n{$recap}\n";
     $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
     $body_email .= "Les frais de port seront calculés et répartis entre les membres de votre orchestre au moment du lancement de la commande groupée.\n";
-    $body_email .= "(Posters : offerts si commande > 10 € ; sinon 6 €. Clés USB : 3 € par lot de 2.)\n\n";
+    $body_email .= "(Posters : port offert si la commande groupée de posters dépasse 10 € ; sinon 6 €. Clés USB : 3 € par lot de 2.)\n\n";
     $body_email .= "Votre commande sera expédiée dès qu'un responsable de votre orchestre se sera désigné et aura effectué le virement groupé.\n\n";
     $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
     $body_email .= "À bientôt,\nDFly";
@@ -178,7 +178,7 @@ if ($method === 'PUT') {
         $body_email .= "Nouveau récapitulatif :\n{$recap}\n";
         $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
         $body_email .= "Les frais de port seront calculés et répartis entre les membres de votre orchestre au moment du lancement de la commande groupée.\n";
-        $body_email .= "(Posters : offerts si commande > 10 € ; sinon 6 €. Clés USB : 3 € par lot de 2.)\n\n";
+        $body_email .= "(Posters : port offert si la commande groupée de posters dépasse 10 € ; sinon 6 €. Clés USB : 3 € par lot de 2.)\n\n";
         $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
         $body_email .= "À bientôt,\nDFly";
         festival_smtp_send($email_dest, "Commande modifiée — " . FESTIVAL_NOM, $body_email, '', festival_cc());

@@ -76,7 +76,7 @@ function FraisPort({ produits }) {
       </div>
       <div style={{ fontSize: 11.5, color: 'var(--fg-muted)', marginTop: 8, fontStyle: 'italic', lineHeight: 1.5 }}>
         Les frais de port seront calculés et répartis entre les musiciens au moment du lancement de la commande groupée.
-        Posters : expédition Saal offerte si le total dépasse 10 €, sinon 6 € répartis entre les commandeurs.
+        Posters : port offert si la commande groupée de posters dépasse 10 €, sinon 6 € répartis entre les commandeurs.
         {hasUsb && ' Clé USB : expédition La Poste, 3 € par lot de 2 clés, répartis entre les commandeurs.'}
       </div>
     </div>
