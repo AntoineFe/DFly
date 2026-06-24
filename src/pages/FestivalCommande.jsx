@@ -12,11 +12,33 @@ const PRODUITS = [
 ]
 
 const HARMONIES = [
-  'TODO_HARMONIE_01',
-  'TODO_HARMONIE_02',
-  'TODO_HARMONIE_03',
-  'TODO_HARMONIE_04',
-  'TODO_HARMONIE_05',
+  '01_Passy',
+  '02_Cluses - Harmonie',
+  '03_Marignier',
+  '04_Megeve',
+  '05_Mieussy',
+  '06_La Roche-sur-Foron',
+  '07_Sixt Fer-Cheval',
+  '08_Marnaz',
+  '09_Bonne et Reignier-Esery',
+  '10_Saint-Gervais',
+  '11_L Echo du Jalouvre',
+  '12_Magland',
+  '13_Samons',
+  '14_Cruseilles Le Chable',
+  '15_Les Houches',
+  '16_Taninges',
+  '17_Cluses - Batterie Fanfare',
+  '18_Viuz-en-Sallaz',
+  '19_Sionzier',
+  '20_Chatillon-sur-Cluses et Saint-Sigismond',
+  '21_Bonneville - Ayze - Vougy',
+  '22_Ville-la-Grand',
+  '23_Saint-Pierre-en-Faucigny',
+  '24_Mont-Saxonnex et Gaillard',
+  '25_Sallanches',
+  '26_Fillinges',
+  '27_Saint-Jeoire',
 ]
 
 const st = {
