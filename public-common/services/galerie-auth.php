@@ -26,13 +26,13 @@ function galerie_load_config(bool $silent = false) {
 
 function galerie_db() {
     $cfg  = galerie_load_config();
-    // Support both key formats: db_host/db_user/... and host/user/...
-    $host = $cfg['db_host'] ?? $cfg['host'];
-    $user = $cfg['db_user'] ?? $cfg['user'];
-    $pass = $cfg['db_pass'] ?? $cfg['pass'];
-    $name = $cfg['db_name'] ?? $cfg['dbname'];
-    $port = $cfg['db_port'] ?? $cfg['port'] ?? 3306;
-    $link = @mysqli_connect($host, $user, $pass, $name, $port);
+    $link = @mysqli_connect(
+        $cfg['db_host'],
+        $cfg['db_user'],
+        $cfg['db_pass'],
+        $cfg['db_name'],
+        $cfg['db_port'] ?? 3306
+    );
     if (!$link) {
         http_response_code(500);
         exit(json_encode(['ok' => false, 'error' => 'Connexion base de données impossible']));
