@@ -730,9 +730,17 @@ export default function GalerieAlbums() {
           }} className="select-bar-desktop">
             {!selectMode ? (
               <>
-                <button onClick={() => downloadAll('web')} disabled={!!dlBusy} style={selBtn}>
-                  {dlBusy === 'all-web' ? 'Préparation…' : 'Tout télécharger'}
-                </button>
+                {(() => {
+                  const allImages = (data?.files || []).filter(f => f.type === 'image')
+                  return allImages.length <= 100
+                    ? <button onClick={() => downloadAll('web')} disabled={!!dlBusy} style={selBtn}>
+                        {dlBusy === 'all-web' ? 'Préparation…' : 'Tout télécharger'}
+                      </button>
+                    : <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic',
+                        fontSize: 13, color: 'var(--fg-muted)' }}>
+                        Trop de photos — utilisez la sélection
+                      </span>
+                })()}
                 <button onClick={() => setSelectMode(true)} disabled={!!dlBusy} style={{ ...selBtn, borderColor: 'var(--line)', color: 'var(--fg-muted)' }}>
                   Sélectionner
                 </button>
