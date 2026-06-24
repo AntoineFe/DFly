@@ -114,7 +114,8 @@ if ($method === 'POST') {
 if ($method === 'PUT') {
     $body   = json_decode(file_get_contents('php://input'), true) ?? [];
     $numero = trim($body['numero'] ?? '');
-    $annuler = !empty($body['annuler']);
+    $annuler   = !empty($body['annuler']);
+    $reactiver = !empty($body['reactiver']);
 
     if (!preg_match('/^FESMUS-\d{4}-\d{4}$/', $numero)) {
         http_response_code(400);
@@ -137,6 +138,8 @@ if ($method === 'PUT') {
     $data = $targetRow['data'];
     if ($annuler) {
         $data['commandes'][$targetIdx]['statut'] = 'annulee';
+    } else if ($reactiver) {
+        $data['commandes'][$targetIdx]['statut'] = 'en_cours';
     } else {
         $produits = $body['produits'] ?? [];
         $produitsSanitized = [];

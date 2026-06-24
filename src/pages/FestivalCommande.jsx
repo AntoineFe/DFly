@@ -414,11 +414,11 @@ export default function FestivalCommande() {
     else setErr(d.error || 'Une erreur est survenue')
   }
 
-  async function submitModify(annuler = false) {
+  async function submitModify(action = 'modifier') {
     setBusy(true); setErr('')
-    const body = annuler
-      ? { numero: modifyOrder.commande.numero, annuler: true }
-      : { numero: modifyOrder.commande.numero, produits }
+    const body = action === 'annuler'   ? { numero: modifyOrder.commande.numero, annuler: true }
+               : action === 'reactiver' ? { numero: modifyOrder.commande.numero, reactiver: true }
+               :                          { numero: modifyOrder.commande.numero, produits }
     const r = await fetch(API('festival-order.php'), {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -426,7 +426,7 @@ export default function FestivalCommande() {
     })
     const d = await r.json()
     setBusy(false)
-    if (d.ok) setModifyDone(annuler ? 'annulee' : 'modifiee')
+    if (d.ok) setModifyDone(action === 'annuler' ? 'annulee' : action === 'reactiver' ? 'reactivee' : 'modifiee')
     else setErr(d.error || 'Une erreur est survenue')
   }
 
@@ -448,6 +448,16 @@ export default function FestivalCommande() {
           </div>
           {commandeLancee ? (
             <div style={st.success}>La commande de votre orchestre a été lancée, vous ne pouvez plus modifier votre commande.</div>
+          ) : modifyOrder.commande.statut === 'annulee' ? (
+            <>
+              <div style={{ ...st.success, background: '#fff3cd', marginBottom: 16 }}>
+                Cette commande a été annulée.
+              </div>
+              {err && <div style={st.error}>{err}</div>}
+              <button style={st.btn} onClick={() => submitModify('reactiver')} disabled={busy}>
+                {busy ? 'Réactivation…' : 'Réactiver ma commande'}
+              </button>
+            </>
           ) : (
             <>
               <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 8 }}>
@@ -468,11 +478,11 @@ export default function FestivalCommande() {
               <FraisPort produits={produits} />
               {err && <div style={st.error}>{err}</div>}
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                <button style={st.btn} onClick={() => submitModify(false)} disabled={busy}>
+                <button style={st.btn} onClick={() => submitModify('modifier')} disabled={busy}>
                   {busy ? 'Enregistrement…' : 'Enregistrer les modifications'}
                 </button>
                 <button style={{ ...st.btnSecondary, color: '#c0392b', borderColor: '#c0392b' }}
-                  onClick={() => { if (window.confirm('Annuler définitivement votre commande ?')) submitModify(true) }} disabled={busy}>
+                  onClick={() => { if (window.confirm('Annuler définitivement votre commande ?')) submitModify('annuler') }} disabled={busy}>
                   Annuler ma commande
                 </button>
               </div>
@@ -483,9 +493,9 @@ export default function FestivalCommande() {
 
       {numeroParam && modifyDone && (
         <div style={st.success}>
-          {modifyDone === 'annulee'
-            ? 'Votre commande a bien été annulée.'
-            : 'Vos modifications ont bien été enregistrées.'}
+          {modifyDone === 'annulee'   ? 'Votre commande a bien été annulée.'
+         : modifyDone === 'reactivee' ? 'Votre commande a bien été réactivée.'
+         :                              'Vos modifications ont bien été enregistrées.'}
         </div>
       )}
 
