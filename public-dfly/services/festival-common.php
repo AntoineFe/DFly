@@ -55,7 +55,7 @@ function festival_db() {
     return galerie_db();
 }
 
-function festival_calcul_sous_total(array $produits): float {
+function festival_calcul_sous_total($produits) {
     $total = 0.0;
     foreach (FESTIVAL_PRIX as $key => $prix) {
         $total += (int)($produits[$key] ?? 0) * $prix;
@@ -63,9 +63,7 @@ function festival_calcul_sous_total(array $produits): float {
     return round($total, 2);
 }
 
-// Frais de port : posters expédiés par Saal (gratuit si sous-total posters > 10 €, sinon 6 €)
-//                clé USB expédiée séparément (3 € si au moins 1 clé)
-function festival_calcul_port(array $produits): array {
+function festival_calcul_port($produits) {
     $posters_keys = ['poster_musicien_30x20', 'poster_chef_60x40', 'poster_orchestre_90x60'];
     $sous_total_posters = 0.0;
     foreach ($posters_keys as $key) {
@@ -81,19 +79,19 @@ function festival_calcul_port(array $produits): array {
     ];
 }
 
-function festival_calcul_total(array $produits): float {
+function festival_calcul_total($produits) {
     $port = festival_calcul_port($produits);
     return round(festival_calcul_sous_total($produits) + $port['total'], 2);
 }
 
-function festival_numero(array $link_cfg): string {
+function festival_numero($link_cfg) {
     list($link) = $link_cfg;
     mysqli_query($link, "INSERT INTO festival_sequences (created_at) VALUES (NOW())");
     $id = mysqli_insert_id($link);
     return 'FESMUS-' . FESTIVAL_ANNEE . '-' . str_pad($id, 4, '0', STR_PAD_LEFT);
 }
 
-function festival_get_row($link, string $harmonie): ?array {
+function festival_get_row($link, $harmonie) {
     $h   = mysqli_real_escape_string($link, $harmonie);
     $res = mysqli_query($link, "SELECT * FROM festival_commandes_groupees WHERE harmonie = '$h'");
     if (!$res || mysqli_num_rows($res) === 0) return null;
@@ -102,7 +100,7 @@ function festival_get_row($link, string $harmonie): ?array {
     return $row;
 }
 
-function festival_save_row($link, string $harmonie, array $data, string $statut): void {
+function festival_save_row($link, $harmonie, $data, $statut) {
     $h    = mysqli_real_escape_string($link, $harmonie);
     $json = mysqli_real_escape_string($link, json_encode($data, JSON_UNESCAPED_UNICODE));
     $s    = mysqli_real_escape_string($link, $statut);
@@ -113,7 +111,7 @@ function festival_save_row($link, string $harmonie, array $data, string $statut)
     ");
 }
 
-function festival_smtp_send(string $to, string $subject, string $body, string $replyTo = ''): array {
+function festival_smtp_send($to, $subject, $body, $replyTo = '') {
     $path = dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-smtp-config.php';
     if (!file_exists($path))
         $path = dirname(dirname($_SERVER['DOCUMENT_ROOT'])) . '/dfly-smtp-config.php';
@@ -123,7 +121,7 @@ function festival_smtp_send(string $to, string $subject, string $body, string $r
     return festival_smtp_raw($smtp, $to, $subject, $body, $replyTo);
 }
 
-function festival_smtp_raw(array $cfg, string $to, string $subject, string $body, string $replyTo = ''): array {
+function festival_smtp_raw($cfg, $to, $subject, $body, $replyTo = '') {
     $ctx  = stream_context_create(['ssl' => ['verify_peer' => true, 'verify_peer_name' => true]]);
     $sock = @stream_socket_client("ssl://{$cfg['host']}:{$cfg['port']}", $errno, $errstr, 15, STREAM_CLIENT_CONNECT, $ctx);
     if (!$sock) {
@@ -137,7 +135,7 @@ function festival_smtp_raw(array $cfg, string $to, string $subject, string $body
         while ($line = fgets($sock, 512)) { $out .= $line; if (isset($line[3]) && $line[3] === ' ') break; }
         return $out;
     };
-    $cmd = function(string $c) use ($sock, $read) { fputs($sock, $c . "\r\n"); return $read(); };
+    $cmd = function($c) use ($sock, $read) { fputs($sock, $c . "\r\n"); return $read(); };
     $read();
     $cmd("EHLO {$cfg['host']}");
     $cmd("AUTH LOGIN");
@@ -160,12 +158,12 @@ function festival_smtp_raw(array $cfg, string $to, string $subject, string $body
     return ['ok' => strpos($res, '250') !== false];
 }
 
-function festival_format_recap(array $commande): string {
+function festival_format_recap($commande) {
     $lines = [];
     foreach (FESTIVAL_PRODUITS as $key => $label) {
         $qty = (int)($commande['produits'][$key] ?? 0);
         if ($qty > 0) {
-            $prix  = FESTIVAL_PRIX[$key];
+            $prix    = FESTIVAL_PRIX[$key];
             $lines[] = "  {$label} × {$qty} = " . number_format($qty * $prix, 2, ',', ' ') . " €";
         }
     }
