@@ -262,7 +262,7 @@ function BlocLancement({ harmonie, responsable }) {
       </div>
 
       <div style={{ fontSize: 13, marginBottom: 16 }}>
-        {preview.commandes.map(cmd => (
+        {calcGroupPort(preview.commandes).map(cmd => (
           <div key={cmd.numero} style={{ marginBottom: 10, paddingBottom: 10, borderBottom: '1px solid var(--line)' }}>
             <div style={{ fontWeight: 600 }}>{cmd.nom}</div>
             {Object.entries(cmd.produits).filter(([, v]) => v > 0).map(([k, v]) => (
@@ -270,10 +270,14 @@ function BlocLancement({ harmonie, responsable }) {
                 {PRODUITS.find(p => p.key === k)?.label} × {v}
               </div>
             ))}
+            {cmd.sharePosters > 0 && <div style={{ color: 'var(--fg-muted)', fontSize: 12 }}>Port posters (part) : {cmd.sharePosters.toFixed(2)} €</div>}
+            {cmd.sharePosters === 0 && POSTERS_KEYS.some(k => (cmd.produits[k] || 0) > 0) && <div style={{ color: 'var(--fg-muted)', fontSize: 12 }}>Port posters : offert</div>}
+            {cmd.shareUsb > 0 && <div style={{ color: 'var(--fg-muted)', fontSize: 12 }}>Port clé USB (part) : {cmd.shareUsb.toFixed(2)} €</div>}
+            <div style={{ fontSize: 12, marginTop: 4 }}>Total : {cmd.total.toFixed(2).replace('.', ',')} €</div>
           </div>
         ))}
         <div style={{ fontWeight: 600, marginTop: 8 }}>
-          Total : {preview.total.toFixed(2).replace('.', ',')} € (hors frais de port)
+          Total général : {calcGroupPort(preview.commandes).reduce((s, c) => s + c.total, 0).toFixed(2).replace('.', ',')} €
         </div>
       </div>
 
@@ -293,7 +297,27 @@ function BlocLancement({ harmonie, responsable }) {
   )
 }
 
-// ── Page principale ───────────────────────────────────────────────────────────
+function calcGroupPort(commandes) {
+  const sousPosters = commandes.reduce((s, cmd) =>
+    s + POSTERS_KEYS.reduce((ss, k) => ss + (cmd.produits[k] || 0) * (PRODUITS.find(p => p.key === k)?.prix || 0), 0), 0)
+  const totalUsb = commandes.reduce((s, cmd) => s + (cmd.produits['cle_usb'] || 0), 0)
+  const portPosters = sousPosters > 0 && sousPosters <= 10 ? 6.00 : 0.00
+  const portUsb     = totalUsb > 0 ? Math.ceil(totalUsb / 2) * 3 : 0.00
+
+  const nbPosterOrderers = commandes.filter(cmd => POSTERS_KEYS.some(k => (cmd.produits[k] || 0) > 0)).length
+  const nbUsbOrderers    = commandes.filter(cmd => (cmd.produits['cle_usb'] || 0) > 0).length
+
+  return commandes.map(cmd => {
+    const hasPosters = POSTERS_KEYS.some(k => (cmd.produits[k] || 0) > 0)
+    const hasUsb     = (cmd.produits['cle_usb'] || 0) > 0
+    const sharePosters = hasPosters && nbPosterOrderers > 0 ? Math.round(portPosters / nbPosterOrderers * 100) / 100 : 0
+    const shareUsb     = hasUsb     && nbUsbOrderers    > 0 ? Math.round(portUsb    / nbUsbOrderers    * 100) / 100 : 0
+    const sous = PRODUITS.reduce((s, p) => s + (cmd.produits[p.key] || 0) * p.prix, 0)
+    return { ...cmd, sharePosters, shareUsb, total: Math.round((sous + sharePosters + shareUsb) * 100) / 100 }
+  })
+}
+
+
 function FestivalHeader() {
   const navigate = useNavigate()
   return (
