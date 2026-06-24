@@ -175,7 +175,7 @@ function festival_note_port($produits) {
     $parts = ["Les frais de port seront calculés et répartis entre les musiciens au moment du lancement de la commande groupée."];
     if ($has_posters) $parts[] = "Posters : port offert si la commande groupée de posters dépasse 10 €, sinon 6 € répartis entre les commandeurs.";
     if ($has_usb)     $parts[] = "Clé USB : expédition La Poste, 3 € par lot de 2 clés, répartis entre les commandeurs.";
-    return implode(" ", $parts);
+    return implode("\n", $parts);
 }
 
 function festival_format_recap($commande) {
