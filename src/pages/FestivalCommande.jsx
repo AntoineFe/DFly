@@ -377,7 +377,7 @@ export default function FestivalCommande() {
     else setErr(d.error || 'Une erreur est survenue')
   }
 
-  const commandeLancee = harmonieData?.statut_global !== 'ouvert'
+  const commandeLancee = harmonieData != null && harmonieData.statut_global !== 'ouvert'
 
   return (
     <div style={st.page}>
