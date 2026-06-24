@@ -365,7 +365,7 @@ function AlbumHeader({ meta }) {
         </p>
       )}
       {videoHtml && (
-        <div style={{ marginBottom: 24 }}
+        <div style={{ marginBottom: 24, fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.7, color: 'var(--fg)' }}
           dangerouslySetInnerHTML={{ __html: videoHtml }} />
       )}
       {printUrl && (
