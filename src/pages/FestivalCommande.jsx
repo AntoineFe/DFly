@@ -59,46 +59,26 @@ function calcPort(produits) {
 }
 
 function FraisPort({ produits }) {
-  const { posters, usb } = calcPort(produits)
-  const sousPosters = POSTERS_KEYS.reduce((s, k) => {
-    const p = PRODUITS.find(x => x.key === k)
-    return s + (produits[k] || 0) * (p?.prix || 0)
-  }, 0)
-  const sousUsb = (produits['cle_usb'] || 0) * 25
-  const total   = PRODUITS.reduce((s, p) => s + (produits[p.key] || 0) * p.prix, 0)
-  const totalAvecPort = total + posters + usb
+  const total = PRODUITS.reduce((s, p) => s + (produits[p.key] || 0) * p.prix, 0)
+  const hasUsb = (produits['cle_usb'] || 0) > 0
 
   if (total === 0) return null
 
-  const rowSt = { display: 'flex', justifyContent: 'space-between', fontSize: 13,
-                  color: 'var(--fg-muted)', padding: '6px 0' }
   const totalSt = { display: 'flex', justifyContent: 'space-between', fontSize: 14,
                     fontWeight: 600, color: 'var(--fg)', padding: '10px 0',
                     borderTop: '1px solid var(--fg)', marginTop: 4 }
 
   return (
     <div style={{ marginTop: 16 }}>
-      {sousPosters > 0 && (
-        <div style={rowSt}>
-          <span>Port posters (Saal)</span>
-          <span>{posters === 0 ? 'Offert' : `${posters.toFixed(2)} €`}</span>
-        </div>
-      )}
-      {sousUsb > 0 && (
-        <div style={rowSt}>
-          <span>Port clé USB (La Poste)</span>
-          <span>{usb.toFixed(2)} €</span>
-        </div>
-      )}
       <div style={totalSt}>
-        <span>Total estimé</span>
-        <span>{totalAvecPort.toFixed(2)} €</span>
+        <span>Total hors frais de port</span>
+        <span>{total.toFixed(2)} €</span>
       </div>
-      {usb > 0 && (
-        <div style={{ fontSize: 11.5, color: 'var(--fg-muted)', marginTop: 6, fontStyle: 'italic' }}>
-          * Port clé USB estimé à 3 € — ajustement possible selon poids réel.
-        </div>
-      )}
+      <div style={{ fontSize: 11.5, color: 'var(--fg-muted)', marginTop: 8, fontStyle: 'italic', lineHeight: 1.5 }}>
+        Les frais de port seront calculés et répartis entre les musiciens au moment du lancement de la commande groupée.
+        Posters : expédition Saal offerte si le total dépasse 10 €, sinon 6 € répartis entre les commandeurs.
+        {hasUsb && ' Clé USB : expédition La Poste, ceil(n/2) × 3 € répartis entre les commandeurs.'}
+      </div>
     </div>
   )
 }
