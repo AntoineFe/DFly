@@ -53,7 +53,9 @@ if ($method === 'POST') {
     foreach (array_keys(FESTIVAL_PRIX) as $key) {
         $produitsSanitized[$key] = max(0, (int)($produits[$key] ?? 0));
     }
-    $total = festival_calcul_total($produitsSanitized);
+    $sous_total = festival_calcul_sous_total($produitsSanitized);
+    $port       = festival_calcul_port($produitsSanitized);
+    $total      = round($sous_total + $port['total'], 2);
 
     $db_info = festival_db();
     [$link]  = $db_info;
@@ -91,14 +93,21 @@ if ($method === 'POST') {
     $body_email .= "Votre commande pour le " . FESTIVAL_NOM . " a bien été enregistrée.\n\n";
     $body_email .= "Numéro de commande : {$numero}\n\n";
     $body_email .= "Récapitulatif :\n{$recap}\n";
-    $body_email .= "Total : " . number_format($total, 2, ',', ' ') . " € (hors frais de port)\n\n";
+    $body_email .= "Sous-total produits : " . number_format($sous_total, 2, ',', ' ') . " €\n";
+    if ($port['posters'] > 0)
+        $body_email .= "Frais de port posters (Saal) : " . number_format($port['posters'], 2, ',', ' ') . " €\n";
+    else if ($sous_total > 0)
+        $body_email .= "Frais de port posters : offerts (commande > 10 €)\n";
+    if ($port['usb'] > 0)
+        $body_email .= "Frais de port clé USB : " . number_format($port['usb'], 2, ',', ' ') . " €\n";
+    $body_email .= "Total : " . number_format($total, 2, ',', ' ') . " €\n\n";
     $body_email .= "Votre commande sera expédiée dès qu'un responsable de votre orchestre se sera désigné et aura effectué le virement groupé.\n\n";
     $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
     $body_email .= "À bientôt,\nDFly";
 
     festival_smtp_send($email, "Votre commande — " . FESTIVAL_NOM, $body_email);
 
-    exit(json_encode(['ok' => true, 'numero' => $numero, 'total' => $total]));
+    exit(json_encode(['ok' => true, 'numero' => $numero, 'sous_total' => $sous_total, 'port' => $port, 'total' => $total]));
 }
 
 // ── PUT : modifie ou annule une commande ──────────────────────────────────

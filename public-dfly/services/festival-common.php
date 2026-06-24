@@ -55,12 +55,34 @@ function festival_db() {
     return galerie_db();
 }
 
-function festival_calcul_total(array $produits): float {
+function festival_calcul_sous_total(array $produits): float {
     $total = 0.0;
     foreach (FESTIVAL_PRIX as $key => $prix) {
         $total += (int)($produits[$key] ?? 0) * $prix;
     }
     return round($total, 2);
+}
+
+// Frais de port : posters expédiés par Saal (gratuit si sous-total posters > 10 €, sinon 6 €)
+//                clé USB expédiée séparément (3 € si au moins 1 clé)
+function festival_calcul_port(array $produits): array {
+    $posters_keys = ['poster_musicien_30x20', 'poster_chef_60x40', 'poster_orchestre_90x60'];
+    $sous_total_posters = 0.0;
+    foreach ($posters_keys as $key) {
+        $sous_total_posters += (int)($produits[$key] ?? 0) * FESTIVAL_PRIX[$key];
+    }
+    $port_posters = ($sous_total_posters > 0 && $sous_total_posters <= 10.0) ? 6.00 : 0.00;
+    $port_usb     = ((int)($produits['cle_usb'] ?? 0) > 0) ? 3.00 : 0.00;
+    return [
+        'posters' => $port_posters,
+        'usb'     => $port_usb,
+        'total'   => round($port_posters + $port_usb, 2),
+    ];
+}
+
+function festival_calcul_total(array $produits): float {
+    $port = festival_calcul_port($produits);
+    return round(festival_calcul_sous_total($produits) + $port['total'], 2);
 }
 
 function festival_numero(array $link_cfg): string {

@@ -41,6 +41,63 @@ const HARMONIES = [
   '27_Saint-Jeoire',
 ]
 
+const POSTERS_KEYS = ['poster_musicien_30x20', 'poster_chef_60x40', 'poster_orchestre_90x60']
+
+function calcPort(produits) {
+  const sousPosters = POSTERS_KEYS.reduce((s, k) => {
+    const p = PRODUITS.find(x => x.key === k)
+    return s + (produits[k] || 0) * (p?.prix || 0)
+  }, 0)
+  const portPosters = sousPosters > 0 && sousPosters <= 10 ? 6.00 : 0.00
+  const portUsb     = (produits['cle_usb'] || 0) > 0 ? 3.00 : 0.00
+  return { posters: portPosters, usb: portUsb }
+}
+
+function FraisPort({ produits }) {
+  const { posters, usb } = calcPort(produits)
+  const sousPosters = POSTERS_KEYS.reduce((s, k) => {
+    const p = PRODUITS.find(x => x.key === k)
+    return s + (produits[k] || 0) * (p?.prix || 0)
+  }, 0)
+  const sousUsb = (produits['cle_usb'] || 0) * 25
+  const total   = PRODUITS.reduce((s, p) => s + (produits[p.key] || 0) * p.prix, 0)
+  const totalAvecPort = total + posters + usb
+
+  if (total === 0) return null
+
+  const rowSt = { display: 'flex', justifyContent: 'space-between', fontSize: 13,
+                  color: 'var(--fg-muted)', padding: '6px 0' }
+  const totalSt = { display: 'flex', justifyContent: 'space-between', fontSize: 14,
+                    fontWeight: 600, color: 'var(--fg)', padding: '10px 0',
+                    borderTop: '1px solid var(--fg)', marginTop: 4 }
+
+  return (
+    <div style={{ marginTop: 16 }}>
+      {sousPosters > 0 && (
+        <div style={rowSt}>
+          <span>Port posters (Saal)</span>
+          <span>{posters === 0 ? 'Offert' : `${posters.toFixed(2)} €`}</span>
+        </div>
+      )}
+      {sousUsb > 0 && (
+        <div style={rowSt}>
+          <span>Port clé USB (La Poste)</span>
+          <span>{usb.toFixed(2)} €</span>
+        </div>
+      )}
+      <div style={totalSt}>
+        <span>Total estimé</span>
+        <span>{totalAvecPort.toFixed(2)} €</span>
+      </div>
+      {usb > 0 && (
+        <div style={{ fontSize: 11.5, color: 'var(--fg-muted)', marginTop: 6, fontStyle: 'italic' }}>
+          * Port clé USB estimé à 3 € — ajustement possible selon poids réel.
+        </div>
+      )}
+    </div>
+  )
+}
+
 const st = {
   page: { maxWidth: 680, margin: '0 auto', padding: '40px 20px 80px', fontFamily: 'var(--sans)' },
   h1:   { fontFamily: 'var(--serif)', fontSize: 26, fontWeight: 400, marginBottom: 6, color: 'var(--fg)' },
@@ -337,18 +394,22 @@ export default function FestivalCommande() {
             <div style={st.success}>La commande de votre orchestre a été lancée, vous ne pouvez plus modifier votre commande.</div>
           ) : (
             <>
-              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 24 }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 8 }}>
                 <tbody>
                   {PRODUITS.map(p => (
                     <tr key={p.key} style={{ borderBottom: '1px solid var(--line)' }}>
                       <td style={{ padding: '12px 0', fontSize: 14 }}>{p.label}</td>
-                      <td style={{ padding: '12px 0', textAlign: 'right' }}>
+                      <td style={{ padding: '12px 0', textAlign: 'right', fontSize: 13, color: 'var(--fg-muted)', paddingRight: 16 }}>
+                        {p.prix.toFixed(2)} €
+                      </td>
+                      <td style={{ padding: '12px 0' }}>
                         <QtyInput value={produits[p.key] || 0} onChange={v => setProduits(q => ({ ...q, [p.key]: v }))} />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              <FraisPort produits={produits} />
               {err && <div style={st.error}>{err}</div>}
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
                 <button style={st.btn} onClick={() => submitModify(false)} disabled={busy}>
@@ -403,7 +464,7 @@ export default function FestivalCommande() {
               <div style={st.section}>
                 <div style={{ fontSize: 10.5, letterSpacing: '0.25em', textTransform: 'uppercase',
                               color: 'var(--fg-muted)', marginBottom: 16 }}>
-                  Produits — prix hors frais de port
+                  Produits
                 </div>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <tbody>
@@ -411,7 +472,7 @@ export default function FestivalCommande() {
                       <tr key={p.key} style={{ borderBottom: '1px solid var(--line)' }}>
                         <td style={{ padding: '12px 0', fontSize: 14 }}>{p.label}</td>
                         <td style={{ padding: '12px 0', textAlign: 'right', fontSize: 13, color: 'var(--fg-muted)', paddingRight: 16 }}>
-                          {p.prix != null ? `${p.prix} €` : '—'}
+                          {p.prix != null ? `${p.prix.toFixed(2)} €` : '—'}
                         </td>
                         <td style={{ padding: '12px 0' }}>
                           <QtyInput value={produits[p.key] || 0} onChange={v => setProduits(q => ({ ...q, [p.key]: v }))} />
@@ -420,6 +481,7 @@ export default function FestivalCommande() {
                     ))}
                   </tbody>
                 </table>
+                <FraisPort produits={produits} />
               </div>
 
               {err && <div style={st.error}>{err}</div>}
