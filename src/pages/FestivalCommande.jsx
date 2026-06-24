@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 
-const BASE = import.meta.env.BASE_URL
-const API  = path => `${BASE}services/${path}`
+const BASE      = import.meta.env.BASE_URL
+const API       = path => `${BASE}services/${path}`
+const APP_NAME  = import.meta.env.VITE_APP_NAME     || 'DFly'
+const APP_TAGLINE = import.meta.env.VITE_APP_TAGLINE || ''
+const APP_HOME  = import.meta.env.VITE_APP_HOME_URL || '/'
+const LOGO_URL  = import.meta.env.VITE_APP_LOGO_URL || ''
 
 const PRODUITS = [
   { key: 'poster_musicien_30x20',  label: 'Poster Musicien 20×30 cm',                             prix: 4.00 },
@@ -303,6 +307,44 @@ function BlocLancement({ harmonie, responsable }) {
 }
 
 // ── Page principale ───────────────────────────────────────────────────────────
+function FestivalHeader() {
+  const navigate = useNavigate()
+  return (
+    <header style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+      background: 'var(--bg)', borderBottom: '1px solid var(--line)',
+    }}>
+      <div style={{
+        padding: '0 var(--gutter)', height: 57,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      }}>
+        <a href={APP_HOME} style={{
+          display: 'flex', alignItems: 'center', gap: 12,
+          color: 'var(--fg)', textDecoration: 'none',
+        }}>
+          {LOGO_URL && <img src={LOGO_URL} alt={APP_NAME} style={{ width: 32, height: 32, objectFit: 'contain' }} />}
+          <div>
+            <div style={{ fontFamily: 'var(--serif-display)', fontSize: 22, lineHeight: 1 }}>{APP_NAME}</div>
+            {APP_TAGLINE && (
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 9, letterSpacing: '0.22em',
+                textTransform: 'uppercase', color: 'var(--fg-muted)', marginTop: 3 }}>
+                {APP_TAGLINE}
+              </div>
+            )}
+          </div>
+        </a>
+        <button onClick={() => navigate('/galerie')} style={{
+          background: 'none', border: 'none', cursor: 'pointer',
+          fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.24em',
+          textTransform: 'uppercase', color: 'var(--fg)', padding: 0,
+        }}>
+          Galerie
+        </button>
+      </div>
+    </header>
+  )
+}
+
 export default function FestivalCommande() {
   const [searchParams] = useSearchParams()
   const numeroParam    = searchParams.get('numero')
@@ -380,7 +422,9 @@ export default function FestivalCommande() {
   const commandeLancee = harmonieData != null && harmonieData.statut_global !== 'ouvert'
 
   return (
-    <div style={st.page}>
+    <>
+    <FestivalHeader />
+    <div style={{ ...st.page, paddingTop: 97 }}>
       <h1 style={st.h1}>190e Festival des Musiques du Faucigny</h1>
       <div style={st.sub}>Commande de produits souvenir — prix hors frais de port</div>
 
@@ -517,5 +561,6 @@ export default function FestivalCommande() {
         />
       )}
     </div>
+    </>
   )
 }
