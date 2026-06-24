@@ -49,7 +49,8 @@ function calcPort(produits) {
     return s + (produits[k] || 0) * (p?.prix || 0)
   }, 0)
   const portPosters = sousPosters > 0 && sousPosters <= 10 ? 6.00 : 0.00
-  const portUsb     = (produits['cle_usb'] || 0) > 0 ? 3.00 : 0.00
+  const qtyUsb      = produits['cle_usb'] || 0
+  const portUsb     = qtyUsb > 0 ? Math.ceil(qtyUsb / 2) * 3 : 0
   return { posters: portPosters, usb: portUsb }
 }
 

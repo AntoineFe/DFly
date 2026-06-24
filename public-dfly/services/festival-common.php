@@ -72,7 +72,8 @@ function festival_calcul_port(array $produits): array {
         $sous_total_posters += (int)($produits[$key] ?? 0) * FESTIVAL_PRIX[$key];
     }
     $port_posters = ($sous_total_posters > 0 && $sous_total_posters <= 10.0) ? 6.00 : 0.00;
-    $port_usb     = ((int)($produits['cle_usb'] ?? 0) > 0) ? 3.00 : 0.00;
+    $qty_usb      = (int)($produits['cle_usb'] ?? 0);
+    $port_usb     = $qty_usb > 0 ? ceil($qty_usb / 2) * 3.00 : 0.00;
     return [
         'posters' => $port_posters,
         'usb'     => $port_usb,
