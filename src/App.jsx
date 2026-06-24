@@ -11,6 +11,8 @@ import Contact from './pages/Contact'
 import GalerieLogin from './pages/GalerieLogin'
 import GalerieAlbums from './pages/GalerieAlbums'
 import GalerieAdmin from './pages/GalerieAdmin'
+import FestivalCommande from './pages/FestivalCommande'
+import FestivalAdmin from './pages/FestivalAdmin'
 import MentionsLegales from './pages/MentionsLegales'
 import Confidentialite from './pages/Confidentialite'
 import { GalerieAuthProvider, useGalerieAuth } from './context/GalerieAuth'
@@ -75,6 +77,7 @@ function GalerieRoutes() {
       <Route path="albums"    element={<ProtectedRoute><GalerieAlbums /></ProtectedRoute>} />
       <Route path="albums/:entId" element={<ProtectedRoute><GalerieAlbums /></ProtectedRoute>} />
       <Route path="admin"  element={<ProtectedRoute adminOnly><GalerieAdmin /></ProtectedRoute>} />
+      <Route path="admin/festival" element={<ProtectedRoute adminOnly><FestivalAdmin /></ProtectedRoute>} />
       <Route index         element={<GalerieLogin />} />
     </Routes>
   )
@@ -105,6 +108,7 @@ export default function App() {
             <Route path="/mentions-legales" element={<MentionsLegales  lang={lang} setLang={setLang} />} />
             <Route path="/confidentialite"  element={<Confidentialite  lang={lang} setLang={setLang} />} />
             <Route path="/galerie/*"        element={<GalerieRoutes />} />
+            <Route path="/commande-festival-faucigny-2026" element={<FestivalCommande />} />
           </>
         )}
       </Routes>

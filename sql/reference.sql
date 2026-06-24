@@ -4,6 +4,23 @@
 -- ============================================================
 
 
+-- ── Création tables Festival Faucigny 2026 ────────────────────────────────────
+
+CREATE TABLE festival_commandes_groupees (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  harmonie      VARCHAR(255) NOT NULL UNIQUE,
+  statut_global ENUM('ouvert','virement_attendu','cloture') DEFAULT 'ouvert',
+  data          JSON NOT NULL DEFAULT ('{"responsable":null,"commandes":[],"total":0}'),
+  created_at    DATETIME DEFAULT NOW(),
+  updated_at    DATETIME DEFAULT NOW() ON UPDATE NOW()
+);
+
+CREATE TABLE festival_sequences (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  created_at DATETIME DEFAULT NOW()
+);
+
+
 -- ── Créer une nouvelle entité et lier un utilisateur existant ──────────────
 
 -- 1. Créer l'entreprise
