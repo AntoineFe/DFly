@@ -9,9 +9,9 @@ const APP_HOME  = import.meta.env.VITE_APP_HOME_URL || '/'
 const LOGO_URL  = import.meta.env.VITE_APP_LOGO_URL || ''
 
 const PRODUITS = [
-  { key: 'poster_musicien_30x20',  label: 'Poster Musicien 20×30 cm',                             prix: 4.00 },
-  { key: 'poster_chef_60x40',      label: 'Poster Chef 40×60 cm',                                 prix: 12.50 },
-  { key: 'poster_orchestre_90x60', label: 'Poster Orchestre 60×90 cm',                            prix: 31.00 },
+  { key: 'poster_musicien_30x20',  label: 'Poster S - 20×30 cm',                             prix: 4.00 },
+  { key: 'poster_chef_60x40',      label: 'Poster M - 40×60 cm',                             prix: 12.50 },
+  { key: 'poster_orchestre_90x60', label: 'Poster L - 60×90 cm',                             prix: 31.00 },
   { key: 'cle_usb',                label: 'Clé USB collector coffret bois gravé logo festival',   prix: 25.00 },
 ]
 
