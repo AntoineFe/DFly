@@ -1243,7 +1243,8 @@ export default function GalerieAdmin() {
 
         {/* Raccourci Festival */}
         <div style={{ marginTop: 48, paddingTop: 24, borderTop: '1px solid var(--line)' }}>
-          <a href="/galerie/admin/festival" style={{ fontFamily: 'var(--sans)', fontSize: 11,
+          <a onClick={e => { e.preventDefault(); navigate('/galerie/admin/festival') }}
+            href="/galerie/admin/festival" style={{ fontFamily: 'var(--sans)', fontSize: 11,
             letterSpacing: '0.2em', textTransform: 'uppercase', color: 'var(--fg)',
             textDecoration: 'none', borderBottom: '1px solid var(--line)', paddingBottom: 2 }}>
             190e Festival des Musiques du Faucigny →
