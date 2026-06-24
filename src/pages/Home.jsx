@@ -102,6 +102,16 @@ export default function Home({ lang, setLang }) {
                 'We adapt our approach to each situation: present when the image needs to be composed, and discreet to capture emotions as they happen. \nBeing a pair means we can adapt, give a different view.'
               )}
             </div>
+			<div style={{ textAlign: 'center', marginTop: 36 }}>
+				<a href="#temoignages" style={{
+				  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em',
+				  textTransform: 'uppercase', color: 'var(--fg)',
+				  borderBottom: '1px solid var(--fg)', paddingBottom: 8,
+				  display: 'inline-block',
+				}}>
+				  {t('Lisez ce qu\'ils dissent de nous', 'Read what they say about us')} &nbsp;→
+				</a>
+			</div>			
           </div>
         </div>
       </section>
@@ -302,7 +312,7 @@ export default function Home({ lang, setLang }) {
       </section>
 
       {/* ── TÉMOIGNAGE ── */}
-      <section style={{ padding: 'calc(var(--section-y) * 0.9) 0', background: 'var(--bg)' }}>
+      <section id="temoignages" style={{ padding: 'calc(var(--section-y) * 0.9) 0', background: 'var(--bg)' }}>
         <div className="container">
           <SectionLabel num="VII" label={t('Ce qu\'ils en disent', 'What they say')} align="center" />
           <div className="grid-3 testimonials-grid" style={{ marginTop: 56 }}>
@@ -318,10 +328,10 @@ export default function Home({ lang, setLang }) {
                 who: 'Pascale B.', where: t('Mariage · Octobre 2024', 'Wedding · October 2024'),
               },
               {
-                fr: 'Le choix des points de vue m\'a vraiment bluffé. Je recommande sans l\'ombre d\'une hésitation.',
-                en: 'The choice of viewpoints truly amazed me. I recommend without the slightest hesitation.',
-                who: 'Gérard B.', where: t('Immobilier · 2020', 'Real estate · 2020'),
-              },
+                fr: 'Le résultat est tout simplement magnifique. En regardant la vidéo, toutes les émotions sont revenues d\'un coup, nous avons eu les larmes aux yeux tant les images sont belles et authentiques.',
+                en: 'The result is simply magnificent. Watching the video, all the emotions came rushing back — we had tears in our eyes, the images are so beautiful and authentic.',
+                who: 'Jessica T.', where: t('Gender Reveal · Juin 2026', 'Gender reveal · June 2026'),
+              },			  
             ].map((q, i) => (
               <div key={i} style={{ borderTop: '1px solid var(--line)', paddingTop: 32 }}>
                 <div style={{ fontFamily: 'var(--serif-display)', fontSize: 48, fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 0.5, marginBottom: 24 }}>"</div>

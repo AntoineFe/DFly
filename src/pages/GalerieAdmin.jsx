@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import GalerieNav from '../components/GalerieNav'
+import useNoIndex from '../hooks/useNoIndex'
 
 const BASE = import.meta.env.BASE_URL
 const API  = path => `${BASE}services/${path}`
@@ -1182,6 +1183,9 @@ export default function GalerieAdmin() {
     if (location.hash === '#clients') return 'clients'
     return 'galerie'
   })
+
+  // Ne pas indéxer cette page
+  useNoIndex()
 
   function switchTab(key) {
     setActiveTab(key)

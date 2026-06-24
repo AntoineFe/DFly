@@ -54,12 +54,12 @@ VALUES (
 
 -- ── Lister les utilisateurs d'une entité ──────────────────────────────────
 
-SELECT HU.id, HU.firstName, HU.lastName, HU.email, HP.name AS profil
+SELECT HU.firstName, HU.lastName, HU.email, HP.shortDesc AS profil, HU.id
 FROM HabilUsers HU
 INNER JOIN HabilProfilUser HPU ON HPU.idUser = HU.id
 INNER JOIN HabilProfil HP ON HP.id = HPU.idProfil
-WHERE HP.idEnt = <id_entreprise>
-ORDER BY HU.lastName;
+WHERE HP.idEnt = 1
+ORDER BY HU.firstName, HU.lastName;
 
 
 -- ── Supprimer définitivement un utilisateur ───────────────────────────────
@@ -72,8 +72,19 @@ DELETE FROM HabilSessions    WHERE userId  = <id_user>;
 DELETE FROM HabilProfilUser  WHERE idUser  = <id_user>;
 DELETE FROM HabilUsers       WHERE id      = <id_user>;
 
+-- ── Supprimer les profils orphelins ───────────────────────────────────────
 
+START TRANSACTION;
 
+SELECT * FROM HabilProfilUser
+WHERE idUser NOT IN (SELECT id FROM HabilUsers);
+
+DELETE FROM HabilProfilUser 
+WHERE idUser NOT IN (SELECT id FROM HabilUsers);
+
+SELECT * FROM HabilUsers;
+
+COMMIT;
 
 DELETE FROM HabilProfilUser
 WHERE idUser = <id_user>
