@@ -1,9 +1,9 @@
 <?php
 // ── Prix des produits (HT, hors frais de port) ───────────────────────────────
 const FESTIVAL_PRIX = [
-    'poster_musicien_30x20'  => 0.00,  // TODO_PRIX_30x20
-    'poster_chef_60x40'      => 0.00,  // TODO_PRIX_60x40
-    'poster_orchestre_90x60' => 0.00,  // TODO_PRIX_90x60
+    'poster_musicien_30x20'  => 4.00,
+    'poster_chef_60x40'      => 12.50,
+    'poster_orchestre_90x60' => 31.00,
     'cle_usb'                => 25.00,
 ];
 

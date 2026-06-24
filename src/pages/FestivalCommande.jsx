@@ -5,10 +5,10 @@ const BASE = import.meta.env.BASE_URL
 const API  = path => `${BASE}services/${path}`
 
 const PRODUITS = [
-  { key: 'poster_musicien_30x20',  label: 'Poster Musicien 30×20 cm' },
-  { key: 'poster_chef_60x40',      label: 'Poster Chef 60×40 cm' },
-  { key: 'poster_orchestre_90x60', label: 'Poster Orchestre 90×60 cm' },
-  { key: 'cle_usb',                label: 'Clé USB collector coffret bois gravé logo festival', prix: 25 },
+  { key: 'poster_musicien_30x20',  label: 'Poster Musicien 20×30 cm',                             prix: 4.00 },
+  { key: 'poster_chef_60x40',      label: 'Poster Chef 40×60 cm',                                 prix: 12.50 },
+  { key: 'poster_orchestre_90x60', label: 'Poster Orchestre 60×90 cm',                            prix: 31.00 },
+  { key: 'cle_usb',                label: 'Clé USB collector coffret bois gravé logo festival',   prix: 25.00 },
 ]
 
 const HARMONIES = [
