@@ -58,7 +58,20 @@ export default function FestivalAdmin() {
     const r = await authFetch('festival-close.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ id, action: 'cloture' }),
+    })
+    const d = await r.json()
+    setBusy(false)
+    if (d.ok) load()
+  }
+
+  async function reopen(id) {
+    if (!window.confirm('Rouvrir les commandes pour cette harmonie ?')) return
+    setBusy(id)
+    const r = await authFetch('festival-close.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, action: 'reopen' }),
     })
     const d = await r.json()
     setBusy(false)
@@ -132,6 +145,12 @@ export default function FestivalAdmin() {
                       {h.statut_global !== 'cloture' && (
                         <button style={st.btn} onClick={() => cloture(h.id)} disabled={busy === h.id}>
                           {busy === h.id ? '…' : 'Clôturer'}
+                        </button>
+                      )}
+                      {h.statut_global !== 'ouvert' && (
+                        <button style={{ ...st.btn, background: 'none', color: 'var(--fg)', border: '1px solid var(--line)' }}
+                          onClick={() => reopen(h.id)} disabled={busy === h.id}>
+                          {busy === h.id ? '…' : 'Rouvrir'}
                         </button>
                       )}
                     </div>
