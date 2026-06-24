@@ -70,12 +70,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body_email .= "Récapitulatif des commandes :\n";
     $body_email .= str_repeat('─', 50) . "\n";
     foreach ($commandes_en_cours as $cmd) {
+        $port = festival_calcul_port($cmd['produits']);
+        $sous = festival_calcul_sous_total($cmd['produits']);
         $body_email .= "\n{$cmd['nom']} ({$cmd['email']}) :\n";
         $body_email .= festival_format_recap($cmd) . "\n";
-        $body_email .= "  Sous-total : " . number_format($cmd['total'], 2, ',', ' ') . " €\n";
+        if ($port['posters'] > 0)
+            $body_email .= "  Port posters (Saal) : " . number_format($port['posters'], 2, ',', ' ') . " €\n";
+        elseif ($sous > 0)
+            $body_email .= "  Port posters : offert (commande > 10 €)\n";
+        if ($port['usb'] > 0)
+            $body_email .= "  Port clé USB (La Poste, estimé) : " . number_format($port['usb'], 2, ',', ' ') . " €\n";
+        $body_email .= "  Total : " . number_format($cmd['total'], 2, ',', ' ') . " €\n";
     }
     $body_email .= "\n" . str_repeat('─', 50) . "\n";
-    $body_email .= "TOTAL HORS FRAIS DE PORT : " . number_format($total, 2, ',', ' ') . " €\n\n";
+    $body_email .= "TOTAL GÉNÉRAL (frais de port inclus) : " . number_format($total, 2, ',', ' ') . " €\n\n";
     $body_email .= "Merci d'effectuer le virement à l'ordre de DFly :\n";
     $body_email .= "IBAN : " . FESTIVAL_IBAN . "\n";
     $body_email .= "Référence à indiquer : {$ref_virement}\n\n";
