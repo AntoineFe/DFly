@@ -165,6 +165,21 @@ function festival_smtp_raw($cfg, $to, $subject, $body, $replyTo = '', $cc = '') 
     return ['ok' => strpos($res, '250') !== false];
 }
 
+function festival_note_port($produits) {
+    $posters_keys = ['poster_musicien_30x20', 'poster_chef_60x40', 'poster_orchestre_90x60'];
+    $has_posters = false;
+    foreach ($posters_keys as $k) {
+        if ((int)($produits[$k] ?? 0) > 0) { $has_posters = true; break; }
+    }
+    $has_usb = (int)($produits['cle_usb'] ?? 0) > 0;
+    $lines = ["Les frais de port seront calculés et répartis entre les membres de votre orchestre au moment du lancement de la commande groupée."];
+    $notes = [];
+    if ($has_posters) $notes[] = "Posters : port offert si la commande groupée de posters dépasse 10 € ; sinon 6 €";
+    if ($has_usb)     $notes[] = "Clés USB : 3 € par lot de 2";
+    if ($notes) $lines[] = "(" . implode('. ', $notes) . ".)";
+    return implode("\n", $lines);
+}
+
 function festival_format_recap($commande) {
     $lines = [];
     foreach (FESTIVAL_PRODUITS as $key => $label) {
