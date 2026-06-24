@@ -17,7 +17,8 @@ function copyDir(src, dest) {
 // Copie public-common + public-{mode} dans dist/ après le build
 // et génère services/app-name.php avec le nom de l'appli
 function mergePublic(mode) {
-  const appName = mode === 'photos' ? 'photos' : (mode === 'staging' ? 'dflyclaude' : 'dfly')
+  const appName  = mode === 'photos' ? 'photos' : 'dfly'
+  const confName = mode === 'staging' ? 'dflyclaude' : appName
   const specific = mode === 'photos' ? 'public-photos' : 'public-dfly'
   return {
     name: 'merge-public',
@@ -28,7 +29,7 @@ function mergePublic(mode) {
       // Écrit le nom de l'appli pour que PHP sache quel config charger
       fs.writeFileSync(
         path.join(dist, 'services', 'app-name.php'),
-        `<?php return '${appName}';\n`
+        `<?php return '${confName}';\n`
       )
     },
   }
