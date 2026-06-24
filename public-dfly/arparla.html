@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arparla — Harpe & Violon</title>
+<meta property="og:title"       content="Arparla — Harpe & Violon">
+<meta property="og:description" content="Harpe & violon — un voyage hors du temps. Scanne, écoute, découvre.">
+<meta property="og:image"       content="https://helansoft.fr/arparla/arparla_og.jpg">
+<meta property="og:url"         content="https://helansoft.fr/arparla.html">
+<meta property="og:type"        content="website">
+<meta name="twitter:card"       content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%; height: 100%;
+    background: #0D0B09;
+    overflow: hidden;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .slideshow { position: fixed; inset: 0; }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.8s ease-in-out;
+  }
+
+  /* Ken Burns subtil sur les 4 premières photos */
+  .slide.animated {
+    animation: kenburns 8s ease-in-out infinite alternate;
+  }
+
+  @keyframes kenburns {
+    from { transform: scale(1.00) translate(0%, 0%); }
+    to   { transform: scale(1.04) translate(-1%, -0.5%); }
+  }
+
+  /* Dernière photo : pas d'animation, stable */
+  .slide.last { animation: none; transform: none; }
+
+  .slide.active { opacity: 1; }
+
+  .slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.2) 0%,
+      rgba(0,0,0,0.05) 40%,
+      rgba(0,0,0,0.55) 100%
+    );
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 3rem;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .presenter {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.9);
+    margin-bottom: 0.5rem;
+  }
+
+  .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 14vw, 5rem);
+    font-weight: 300;
+    color: #fff;
+    line-height: 1;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+
+  .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(0.9rem, 3.5vw, 1.2rem);
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    margin-top: 0.4rem;
+    letter-spacing: 0.06em;
+  }
+
+  .rule {
+    width: 40px; height: 1px;
+    background: rgba(201,168,76,0.6);
+    margin: 1.2rem auto;
+  }
+
+  #startScreen {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: #0D0B09;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    cursor: pointer;
+    transition: opacity 1s ease;
+  }
+
+  #startScreen.hidden { opacity: 0; pointer-events: none; }
+
+  .start-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 16vw, 5.5rem);
+    font-weight: 300;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .start-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+  }
+
+  .play-ring {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.5);
+    display: flex; align-items: center; justify-content: center;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+
+  .play-ring svg { width: 32px; height: 32px; fill: #C9A84C; margin-left: 5px; }
+
+  .start-hint {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(201,168,76,0.7);
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.2); }
+    50%       { box-shadow: 0 0 0 16px rgba(201,168,76,0); }
+  }
+
+  .progress-bar {
+    position: fixed;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 0%;
+    background: rgba(201,168,76,0.7);
+    z-index: 15;
+    transition: width 0.5s linear;
+  }
+</style>
+</head>
+<body>
+
+<div id="startScreen" onclick="startShow()">
+  <p class="presenter">Amanos présente</p>
+  <h1 class="start-title">Arparla</h1>
+  <p class="start-sub">Harpe &amp; violon — un voyage hors du temps</p>
+  <div class="play-ring">
+    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+  </div>
+  <p class="start-hint">Appuie pour écouter</p>
+</div>
+
+<div class="slideshow" id="slideshow">
+  <div class="slide animated" style="background-image: url('arparla/D_-1.jpg')"></div>
+  <div class="slide animated" style="background-image: url('arparla/DandM_1.jpg')"></div>
+  <div class="slide animated" style="background-image: url('arparla/Maria-1.jpg')"></div>
+  <div class="slide animated" style="background-image: url('arparla/Maria_1.JPG')"></div>
+  <div class="slide last"    style="background-image: url('arparla/Arp_pic1.jpg')"></div>
+</div>
+
+<div class="overlay">
+  <p class="presenter">Amanos présente</p>
+  <h1 class="title">Arparla</h1>
+  <p class="subtitle">Harpe &amp; violon — un voyage hors du temps</p>
+  <div class="rule"></div>
+</div>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<audio id="music" src="arparla/arparla_music.mp3" preload="auto"></audio>
+
+<script>
+  const MUSIC_DURATION = 38.5;   // secondes
+  const LAST_PHOTO_AT  = 34;   // la dernière photo apparaît à 26s (sur les dernières notes)
+  const slides = document.querySelectorAll('.slide');
+  const N = slides.length;     // 5 photos
+
+  // Timing des 4 premières photos sur 26 secondes
+  // avec 1.8s de fondu entre chaque
+  const transitions = [0, 7.5, 15, 23, LAST_PHOTO_AT];
+
+  let timers = [];
+  let startTime = null;
+
+  function showSlide(index) {
+    slides.forEach((s, i) => {
+      s.classList.toggle('active', i === index);
+      // Relancer l'animation Ken Burns à chaque activation
+      if (i === index && s.classList.contains('animated')) {
+        s.style.animation = 'none';
+        s.offsetHeight; // reflow
+        s.style.animation = '';
+      }
+    });
+  }
+
+  function updateProgress() {
+    const elapsed = (Date.now() - startTime) / 1000;
+    const pct = Math.min(100, (elapsed / MUSIC_DURATION) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+    if (elapsed < MUSIC_DURATION) requestAnimationFrame(updateProgress);
+  }
+
+  function getVisitorId() {
+    try {
+      let vid = localStorage.getItem('arparla_vid');
+      if (!vid) {
+        vid = Math.random().toString(36).substr(2, 8);
+        localStorage.setItem('arparla_vid', vid);
+      }
+      return vid;
+    } catch(e) {
+      return Math.random().toString(36).substr(2, 8);
+    }
+  }
+
+  function log(event) {
+    fetch('arparla/log.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: 'event=' + event + '&vid=' + getVisitorId()
+    }).catch(() => {});
+  }
+
+  window.addEventListener('load', () => log('visit'));
+
+  function startShow() {
+    const screen = document.getElementById('startScreen');
+    screen.classList.add('hidden');
+
+    const music = document.getElementById('music');
+    music.play().catch(() => {});
+    log('play');
+    music.addEventListener('ended', () => log('end'), {once: true});
+
+    startTime = Date.now();
+    showSlide(0);
+
+    // Planifier les transitions
+    for (let i = 1; i < N; i++) {
+      const t = setTimeout(() => showSlide(i), transitions[i] * 1000);
+      timers.push(t);
+    }
+
+    requestAnimationFrame(updateProgress);
+    setTimeout(() => screen.remove(), 1200);
+  }
+</script>
+
+</body>
+</html>
