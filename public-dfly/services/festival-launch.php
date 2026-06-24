@@ -12,13 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!$harmonie || !in_array($harmonie, FESTIVAL_HARMONIES)) {
         http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Harmonie inconnue']));
     }
-    [$link] = festival_db();
+    list($link) = festival_db();
     $row = festival_get_row($link, $harmonie);
     mysqli_close($link);
     if (!$row) { http_response_code(404); exit(json_encode(['ok' => false, 'error' => 'Aucune donnée pour cet orchestre'])); }
     if (!$row['data']['responsable']) { http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Aucun responsable désigné'])); }
 
-    $commandes_en_cours = array_values(array_filter($row['data']['commandes'], fn($c) => $c['statut'] === 'en_cours'));
+    $commandes_en_cours = array_values(array_filter($row['data']['commandes'], function($c) { return $c['statut'] === 'en_cours'; }));
     $total = array_sum(array_column($commandes_en_cours, 'total'));
 
     exit(json_encode([
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Harmonie inconnue']));
     }
 
-    [$link] = festival_db();
+    list($link) = festival_db();
     $row = festival_get_row($link, $harmonie);
     if (!$row || !$row['data']['responsable']) {
         mysqli_close($link); http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Responsable manquant']));
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = $row['data'];
     if ($adresse) $data['responsable']['adresse'] = $adresse;
 
-    $commandes_en_cours = array_filter($data['commandes'], fn($c) => $c['statut'] === 'en_cours');
+    $commandes_en_cours = array_filter($data['commandes'], function($c) { return $c['statut'] === 'en_cours'; });
     $total = array_sum(array_column(array_values($commandes_en_cours), 'total'));
     $data['total'] = $total;
 

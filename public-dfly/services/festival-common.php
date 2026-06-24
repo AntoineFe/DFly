@@ -87,7 +87,7 @@ function festival_calcul_total(array $produits): float {
 }
 
 function festival_numero(array $link_cfg): string {
-    [$link] = $link_cfg;
+    list($link) = $link_cfg;
     mysqli_query($link, "INSERT INTO festival_sequences (created_at) VALUES (NOW())");
     $id = mysqli_insert_id($link);
     return 'FESMUS-' . FESTIVAL_ANNEE . '-' . str_pad($id, 4, '0', STR_PAD_LEFT);

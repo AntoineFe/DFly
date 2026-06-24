@@ -13,7 +13,7 @@ if (!$harmonie || !in_array($harmonie, FESTIVAL_HARMONIES)) {
     exit(json_encode(['ok' => false, 'error' => 'Harmonie inconnue']));
 }
 
-[$link] = festival_db();
+list($link) = festival_db();
 $row = festival_get_row($link, $harmonie);
 mysqli_close($link);
 

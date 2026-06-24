@@ -20,7 +20,7 @@ if (!$nom || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$adresse) {
     http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Données manquantes']));
 }
 
-[$link] = festival_db();
+list($link) = festival_db();
 $row  = festival_get_row($link, $harmonie);
 $data = $row['data'] ?? ['responsable' => null, 'commandes' => [], 'total' => 0.0];
 

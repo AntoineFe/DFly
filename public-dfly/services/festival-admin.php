@@ -10,7 +10,7 @@ require __DIR__ . '/festival-common.php';
 $session = galerie_require_auth();
 galerie_require_level($session, 'admin', 'R');
 
-[$link] = festival_db();
+list($link) = festival_db();
 $res = mysqli_query($link, "SELECT * FROM festival_commandes_groupees ORDER BY harmonie");
 
 $harmonies = [];
@@ -19,7 +19,7 @@ $total_global = 0.0;
 
 while ($row = mysqli_fetch_assoc($res)) {
     $data = json_decode($row['data'], true);
-    $commandes_en_cours = array_values(array_filter($data['commandes'], fn($c) => $c['statut'] === 'en_cours'));
+    $commandes_en_cours = array_values(array_filter($data['commandes'], function($c) { return $c['statut'] === 'en_cours'; }));
     $total = array_sum(array_column($commandes_en_cours, 'total'));
     $total_global += $total;
 

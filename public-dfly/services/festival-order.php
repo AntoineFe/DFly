@@ -15,7 +15,7 @@ if ($method === 'GET') {
         http_response_code(400);
         exit(json_encode(['ok' => false, 'error' => 'Numéro invalide']));
     }
-    [$link] = festival_db();
+    list($link) = festival_db();
     $res = mysqli_query($link, "SELECT harmonie, statut_global, data FROM festival_commandes_groupees");
     $found = null;
     while ($row = mysqli_fetch_assoc($res)) {
@@ -58,7 +58,7 @@ if ($method === 'POST') {
     $total      = round($sous_total + $port['total'], 2);
 
     $db_info = festival_db();
-    [$link]  = $db_info;
+    list($link) = $db_info;
 
     $row = festival_get_row($link, $harmonie);
     if ($row && $row['statut_global'] !== 'ouvert') {
@@ -79,7 +79,7 @@ if ($method === 'POST') {
         'total'    => $total,
     ];
     $data['total'] = array_sum(array_column(
-        array_filter($data['commandes'], fn($c) => $c['statut'] === 'en_cours'),
+        array_filter($data['commandes'], function($c) { return $c['statut'] === 'en_cours'; }),
         'total'
     ));
 
@@ -121,7 +121,7 @@ if ($method === 'PUT') {
         exit(json_encode(['ok' => false, 'error' => 'Numéro invalide']));
     }
 
-    [$link] = festival_db();
+    list($link) = festival_db();
     $res = mysqli_query($link, "SELECT id, harmonie, statut_global, data FROM festival_commandes_groupees");
     $targetRow = null; $targetIdx = null;
     while ($row = mysqli_fetch_assoc($res)) {
@@ -145,7 +145,7 @@ if ($method === 'PUT') {
         $data['commandes'][$targetIdx]['total']    = festival_calcul_total($produitsSanitized);
     }
     $data['total'] = array_sum(array_column(
-        array_filter($data['commandes'], fn($c) => $c['statut'] === 'en_cours'), 'total'
+        array_filter($data['commandes'], function($c) { return $c['statut'] === 'en_cours'; }), 'total'
     ));
 
     festival_save_row($link, $targetRow['harmonie'], $data, $targetRow['statut_global']);
