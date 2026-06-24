@@ -8,9 +8,9 @@ const FESTIVAL_PRIX = [
 ];
 
 const FESTIVAL_PRODUITS = [
-    'poster_musicien_30x20'  => 'Poster Musicien 30×20 cm',
-    'poster_chef_60x40'      => 'Poster Chef 60×40 cm',
-    'poster_orchestre_90x60' => 'Poster Orchestre 90×60 cm',
+    'poster_musicien_30x20'  => 'Poster Musicien 20×30 cm',
+    'poster_chef_60x40'      => 'Poster Chef 40×60 cm',
+    'poster_orchestre_90x60' => 'Poster Orchestre 60×90 cm',
     'cle_usb'                => 'Clé USB collector coffret bois gravé logo festival',
 ];
 
