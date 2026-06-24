@@ -498,8 +498,8 @@ export default function FestivalCommande() {
 
           {harmonie && commandeLancee && (
             <div style={{ ...st.success, background: '#fff3cd' }}>
-              La commande de cet orchestre a été lancée. Vous ne pouvez plus passer de commande.{' '}
-              Si vous avez une question → <a href="https://dfly.fr/contact" style={{ color: 'inherit' }}>Contactez-nous !</a>
+              La commande de cet orchestre a été lancée. Vous ne pouvez plus passer de commande.
+              <br />Si vous avez une question → <a href="https://dfly.fr/contact" style={{ color: 'inherit' }}>Contactez-nous !</a>
             </div>
           )}
 
