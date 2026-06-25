@@ -81,6 +81,18 @@ export default function FestivalAdmin() {
     if (!d.ok) alert(d.error || 'Erreur lors de l\'envoi')
   }
 
+  async function resendResponsable(id) {
+    setBusy('resp_' + id)
+    const r = await authFetch('festival-resend-responsable.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    })
+    const d = await r.json()
+    setBusy(false)
+    if (!d.ok) alert(d.error || 'Erreur lors de l\'envoi')
+  }
+
   return (
     <div style={st.page}>
       <GalerieNav />
@@ -169,9 +181,16 @@ export default function FestivalAdmin() {
                   <div style={{ padding: '12px 16px' }}>
                     {/* Responsable */}
                     {h.responsable ? (
-                      <div style={{ fontSize: 12, color: 'var(--fg-muted)', marginBottom: 12 }}>
-                        Responsable : <strong style={{ color: 'var(--fg)' }}>{h.responsable.nom}</strong>
-                        {' '}— {h.responsable.email}{h.responsable.tel ? ` — ${h.responsable.tel}` : ''} — {h.responsable.adresse}
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, flexWrap: 'wrap', fontSize: 12, color: 'var(--fg-muted)', marginBottom: 12 }}>
+                        <span>
+                          Responsable : <strong style={{ color: 'var(--fg)' }}>{h.responsable.nom}</strong>
+                          {' '}— {h.responsable.email}{h.responsable.tel ? ` — ${h.responsable.tel}` : ''} — {h.responsable.adresse}
+                        </span>
+                        <button style={{ ...st.btn, fontSize: 9, padding: '4px 10px', background: 'none',
+                                         color: 'var(--fg)', border: '1px solid var(--line)', whiteSpace: 'nowrap' }}
+                          onClick={() => resendResponsable(h.id)} disabled={!!busy}>
+                          {busy === 'resp_' + h.id ? '…' : 'Renvoyer lien responsable'}
+                        </button>
                       </div>
                     ) : (
                       <div style={{ fontSize: 12, color: 'var(--fg-muted)', marginBottom: 12, fontStyle: 'italic' }}>
@@ -228,6 +247,7 @@ export default function FestivalAdmin() {
                               <th key={label} style={{ ...st.th, fontSize: 9 }}>{label}</th>
                             ))}
                             <th style={{ ...st.th, textAlign: 'right' }}>Total</th>
+                            <th style={st.th}></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -239,6 +259,13 @@ export default function FestivalAdmin() {
                                 <td key={key} style={{ ...st.td, textAlign: 'center' }}>{cmd.produits[key] || 0}</td>
                               ))}
                               <td style={{ ...st.td, textAlign: 'right' }}>{cmd.total.toFixed(2).replace('.', ',')} €</td>
+                              <td style={st.td}>
+                                <button style={{ ...st.btn, fontSize: 9, padding: '4px 10px', background: 'none',
+                                                 color: 'var(--fg)', border: '1px solid var(--line)' }}
+                                  onClick={() => resend(cmd.numero)} disabled={!!busy}>
+                                  {busy === cmd.numero ? '…' : 'Renvoyer lien'}
+                                </button>
+                              </td>
                             </tr>
                           ))}
                         </tbody>

@@ -29,28 +29,39 @@ while ($row = mysqli_fetch_assoc($res)) {
 mysqli_close($link);
 
 if (!$cmd) { http_response_code(404); exit(json_encode(['ok' => false, 'error' => 'Commande introuvable'])); }
-if ($cmd['statut'] !== 'en_attente') { http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Commande déjà confirmée'])); }
+if (!in_array($cmd['statut'], ['en_attente', 'en_cours'])) {
+    http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Commande annulée']));
+}
 
-$token = $cmd['token'] ?? '';
-if (!$token) { http_response_code(500); exit(json_encode(['ok' => false, 'error' => 'Token manquant'])); }
-
-$nom   = $cmd['nom'];
-$email = $cmd['email'];
-$recap = festival_format_recap($cmd);
+$nom        = $cmd['nom'];
+$email      = $cmd['email'];
+$recap      = festival_format_recap($cmd);
 $sous_total = festival_calcul_sous_total($cmd['produits']);
-$lien_confirm = 'https://dfly.fr/commande-festival-faucigny-2026?confirmer=' . urlencode($token);
-$lien_modif   = 'https://dfly.fr/commande-festival-faucigny-2026?numero=' . urlencode($numero);
+$lien_modif = 'https://dfly.fr/commande-festival-faucigny-2026?numero=' . urlencode($numero);
+$ref        = festival_ref($harmonie_row);
 
-$body_email  = "Bonjour {$nom},\n\n";
-$body_email .= "Voici un rappel pour valider votre commande {$numero} pour le " . FESTIVAL_NOM . ".\n\n";
-$body_email .= "Récapitulatif :\n{$recap}\n";
-$body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
-$body_email .= festival_note_port($cmd['produits']) . "\n\n";
-$body_email .= "Pour valider définitivement votre commande, cliquez sur ce lien :\n{$lien_confirm}\n\n";
-$body_email .= "Tant que vous n'avez pas cliqué sur ce lien, votre commande reste en attente et ne sera pas prise en compte.\n\n";
-$body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
-$body_email .= "À bientôt,\nDFly";
-
-festival_smtp_send($email, festival_ref($harmonie_row) . " — Rappel : confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+if ($cmd['statut'] === 'en_attente') {
+    $token = $cmd['token'] ?? '';
+    if (!$token) { http_response_code(500); exit(json_encode(['ok' => false, 'error' => 'Token manquant'])); }
+    $lien_confirm = 'https://dfly.fr/commande-festival-faucigny-2026?confirmer=' . urlencode($token);
+    $body_email  = "Bonjour {$nom},\n\n";
+    $body_email .= "Voici un rappel pour valider votre commande {$numero} pour le " . FESTIVAL_NOM . ".\n\n";
+    $body_email .= "Récapitulatif :\n{$recap}\n";
+    $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+    $body_email .= festival_note_port($cmd['produits']) . "\n\n";
+    $body_email .= "Pour valider définitivement votre commande, cliquez sur ce lien :\n{$lien_confirm}\n\n";
+    $body_email .= "Tant que vous n'avez pas cliqué sur ce lien, votre commande reste en attente et ne sera pas prise en compte.\n\n";
+    $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
+    $body_email .= "À bientôt,\nDFly";
+    festival_smtp_send($email, $ref . " — Rappel : confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+} else {
+    $body_email  = "Bonjour {$nom},\n\n";
+    $body_email .= "Voici votre lien pour modifier ou annuler votre commande {$numero} pour le " . FESTIVAL_NOM . ".\n\n";
+    $body_email .= "Récapitulatif actuel :\n{$recap}\n";
+    $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+    $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
+    $body_email .= "À bientôt,\nDFly";
+    festival_smtp_send($email, $ref . " — Votre lien de commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+}
 
 exit(json_encode(['ok' => true]));
