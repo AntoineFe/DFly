@@ -145,8 +145,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $body_email .= "\n" . str_repeat('-', 50) . "\n";
     $body_email .= "TOTAL GÉNÉRAL : " . number_format($total, 2, ',', ' ') . " €\n\n";
-    $body_email .= "Merci d'effectuer le virement à l'ordre de DFly :\n";
+    $body_email .= "Merci d'effectuer le virement à l'ordre de HELANSOFT :\n";
     $body_email .= "IBAN : " . FESTIVAL_IBAN . "\n";
+    $body_email .= "BIC : " . FESTIVAL_BIC . "\n";
     $body_email .= "Référence à indiquer : {$ref_virement}\n\n";
     $body_email .= "Pour toute difficulté : https://dfly.fr/contact\n\n";
     $body_email .= "À bientôt,\nDFly";

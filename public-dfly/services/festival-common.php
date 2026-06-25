@@ -14,7 +14,8 @@ const FESTIVAL_PRODUITS = [
     'cle_usb'                => 'Clé USB collector coffret bois gravé logo festival',
 ];
 
-const FESTIVAL_IBAN     = 'TODO_IBAN';
+const FESTIVAL_IBAN     = 'FR76 1009 6184 1900 0264 6350 252';
+const FESTIVAL_BIC      = 'CMCIFRPP';
 const FESTIVAL_ANNEE    = '2026';
 const FESTIVAL_NOM      = '190e Festival des Musiques du Faucigny';
 const FESTIVAL_FROM_NAME = 'DFly';
