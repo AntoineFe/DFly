@@ -344,6 +344,36 @@ function BlocLancement({ harmonie, responsable, token }) {
   )
 }
 
+function SuiviCommande({ statut, statut_posters, statut_usb }) {
+  const steps = [
+    { ok: true,                                  label: 'Commande groupée lancée' },
+    { ok: statut === 'virement_recu' || statut === 'cloture',
+                                                 label: 'Virement reçu par DFly' },
+    { ok: statut_posters === 'commande_envoyee', label: 'Posters commandés (Saal Digital)' },
+    { ok: statut_usb === 'commande_passee' || statut_usb === 'expediee',
+                                                 label: 'Clé USB commandée fournisseur' },
+    { ok: statut_usb === 'expediee',             label: 'Clé USB expédiée' },
+    { ok: statut === 'cloture',                  label: 'Commande clôturée' },
+  ]
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {steps.map((s, i) => (
+        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 13 }}>
+          <span style={{ width: 20, height: 20, borderRadius: '50%', flexShrink: 0,
+                         display: 'flex', alignItems: 'center', justifyContent: 'center',
+                         fontSize: 11, fontWeight: 600,
+                         background: s.ok ? '#2980b9' : 'var(--bg-alt)',
+                         border: '1px solid ' + (s.ok ? '#2980b9' : 'var(--line)'),
+                         color: s.ok ? '#fff' : 'var(--fg-muted)' }}>
+            {s.ok ? '✓' : ''}
+          </span>
+          <span style={{ color: s.ok ? 'var(--fg)' : 'var(--fg-muted)' }}>{s.label}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 function calcGroupPort(commandes) {
   const sousPosters = commandes.reduce((s, cmd) =>
     s + POSTERS_KEYS.reduce((ss, k) => ss + (cmd.produits[k] || 0) * (PRODUITS.find(p => p.key === k)?.prix || 0), 0), 0)
@@ -716,7 +746,13 @@ export default function FestivalCommande() {
             <BlocLancement harmonie={responsableData.harmonie} responsable={responsableData.responsable} token={responsableParam} />
           )}
           {responsableData.statut !== 'ouvert' && (
-            <div style={{ ...st.success, marginTop: 16 }}>La commande groupée a déjà été lancée.</div>
+            <div style={{ marginTop: 24 }}>
+              <div style={{ fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
+                            color: 'var(--fg-muted)', marginBottom: 12 }}>Suivi de votre commande</div>
+              <SuiviCommande statut={responsableData.statut}
+                statut_posters={responsableData.statut_posters}
+                statut_usb={responsableData.statut_usb} />
+            </div>
           )}
         </div>
       )}
