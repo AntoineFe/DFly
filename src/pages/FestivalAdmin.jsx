@@ -65,6 +65,18 @@ export default function FestivalAdmin() {
     if (d.ok) load()
   }
 
+  async function resend(numero) {
+    setBusy(numero)
+    const r = await authFetch('festival-resend.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ numero }),
+    })
+    const d = await r.json()
+    setBusy(false)
+    if (!d.ok) alert(d.error || 'Erreur lors de l\'envoi')
+  }
+
   async function reopen(id) {
     if (!window.confirm('Rouvrir les commandes pour cette harmonie ?')) return
     setBusy(id)
@@ -127,8 +139,9 @@ export default function FestivalAdmin() {
             )}
 
             {data.harmonies.map(h => {
-              const en_cours = h.commandes.filter(c => c.statut === 'en_cours')
-              const annulees = h.commandes.filter(c => c.statut === 'annulee')
+              const en_cours   = h.commandes.filter(c => c.statut === 'en_cours')
+              const en_attente = h.commandes.filter(c => c.statut === 'en_attente')
+              const annulees   = h.commandes.filter(c => c.statut === 'annulee')
               return (
                 <div key={h.id} style={st.card}>
                   <div style={st.cardH}>
@@ -197,8 +210,28 @@ export default function FestivalAdmin() {
                       </table>
                     )}
 
+                    {en_attente.length > 0 && (
+                      <div style={{ marginTop: 12 }}>
+                        <div style={{ fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
+                                      color: '#e67e22', marginBottom: 6 }}>
+                          {en_attente.length} en attente de confirmation
+                        </div>
+                        {en_attente.map(cmd => (
+                          <div key={cmd.numero} style={{ display: 'flex', alignItems: 'center', gap: 12,
+                                                         fontSize: 12, color: 'var(--fg-muted)', marginBottom: 4 }}>
+                            <span style={{ fontFamily: 'var(--mono)', fontSize: 10 }}>{cmd.numero}</span>
+                            <span>{cmd.nom} — {cmd.email}</span>
+                            <button style={{ ...st.btn, fontSize: 9, padding: '4px 10px', background: 'none',
+                                             color: 'var(--fg)', border: '1px solid var(--line)' }}
+                              onClick={() => resend(cmd.numero)} disabled={busy === cmd.numero}>
+                              {busy === cmd.numero ? '…' : 'Renvoyer'}
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                     {annulees.length > 0 && (
-                      <div style={{ fontSize: 11, color: 'var(--fg-muted)' }}>
+                      <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 8 }}>
                         {annulees.length} commande{annulees.length !== 1 ? 's' : ''} annulée{annulees.length !== 1 ? 's' : ''}
                       </div>
                     )}
