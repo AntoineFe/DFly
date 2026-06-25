@@ -71,7 +71,7 @@ function FraisPort({ produits }) {
   return (
     <div style={{ marginTop: 16 }}>
       <div style={totalSt}>
-        <span>Total hors frais de port</span>
+        <span>Total hors frais de port (TTC)</span>
         <span>{total.toFixed(2)} €</span>
       </div>
       <div style={{ fontSize: 11.5, color: 'var(--fg-muted)', marginTop: 8, fontStyle: 'italic', lineHeight: 1.5 }}>
@@ -553,7 +553,7 @@ export default function FestivalCommande() {
     <FestivalHeader />
     <div style={{ ...st.page, paddingTop: 97 }}>
       <h1 style={st.h1}>190e Festival des Musiques du Faucigny</h1>
-      <div style={st.sub}>Commande de produits souvenir — prix hors frais de port</div>
+      <div style={st.sub}>Commande de produits souvenir — prix hors frais de port (TTC)</div>
 
       {/* ── Mode modification ── */}
       {numeroParam && modifyOrder && !modifyDone && (
@@ -589,7 +589,7 @@ export default function FestivalCommande() {
               </table>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14,
                             fontWeight: 600, borderTop: '1px solid var(--fg)', paddingTop: 10, marginTop: 4 }}>
-                <span>Total hors frais de port</span>
+                <span>Total hors frais de port (TTC)</span>
                 <span>{PRODUITS.reduce((s, p) => s + (modifyOrder.commande.produits[p.key] || 0) * p.prix, 0).toFixed(2)} €</span>
               </div>
             </div>
@@ -743,7 +743,7 @@ export default function FestivalCommande() {
                                                color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'center', fontWeight: 400 }}>{p.label}</th>
                     ))}
                     <th style={{ padding: '8px 0', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
-                                 color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'right', fontWeight: 400 }}>Total HT</th>
+                                 color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'right', fontWeight: 400 }}>Total TTC</th>
                   </tr>
                 </thead>
                 <tbody>

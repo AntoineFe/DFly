@@ -1,5 +1,5 @@
 <?php
-// ── Prix des produits (HT, hors frais de port) ───────────────────────────────
+// ── Prix des produits (TTC, hors frais de port) ──────────────────────────────
 const FESTIVAL_PRIX = [
     'poster_musicien_30x20'  => 4.00,
     'poster_chef_60x40'      => 12.50,

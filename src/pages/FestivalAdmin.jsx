@@ -126,7 +126,7 @@ export default function FestivalAdmin() {
                   </div>
                 ))}
                 <div>
-                  <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginBottom: 2 }}>Total HT</div>
+                  <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginBottom: 2 }}>Total TTC</div>
                   <div style={{ fontSize: 22, fontFamily: 'var(--serif)' }}>
                     {data.total_global.toFixed(2).replace('.', ',')} €
                   </div>

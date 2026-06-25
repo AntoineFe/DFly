@@ -47,7 +47,7 @@ if ($cmd['statut'] === 'en_attente') {
     $body_email  = "Bonjour {$nom},\n\n";
     $body_email .= "Voici un rappel pour valider votre commande {$numero} pour le " . FESTIVAL_NOM . ".\n\n";
     $body_email .= "Récapitulatif :\n{$recap}\n";
-    $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+    $body_email .= "Total hors frais de port (TTC) : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
     $body_email .= festival_note_port($cmd['produits']) . "\n\n";
     $body_email .= "Pour valider définitivement votre commande, cliquez sur ce lien :\n{$lien_confirm}\n\n";
     $body_email .= "Tant que vous n'avez pas cliqué sur ce lien, votre commande reste en attente et ne sera pas prise en compte.\n\n";
@@ -58,7 +58,7 @@ if ($cmd['statut'] === 'en_attente') {
     $body_email  = "Bonjour {$nom},\n\n";
     $body_email .= "Voici votre lien pour modifier ou annuler votre commande {$numero} pour le " . FESTIVAL_NOM . ".\n\n";
     $body_email .= "Récapitulatif actuel :\n{$recap}\n";
-    $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+    $body_email .= "Total hors frais de port (TTC) : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
     $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
     $body_email .= "À bientôt,\nDFly";
     festival_smtp_send($email, $ref . " — Votre lien de commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
