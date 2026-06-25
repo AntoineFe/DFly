@@ -98,9 +98,8 @@ if ($method === 'POST') {
     $body_email .= "Récapitulatif :\n{$recap}\n";
     $body_email .= "Total hors frais de port (TTC) : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
     $body_email .= festival_note_port($produitsSanitized) . "\n\n";
-    $body_email .= "Pour valider définitivement votre commande, cliquez sur ce lien :\n{$lien_confirm}\n\n";
+    $body_email .= "Pour valider votre commande, cliquez sur ce lien :\n{$lien_confirm}\n\n";
     $body_email .= "Tant que vous n'avez pas cliqué sur ce lien, votre commande reste en attente et ne sera pas prise en compte.\n\n";
-    $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
     $body_email .= "À bientôt,\nDFly";
 
     festival_smtp_send($email, festival_ref($harmonie) . " — Confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());

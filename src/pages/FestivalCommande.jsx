@@ -214,7 +214,6 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
         </form>
       )}
 
-      {resp && ui === 'closed' && <BlocLancement harmonie={harmonie} responsable={resp} />}
     </div>
   )
 }
@@ -451,6 +450,7 @@ export default function FestivalCommande() {
   const [modifyDone,   setModifyDone]   = useState(false)
   const [reactivated,  setReactivated]  = useState(false)
   const [confirmResult,    setConfirmResult]    = useState(null)
+  const [confirmNumero,    setConfirmNumero]    = useState(null)
   const [responsableData,  setResponsableData]  = useState(null)  // vue responsable
 
   // Vue responsable via token
@@ -472,7 +472,7 @@ export default function FestivalCommande() {
     })
       .then(r => r.json())
       .then(d => {
-        if (d.ok) setConfirmResult(d.deja_confirme ? 'deja' : 'ok')
+        if (d.ok) { setConfirmResult(d.deja_confirme ? 'deja' : 'ok'); setConfirmNumero(d.numero || null) }
         else setConfirmResult('err')
       })
       .catch(() => setConfirmResult('err'))
@@ -638,7 +638,11 @@ export default function FestivalCommande() {
 
       {numeroParam && modifyDone && (
         <div style={st.success}>
-          Vos modifications ont bien été enregistrées.
+          <div style={{ marginBottom: 16 }}>Vos modifications ont bien été enregistrées.</div>
+          <a href={`/commande-festival-faucigny-2026?numero=${numeroParam}`}
+             style={{ ...st.btn, display: 'inline-block', textDecoration: 'none' }}>
+            Retour sur ma commande
+          </a>
         </div>
       )}
 
@@ -716,16 +720,21 @@ export default function FestivalCommande() {
       {responsableParam && err && <div style={st.error}>{err}</div>}
       {responsableParam && responsableData && (
         <div>
-          <div style={st.success}>
-            Bonjour <strong>{responsableData.responsable.nom}</strong>, votre adresse email est confirmée.
-            Vous êtes le contact pour la livraison groupée de <strong>{responsableData.harmonie}</strong>.
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <div style={st.success}>
+              Bonjour <strong>{responsableData.responsable.nom}</strong>, votre adresse email est confirmée.
+              Vous êtes le contact pour la livraison groupée de <strong>{responsableData.harmonie}</strong>.
+            </div>
+            <a href="/galerie" style={{ ...st.btnSecondary, textDecoration: 'none', marginLeft: 16, whiteSpace: 'nowrap' }}>
+              ← Galerie
+            </a>
           </div>
 
-          {/* Commandes en cours */}
+          {/* Commandes */}
           <div style={{ marginTop: 24 }}>
             <div style={{ fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
                           color: 'var(--fg-muted)', marginBottom: 12 }}>
-              Commandes confirmées ({responsableData.commandes.length})
+              Commandes ({responsableData.commandes.length})
             </div>
             {responsableData.commandes.length === 0 ? (
               <div style={{ color: 'var(--fg-muted)', fontStyle: 'italic', fontSize: 14 }}>
@@ -785,12 +794,25 @@ export default function FestivalCommande() {
       {confirmerParam && confirmResult === 'ok' && (
         <div style={st.success}>
           <div style={{ marginBottom: 8, fontWeight: 500 }}>Votre commande est confirmée !</div>
-          <div>Elle sera expédiée dès qu'un responsable de votre orchestre se sera désigné et aura effectué le virement groupé.</div>
-          <div style={{ marginTop: 8, fontSize: 12, color: 'var(--fg-muted)' }}>Un email de confirmation vous a été envoyé.</div>
+          <div style={{ marginBottom: 16 }}>Elle sera expédiée dès qu'un responsable de votre orchestre se sera désigné et aura effectué le virement groupé.</div>
+          {confirmNumero && (
+            <a href={`/commande-festival-faucigny-2026?numero=${confirmNumero}`}
+               style={{ ...st.btn, display: 'inline-block', textDecoration: 'none' }}>
+              Voir ma commande
+            </a>
+          )}
         </div>
       )}
       {confirmerParam && confirmResult === 'deja' && (
-        <div style={st.success}>Votre commande a déjà été confirmée.</div>
+        <div style={st.success}>
+          <div style={{ marginBottom: 16 }}>Votre commande a déjà été confirmée.</div>
+          {confirmNumero && (
+            <a href={`/commande-festival-faucigny-2026?numero=${confirmNumero}`}
+               style={{ ...st.btn, display: 'inline-block', textDecoration: 'none' }}>
+              Voir ma commande
+            </a>
+          )}
+        </div>
       )}
       {confirmerParam && confirmResult === 'err' && (
         <div style={st.error}>Ce lien de confirmation est invalide ou a déjà été utilisé.</div>
@@ -802,8 +824,20 @@ export default function FestivalCommande() {
       {!numeroParam && !confirmerParam && result && (
         <div style={st.success}>
           <div style={{ marginBottom: 8, fontWeight: 500 }}>Votre commande est enregistrée — numéro <strong>{result.numero}</strong></div>
-          <div style={{ marginBottom: 8 }}>Un email vous a été envoyé. <strong>Cliquez sur le lien de confirmation</strong> qu'il contient pour valider votre commande.</div>
-          <div style={{ fontWeight: 600 }}>Tant que vous n'avez pas confirmé, votre commande reste en attente et ne sera pas prise en compte.</div>
+          <div style={{ marginBottom: 12 }}>
+            Un email vient de vous être envoyé. Ouvrez-le et cliquez sur le lien qu'il contient pour confirmer votre commande.
+          </div>
+          <div style={{ marginBottom: 16, fontWeight: 600 }}>
+            Tant que vous n'avez pas confirmé, votre commande reste en attente et ne sera pas prise en compte.
+          </div>
+          <div style={{ fontSize: 12, color: 'var(--fg-muted)' }}>
+            Vous n'avez pas reçu l'email ?{' '}
+            <a href={`/commande-festival-faucigny-2026?numero=${result.numero}`}
+               style={{ color: 'var(--fg)', textDecoration: 'underline' }}>
+              Retournez sur votre commande
+            </a>
+            {' '}pour vérifier votre adresse email et renvoyer la confirmation.
+          </div>
         </div>
       )}
 
