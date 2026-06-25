@@ -448,6 +448,8 @@ export default function FestivalCommande() {
   const [result,       setResult]       = useState(null)   // {numero, total}
   const [modifyOrder,  setModifyOrder]  = useState(null)   // order being modified
   const [modifyDone,   setModifyDone]   = useState(false)
+  const [pendingEmail, setPendingEmail] = useState('')
+  const [pendingDone,  setPendingDone]  = useState(false)
   const [reactivated,  setReactivated]  = useState(false)
   const [confirmResult,    setConfirmResult]    = useState(null)
   const [confirmNumero,    setConfirmNumero]    = useState(null)
@@ -488,6 +490,7 @@ export default function FestivalCommande() {
           setModifyOrder(d)
           setHarmonie(d.harmonie)
           setProduits(d.commande.produits)
+          setPendingEmail(d.commande.email || '')
         } else setErr(d.error || 'Commande introuvable')
       })
   }, [numeroParam])
@@ -548,6 +551,20 @@ export default function FestivalCommande() {
 
   const commandeLancee = harmonieData != null && harmonieData.statut_global !== 'ouvert'
 
+  async function submitEmailUpdate(e) {
+    e.preventDefault()
+    setBusy(true); setErr('')
+    const r = await fetch(API('festival-order.php'), {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ numero: modifyOrder.commande.numero, email: pendingEmail }),
+    })
+    const d = await r.json()
+    setBusy(false)
+    if (d.ok) setPendingDone(true)
+    else setErr(d.error || 'Une erreur est survenue')
+  }
+
   return (
     <>
     <FestivalHeader />
@@ -556,11 +573,52 @@ export default function FestivalCommande() {
       <div style={st.sub}>Commande de produits souvenir — prix hors frais de port (TTC)</div>
 
       {/* ── Mode modification ── */}
-      {numeroParam && modifyOrder && !modifyDone && (
+      {/* ── Commande en attente de confirmation ── */}
+      {numeroParam && modifyOrder && modifyOrder.commande.statut === 'en_attente' && !pendingDone && (
         <div>
-          <div style={{ fontSize: 13, color: 'var(--fg-muted)', marginBottom: 24 }}>
-            Commande <strong>{modifyOrder.commande.numero}</strong>
-            {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <div style={{ fontSize: 13, color: 'var(--fg-muted)' }}>
+              Commande <strong>{modifyOrder.commande.numero}</strong>
+              {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
+            </div>
+            <a href="/galerie" style={{ ...st.btnSecondary, textDecoration: 'none', whiteSpace: 'nowrap' }}>← Galerie</a>
+          </div>
+          <div style={{ ...st.success, background: '#fff3cd', marginBottom: 24 }}>
+            Votre commande est en attente de confirmation. Vérifiez votre adresse email ci-dessous et renvoyez l'email de confirmation.
+          </div>
+          <form onSubmit={submitEmailUpdate} style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 400 }}>
+            <div>
+              <label style={st.label}>Votre email</label>
+              <input style={st.input} type="email" value={pendingEmail}
+                onChange={e => setPendingEmail(e.target.value)} required />
+            </div>
+            {err && <div style={st.error}>{err}</div>}
+            <div>
+              <button type="submit" style={st.btn} disabled={busy}>
+                {busy ? 'Envoi…' : 'Renvoyer l\'email de confirmation'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+      {numeroParam && modifyOrder && modifyOrder.commande.statut === 'en_attente' && pendingDone && (
+        <div style={st.success}>
+          <div style={{ marginBottom: 8, fontWeight: 500 }}>Email envoyé !</div>
+          <div>Vérifiez votre boîte mail et cliquez sur le lien de confirmation.</div>
+        </div>
+      )}
+
+      {/* ── Mode modification ── */}
+      {numeroParam && modifyOrder && modifyOrder.commande.statut !== 'en_attente' && !modifyDone && (
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <div style={{ fontSize: 13, color: 'var(--fg-muted)' }}>
+              Commande <strong>{modifyOrder.commande.numero}</strong>
+              {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
+            </div>
+            <a href="/galerie" style={{ ...st.btnSecondary, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              ← Galerie
+            </a>
           </div>
           {reactivated && (
             <div style={{ ...st.success, marginBottom: 16 }}>Votre commande a bien été réactivée.</div>

@@ -133,6 +133,34 @@ if ($method === 'PUT') {
     if ($targetRow['statut_global'] !== 'ouvert') { mysqli_close($link); http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Modification impossible, commande lancée'])); }
 
     $data = $targetRow['data'];
+
+    // ── Cas spécial : correction email sur commande en_attente ─────────────
+    $new_email = trim($body['email'] ?? '');
+    if (!$annuler && !$reactiver && $new_email && $data['commandes'][$targetIdx]['statut'] === 'en_attente') {
+        if (!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
+            mysqli_close($link); http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Email invalide']));
+        }
+        $new_token = bin2hex(random_bytes(16));
+        $data['commandes'][$targetIdx]['email'] = $new_email;
+        $data['commandes'][$targetIdx]['token'] = $new_token;
+        festival_save_row($link, $targetRow['harmonie'], $data, $targetRow['statut_global']);
+        mysqli_close($link);
+
+        $nom    = $data['commandes'][$targetIdx]['nom'];
+        $lien_confirm = 'https://dfly.fr/commande-festival-faucigny-2026?confirmer=' . urlencode($new_token);
+        $recap = festival_format_recap($data['commandes'][$targetIdx]);
+        $sous_total = festival_calcul_sous_total($data['commandes'][$targetIdx]['produits']);
+        $body_email  = "Bonjour {$nom},\n\n";
+        $body_email .= "Votre commande {$numero} pour le " . FESTIVAL_NOM . " est presque finalisée.\n\n";
+        $body_email .= "Récapitulatif :\n{$recap}\n";
+        $body_email .= "Total hors frais de port (TTC) : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+        $body_email .= festival_note_port($data['commandes'][$targetIdx]['produits']) . "\n\n";
+        $body_email .= "Pour valider votre commande, cliquez sur ce lien :\n{$lien_confirm}\n\n";
+        $body_email .= "Tant que vous n'avez pas cliqué sur ce lien, votre commande reste en attente et ne sera pas prise en compte.\n\n";
+        $body_email .= "À bientôt,\nDFly";
+        festival_smtp_send($new_email, festival_ref($targetRow['harmonie']) . " — Confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+        exit(json_encode(['ok' => true, 'action' => 'email_updated']));
+    }
     if ($annuler) {
         $data['commandes'][$targetIdx]['statut'] = 'annulee';
     } else if ($reactiver) {
