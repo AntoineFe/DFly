@@ -569,6 +569,11 @@ export default function FestivalCommande() {
     <>
     <FestivalHeader />
     <div style={{ ...st.page, paddingTop: 97 }}>
+      <a href="/galerie" style={{ display: 'inline-flex', alignItems: 'center', gap: 6,
+        fontSize: 12, color: 'var(--fg-muted)', textDecoration: 'none', marginBottom: 20,
+        letterSpacing: '0.05em' }}>
+        ← Retour vers la galerie
+      </a>
       <h1 style={st.h1}>190e Festival des Musiques du Faucigny</h1>
       <div style={st.sub}>Commande de produits souvenir — prix hors frais de port (TTC)</div>
 
@@ -576,12 +581,9 @@ export default function FestivalCommande() {
       {/* ── Commande en attente de confirmation ── */}
       {numeroParam && modifyOrder && modifyOrder.commande.statut === 'en_attente' && !pendingDone && (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-            <div style={{ fontSize: 13, color: 'var(--fg-muted)' }}>
-              Commande <strong>{modifyOrder.commande.numero}</strong>
-              {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
-            </div>
-            <a href="/galerie" style={{ ...st.btnSecondary, textDecoration: 'none', whiteSpace: 'nowrap' }}>← Galerie</a>
+          <div style={{ fontSize: 13, color: 'var(--fg-muted)', marginBottom: 24 }}>
+            Commande <strong>{modifyOrder.commande.numero}</strong>
+            {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
           </div>
           <div style={{ ...st.success, background: '#fff3cd', marginBottom: 24 }}>
             Votre commande est en attente de confirmation. Vérifiez votre adresse email ci-dessous et renvoyez l'email de confirmation.
@@ -611,14 +613,9 @@ export default function FestivalCommande() {
       {/* ── Mode modification ── */}
       {numeroParam && modifyOrder && modifyOrder.commande.statut !== 'en_attente' && !modifyDone && (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-            <div style={{ fontSize: 13, color: 'var(--fg-muted)' }}>
-              Commande <strong>{modifyOrder.commande.numero}</strong>
-              {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
-            </div>
-            <a href="/galerie" style={{ ...st.btnSecondary, textDecoration: 'none', whiteSpace: 'nowrap' }}>
-              ← Galerie
-            </a>
+          <div style={{ fontSize: 13, color: 'var(--fg-muted)', marginBottom: 24 }}>
+            Commande <strong>{modifyOrder.commande.numero}</strong>
+            {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
           </div>
           {reactivated && (
             <div style={{ ...st.success, marginBottom: 16 }}>Votre commande a bien été réactivée.</div>
@@ -779,14 +776,9 @@ export default function FestivalCommande() {
       {responsableParam && err && <div style={st.error}>{err}</div>}
       {responsableParam && responsableData && (
         <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-            <div style={st.success}>
-              Bonjour <strong>{responsableData.responsable.nom}</strong>, votre adresse email est confirmée.
-              Vous êtes le contact pour la livraison groupée de <strong>{responsableData.harmonie}</strong>.
-            </div>
-            <a href="/galerie" style={{ ...st.btnSecondary, textDecoration: 'none', marginLeft: 16, whiteSpace: 'nowrap' }}>
-              ← Galerie
-            </a>
+          <div style={{ ...st.success, marginBottom: 16 }}>
+            Bonjour <strong>{responsableData.responsable.nom}</strong>, votre adresse email est confirmée.
+            Vous êtes le contact pour la livraison groupée de <strong>{responsableData.harmonie}</strong>.
           </div>
 
           {/* Commandes */}
