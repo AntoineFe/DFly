@@ -643,7 +643,7 @@ export default function FestivalCommande() {
       )}
 
       {/* ── Mode nouvelle commande ── */}
-      {!numeroParam && !result && !responsableParam && (
+      {!numeroParam && !result && !responsableParam && !confirmerParam && (
         <form onSubmit={submitNew} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div style={{ padding: '14px 18px', background: 'var(--bg-alt)', border: '1px solid var(--line)',
                         fontSize: 13, color: 'var(--fg)', lineHeight: 1.6 }}>
