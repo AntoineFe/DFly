@@ -25,8 +25,18 @@ list($link) = festival_db();
 $row  = festival_get_row($link, $harmonie);
 $data = $row['data'] ?? ['responsable' => null, 'commandes' => [], 'total' => 0.0];
 
-$data['responsable'] = ['nom' => $nom, 'email' => $email, 'tel' => $tel, 'adresse' => $adresse];
+$data['responsable'] = ['nom' => $nom, 'email' => $email, 'tel' => $tel, 'adresse' => $adresse, 'token' => bin2hex(random_bytes(16)), 'confirme' => false];
 festival_save_row($link, $harmonie, $data, $row ? $row['statut_global'] : 'ouvert');
 mysqli_close($link);
+
+$token = $data['responsable']['token'];
+$lien  = 'https://dfly.fr/commande-festival-faucigny-2026?responsable=' . urlencode($token);
+$body_email  = "Bonjour {$nom},\n\n";
+$body_email .= "Vous avez été désigné(e) comme contact pour la livraison groupée de votre orchestre pour le " . FESTIVAL_NOM . ".\n\n";
+$body_email .= "Pour confirmer votre adresse email et accéder à la vue des commandes de votre orchestre, cliquez sur ce lien :\n{$lien}\n\n";
+$body_email .= "Ce lien est personnel — conservez-le précieusement. Il vous permettra de visualiser les commandes et de lancer la commande groupée auprès de DFly.\n\n";
+$body_email .= "À bientôt,\nDFly";
+
+festival_smtp_send($email, "Confirmation contact livraison — " . FESTIVAL_NOM, $body_email, '', festival_cc());
 
 exit(json_encode(['ok' => true]));

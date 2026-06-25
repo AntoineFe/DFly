@@ -6,44 +6,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 require __DIR__ . '/festival-common.php';
 
-// ── GET : preview avant lancement ────────────────────────────────────────
+// ── GET : preview avant lancement (via token responsable) ────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    $harmonie = trim($_GET['harmonie'] ?? '');
-    if (!$harmonie || !in_array($harmonie, FESTIVAL_HARMONIES)) {
-        http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Harmonie inconnue']));
-    }
-    list($link) = festival_db();
-    $row = festival_get_row($link, $harmonie);
-    mysqli_close($link);
-    if (!$row) { http_response_code(404); exit(json_encode(['ok' => false, 'error' => 'Aucune donnée pour cet orchestre'])); }
-    if (!$row['data']['responsable']) { http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Aucun contact de livraison désigné'])); }
+    $token = trim($_GET['token'] ?? '');
+    if (!$token) { http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Token manquant'])); }
 
-    $commandes_en_cours = array_values(array_filter($row['data']['commandes'], function($c) { return $c['statut'] === 'en_cours'; }));
+    list($link) = festival_db();
+    $res = mysqli_query($link, "SELECT * FROM festival_commandes_groupees");
+    $found = null;
+    while ($row = mysqli_fetch_assoc($res)) {
+        $data = json_decode($row['data'], true);
+        if (($data['responsable']['token'] ?? '') === $token) { $found = $row; $found['data'] = $data; break; }
+    }
+    mysqli_close($link);
+
+    if (!$found) { http_response_code(404); exit(json_encode(['ok' => false, 'error' => 'Lien invalide'])); }
+    if ($found['statut_global'] !== 'ouvert') { http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Commande déjà lancée'])); }
+
+    $commandes_en_cours = array_values(array_filter($found['data']['commandes'], function($c) { return $c['statut'] === 'en_cours'; }));
     $total = array_sum(array_column($commandes_en_cours, 'total'));
 
     exit(json_encode([
         'ok'          => true,
-        'responsable' => $row['data']['responsable'],
+        'responsable' => $found['data']['responsable'],
         'commandes'   => $commandes_en_cours,
         'total'       => $total,
-        'statut'      => $row['statut_global'],
+        'statut'      => $found['statut_global'],
     ]));
 }
 
-// ── POST : confirme le lancement ─────────────────────────────────────────
+// ── POST : confirme le lancement (via token responsable) ─────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body    = json_decode(file_get_contents('php://input'), true) ?? [];
-    $harmonie = trim($body['harmonie'] ?? '');
-    $adresse  = trim($body['adresse']  ?? '');
+    $token   = trim($body['token']   ?? '');
+    $adresse = trim($body['adresse'] ?? '');
 
-    if (!$harmonie || !in_array($harmonie, FESTIVAL_HARMONIES)) {
-        http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Harmonie inconnue']));
-    }
+    if (!$token) { http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Token manquant'])); }
 
     list($link) = festival_db();
-    $row = festival_get_row($link, $harmonie);
-    if (!$row || !$row['data']['responsable']) {
-        mysqli_close($link); http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Contact de livraison manquant']));
+    $res2 = mysqli_query($link, "SELECT * FROM festival_commandes_groupees");
+    $row = null;
+    $harmonie = '';
+    while ($r = mysqli_fetch_assoc($res2)) {
+        $d = json_decode($r['data'], true);
+        if (($d['responsable']['token'] ?? '') === $token) {
+            $row = $r; $row['data'] = $d; $harmonie = $r['harmonie']; break;
+        }
+    }
+    if (!$row) {
+        mysqli_close($link); http_response_code(404); exit(json_encode(['ok' => false, 'error' => 'Lien invalide']));
     }
     if ($row['statut_global'] !== 'ouvert') {
         mysqli_close($link); http_response_code(409); exit(json_encode(['ok' => false, 'error' => 'Commande déjà lancée']));
