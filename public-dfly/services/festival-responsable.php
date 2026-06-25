@@ -11,13 +11,15 @@ $body    = json_decode(file_get_contents('php://input'), true) ?? [];
 $harmonie = trim($body['harmonie'] ?? '');
 $nom      = trim($body['nom']     ?? '');
 $email    = trim($body['email']   ?? '');
-$tel      = trim($body['tel']     ?? '');
-$adresse  = trim($body['adresse'] ?? '');
+$tel      = trim($body['tel']   ?? '');
+$rue      = trim($body['rue']   ?? '');
+$cp       = trim($body['cp']    ?? '');
+$ville    = trim($body['ville'] ?? '');
 
 if (!$harmonie || !in_array($harmonie, FESTIVAL_HARMONIES)) {
     http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Harmonie inconnue']));
 }
-if (!$nom || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$adresse) {
+if (!$nom || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$rue || !$cp || !$ville) {
     http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Données manquantes']));
 }
 
@@ -25,7 +27,8 @@ list($link) = festival_db();
 $row  = festival_get_row($link, $harmonie);
 $data = $row['data'] ?? ['responsable' => null, 'commandes' => [], 'total' => 0.0];
 
-$data['responsable'] = ['nom' => $nom, 'email' => $email, 'tel' => $tel, 'adresse' => $adresse, 'token' => bin2hex(random_bytes(16)), 'confirme' => false];
+$adresse = "{$rue}\n{$cp} {$ville}";
+$data['responsable'] = ['nom' => $nom, 'email' => $email, 'tel' => $tel, 'rue' => $rue, 'cp' => $cp, 'ville' => $ville, 'adresse' => $adresse, 'token' => bin2hex(random_bytes(16)), 'confirme' => false];
 festival_save_row($link, $harmonie, $data, $row ? $row['statut_global'] : 'ouvert');
 mysqli_close($link);
 
