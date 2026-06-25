@@ -40,6 +40,6 @@ $body_email .= "Pour confirmer votre adresse email et accéder à la vue des com
 $body_email .= "Ce lien est personnel — conservez-le précieusement. Il vous permettra de visualiser les commandes et de lancer la commande groupée auprès de DFly.\n\n";
 $body_email .= "À bientôt,\nDFly";
 
-festival_smtp_send($email, festival_ref($harmonie) . " — Confirmation contact livraison — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+festival_smtp_send($email, festival_ref($harmonie) . " — Confirmez votre adresse — contact livraison — " . FESTIVAL_NOM, $body_email, '', festival_cc());
 
 exit(json_encode(['ok' => true]));
