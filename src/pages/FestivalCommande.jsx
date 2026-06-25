@@ -208,7 +208,7 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
 }
 
 // ── Bloc Lancement ────────────────────────────────────────────────────────────
-function BlocLancement({ harmonie, responsable }) {
+function BlocLancement({ harmonie, responsable, token }) {
   const [preview,  setPreview]  = useState(null)
   const [adresse,  setAdresse]  = useState(responsable.adresse)
   const [showConf, setShowConf] = useState(false)
@@ -217,7 +217,7 @@ function BlocLancement({ harmonie, responsable }) {
   const [done,     setDone]     = useState(false)
 
   async function loadPreview() {
-    const r = await fetch(API(`festival-launch.php?harmonie=${encodeURIComponent(harmonie)}`))
+    const r = await fetch(API(`festival-launch.php?token=${encodeURIComponent(token)}`))
     const d = await r.json()
     if (d.ok) { setPreview(d); setAdresse(d.responsable.adresse); setShowConf(true) }
     else setErr(d.error || 'Erreur')
@@ -228,7 +228,7 @@ function BlocLancement({ harmonie, responsable }) {
     const r = await fetch(API('festival-launch.php'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ harmonie, adresse }),
+      body: JSON.stringify({ token, adresse }),
     })
     const d = await r.json()
     setBusy(false)
@@ -358,8 +358,9 @@ function FestivalHeader() {
 
 export default function FestivalCommande() {
   const [searchParams] = useSearchParams()
-  const numeroParam    = searchParams.get('numero')
-  const confirmerParam = searchParams.get('confirmer')
+  const numeroParam       = searchParams.get('numero')
+  const confirmerParam    = searchParams.get('confirmer')
+  const responsableParam  = searchParams.get('responsable')
 
   const [harmonie,     setHarmonie]     = useState('')
   const [harmonieData, setHarmonieData] = useState(null)
@@ -372,7 +373,17 @@ export default function FestivalCommande() {
   const [modifyOrder,  setModifyOrder]  = useState(null)   // order being modified
   const [modifyDone,   setModifyDone]   = useState(false)
   const [reactivated,  setReactivated]  = useState(false)
-  const [confirmResult, setConfirmResult] = useState(null) // null | 'ok' | 'deja' | 'err'
+  const [confirmResult,    setConfirmResult]    = useState(null)
+  const [responsableData,  setResponsableData]  = useState(null)  // vue responsable
+
+  // Vue responsable via token
+  useEffect(() => {
+    if (!responsableParam) return
+    fetch(API(`festival-view-responsable.php?token=${encodeURIComponent(responsableParam)}`))
+      .then(r => r.json())
+      .then(d => { if (d.ok) setResponsableData(d); else setErr(d.error || 'Lien invalide') })
+      .catch(() => setErr('Erreur de chargement'))
+  }, [responsableParam])
 
   // Confirmation par token
   useEffect(() => {
@@ -596,6 +607,26 @@ export default function FestivalCommande() {
         </form>
       )}
 
+      {/* ── Vue responsable ── */}
+      {responsableParam && !responsableData && !err && (
+        <div style={{ color: 'var(--fg-muted)', fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Chargement…</div>
+      )}
+      {responsableParam && err && <div style={st.error}>{err}</div>}
+      {responsableParam && responsableData && (
+        <div>
+          <div style={st.success}>
+            Bonjour <strong>{responsableData.responsable.nom}</strong>, votre adresse email est confirmée.
+            Vous êtes le contact pour la livraison groupée de <strong>{responsableData.harmonie}</strong>.
+          </div>
+          {responsableData.statut === 'ouvert' && (
+            <BlocLancement harmonie={responsableData.harmonie} responsable={responsableData.responsable} token={responsableParam} />
+          )}
+          {responsableData.statut !== 'ouvert' && (
+            <div style={{ ...st.success, marginTop: 16 }}>La commande groupée a déjà été lancée.</div>
+          )}
+        </div>
+      )}
+
       {confirmerParam && confirmResult === 'ok' && (
         <div style={st.success}>
           <div style={{ marginBottom: 8, fontWeight: 500 }}>Votre commande est confirmée !</div>
@@ -621,8 +652,8 @@ export default function FestivalCommande() {
         </div>
       )}
 
-      {/* ── Bloc responsable ── */}
-      {harmonie && (
+      {/* ── Bloc responsable (public) — masqué si vue responsable active ── */}
+      {harmonie && !responsableParam && (
         <BlocResponsable
           harmonie={harmonie}
           harmonieData={harmonieData}
