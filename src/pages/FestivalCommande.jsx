@@ -566,7 +566,33 @@ export default function FestivalCommande() {
             <div style={{ ...st.success, marginBottom: 16 }}>Votre commande a bien été réactivée.</div>
           )}
           {commandeLancee ? (
-            <div style={st.success}>La commande de votre orchestre a été lancée, vous ne pouvez plus modifier votre commande.</div>
+            <div>
+              <div style={{ ...st.success, marginBottom: 20 }}>
+                La commande de votre orchestre a été lancée — vous ne pouvez plus modifier votre commande.
+              </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 8 }}>
+                <tbody>
+                  {PRODUITS.map(p => {
+                    const qty = modifyOrder.commande.produits[p.key] || 0
+                    if (!qty) return null
+                    return (
+                      <tr key={p.key} style={{ borderBottom: '1px solid var(--line)' }}>
+                        <td style={{ padding: '12px 0', fontSize: 14 }}>{p.label}</td>
+                        <td style={{ padding: '12px 0', textAlign: 'right', fontSize: 13, color: 'var(--fg-muted)', paddingRight: 16 }}>
+                          {p.prix.toFixed(2)} €
+                        </td>
+                        <td style={{ padding: '12px 0', fontSize: 14, textAlign: 'center', minWidth: 40 }}>{qty}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14,
+                            fontWeight: 600, borderTop: '1px solid var(--fg)', paddingTop: 10, marginTop: 4 }}>
+                <span>Total hors frais de port</span>
+                <span>{PRODUITS.reduce((s, p) => s + (modifyOrder.commande.produits[p.key] || 0) * p.prix, 0).toFixed(2)} €</span>
+              </div>
+            </div>
           ) : modifyOrder.commande.statut === 'annulee' ? (
             <>
               <div style={{ ...st.success, background: '#fff3cd', marginBottom: 16 }}>
