@@ -349,7 +349,7 @@ function SuiviCommande({ statut, statut_posters, statut_usb }) {
     { ok: true,                                  label: 'Commande groupée lancée' },
     { ok: statut === 'virement_recu' || statut === 'cloture',
                                                  label: 'Virement reçu par DFly' },
-    { ok: statut_posters === 'commande_envoyee', label: 'Posters commandés (Saal Digital)' },
+    { ok: statut_posters === 'commande_envoyee', label: 'Posters commandés (Saal Digital — livraison directe à votre adresse)' },
     { ok: statut_usb === 'commande_passee' || statut_usb === 'expediee',
                                                  label: 'Clé USB commandée fournisseur' },
     { ok: statut_usb === 'expediee',             label: 'Clé USB expédiée' },

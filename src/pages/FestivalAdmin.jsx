@@ -18,7 +18,7 @@ const STATUT_COLORS = {
   virement_recu:    '#2980b9',
   cloture:          '#7f8c8d',
 }
-const POSTERS_LABELS = { commande_envoyee: 'Posters commandés (Saal)' }
+const POSTERS_LABELS = { commande_envoyee: 'Posters commandés (Saal — livraison directe)' }
 const USB_LABELS     = { commande_passee: 'USB commandée fournisseur', expediee: 'USB expédiée' }
 
 const st = {
@@ -190,7 +190,7 @@ export default function FestivalAdmin() {
                         ) : (
                           <button style={{ ...st.btn, fontSize: 9, padding: '4px 12px' }}
                             onClick={() => doAction(h.id, 'posters_envoyes')} disabled={!!busy}>
-                            {busy === h.id + '_posters_envoyes' ? '…' : 'Posters commandés (Saal)'}
+                            {busy === h.id + '_posters_envoyes' ? '…' : 'Posters commandés (Saal — livraison directe)'}
                           </button>
                         )}
                         {/* USB */}
