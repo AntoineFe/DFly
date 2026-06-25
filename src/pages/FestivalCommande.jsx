@@ -558,9 +558,14 @@ export default function FestivalCommande() {
       {/* ── Mode modification ── */}
       {numeroParam && modifyOrder && !modifyDone && (
         <div>
-          <div style={{ fontSize: 13, color: 'var(--fg-muted)', marginBottom: 24 }}>
-            Commande <strong>{modifyOrder.commande.numero}</strong>
-            {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+            <div style={{ fontSize: 13, color: 'var(--fg-muted)' }}>
+              Commande <strong>{modifyOrder.commande.numero}</strong>
+              {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
+            </div>
+            <a href="/galerie" style={{ ...st.btnSecondary, textDecoration: 'none', whiteSpace: 'nowrap' }}>
+              ← Galerie
+            </a>
           </div>
           {reactivated && (
             <div style={{ ...st.success, marginBottom: 16 }}>Votre commande a bien été réactivée.</div>
