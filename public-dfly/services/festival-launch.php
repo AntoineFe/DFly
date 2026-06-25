@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $body_email  = "Bonjour {$resp['nom']},\n\n";
     $body_email .= "Vous avez lancé la commande groupée de votre orchestre pour le " . FESTIVAL_NOM . ".\n\n";
-    $body_email .= "Adresse de livraison :\n{$resp['adresse']}\n\n";
+    $body_email .= "Adresse de livraison :\n{$resp['nom']}\n{$resp['adresse']}\n\n";
     $body_email .= "Récapitulatif des commandes :\n";
     $body_email .= str_repeat('-', 50) . "\n";
     foreach ($commandes_en_cours_data as $cmd) {
@@ -145,8 +145,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     $body_email .= "\n" . str_repeat('-', 50) . "\n";
     $body_email .= "TOTAL GÉNÉRAL : " . number_format($total, 2, ',', ' ') . " €\n\n";
-    $body_email .= "Merci d'effectuer le virement à l'ordre de DFly :\n";
+    $body_email .= "Merci d'effectuer le virement à l'ordre de HELANSOFT :\n";
     $body_email .= "IBAN : " . FESTIVAL_IBAN . "\n";
+    $body_email .= "BIC : " . FESTIVAL_BIC . "\n";
     $body_email .= "Référence à indiquer : {$ref_virement}\n\n";
     $body_email .= "Pour toute difficulté : https://dfly.fr/contact\n\n";
     $body_email .= "À bientôt,\nDFly";
