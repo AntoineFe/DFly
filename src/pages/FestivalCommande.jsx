@@ -221,22 +221,31 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
 
 // ── Bloc Lancement ────────────────────────────────────────────────────────────
 function BlocLancement({ harmonie, responsable, token }) {
-  const [preview,  setPreview]  = useState(null)
-  const [adresse,  setAdresse]  = useState(responsable.adresse)
-  const [showConf, setShowConf] = useState(false)
-  const [busy,     setBusy]     = useState(false)
-  const [err,      setErr]      = useState('')
-  const [done,     setDone]     = useState(false)
+  const [preview,    setPreview]    = useState(null)
+  const [addrEdit,   setAddrEdit]   = useState(false)
+  const [rue,        setRue]        = useState(responsable.rue   || '')
+  const [cp,         setCp]         = useState(responsable.cp    || '')
+  const [ville,      setVille]      = useState(responsable.ville || '')
+  const [showConf,   setShowConf]   = useState(false)
+  const [busy,       setBusy]       = useState(false)
+  const [err,        setErr]        = useState('')
+  const [done,       setDone]       = useState(false)
 
   async function loadPreview() {
     const r = await fetch(API(`festival-launch.php?token=${encodeURIComponent(token)}`))
     const d = await r.json()
-    if (d.ok) { setPreview(d); setAdresse(d.responsable.adresse); setShowConf(true) }
-    else setErr(d.error || 'Erreur')
+    if (d.ok) {
+      setPreview(d)
+      setRue(d.responsable.rue   || '')
+      setCp(d.responsable.cp     || '')
+      setVille(d.responsable.ville || '')
+      setShowConf(true)
+    } else setErr(d.error || 'Erreur')
   }
 
   async function confirm() {
     setBusy(true); setErr('')
+    const adresse = `${rue}\n${cp} ${ville}`
     const r = await fetch(API('festival-launch.php'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -269,8 +278,30 @@ function BlocLancement({ harmonie, responsable, token }) {
 
       <div style={{ marginBottom: 16 }}>
         <label style={st.label}>Adresse de livraison</label>
-        <textarea style={{ ...st.input, height: 80, resize: 'vertical' }}
-          value={adresse} onChange={e => setAdresse(e.target.value)} />
+        {addrEdit ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 400 }}>
+            <input style={st.input} placeholder="Rue" autoComplete="street-address"
+              value={rue} onChange={e => setRue(e.target.value)} />
+            <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 10 }}>
+              <input style={st.input} placeholder="Code postal" autoComplete="postal-code"
+                value={cp} onChange={e => setCp(e.target.value)} />
+              <input style={st.input} placeholder="Ville" autoComplete="address-level2"
+                value={ville} onChange={e => setVille(e.target.value)} />
+            </div>
+            <button type="button" style={{ ...st.btnSecondary, alignSelf: 'flex-start' }}
+              onClick={() => setAddrEdit(false)}>Valider</button>
+          </div>
+        ) : (
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+            <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--fg)' }}>
+              <div style={{ fontWeight: 600 }}>{responsable.nom}</div>
+              <div>{rue}</div>
+              <div>{cp} {ville}</div>
+            </div>
+            <button type="button" style={{ ...st.btnSecondary, fontSize: 10, padding: '5px 12px', whiteSpace: 'nowrap' }}
+              onClick={() => setAddrEdit(true)}>Modifier</button>
+          </div>
+        )}
       </div>
 
       <div style={{ fontSize: 13, marginBottom: 16 }}>
