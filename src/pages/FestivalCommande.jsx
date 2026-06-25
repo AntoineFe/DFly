@@ -223,6 +223,7 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
 function BlocLancement({ harmonie, responsable, token }) {
   const [preview,    setPreview]    = useState(null)
   const [addrEdit,   setAddrEdit]   = useState(false)
+  const [nom,        setNom]        = useState(responsable.nom   || '')
   const [rue,        setRue]        = useState(responsable.rue   || '')
   const [cp,         setCp]         = useState(responsable.cp    || '')
   const [ville,      setVille]      = useState(responsable.ville || '')
@@ -236,6 +237,7 @@ function BlocLancement({ harmonie, responsable, token }) {
     const d = await r.json()
     if (d.ok) {
       setPreview(d)
+      setNom(d.responsable.nom   || '')
       setRue(d.responsable.rue   || '')
       setCp(d.responsable.cp     || '')
       setVille(d.responsable.ville || '')
@@ -249,7 +251,7 @@ function BlocLancement({ harmonie, responsable, token }) {
     const r = await fetch(API('festival-launch.php'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, adresse }),
+      body: JSON.stringify({ token, nom, adresse }),
     })
     const d = await r.json()
     setBusy(false)
@@ -280,6 +282,8 @@ function BlocLancement({ harmonie, responsable, token }) {
         <label style={st.label}>Adresse de livraison</label>
         {addrEdit ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, maxWidth: 400 }}>
+            <input style={st.input} placeholder="Nom" autoComplete="name"
+              value={nom} onChange={e => setNom(e.target.value)} />
             <input style={st.input} placeholder="Rue" autoComplete="street-address"
               value={rue} onChange={e => setRue(e.target.value)} />
             <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 10 }}>
@@ -294,7 +298,7 @@ function BlocLancement({ harmonie, responsable, token }) {
         ) : (
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
             <div style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--fg)' }}>
-              <div style={{ fontWeight: 600 }}>{responsable.nom}</div>
+              <div style={{ fontWeight: 600 }}>{nom}</div>
               <div>{rue}</div>
               <div>{cp} {ville}</div>
             </div>

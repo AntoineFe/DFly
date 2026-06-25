@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body    = json_decode(file_get_contents('php://input'), true) ?? [];
     $token   = trim($body['token']   ?? '');
+    $nom     = trim($body['nom']     ?? '');
     $adresse = trim($body['adresse'] ?? '');
 
     if (!$token) { http_response_code(400); exit(json_encode(['ok' => false, 'error' => 'Token manquant'])); }
@@ -61,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $data = $row['data'];
+    if ($nom)     $data['responsable']['nom']     = $nom;
     if ($adresse) $data['responsable']['adresse'] = $adresse;
 
     $commandes_en_cours = array_keys(array_filter($data['commandes'], function($c) { return $c['statut'] === 'en_cours'; }));
