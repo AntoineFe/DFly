@@ -617,7 +617,7 @@ export default function FestivalCommande() {
         <div style={st.success}>
           <div style={{ marginBottom: 8, fontWeight: 500 }}>Votre commande est enregistrée — numéro <strong>{result.numero}</strong></div>
           <div style={{ marginBottom: 8 }}>Un email vous a été envoyé. <strong>Cliquez sur le lien de confirmation</strong> qu'il contient pour valider votre commande.</div>
-          <div style={{ fontSize: 12, color: 'var(--fg-muted)' }}>Tant que vous n'avez pas confirmé, votre commande reste en attente et ne sera pas prise en compte.</div>
+          <div style={{ fontWeight: 600 }}>Tant que vous n'avez pas confirmé, votre commande reste en attente et ne sera pas prise en compte.</div>
         </div>
       )}
 
