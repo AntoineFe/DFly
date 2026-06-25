@@ -96,7 +96,7 @@ if ($method === 'POST') {
     $body_email .= "Votre commande pour le " . FESTIVAL_NOM . " est presque finalisée.\n\n";
     $body_email .= "Numéro de commande : {$numero}\n\n";
     $body_email .= "Récapitulatif :\n{$recap}\n";
-    $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+    $body_email .= "Total hors frais de port (TTC) : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
     $body_email .= festival_note_port($produitsSanitized) . "\n\n";
     $body_email .= "Pour valider définitivement votre commande, cliquez sur ce lien :\n{$lien_confirm}\n\n";
     $body_email .= "Tant que vous n'avez pas cliqué sur ce lien, votre commande reste en attente et ne sera pas prise en compte.\n\n";
@@ -169,7 +169,7 @@ if ($method === 'PUT') {
         $body_email  = "Bonjour {$nom_dest},\n\n";
         $body_email .= "Votre commande {$numero} pour le " . FESTIVAL_NOM . " a bien été réactivée.\n\n";
         $body_email .= "Récapitulatif :\n{$recap}\n";
-        $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+        $body_email .= "Total hors frais de port (TTC) : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
         $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
         $body_email .= "À bientôt,\nDFly";
         festival_smtp_send($email_dest, festival_ref($targetRow['harmonie']) . " — Commande réactivée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
@@ -179,7 +179,7 @@ if ($method === 'PUT') {
         $body_email  = "Bonjour {$nom_dest},\n\n";
         $body_email .= "Votre commande {$numero} pour le " . FESTIVAL_NOM . " a bien été modifiée.\n\n";
         $body_email .= "Nouveau récapitulatif :\n{$recap}\n";
-        $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
+        $body_email .= "Total hors frais de port (TTC) : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
         $body_email .= festival_note_port($cmd['produits']) . "\n\n";
         $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
         $body_email .= "À bientôt,\nDFly";

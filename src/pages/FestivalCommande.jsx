@@ -71,7 +71,7 @@ function FraisPort({ produits }) {
   return (
     <div style={{ marginTop: 16 }}>
       <div style={totalSt}>
-        <span>Total hors frais de port</span>
+        <span>Total hors frais de port (TTC)</span>
         <span>{total.toFixed(2)} €</span>
       </div>
       <div style={{ fontSize: 11.5, color: 'var(--fg-muted)', marginTop: 8, fontStyle: 'italic', lineHeight: 1.5 }}>
@@ -349,7 +349,7 @@ function SuiviCommande({ statut, statut_posters, statut_usb }) {
     { ok: true,                                  label: 'Commande groupée lancée' },
     { ok: statut === 'virement_recu' || statut === 'cloture',
                                                  label: 'Virement reçu par DFly' },
-    { ok: statut_posters === 'commande_envoyee', label: 'Posters commandés (Saal Digital)' },
+    { ok: statut_posters === 'commande_envoyee', label: 'Posters commandés (Saal Digital — livraison directe à votre adresse)' },
     { ok: statut_usb === 'commande_passee' || statut_usb === 'expediee',
                                                  label: 'Clé USB commandée fournisseur' },
     { ok: statut_usb === 'expediee',             label: 'Clé USB expédiée' },
@@ -553,7 +553,7 @@ export default function FestivalCommande() {
     <FestivalHeader />
     <div style={{ ...st.page, paddingTop: 97 }}>
       <h1 style={st.h1}>190e Festival des Musiques du Faucigny</h1>
-      <div style={st.sub}>Commande de produits souvenir — prix hors frais de port</div>
+      <div style={st.sub}>Commande de produits souvenir — prix hors frais de port (TTC)</div>
 
       {/* ── Mode modification ── */}
       {numeroParam && modifyOrder && !modifyDone && (
@@ -566,7 +566,33 @@ export default function FestivalCommande() {
             <div style={{ ...st.success, marginBottom: 16 }}>Votre commande a bien été réactivée.</div>
           )}
           {commandeLancee ? (
-            <div style={st.success}>La commande de votre orchestre a été lancée, vous ne pouvez plus modifier votre commande.</div>
+            <div>
+              <div style={{ ...st.success, marginBottom: 20 }}>
+                La commande de votre orchestre a été lancée — vous ne pouvez plus modifier votre commande.
+              </div>
+              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 8 }}>
+                <tbody>
+                  {PRODUITS.map(p => {
+                    const qty = modifyOrder.commande.produits[p.key] || 0
+                    if (!qty) return null
+                    return (
+                      <tr key={p.key} style={{ borderBottom: '1px solid var(--line)' }}>
+                        <td style={{ padding: '12px 0', fontSize: 14 }}>{p.label}</td>
+                        <td style={{ padding: '12px 0', textAlign: 'right', fontSize: 13, color: 'var(--fg-muted)', paddingRight: 16 }}>
+                          {p.prix.toFixed(2)} €
+                        </td>
+                        <td style={{ padding: '12px 0', fontSize: 14, textAlign: 'center', minWidth: 40 }}>{qty}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 14,
+                            fontWeight: 600, borderTop: '1px solid var(--fg)', paddingTop: 10, marginTop: 4 }}>
+                <span>Total hors frais de port (TTC)</span>
+                <span>{PRODUITS.reduce((s, p) => s + (modifyOrder.commande.produits[p.key] || 0) * p.prix, 0).toFixed(2)} €</span>
+              </div>
+            </div>
           ) : modifyOrder.commande.statut === 'annulee' ? (
             <>
               <div style={{ ...st.success, background: '#fff3cd', marginBottom: 16 }}>
@@ -716,7 +742,7 @@ export default function FestivalCommande() {
                                                color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'center', fontWeight: 400 }}>{p.label}</th>
                     ))}
                     <th style={{ padding: '8px 0', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
-                                 color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'right', fontWeight: 400 }}>Total HT</th>
+                                 color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'right', fontWeight: 400 }}>Total TTC</th>
                   </tr>
                 </thead>
                 <tbody>
