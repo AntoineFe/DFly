@@ -122,8 +122,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Construit le récap pour l'email
     $resp = $data['responsable'];
-    $num_harmonie = substr($harmonie, 0, 2);
-    $ref_virement = 'FESMUS-' . FESTIVAL_ANNEE . '-' . $num_harmonie;
+    preg_match('/^([A-Za-z0-9]+)/', $harmonie, $m);
+    $ref_virement = 'FESMUS-' . FESTIVAL_ANNEE . '-' . strtoupper($m[1] ?? '00');
     $commandes_en_cours_data = array_values(array_filter($data['commandes'], function($c) { return $c['statut'] === 'en_cours'; }));
 
     $body_email  = "Bonjour {$resp['nom']},\n\n";
