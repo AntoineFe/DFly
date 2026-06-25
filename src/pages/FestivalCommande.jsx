@@ -617,6 +617,53 @@ export default function FestivalCommande() {
             Bonjour <strong>{responsableData.responsable.nom}</strong>, votre adresse email est confirmée.
             Vous êtes le contact pour la livraison groupée de <strong>{responsableData.harmonie}</strong>.
           </div>
+
+          {/* Commandes en cours */}
+          <div style={{ marginTop: 24 }}>
+            <div style={{ fontSize: 10, letterSpacing: '0.3em', textTransform: 'uppercase',
+                          color: 'var(--fg-muted)', marginBottom: 12 }}>
+              Commandes confirmées ({responsableData.commandes.length})
+            </div>
+            {responsableData.commandes.length === 0 ? (
+              <div style={{ color: 'var(--fg-muted)', fontStyle: 'italic', fontSize: 14 }}>
+                Aucune commande confirmée pour l'instant.
+              </div>
+            ) : (
+              <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: 16 }}>
+                <thead>
+                  <tr>
+                    <th style={{ padding: '8px 0', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
+                                 color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'left', fontWeight: 400 }}>Musicien</th>
+                    {PRODUITS.map(p => (
+                      <th key={p.key} style={{ padding: '8px 8px', fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase',
+                                               color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'center', fontWeight: 400 }}>{p.label}</th>
+                    ))}
+                    <th style={{ padding: '8px 0', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase',
+                                 color: 'var(--fg-muted)', borderBottom: '1px solid var(--line)', textAlign: 'right', fontWeight: 400 }}>Total HT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {responsableData.commandes.map(cmd => (
+                    <tr key={cmd.numero} style={{ borderBottom: '1px solid var(--line)' }}>
+                      <td style={{ padding: '10px 0', fontSize: 13 }}>
+                        {cmd.nom}<br />
+                        <span style={{ fontSize: 11, color: 'var(--fg-muted)' }}>{cmd.email}</span>
+                      </td>
+                      {PRODUITS.map(p => (
+                        <td key={p.key} style={{ padding: '10px 8px', fontSize: 13, textAlign: 'center' }}>
+                          {cmd.produits[p.key] || 0}
+                        </td>
+                      ))}
+                      <td style={{ padding: '10px 0', fontSize: 13, textAlign: 'right' }}>
+                        {cmd.total.toFixed(2).replace('.', ',')} €
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
+
           {responsableData.statut === 'ouvert' && (
             <BlocLancement harmonie={responsableData.harmonie} responsable={responsableData.responsable} token={responsableParam} />
           )}
