@@ -559,7 +559,7 @@ export default function FestivalCommande() {
       {numeroParam && modifyOrder && !modifyDone && (
         <div>
           <div style={{ fontSize: 13, color: 'var(--fg-muted)', marginBottom: 24 }}>
-            Modification de la commande <strong>{modifyOrder.commande.numero}</strong>
+            Commande <strong>{modifyOrder.commande.numero}</strong>
             {' '}— {modifyOrder.commande.nom} — {modifyOrder.harmonie}
           </div>
           {reactivated && (
