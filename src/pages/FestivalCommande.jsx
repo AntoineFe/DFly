@@ -359,6 +359,7 @@ function FestivalHeader() {
 export default function FestivalCommande() {
   const [searchParams] = useSearchParams()
   const numeroParam    = searchParams.get('numero')
+  const confirmerParam = searchParams.get('confirmer')
 
   const [harmonie,     setHarmonie]     = useState('')
   const [harmonieData, setHarmonieData] = useState(null)
@@ -371,6 +372,23 @@ export default function FestivalCommande() {
   const [modifyOrder,  setModifyOrder]  = useState(null)   // order being modified
   const [modifyDone,   setModifyDone]   = useState(false)
   const [reactivated,  setReactivated]  = useState(false)
+  const [confirmResult, setConfirmResult] = useState(null) // null | 'ok' | 'deja' | 'err'
+
+  // Confirmation par token
+  useEffect(() => {
+    if (!confirmerParam) return
+    fetch(API('festival-confirm.php'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: confirmerParam }),
+    })
+      .then(r => r.json())
+      .then(d => {
+        if (d.ok) setConfirmResult(d.deja_confirme ? 'deja' : 'ok')
+        else setConfirmResult('err')
+      })
+      .catch(() => setConfirmResult('err'))
+  }, [confirmerParam])
 
   // Chargement commande à modifier
   useEffect(() => {
@@ -578,15 +596,28 @@ export default function FestivalCommande() {
         </form>
       )}
 
-      {!numeroParam && result && (
+      {confirmerParam && confirmResult === 'ok' && (
         <div style={st.success}>
-          <div style={{ marginBottom: 12 }}>
-            Votre commande est enregistrée — numéro <strong>{result.numero}</strong>
-          </div>
-          <div>
-            Elle sera expédiée dès qu'un responsable de votre orchestre se sera désigné
-            et aura effectué le virement groupé.
-          </div>
+          <div style={{ marginBottom: 8, fontWeight: 500 }}>Votre commande est confirmée !</div>
+          <div>Elle sera expédiée dès qu'un responsable de votre orchestre se sera désigné et aura effectué le virement groupé.</div>
+          <div style={{ marginTop: 8, fontSize: 12, color: 'var(--fg-muted)' }}>Un email de confirmation vous a été envoyé.</div>
+        </div>
+      )}
+      {confirmerParam && confirmResult === 'deja' && (
+        <div style={st.success}>Votre commande a déjà été confirmée.</div>
+      )}
+      {confirmerParam && confirmResult === 'err' && (
+        <div style={st.error}>Ce lien de confirmation est invalide ou a déjà été utilisé.</div>
+      )}
+      {confirmerParam && !confirmResult && (
+        <div style={{ color: 'var(--fg-muted)', fontFamily: 'var(--serif)', fontStyle: 'italic' }}>Confirmation en cours…</div>
+      )}
+
+      {!numeroParam && !confirmerParam && result && (
+        <div style={st.success}>
+          <div style={{ marginBottom: 8, fontWeight: 500 }}>Votre commande est enregistrée — numéro <strong>{result.numero}</strong></div>
+          <div style={{ marginBottom: 8 }}>Un email vous a été envoyé. <strong>Cliquez sur le lien de confirmation</strong> qu'il contient pour valider votre commande.</div>
+          <div style={{ fontSize: 12, color: 'var(--fg-muted)' }}>Tant que vous n'avez pas confirmé, votre commande reste en attente et ne sera pas prise en compte.</div>
         </div>
       )}
 

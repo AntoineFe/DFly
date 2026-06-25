@@ -68,6 +68,7 @@ if ($method === 'POST') {
     }
 
     $numero = festival_numero($db_info);
+    $token  = bin2hex(random_bytes(16));
     $data   = $row['data'] ?? ['responsable' => null, 'commandes' => [], 'total' => 0.0];
 
     $data['commandes'][] = [
@@ -75,7 +76,8 @@ if ($method === 'POST') {
         'nom'      => $nom,
         'email'    => $email,
         'produits' => $produitsSanitized,
-        'statut'   => 'en_cours',
+        'statut'   => 'en_attente',
+        'token'    => $token,
         'total'    => $total,
     ];
     $data['total'] = array_sum(array_column(
@@ -86,20 +88,22 @@ if ($method === 'POST') {
     festival_save_row($link, $harmonie, $data, $row ? $row['statut_global'] : 'ouvert');
     mysqli_close($link);
 
-    // Email musicien
-    $lien_modif = 'https://dfly.fr/commande-festival-faucigny-2026?numero=' . urlencode($numero);
+    // Email musicien — confirmation requise
+    $lien_confirm = 'https://dfly.fr/commande-festival-faucigny-2026?confirmer=' . urlencode($token);
+    $lien_modif   = 'https://dfly.fr/commande-festival-faucigny-2026?numero=' . urlencode($numero);
     $recap = festival_format_recap(['produits' => $produitsSanitized]);
     $body_email  = "Bonjour {$nom},\n\n";
-    $body_email .= "Votre commande pour le " . FESTIVAL_NOM . " a bien été enregistrée.\n\n";
+    $body_email .= "Votre commande pour le " . FESTIVAL_NOM . " est presque finalisée.\n\n";
     $body_email .= "Numéro de commande : {$numero}\n\n";
     $body_email .= "Récapitulatif :\n{$recap}\n";
     $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
     $body_email .= festival_note_port($produitsSanitized) . "\n\n";
-    $body_email .= "Votre commande sera expédiée dès qu'un responsable de votre orchestre se sera désigné et aura effectué le virement groupé.\n\n";
+    $body_email .= "Pour valider définitivement votre commande, cliquez sur ce lien :\n{$lien_confirm}\n\n";
+    $body_email .= "Tant que vous n'avez pas cliqué sur ce lien, votre commande reste en attente et ne sera pas prise en compte.\n\n";
     $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
     $body_email .= "À bientôt,\nDFly";
 
-    festival_smtp_send($email, "Votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+    festival_smtp_send($email, "Confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
 
     exit(json_encode(['ok' => true, 'numero' => $numero, 'sous_total' => $sous_total, 'port' => $port, 'total' => $total]));
 }
