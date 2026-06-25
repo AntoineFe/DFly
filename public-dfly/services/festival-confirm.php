@@ -58,6 +58,6 @@ $body_email .= "Votre commande sera expédiée dès qu'un responsable de votre o
 $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
 $body_email .= "À bientôt,\nDFly";
 
-festival_smtp_send($email, "Commande confirmée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+festival_smtp_send($email, festival_ref($targetRow['harmonie']) . " — Commande confirmée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
 
 exit(json_encode(['ok' => true, 'numero' => $numero]));

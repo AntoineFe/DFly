@@ -19,11 +19,11 @@ if (!preg_match('/^FESMUS-\d{4}-\d{4}$/', $numero)) {
 
 list($link) = festival_db();
 $res = mysqli_query($link, "SELECT id, harmonie, statut_global, data FROM festival_commandes_groupees");
-$cmd = null;
+$cmd = null; $harmonie_row = '';
 while ($row = mysqli_fetch_assoc($res)) {
     $data = json_decode($row['data'], true);
     foreach ($data['commandes'] as $c) {
-        if ($c['numero'] === $numero) { $cmd = $c; break 2; }
+        if ($c['numero'] === $numero) { $cmd = $c; $harmonie_row = $row['harmonie']; break 2; }
     }
 }
 mysqli_close($link);
@@ -51,6 +51,6 @@ $body_email .= "Tant que vous n'avez pas cliqué sur ce lien, votre commande res
 $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
 $body_email .= "À bientôt,\nDFly";
 
-festival_smtp_send($email, "Rappel : confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+festival_smtp_send($email, festival_ref($harmonie_row) . " — Rappel : confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
 
 exit(json_encode(['ok' => true]));

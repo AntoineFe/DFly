@@ -103,7 +103,7 @@ if ($method === 'POST') {
     $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
     $body_email .= "À bientôt,\nDFly";
 
-    festival_smtp_send($email, "Confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+    festival_smtp_send($email, festival_ref($harmonie) . " — Confirmez votre commande — " . FESTIVAL_NOM, $body_email, '', festival_cc());
 
     exit(json_encode(['ok' => true, 'numero' => $numero, 'sous_total' => $sous_total, 'port' => $port, 'total' => $total]));
 }
@@ -162,7 +162,7 @@ if ($method === 'PUT') {
         $body_email .= "Votre commande {$numero} pour le " . FESTIVAL_NOM . " a bien été annulée.\n\n";
         $body_email .= "Si vous souhaitez la réactiver :\n{$lien_modif}\n\n";
         $body_email .= "À bientôt,\nDFly";
-        festival_smtp_send($email_dest, "Commande annulée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+        festival_smtp_send($email_dest, festival_ref($targetRow['harmonie']) . " — Commande annulée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
     } else if ($reactiver) {
         $recap = festival_format_recap($cmd);
         $sous_total = festival_calcul_sous_total($cmd['produits']);
@@ -172,7 +172,7 @@ if ($method === 'PUT') {
         $body_email .= "Total hors frais de port : " . number_format($sous_total, 2, ',', ' ') . " €\n\n";
         $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
         $body_email .= "À bientôt,\nDFly";
-        festival_smtp_send($email_dest, "Commande réactivée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+        festival_smtp_send($email_dest, festival_ref($targetRow['harmonie']) . " — Commande réactivée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
     } else {
         $recap = festival_format_recap($cmd);
         $sous_total = festival_calcul_sous_total($cmd['produits']);
@@ -183,7 +183,7 @@ if ($method === 'PUT') {
         $body_email .= festival_note_port($cmd['produits']) . "\n\n";
         $body_email .= "Pour modifier ou annuler votre commande :\n{$lien_modif}\n\n";
         $body_email .= "À bientôt,\nDFly";
-        festival_smtp_send($email_dest, "Commande modifiée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
+        festival_smtp_send($email_dest, festival_ref($targetRow['harmonie']) . " — Commande modifiée — " . FESTIVAL_NOM, $body_email, '', festival_cc());
     }
 
     exit(json_encode(['ok' => true]));

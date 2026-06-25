@@ -152,7 +152,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $body_email .= "Pour toute difficulté : https://dfly.fr/contact\n\n";
     $body_email .= "À bientôt,\nDFly";
 
-    festival_smtp_send($resp['email'], "Commande groupée " . FESTIVAL_NOM . " — récapitulatif et virement", $body_email, '', festival_cc());
+    festival_smtp_send($resp['email'], $ref_virement . " — Commande groupée " . FESTIVAL_NOM . " — récapitulatif et virement", $body_email, '', festival_cc());
 
     exit(json_encode(['ok' => true]));
 }

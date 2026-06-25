@@ -85,6 +85,11 @@ function festival_calcul_total($produits) {
     return round(festival_calcul_sous_total($produits) + $port['total'], 2);
 }
 
+function festival_ref($harmonie) {
+    preg_match('/^([A-Za-z0-9]+)/', $harmonie, $m);
+    return 'FESMUS-' . FESTIVAL_ANNEE . '-' . strtoupper($m[1] ?? '00');
+}
+
 function festival_numero($link_cfg) {
     list($link) = $link_cfg;
     mysqli_query($link, "INSERT INTO festival_sequences (created_at) VALUES (NOW())");
