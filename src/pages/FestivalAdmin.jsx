@@ -174,7 +174,7 @@ export default function FestivalAdmin() {
                     {h.responsable ? (
                       <div style={{ fontSize: 12, color: 'var(--fg-muted)', marginBottom: 12 }}>
                         Responsable : <strong style={{ color: 'var(--fg)' }}>{h.responsable.nom}</strong>
-                        {' '}— {h.responsable.email} — {h.responsable.adresse}
+                        {' '}— {h.responsable.email}{h.responsable.tel ? ` — ${h.responsable.tel}` : ''} — {h.responsable.adresse}
                       </div>
                     ) : (
                       <div style={{ fontSize: 12, color: 'var(--fg-muted)', marginBottom: 12, fontStyle: 'italic' }}>
