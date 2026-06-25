@@ -30,12 +30,14 @@ while ($row = mysqli_fetch_assoc($res)) {
     }
 
     $harmonies[] = [
-        'id'            => $row['id'],
-        'harmonie'      => $row['harmonie'],
-        'statut_global' => $row['statut_global'],
-        'responsable'   => $data['responsable'],
-        'commandes'     => $data['commandes'],
-        'total'         => $total,
+        'id'             => $row['id'],
+        'harmonie'       => $row['harmonie'],
+        'statut_global'  => $row['statut_global'],
+        'statut_posters' => $data['statut_posters'] ?? null,
+        'statut_usb'     => $data['statut_usb']     ?? null,
+        'responsable'    => $data['responsable'],
+        'commandes'      => $data['commandes'],
+        'total'          => $total,
     ];
 }
 

@@ -9,13 +9,17 @@ const API  = path => `${BASE}services/${path}`
 const STATUT_LABELS = {
   ouvert:           'Ouvert',
   virement_attendu: 'Virement attendu',
+  virement_recu:    'Virement reçu',
   cloture:          'Clôturé',
 }
 const STATUT_COLORS = {
   ouvert:           '#27ae60',
   virement_attendu: '#e67e22',
+  virement_recu:    '#2980b9',
   cloture:          '#7f8c8d',
 }
+const POSTERS_LABELS = { commande_envoyee: 'Posters commandés (Saal)' }
+const USB_LABELS     = { commande_passee: 'USB commandée fournisseur', expediee: 'USB expédiée' }
 
 const st = {
   page:    { minHeight: '100vh', background: 'var(--bg)' },
@@ -52,13 +56,13 @@ export default function FestivalAdmin() {
 
   useEffect(() => { load() }, [])
 
-  async function cloture(id) {
-    if (!window.confirm('Clôturer cette harmonie ?')) return
-    setBusy(id)
+  async function doAction(id, action, confirm_msg) {
+    if (confirm_msg && !window.confirm(confirm_msg)) return
+    setBusy(id + '_' + action)
     const r = await authFetch('festival-close.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'cloture' }),
+      body: JSON.stringify({ id, action }),
     })
     const d = await r.json()
     setBusy(false)
@@ -75,19 +79,6 @@ export default function FestivalAdmin() {
     const d = await r.json()
     setBusy(false)
     if (!d.ok) alert(d.error || 'Erreur lors de l\'envoi')
-  }
-
-  async function reopen(id) {
-    if (!window.confirm('Rouvrir les commandes pour cette harmonie ?')) return
-    setBusy(id)
-    const r = await authFetch('festival-close.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, action: 'reopen' }),
-    })
-    const d = await r.json()
-    setBusy(false)
-    if (d.ok) load()
   }
 
   return (
@@ -151,19 +142,25 @@ export default function FestivalAdmin() {
                         {STATUT_LABELS[h.statut_global]}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                      <span style={{ fontSize: 13, color: 'var(--fg-muted)' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: 13, color: 'var(--fg-muted)', marginRight: 8 }}>
                         {en_cours.length} commande{en_cours.length !== 1 ? 's' : ''} — {h.total.toFixed(2).replace('.', ',')} €
                       </span>
+                      {h.statut_global === 'virement_attendu' && (
+                        <button style={st.btn} onClick={() => doAction(h.id, 'virement_recu')} disabled={!!busy}>
+                          {busy === h.id + '_virement_recu' ? '…' : 'Virement reçu'}
+                        </button>
+                      )}
                       {h.statut_global !== 'cloture' && (
-                        <button style={st.btn} onClick={() => cloture(h.id)} disabled={busy === h.id}>
-                          {busy === h.id ? '…' : 'Clôturer'}
+                        <button style={{ ...st.btn, background: 'none', color: 'var(--fg)', border: '1px solid var(--line)' }}
+                          onClick={() => doAction(h.id, 'cloture', 'Clôturer cette harmonie ?')} disabled={!!busy}>
+                          {busy === h.id + '_cloture' ? '…' : 'Clôturer'}
                         </button>
                       )}
                       {h.statut_global !== 'ouvert' && (
                         <button style={{ ...st.btn, background: 'none', color: 'var(--fg)', border: '1px solid var(--line)' }}
-                          onClick={() => reopen(h.id)} disabled={busy === h.id}>
-                          {busy === h.id ? '…' : 'Rouvrir'}
+                          onClick={() => doAction(h.id, 'reopen', 'Rouvrir les commandes pour cette harmonie ?')} disabled={!!busy}>
+                          {busy === h.id + '_reopen' ? '…' : 'Rouvrir'}
                         </button>
                       )}
                     </div>
@@ -179,6 +176,44 @@ export default function FestivalAdmin() {
                     ) : (
                       <div style={{ fontSize: 12, color: 'var(--fg-muted)', marginBottom: 12, fontStyle: 'italic' }}>
                         Aucun responsable désigné
+                      </div>
+                    )}
+
+                    {/* Suivi posters / USB */}
+                    {['virement_recu', 'cloture'].includes(h.statut_global) && (
+                      <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 12 }}>
+                        {/* Posters */}
+                        {h.statut_posters ? (
+                          <span style={{ fontSize: 11, padding: '4px 10px', background: '#eaf4fb', color: '#2980b9', border: '1px solid #aed6f1' }}>
+                            ✓ {POSTERS_LABELS[h.statut_posters]}
+                          </span>
+                        ) : (
+                          <button style={{ ...st.btn, fontSize: 9, padding: '4px 12px' }}
+                            onClick={() => doAction(h.id, 'posters_envoyes')} disabled={!!busy}>
+                            {busy === h.id + '_posters_envoyes' ? '…' : 'Posters commandés (Saal)'}
+                          </button>
+                        )}
+                        {/* USB */}
+                        {h.statut_usb === 'expediee' ? (
+                          <span style={{ fontSize: 11, padding: '4px 10px', background: '#eaf4fb', color: '#2980b9', border: '1px solid #aed6f1' }}>
+                            ✓ {USB_LABELS['expediee']}
+                          </span>
+                        ) : h.statut_usb === 'commande_passee' ? (
+                          <>
+                            <span style={{ fontSize: 11, padding: '4px 10px', background: '#fef9e7', color: '#e67e22', border: '1px solid #f9e4b7' }}>
+                              ⏳ {USB_LABELS['commande_passee']}
+                            </span>
+                            <button style={{ ...st.btn, fontSize: 9, padding: '4px 12px' }}
+                              onClick={() => doAction(h.id, 'usb_expediee')} disabled={!!busy}>
+                              {busy === h.id + '_usb_expediee' ? '…' : 'USB expédiée'}
+                            </button>
+                          </>
+                        ) : (
+                          <button style={{ ...st.btn, fontSize: 9, padding: '4px 12px' }}
+                            onClick={() => doAction(h.id, 'usb_commandee')} disabled={!!busy}>
+                            {busy === h.id + '_usb_commandee' ? '…' : 'USB commandée fournisseur'}
+                          </button>
+                        )}
                       </div>
                     )}
 

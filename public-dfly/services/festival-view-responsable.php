@@ -37,10 +37,12 @@ $commandes_en_cours = array_values(array_filter($data['commandes'], function($c)
 $total = array_sum(array_column($commandes_en_cours, 'total'));
 
 exit(json_encode([
-    'ok'          => true,
-    'harmonie'    => $found['harmonie'],
-    'statut'      => $found['statut_global'],
-    'responsable' => $data['responsable'],
-    'commandes'   => $commandes_en_cours,
-    'total'       => $total,
+    'ok'             => true,
+    'harmonie'       => $found['harmonie'],
+    'statut'         => $found['statut_global'],
+    'statut_posters' => $data['statut_posters'] ?? null,
+    'statut_usb'     => $data['statut_usb']     ?? null,
+    'responsable'    => $data['responsable'],
+    'commandes'      => $commandes_en_cours,
+    'total'          => $total,
 ]));
