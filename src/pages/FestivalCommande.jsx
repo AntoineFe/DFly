@@ -515,8 +515,7 @@ export default function FestivalCommande() {
         <form onSubmit={submitNew} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div style={{ padding: '14px 18px', background: 'var(--bg-alt)', border: '1px solid var(--line)',
                         fontSize: 13, color: 'var(--fg)', lineHeight: 1.6 }}>
-            Les commandes sont regroupées par orchestre. Un contact de votre harmonie se chargera du virement groupé,
-            et les produits vous seront expédiés ensemble.
+            Pour limiter les frais de port, les commandes sont regroupées par harmonie. Un membre volontaire se charge du virement et de la réception des produits.
           </div>
           <div>
             <label style={st.label}>Votre orchestre</label>
