@@ -9,11 +9,16 @@
 CREATE TABLE festival_commandes_groupees (
   id            INT AUTO_INCREMENT PRIMARY KEY,
   harmonie      VARCHAR(255) NOT NULL UNIQUE,
-  statut_global ENUM('ouvert','virement_attendu','cloture') DEFAULT 'ouvert',
+  statut_global ENUM('ouvert','virement_attendu','virement_recu','cloture') DEFAULT 'ouvert',
   data          JSON NOT NULL DEFAULT ('{"responsable":null,"commandes":[],"total":0}'),
   created_at    DATETIME DEFAULT NOW(),
   updated_at    DATETIME DEFAULT NOW() ON UPDATE NOW()
 );
+
+-- ── Migration : ajout statut virement_recu ───────────────────────────────────
+-- À exécuter sur les bases existantes créées avant l'ajout de ce statut.
+ALTER TABLE festival_commandes_groupees
+  MODIFY COLUMN statut_global ENUM('ouvert','virement_attendu','virement_recu','cloture') NOT NULL DEFAULT 'ouvert';
 
 CREATE TABLE festival_sequences (
   id         INT AUTO_INCREMENT PRIMARY KEY,
