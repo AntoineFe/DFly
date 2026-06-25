@@ -120,7 +120,7 @@ function QtyInput({ value, onChange }) {
 // ── Bloc Contact livraison ────────────────────────────────────────────────────
 function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
   const [ui, setUi]     = useState('closed') // closed | form | editing
-  const [form, setForm] = useState({ nom: '', email: '', tel: '', adresse: '' })
+  const [form, setForm] = useState({ nom: '', email: '', tel: '', rue: '', cp: '', ville: '' })
   const [busy, setBusy] = useState(false)
   const [err,  setErr]  = useState('')
 
@@ -130,8 +130,8 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
   useEffect(() => {
     setUi('closed')
     setForm(resp
-      ? { nom: resp.nom, email: resp.email, tel: resp.tel || '', adresse: resp.adresse }
-      : { nom: '', email: '', tel: '', adresse: '' })
+      ? { nom: resp.nom, email: resp.email, tel: resp.tel || '', rue: resp.rue || '', cp: resp.cp || '', ville: resp.ville || '' }
+      : { nom: '', email: '', tel: '', rue: '', cp: '', ville: '' })
     setErr('')
   }, [harmonie])
 
@@ -168,7 +168,10 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
             Contact : <strong>{resp.nom}</strong> — {resp.email}
             {resp.tel && <span> — {resp.tel}</span>}
           </div>
-          <div style={{ fontSize: 13, color: 'var(--fg-muted)', marginBottom: 12 }}>{resp.adresse}</div>
+          <div style={{ fontSize: 13, color: 'var(--fg-muted)', marginBottom: 12 }}>
+            {resp.rue && <div>{resp.rue}</div>}
+            {(resp.cp || resp.ville) && <div>{resp.cp} {resp.ville}</div>}
+          </div>
           <button style={st.btnSecondary} onClick={() => setUi('editing')}>Modifier</button>
         </div>
       )}
@@ -188,9 +191,18 @@ function BlocResponsable({ harmonie, harmonieData, onRefresh }) {
             <input style={st.input} type="tel" value={form.tel} onChange={e => setForm(f => ({ ...f, tel: e.target.value }))} />
           </div>
           <div>
-            <label style={st.label}>Adresse de livraison</label>
-            <textarea style={{ ...st.input, height: 80, resize: 'vertical' }}
-              value={form.adresse} onChange={e => setForm(f => ({ ...f, adresse: e.target.value }))} required />
+            <label style={st.label}>Rue</label>
+            <input style={st.input} autoComplete="street-address" value={form.rue} onChange={e => setForm(f => ({ ...f, rue: e.target.value }))} required />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '120px 1fr', gap: 12 }}>
+            <div>
+              <label style={st.label}>Code postal</label>
+              <input style={st.input} autoComplete="postal-code" value={form.cp} onChange={e => setForm(f => ({ ...f, cp: e.target.value }))} required />
+            </div>
+            <div>
+              <label style={st.label}>Ville</label>
+              <input style={st.input} autoComplete="address-level2" value={form.ville} onChange={e => setForm(f => ({ ...f, ville: e.target.value }))} required />
+            </div>
           </div>
           {err && <div style={st.error}>{err}</div>}
           <div style={{ display: 'flex', gap: 12 }}>
