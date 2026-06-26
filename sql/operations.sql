@@ -5,5 +5,6 @@
 -- ============================================================
 
 
--- [2026-06-04] alphoxfr_photos — Ajout colonne ip manquante dans HabilSessions
-ALTER TABLE HabilSessions ADD COLUMN ip VARCHAR(15) DEFAULT NULL;
+-- [2026-06-26] alphoxfr_photos — Suppression commandes de test festival (séquence conservée)
+DELETE FROM festival_commandes_groupees;
+
