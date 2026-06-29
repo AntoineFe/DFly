@@ -12,10 +12,10 @@ $jsonFile = __DIR__ . '/galerie-public-message.json';
 // ── GET : lecture publique ─────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!file_exists($jsonFile)) {
-        exit(json_encode(['ok' => true, 'message' => '', 'url' => '']));
+        exit(json_encode(['ok' => true, 'html' => '']));
     }
-    $data = json_decode(file_get_contents($jsonFile), true) ?? ['message' => '', 'url' => ''];
-    exit(json_encode(['ok' => true, 'message' => $data['message'] ?? '', 'url' => $data['url'] ?? '']));
+    $data = json_decode(file_get_contents($jsonFile), true) ?? [];
+    exit(json_encode(['ok' => true, 'html' => $data['html'] ?? '']));
 }
 
 // ── POST : sauvegarde (admin uniquement) ──────────────────────────────────────
@@ -23,11 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session = galerie_require_auth();
     galerie_require_level($session, 'admin', 'R');
 
-    $body    = json_decode(file_get_contents('php://input'), true) ?? [];
-    $message = trim($body['message'] ?? '');
-    $url     = trim($body['url']     ?? '');
+    $body = json_decode(file_get_contents('php://input'), true) ?? [];
+    $html = $body['html'] ?? '';
 
-    file_put_contents($jsonFile, json_encode(['message' => $message, 'url' => $url], JSON_UNESCAPED_UNICODE));
+    file_put_contents($jsonFile, json_encode(['html' => $html], JSON_UNESCAPED_UNICODE));
     exit(json_encode(['ok' => true]));
 }
 

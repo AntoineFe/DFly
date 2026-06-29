@@ -16,32 +16,27 @@ const inputStyle = {
   color: 'var(--fg)', fontSize: 15, fontFamily: 'inherit', outline: 'none',
 }
 
-// ── Bloc message public ───────────────────────────────────────────────────────
+// ── Bloc CMS bas de page ──────────────────────────────────────────────────────
 
-function PublicMessage() {
-  const [data, setData] = useState(null)
+function CmsLoginBlock() {
+  const [html, setHtml] = useState('')
 
   useEffect(() => {
     fetch(`${BASE}services/galerie-public-message.php`)
       .then(r => r.json())
-      .then(d => { if (d.ok && d.message) setData(d) })
+      .then(d => { if (d.ok && d.html) setHtml(d.html) })
       .catch(() => {})
   }, [])
 
-  if (!data) return null
+  if (!html) return null
 
-  const style = {
-    marginBottom: 24, padding: '14px 18px',
-    border: '1px solid var(--line)',
-    fontFamily: 'var(--serif)', fontSize: 17, lineHeight: 1.55,
-    fontStyle: 'italic', color: 'var(--fg)',
-    textDecoration: 'none', display: 'block',
-  }
-
-  if (data.url) {
-    return <a href={data.url} style={style}>{data.message}</a>
-  }
-  return <div style={style}>{data.message}</div>
+  return (
+    <div
+      style={{ marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 28,
+        fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.65, color: 'var(--fg)' }}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  )
 }
 
 // ── Bloc "renvoi de lien" ─────────────────────────────────────────────────────
@@ -256,8 +251,6 @@ export default function GalerieLogin() {
           )}
         </div>
 
-        <PublicMessage />
-
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.28em',
@@ -303,6 +296,7 @@ export default function GalerieLogin() {
         </form>
 
         <ResendBlock />
+        <CmsLoginBlock />
       </div>
     </div>
   )

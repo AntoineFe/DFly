@@ -768,11 +768,10 @@ function ActionBtn({ onClick, active, title, children }) {
   )
 }
 
-// ── Message public affiché sur la page de connexion ──────────────────────────
+// ── CMS : éditeur de contenu de la page de connexion ─────────────────────────
 
-function PublicMessageEditor({ authFetch }) {
-  const [message, setMessage] = useState('')
-  const [url,     setUrl]     = useState('')
+function CmsEditor({ authFetch }) {
+  const [html,    setHtml]    = useState('')
   const [loaded,  setLoaded]  = useState(false)
   const [saving,  setSaving]  = useState(false)
   const [saved,   setSaved]   = useState(false)
@@ -780,7 +779,7 @@ function PublicMessageEditor({ authFetch }) {
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}services/galerie-public-message.php`)
       .then(r => r.json())
-      .then(d => { if (d.ok) { setMessage(d.message); setUrl(d.url) } })
+      .then(d => { if (d.ok) setHtml(d.html || '') })
       .catch(() => {})
       .finally(() => setLoaded(true))
   }, [])
@@ -792,7 +791,7 @@ function PublicMessageEditor({ authFetch }) {
       await authFetch('galerie-public-message.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message, url }),
+        body: JSON.stringify({ html }),
       })
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
@@ -808,18 +807,18 @@ function PublicMessageEditor({ authFetch }) {
   if (!loaded) return null
 
   return (
-    <div style={{ border: '1px solid var(--line)', padding: 24, marginBottom: 32 }}>
+    <div>
       <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.3em',
-        textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 20 }}>
-        Message affiché sur la page de connexion
+        textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 24 }}>
+        Page de connexion
       </div>
       <form onSubmit={save}>
-        <label style={labelStyle}>Texte (laisser vide pour masquer)</label>
-        <input style={inputStyle} value={message} onChange={e => setMessage(e.target.value)}
-          placeholder="Les photos du 190è Festival des Musiques du Faucigny sont disponibles ici" />
-        <label style={labelStyle}>Lien (optionnel)</label>
-        <input style={inputStyle} value={url} onChange={e => setUrl(e.target.value)}
-          placeholder="https://photos.dfly.fr/galerie?cle=..." />
+        <label style={labelStyle}>HTML affiché en bas de page (optionnel)</label>
+        <textarea
+          style={{ ...inputStyle, resize: 'vertical', fontFamily: 'monospace', fontSize: 12 }}
+          rows={6} value={html} onChange={e => setHtml(e.target.value)}
+          placeholder={'<p>Les photos du 190è Festival des Musiques du Faucigny sont disponibles ici :</p>\n<a href="https://...">Accéder à la galerie</a>'}
+        />
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <button type="submit" disabled={saving} style={{
             background: 'var(--fg)', color: 'var(--bg)', border: 'none',
@@ -1249,6 +1248,7 @@ export default function GalerieAdmin() {
   const [activeTab, setActiveTab] = useState(() => {
     if (location.hash === '#logs') return 'logs'
     if (location.hash === '#clients') return 'clients'
+    if (location.hash === '#cms') return 'cms'
     return 'galerie'
   })
 
@@ -1295,7 +1295,7 @@ export default function GalerieAdmin() {
 
         {/* Onglets */}
         <div style={{ display: 'flex', gap: 0, marginBottom: 40, borderBottom: '1px solid var(--line)' }}>
-          {[['galerie', 'Galerie'], ['clients', 'Clients'], ['logs', 'Logs de navigation']].map(([key, label]) => (
+          {[['galerie', 'Galerie'], ['clients', 'Clients'], ['cms', 'CMS'], ['logs', 'Logs de navigation']].map(([key, label]) => (
             <button key={key} onClick={() => switchTab(key)} style={{
               background: 'none', border: 'none', borderBottom: activeTab === key ? '2px solid var(--fg)' : '2px solid transparent',
               padding: '10px 20px 10px 0', marginBottom: -1,
@@ -1320,10 +1320,11 @@ export default function GalerieAdmin() {
         </div>
 
         {activeTab === 'clients' && (
-          <>
-            <PublicMessageEditor authFetch={authFetch} />
-            <CreateClientForm authFetch={authFetch} onCreated={loadEnts} />
-          </>
+          <CreateClientForm authFetch={authFetch} onCreated={loadEnts} />
+        )}
+
+        {activeTab === 'cms' && (
+          <CmsEditor authFetch={authFetch} />
         )}
 
         {activeTab === 'galerie' && <>
