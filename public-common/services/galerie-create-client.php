@@ -23,7 +23,6 @@ $email     = trim($body['email']     ?? '');
 $login     = trim($body['login']     ?? $email);
 $lang      = strtolower(in_array(strtoupper($body['lang'] ?? ''), ['FR', 'EN']) ? $body['lang'] : 'fr');
 $profil    = in_array($body['profil'] ?? '', ['lecteur', 'admin']) ? $body['profil'] : 'lecteur';
-$is_public = empty($body['is_public']) ? 0 : 1;
 
 if (!$raiSoc || !$shortDesc || !$firstName || !$lastName || !$email) {
     http_response_code(400);
@@ -91,8 +90,8 @@ try {
 
     // 3. Utilisateur client — id explicite = idEnt×10
     if (!mysqli_query($link, "INSERT INTO HabilUsers
-        (id, login, password, firstName, lastName, email, idEnt, lang, telFix, telMob, fax, sexe, cle, is_public)
-        VALUES ($idUser, '$lo', '$hashedPw', '$fn', '$ln', '$em', $idEnt, '$la', '', '', '', 'M', '$cl', $is_public)"))
+        (id, login, password, firstName, lastName, email, idEnt, lang, telFix, telMob, fax, sexe, cle)
+        VALUES ($idUser, '$lo', '$hashedPw', '$fn', '$ln', '$em', $idEnt, '$la', '', '', '', 'M', '$cl')"))
         throw new Exception('HabilUsers : ' . mysqli_error($link));
 
     // 4. Lier l'utilisateur au profil

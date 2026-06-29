@@ -26,14 +26,6 @@ CREATE TABLE festival_sequences (
 );
 
 
--- ── Migration : colonne is_public dans HabilUsers ───────────────────────────
--- À exécuter sur les bases existantes (alphoxfr_photos et autres).
-ALTER TABLE HabilUsers ADD COLUMN is_public TINYINT(1) NOT NULL DEFAULT 0;
-
--- Pour marquer une galerie existante comme publique :
--- UPDATE HabilUsers SET is_public = 1 WHERE idEnt = (SELECT id FROM Entreprise WHERE shortDesc = 'shortdesc_du_client');
-
-
 -- ── Créer une nouvelle entité et lier un utilisateur existant ──────────────
 
 -- 1. Créer l'entreprise

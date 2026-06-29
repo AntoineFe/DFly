@@ -768,10 +768,78 @@ function ActionBtn({ onClick, active, title, children }) {
   )
 }
 
+// ── Message public affiché sur la page de connexion ──────────────────────────
+
+function PublicMessageEditor({ authFetch }) {
+  const [message, setMessage] = useState('')
+  const [url,     setUrl]     = useState('')
+  const [loaded,  setLoaded]  = useState(false)
+  const [saving,  setSaving]  = useState(false)
+  const [saved,   setSaved]   = useState(false)
+
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}services/galerie-public-message.php`)
+      .then(r => r.json())
+      .then(d => { if (d.ok) { setMessage(d.message); setUrl(d.url) } })
+      .catch(() => {})
+      .finally(() => setLoaded(true))
+  }, [])
+
+  async function save(e) {
+    e.preventDefault()
+    setSaving(true); setSaved(false)
+    try {
+      await authFetch('galerie-public-message.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message, url }),
+      })
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
+    } catch { /* ignore */ } finally { setSaving(false) }
+  }
+
+  const labelStyle = { fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.28em',
+    textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 6, display: 'block' }
+  const inputStyle = { width: '100%', padding: '9px 12px', boxSizing: 'border-box',
+    border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--fg)',
+    fontSize: 14, fontFamily: 'inherit', marginBottom: 16 }
+
+  if (!loaded) return null
+
+  return (
+    <div style={{ border: '1px solid var(--line)', padding: 24, marginBottom: 32 }}>
+      <div style={{ fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.3em',
+        textTransform: 'uppercase', color: 'var(--fg-muted)', marginBottom: 20 }}>
+        Message affiché sur la page de connexion
+      </div>
+      <form onSubmit={save}>
+        <label style={labelStyle}>Texte (laisser vide pour masquer)</label>
+        <input style={inputStyle} value={message} onChange={e => setMessage(e.target.value)}
+          placeholder="Les photos du 190è Festival des Musiques du Faucigny sont disponibles ici" />
+        <label style={labelStyle}>Lien (optionnel)</label>
+        <input style={inputStyle} value={url} onChange={e => setUrl(e.target.value)}
+          placeholder="https://photos.dfly.fr/galerie?cle=..." />
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <button type="submit" disabled={saving} style={{
+            background: 'var(--fg)', color: 'var(--bg)', border: 'none',
+            padding: '10px 28px', fontFamily: 'var(--sans)', fontSize: 10.5,
+            letterSpacing: '0.28em', textTransform: 'uppercase', cursor: 'pointer',
+          }}>
+            {saving ? 'Enregistrement…' : 'Enregistrer'}
+          </button>
+          {saved && <span style={{ fontFamily: 'var(--serif)', fontStyle: 'italic',
+            fontSize: 13, color: 'green' }}>✓ Enregistré</span>}
+        </div>
+      </form>
+    </div>
+  )
+}
+
 // ── Formulaire nouveau client ─────────────────────────────────────────────────
 
 function CreateClientForm({ authFetch, onCreated }) {
-  const empty = { raiSoc: '', shortDesc: '', firstName: '', lastName: '', email: '', login: '', lang: 'FR', profil: 'lecteur', is_public: false }
+  const empty = { raiSoc: '', shortDesc: '', firstName: '', lastName: '', email: '', login: '', lang: 'FR', profil: 'lecteur' }
   const [form,    setForm]    = useState(empty)
   const [saving,  setSaving]  = useState(false)
   const [result,  setResult]  = useState(null) // { tempPassword, cle }
@@ -904,14 +972,6 @@ function CreateClientForm({ authFetch, onCreated }) {
             </select>
           </div>
         </div>
-
-        <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, cursor: 'pointer' }}>
-          <input type="checkbox" checked={form.is_public} onChange={e => upd('is_public', e.target.checked)}
-            style={{ width: 16, height: 16, cursor: 'pointer', flexShrink: 0 }} />
-          <span style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--fg)' }}>
-            Galerie publique — lien accessible sans compte (affiché aux visiteurs inconnus)
-          </span>
-        </label>
 
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <button type="submit" disabled={saving} style={{
@@ -1260,7 +1320,10 @@ export default function GalerieAdmin() {
         </div>
 
         {activeTab === 'clients' && (
-          <CreateClientForm authFetch={authFetch} onCreated={loadEnts} />
+          <>
+            <PublicMessageEditor authFetch={authFetch} />
+            <CreateClientForm authFetch={authFetch} onCreated={loadEnts} />
+          </>
         )}
 
         {activeTab === 'galerie' && <>
