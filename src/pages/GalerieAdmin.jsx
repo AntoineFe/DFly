@@ -771,7 +771,7 @@ function ActionBtn({ onClick, active, title, children }) {
 // ── Formulaire nouveau client ─────────────────────────────────────────────────
 
 function CreateClientForm({ authFetch, onCreated }) {
-  const empty = { raiSoc: '', shortDesc: '', firstName: '', lastName: '', email: '', login: '', lang: 'FR', profil: 'lecteur' }
+  const empty = { raiSoc: '', shortDesc: '', firstName: '', lastName: '', email: '', login: '', lang: 'FR', profil: 'lecteur', is_public: false }
   const [form,    setForm]    = useState(empty)
   const [saving,  setSaving]  = useState(false)
   const [result,  setResult]  = useState(null) // { tempPassword, cle }
@@ -904,6 +904,14 @@ function CreateClientForm({ authFetch, onCreated }) {
             </select>
           </div>
         </div>
+
+        <label style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20, cursor: 'pointer' }}>
+          <input type="checkbox" checked={form.is_public} onChange={e => upd('is_public', e.target.checked)}
+            style={{ width: 16, height: 16, cursor: 'pointer', flexShrink: 0 }} />
+          <span style={{ fontFamily: 'var(--sans)', fontSize: 12, color: 'var(--fg)' }}>
+            Galerie publique — lien accessible sans compte (affiché aux visiteurs inconnus)
+          </span>
+        </label>
 
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <button type="submit" disabled={saving} style={{
