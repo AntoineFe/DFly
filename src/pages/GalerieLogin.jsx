@@ -16,6 +16,29 @@ const inputStyle = {
   color: 'var(--fg)', fontSize: 15, fontFamily: 'inherit', outline: 'none',
 }
 
+// ── Bloc CMS bas de page ──────────────────────────────────────────────────────
+
+function CmsLoginBlock() {
+  const [html, setHtml] = useState('')
+
+  useEffect(() => {
+    fetch(`${BASE}services/galerie-public-message.php`)
+      .then(r => r.json())
+      .then(d => { if (d.ok && d.html) setHtml(d.html) })
+      .catch(() => {})
+  }, [])
+
+  if (!html) return null
+
+  return (
+    <div
+      style={{ marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 28,
+        fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.65, color: 'var(--fg)' }}
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  )
+}
+
 // ── Bloc "renvoi de lien" ─────────────────────────────────────────────────────
 
 function ResendBlock() {
@@ -273,6 +296,7 @@ export default function GalerieLogin() {
         </form>
 
         <ResendBlock />
+        <CmsLoginBlock />
       </div>
     </div>
   )
