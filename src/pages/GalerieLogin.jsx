@@ -19,12 +19,24 @@ const inputStyle = {
 // ── Bloc "renvoi de lien" ─────────────────────────────────────────────────────
 
 function ResendBlock() {
-  const [open,    setOpen]    = useState(false)
-  const [email,   setEmail]   = useState('')
-  const [name,    setName]    = useState('')
-  const [step,    setStep]    = useState('email')  // 'email' | 'name' | 'done'
-  const [busy,    setBusy]    = useState(false)
-  const [message, setMessage] = useState('')
+  const [open,         setOpen]         = useState(false)
+  const [email,        setEmail]        = useState('')
+  const [name,         setName]         = useState('')
+  const [step,         setStep]         = useState('email')  // 'email' | 'notfound' | 'name' | 'done'
+  const [busy,         setBusy]         = useState(false)
+  const [message,      setMessage]      = useState('')
+  const [publicEvents, setPublicEvents] = useState(null)  // null = pas encore chargé
+
+  async function loadPublicEvents() {
+    if (publicEvents !== null) return
+    try {
+      const res = await fetch(`${BASE}services/galerie-public-events.php`)
+      const d   = await res.json()
+      setPublicEvents(d.ok ? d.events : [])
+    } catch {
+      setPublicEvents([])
+    }
+  }
 
   async function submitEmail(e) {
     e.preventDefault()
@@ -40,7 +52,8 @@ function ResendBlock() {
         setMessage(`Votre lien a été envoyé à ${email}. Pensez à vérifier vos spams.`)
         setStep('done')
       } else if (d.notFound) {
-        setStep('name')
+        await loadPublicEvents()
+        setStep('notfound')
       } else {
         setMessage("Une erreur s'est produite. Contactez-nous directement.")
         setStep('done')
@@ -73,6 +86,8 @@ function ResendBlock() {
     letterSpacing: '0.28em', textTransform: 'uppercase',
     color: 'var(--fg-muted)', marginBottom: 8,
   }
+
+  const events = publicEvents ?? []
 
   return (
     <div style={{ marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 0 }}>
@@ -115,30 +130,59 @@ function ResendBlock() {
             {busy ? 'Envoi…' : 'Recevoir mon lien'}
           </button>
         </form>
-      ) : (
-        <form onSubmit={submitName}>
-          <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
-            fontStyle: 'italic', marginBottom: 20, lineHeight: 1.6 }}>
-            Cet email n'est pas reconnu.<br />Indiquez votre nom pour que nous vous identifions.
-          </p>
-          <label style={labelStyle}>Votre nom</label>
-          <input
-            type="text" required autoFocus
-            value={name} onChange={e => setName(e.target.value)}
-            style={{ ...inputStyle, marginBottom: 16 }}
-          />
-          <button type="submit" disabled={busy || !name} style={{
-            width: '100%', padding: '12px',
-            background: busy || !name ? 'var(--line)' : 'var(--fg)',
-            color: busy || !name ? 'var(--fg-muted)' : 'var(--bg)',
-            border: 'none', fontFamily: 'var(--sans)', fontSize: 11,
-            letterSpacing: '0.28em', textTransform: 'uppercase',
-            cursor: busy || !name ? 'default' : 'pointer',
-          }}>
-            {busy ? 'Envoi…' : 'Envoyer ma demande'}
-          </button>
-        </form>
-      )}
+      ) : step === 'notfound' ? (
+        <div>
+          {events.length > 0 ? (
+            <>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
+                fontStyle: 'italic', marginBottom: 20, lineHeight: 1.6 }}>
+                Cet email n'est pas reconnu.<br />
+                Vous pouvez accéder directement aux galeries publiques&nbsp;:
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
+                {events.map((ev, i) => (
+                  <a key={i} href={ev.url} style={{
+                    display: 'block', padding: '12px 16px',
+                    border: '1px solid var(--line)',
+                    fontFamily: 'var(--sans)', fontSize: 13,
+                    color: 'var(--fg)', textDecoration: 'none',
+                    letterSpacing: '0.02em',
+                  }}>
+                    {ev.label}
+                  </a>
+                ))}
+              </div>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 15, color: 'var(--fg-muted)',
+                marginBottom: 12, lineHeight: 1.5 }}>
+                Votre galerie n'est pas dans la liste ? Indiquez votre nom :
+              </p>
+            </>
+          ) : (
+            <p style={{ fontFamily: 'var(--serif)', fontSize: 19, color: 'var(--fg-muted)',
+              fontStyle: 'italic', marginBottom: 20, lineHeight: 1.6 }}>
+              Cet email n'est pas reconnu.<br />Indiquez votre nom pour que nous vous identifions.
+            </p>
+          )}
+          <form onSubmit={submitName}>
+            <label style={labelStyle}>Votre nom</label>
+            <input
+              type="text" required autoFocus
+              value={name} onChange={e => setName(e.target.value)}
+              style={{ ...inputStyle, marginBottom: 16 }}
+            />
+            <button type="submit" disabled={busy || !name} style={{
+              width: '100%', padding: '12px',
+              background: busy || !name ? 'var(--line)' : 'var(--fg)',
+              color: busy || !name ? 'var(--fg-muted)' : 'var(--bg)',
+              border: 'none', fontFamily: 'var(--sans)', fontSize: 11,
+              letterSpacing: '0.28em', textTransform: 'uppercase',
+              cursor: busy || !name ? 'default' : 'pointer',
+            }}>
+              {busy ? 'Envoi…' : 'Envoyer ma demande'}
+            </button>
+          </form>
+        </div>
+      ) : null}
     </div>
   )
 }
