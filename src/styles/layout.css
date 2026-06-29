@@ -342,7 +342,7 @@
 
 /* ── Galerie : barres sélection ── */
 @media (max-width: 767px) {
-  .select-bar-desktop { display: none !important; }
+  .select-bar-desktop { flex-wrap: wrap; padding: 8px 0 !important; }
 }
 @media (min-width: 768px) {
   .select-bar-mobile { display: none !important; }
