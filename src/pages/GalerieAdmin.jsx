@@ -771,15 +771,16 @@ function ActionBtn({ onClick, active, title, children }) {
 // ── CMS : éditeur de contenu de la page de connexion ─────────────────────────
 
 function CmsEditor({ authFetch }) {
-  const [html,    setHtml]    = useState('')
-  const [loaded,  setLoaded]  = useState(false)
-  const [saving,  setSaving]  = useState(false)
-  const [saved,   setSaved]   = useState(false)
+  const [htmlTop,    setHtmlTop]    = useState('')
+  const [htmlBottom, setHtmlBottom] = useState('')
+  const [loaded,     setLoaded]     = useState(false)
+  const [saving,     setSaving]     = useState(false)
+  const [saved,      setSaved]      = useState(false)
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}services/galerie-public-message.php`)
       .then(r => r.json())
-      .then(d => { if (d.ok) setHtml(d.html || '') })
+      .then(d => { if (d.ok) { setHtmlTop(d.html_top || ''); setHtmlBottom(d.html_bottom || '') } })
       .catch(() => {})
       .finally(() => setLoaded(true))
   }, [])
@@ -791,7 +792,7 @@ function CmsEditor({ authFetch }) {
       await authFetch('galerie-public-message.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ html }),
+        body: JSON.stringify({ html_top: htmlTop, html_bottom: htmlBottom }),
       })
       setSaved(true)
       setTimeout(() => setSaved(false), 3000)
@@ -803,6 +804,8 @@ function CmsEditor({ authFetch }) {
   const inputStyle = { width: '100%', padding: '9px 12px', boxSizing: 'border-box',
     border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--fg)',
     fontSize: 14, fontFamily: 'inherit', marginBottom: 16 }
+  const taStyle = { ...inputStyle, resize: 'vertical', fontFamily: 'monospace', fontSize: 12 }
+  const placeholder = '<p>...</p>\n<a href="https://...">Accéder à la galerie</a>'
 
   if (!loaded) return null
 
@@ -813,12 +816,14 @@ function CmsEditor({ authFetch }) {
         Page de connexion
       </div>
       <form onSubmit={save}>
-        <label style={labelStyle}>HTML affiché en bas de page (optionnel)</label>
-        <textarea
-          style={{ ...inputStyle, resize: 'vertical', fontFamily: 'monospace', fontSize: 12 }}
-          rows={6} value={html} onChange={e => setHtml(e.target.value)}
-          placeholder={'<p>Les photos du 190è Festival des Musiques du Faucigny sont disponibles ici :</p>\n<a href="https://...">Accéder à la galerie</a>'}
-        />
+        <label style={labelStyle}>HTML affiché en haut de page (optionnel)</label>
+        <textarea style={taStyle} rows={6} value={htmlTop}
+          onChange={e => setHtmlTop(e.target.value)} placeholder={placeholder} />
+
+        <label style={{ ...labelStyle, marginTop: 8 }}>HTML affiché en bas de page (optionnel)</label>
+        <textarea style={taStyle} rows={6} value={htmlBottom}
+          onChange={e => setHtmlBottom(e.target.value)} placeholder={placeholder} />
+
         <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
           <button type="submit" disabled={saving} style={{
             background: 'var(--fg)', color: 'var(--bg)', border: 'none',

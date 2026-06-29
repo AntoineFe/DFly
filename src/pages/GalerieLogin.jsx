@@ -16,24 +16,30 @@ const inputStyle = {
   color: 'var(--fg)', fontSize: 15, fontFamily: 'inherit', outline: 'none',
 }
 
-// ── Bloc CMS bas de page ──────────────────────────────────────────────────────
+// ── Blocs CMS haut / bas de page ─────────────────────────────────────────────
 
-function CmsLoginBlock() {
-  const [html, setHtml] = useState('')
+function useCmsBlocks() {
+  const [top,    setTop]    = useState('')
+  const [bottom, setBottom] = useState('')
 
   useEffect(() => {
     fetch(`${BASE}services/galerie-public-message.php`)
       .then(r => r.json())
-      .then(d => { if (d.ok && d.html) setHtml(d.html) })
+      .then(d => { if (d.ok) { setTop(d.html_top || ''); setBottom(d.html_bottom || '') } })
       .catch(() => {})
   }, [])
 
-  if (!html) return null
+  return { top, bottom }
+}
 
+function CmsBlock({ html, top }) {
+  if (!html) return null
   return (
     <div
-      style={{ marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 28,
-        fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.65, color: 'var(--fg)' }}
+      style={top
+        ? { marginBottom: 28, fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.65, color: 'var(--fg)' }
+        : { marginTop: 40, borderTop: '1px solid var(--line)', paddingTop: 28,
+            fontFamily: 'var(--serif)', fontSize: 16, lineHeight: 1.65, color: 'var(--fg)' }}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   )
@@ -170,6 +176,7 @@ function ResendBlock() {
 
 export default function GalerieLogin() {
   const { login, loginWithCle, user, loading: authLoading } = useGalerieAuth()
+  const { top: cmsTop, bottom: cmsBottom } = useCmsBlocks()
   const navigate       = useNavigate()
   const [searchParams] = useSearchParams()
 
@@ -251,6 +258,8 @@ export default function GalerieLogin() {
           )}
         </div>
 
+        <CmsBlock html={cmsTop} top={true} />
+
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: 20 }}>
             <div style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.28em',
@@ -296,7 +305,7 @@ export default function GalerieLogin() {
         </form>
 
         <ResendBlock />
-        <CmsLoginBlock />
+        <CmsBlock html={cmsBottom} top={false} />
       </div>
     </div>
   )
