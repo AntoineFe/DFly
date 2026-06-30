@@ -84,7 +84,7 @@ export default function FestivalSaintJeoire2026() {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 70%' }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.0) 100%)' }} />
-        <div className="hero-content" style={{ position: 'relative', padding: '0 var(--gutter) 48px', maxWidth: 'calc(min(1000px,100%) + 2*var(--gutter))', width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
+        <div className="hero-content" style={{ position: 'relative', paddingRight: 'var(--gutter)', paddingBottom: 48, paddingLeft: 'var(--gutter)', maxWidth: 'calc(min(1000px,100%) + 2*var(--gutter))', width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
           <div className="hero-label" style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 0 }}>
             Galerie photo officielle
           </div>
