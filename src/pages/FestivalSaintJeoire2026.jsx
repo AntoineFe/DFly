@@ -65,6 +65,14 @@ export default function FestivalSaintJeoire2026() {
 
   return (
     <div style={{ background: 'var(--bg)', color: 'var(--fg)', fontFamily: 'var(--serif)' }}>
+      <style>{`
+        .hero-label { font-size: 16px; letter-spacing: 0.3em; }
+        .hero-content { padding-top: 0; }
+        @media (max-width: 600px) {
+          .hero-label { font-size: 10.5px; letter-spacing: 0.15em; }
+          .hero-content { padding-top: 64px; }
+        }
+      `}</style>
 
       <TopNav scheme="over-hero" />
 
@@ -76,8 +84,8 @@ export default function FestivalSaintJeoire2026() {
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 70%' }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.0) 100%)' }} />
-        <div style={{ position: 'relative', padding: '0 var(--gutter) 48px', maxWidth: 'calc(min(1000px,100%) + 2*var(--gutter))', width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: 16, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 0 }}>
+        <div className="hero-content" style={{ position: 'relative', padding: '0 var(--gutter) 48px', maxWidth: 'calc(min(1000px,100%) + 2*var(--gutter))', width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
+          <div className="hero-label" style={{ fontFamily: 'var(--sans)', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 0 }}>
             Galerie photo officielle
           </div>
           <h1 style={{ fontFamily: 'var(--serif-display)', fontWeight: 400, fontSize: 'clamp(28px, 3.5vw, 48px)', color: '#fff', margin: '0 0 8px', lineHeight: 1.2 }}>
