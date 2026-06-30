@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import TopNav from '../components/TopNav'
 
 const CLE_GALERIE = 'ynXdh0M9pXDx0Uayn1zWL33MqWHDvCRaCGyqwFicU4HsooFa'
@@ -53,11 +52,10 @@ const BODY_HTML = `
     → En savoir plus
   </p>
 </a>
+
 `
 
 export default function FestivalSaintJeoire2026() {
-  const navigate = useNavigate()
-
   useEffect(() => {
     document.title = 'Photos — 190e Festival des Musiques du Faucigny · Saint-Jeoire 2026'
     let desc = document.querySelector('meta[name="description"]')
@@ -88,21 +86,24 @@ export default function FestivalSaintJeoire2026() {
           <div style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 18, color: 'rgba(255,255,255,0.75)', marginBottom: 32 }}>
             Dimanche 28 juin 2026 — Saint-Jeoire-en-Faucigny
           </div>
-          <button onClick={() => navigate(`/galerie?cle=${CLE_GALERIE}`)} style={{
-            padding: '12px 28px', background: '#fff', color: '#1a1a1a',
-            fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.28em',
-            textTransform: 'uppercase', border: 'none', cursor: 'pointer',
-          }}>
-            Voir les photos →
-          </button>
         </div>
       </div>
 
       {/* ── Corps ── */}
       <div
-        style={{ maxWidth: 'min(1000px, 100%)', margin: '0 auto', padding: '56px var(--gutter) 100px', boxSizing: 'border-box', fontSize: 17, lineHeight: 1.7 }}
+        style={{ maxWidth: 'min(1000px, 100%)', margin: '0 auto', padding: '28px var(--gutter) 100px', boxSizing: 'border-box', fontSize: 17, lineHeight: 1.7 }}
         dangerouslySetInnerHTML={{ __html: BODY_HTML }}
       />
+      <div style={{ maxWidth: 'min(1000px, 100%)', margin: '0 auto', padding: '0 var(--gutter) 60px', boxSizing: 'border-box' }}>
+        <a href={`/galerie?cle=${CLE_GALERIE}#dossiers`} style={{
+          display: 'inline-block', padding: '13px 32px',
+          background: 'var(--fg)', color: 'var(--bg)',
+          fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.28em',
+          textTransform: 'uppercase', textDecoration: 'none',
+        }}>
+          Voir les photos →
+        </a>
+      </div>
 
       {/* ── Footer ── */}
       <div style={{ borderTop: '1px solid var(--line)', padding: '24px var(--gutter)', textAlign: 'center', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.15em', color: 'var(--fg-muted)' }}>
