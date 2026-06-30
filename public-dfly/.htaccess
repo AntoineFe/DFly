@@ -45,6 +45,9 @@ Options -MultiViews
   RewriteRule ^login\.php$ /galerie? [R=301,L]
   RewriteRule ^vosphotos\.php$ /galerie? [R=301,L]
 
+  # Raccourcis galeries publiques
+  RewriteRule ^festivalsaintjeoire$ /galerie?cle=ynXdh0M9pXDx0Uayn1zWL33MqWHDvCRaCGyqwFicU4HsooFa [R=301,L]
+
   # React Router - réécriture interne vers og-router.php (injection OG par page)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
