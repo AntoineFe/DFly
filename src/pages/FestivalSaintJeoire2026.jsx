@@ -70,7 +70,7 @@ export default function FestivalSaintJeoire2026() {
         .hero-content { padding-top: 0; }
         @media (max-width: 600px) {
           .hero-label { font-size: 10.5px; letter-spacing: 0.15em; }
-          .hero-content { padding-top: 64px; }
+          .hero-content { padding-top: 80px; }
         }
       `}</style>
 
