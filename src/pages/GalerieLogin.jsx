@@ -212,7 +212,7 @@ export default function GalerieLogin() {
     setLoading(true)
     loginWithCle(cle)
       .then(d => {
-        if (d.ok) navigate(dest() + hash, { replace: true })
+        if (d.ok) navigate({ pathname: dest(), hash }, { replace: true })
         else setError('Lien invalide ou expiré')
       })
       .catch(() => setError('Erreur de connexion'))
