@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 require 'galerie-auth.php';
 
-$jsonFile = __DIR__ . '/cms/galerie-public-message.json';
+$jsonFile = dirname(__DIR__) . '/cms/galerie-public-message.json';
 
 // ── GET : lecture publique ─────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     galerie_require_level($session, 'admin', 'R');
 
     $body = json_decode(file_get_contents('php://input'), true) ?? [];
+    if (!is_dir(dirname($jsonFile))) @mkdir(dirname($jsonFile), 0755, true);
     file_put_contents($jsonFile, json_encode([
         'html_top'    => $body['html_top']    ?? '',
         'html_bottom' => $body['html_bottom'] ?? '',
