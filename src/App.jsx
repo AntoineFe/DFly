@@ -13,6 +13,7 @@ import GalerieAlbums from './pages/GalerieAlbums'
 import GalerieAdmin from './pages/GalerieAdmin'
 import FestivalCommande from './pages/FestivalCommande'
 import FestivalAdmin from './pages/FestivalAdmin'
+import FestivalSaintJeoire2026 from './pages/FestivalSaintJeoire2026'
 import MentionsLegales from './pages/MentionsLegales'
 import Confidentialite from './pages/Confidentialite'
 import { GalerieAuthProvider, useGalerieAuth } from './context/GalerieAuth'
@@ -109,6 +110,7 @@ export default function App() {
             <Route path="/confidentialite"  element={<Confidentialite  lang={lang} setLang={setLang} />} />
             <Route path="/galerie/*"        element={<GalerieRoutes />} />
             <Route path="/commande-festival-faucigny-2026" element={<FestivalCommande />} />
+            <Route path="/photos-190e-festival-des-musiques-du-faucigny-saint-jeoire-2026" element={<FestivalSaintJeoire2026 />} />
           </>
         )}
       </Routes>
