@@ -780,7 +780,7 @@ export default function GalerieAlbums() {
 
             {/* Dossiers */}
             {data.dirs.length > 0 && (
-              <div ref={gridDirsRef} style={{ marginBottom: 60, maxWidth: 'min(1600px, 100%)', margin: '0 auto 60px' }}>
+              <div id="dossiers" ref={gridDirsRef} style={{ marginBottom: 60, maxWidth: 'min(1600px, 100%)', margin: '0 auto 60px', scrollMarginTop: '70px' }}>
                 <div style={{ display: 'grid', gridTemplateColumns: `repeat(${colsDirs}, 1fr)`, gap: 12 }}>
                   {data.dirs.map(dir => (
                     <button key={dir.name} onClick={() => openDir(dir.name)} style={{
