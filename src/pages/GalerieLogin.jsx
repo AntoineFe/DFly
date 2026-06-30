@@ -208,10 +208,11 @@ export default function GalerieLogin() {
   useEffect(() => {
     const cle = searchParams.get('cle')
     if (!cle) return
+    const hash = window.location.hash  // préserver #dossiers etc.
     setLoading(true)
     loginWithCle(cle)
       .then(d => {
-        if (d.ok) navigate(dest(), { replace: true })
+        if (d.ok) navigate(dest() + hash, { replace: true })
         else setError('Lien invalide ou expiré')
       })
       .catch(() => setError('Erreur de connexion'))
