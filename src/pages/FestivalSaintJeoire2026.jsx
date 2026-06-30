@@ -69,7 +69,7 @@ export default function FestivalSaintJeoire2026() {
       <TopNav scheme="over-hero" />
 
       {/* ── Hero ── */}
-      <div style={{ position: 'relative', width: '100%', minHeight: 480, display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
+      <div style={{ position: 'relative', width: '100%', minHeight: 300, display: 'flex', alignItems: 'flex-end', overflow: 'hidden' }}>
         <img
           src="https://dfly.fr/images/Pro/e_fesmus2026/galerie/00b_Ambiance/0572_DSC00041.jpeg"
           alt="190e Festival des Musiques du Faucigny — Saint-Jeoire 2026"
@@ -77,7 +77,7 @@ export default function FestivalSaintJeoire2026() {
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.0) 100%)' }} />
         <div style={{ position: 'relative', padding: '0 var(--gutter) 48px', maxWidth: 'calc(min(1000px,100%) + 2*var(--gutter))', width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
-          <div style={{ fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 12 }}>
+          <div style={{ fontFamily: 'var(--sans)', fontSize: 16, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.6)', marginBottom: 0 }}>
             Galerie photo officielle
           </div>
           <h1 style={{ fontFamily: 'var(--serif-display)', fontWeight: 400, fontSize: 'clamp(28px, 3.5vw, 48px)', color: '#fff', margin: '0 0 8px', lineHeight: 1.2 }}>
