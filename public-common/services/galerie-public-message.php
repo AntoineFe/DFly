@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
 require 'galerie-auth.php';
 
-$jsonFile = __DIR__ . '/galerie-public-message.json';
+$jsonFile = __DIR__ . '/cms/galerie-public-message.json';
 
 // ── GET : lecture publique ─────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
