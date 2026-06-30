@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $groupe_qty_usb += (int)($p['cle_usb'] ?? 0);
     }
 
-    $port_posters_groupe = ($groupe_sous_posters > 0 && $groupe_sous_posters <= 10.0) ? 6.00 : 0.00;
+    $port_posters_groupe = ($groupe_sous_posters > 0 && $groupe_sous_posters <= 20.0) ? 7.00 : 0.00;
     $port_usb_groupe     = $groupe_qty_usb > 0 ? ceil($groupe_qty_usb / 2) * 3.00 : 0.00;
 
     // Indices des personnes concernées

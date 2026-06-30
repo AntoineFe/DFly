@@ -52,7 +52,7 @@ function calcPort(produits) {
     const p = PRODUITS.find(x => x.key === k)
     return s + (produits[k] || 0) * (p?.prix || 0)
   }, 0)
-  const portPosters = sousPosters > 0 && sousPosters <= 10 ? 6.00 : 0.00
+  const portPosters = sousPosters > 0 && sousPosters <= 20 ? 7.00 : 0.00
   const qtyUsb      = produits['cle_usb'] || 0
   const portUsb     = qtyUsb > 0 ? Math.ceil(qtyUsb / 2) * 3 : 0
   return { posters: portPosters, usb: portUsb }
@@ -76,7 +76,7 @@ function FraisPort({ produits }) {
       </div>
       <div style={{ fontSize: 11.5, color: 'var(--fg-muted)', marginTop: 8, fontStyle: 'italic', lineHeight: 1.5 }}>
         Les frais de port seront calculés et répartis entre les musiciens au moment du lancement de la commande groupée.
-        Posters : port offert si la commande groupée de posters dépasse 10 €, sinon 6 € répartis entre les commandeurs.
+        Posters : port offert si la commande groupée de posters dépasse 20 €, sinon 7 € répartis entre les commandeurs.
         {hasUsb && ' Clé USB : expédition La Poste, 3 € par lot de 2 clés, répartis entre les commandeurs.'}
       </div>
     </div>
@@ -377,7 +377,7 @@ function calcGroupPort(commandes) {
   const sousPosters = commandes.reduce((s, cmd) =>
     s + POSTERS_KEYS.reduce((ss, k) => ss + (cmd.produits[k] || 0) * (PRODUITS.find(p => p.key === k)?.prix || 0), 0), 0)
   const totalUsb = commandes.reduce((s, cmd) => s + (cmd.produits['cle_usb'] || 0), 0)
-  const portPosters = sousPosters > 0 && sousPosters <= 10 ? 6.00 : 0.00
+  const portPosters = sousPosters > 0 && sousPosters <= 20 ? 7.00 : 0.00
   const portUsb     = totalUsb > 0 ? Math.ceil(totalUsb / 2) * 3 : 0.00
 
   const nbPosterOrderers = commandes.filter(cmd => POSTERS_KEYS.some(k => (cmd.produits[k] || 0) > 0)).length

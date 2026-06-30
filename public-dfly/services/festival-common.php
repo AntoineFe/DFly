@@ -70,7 +70,7 @@ function festival_calcul_port($produits) {
     foreach ($posters_keys as $key) {
         $sous_total_posters += (int)($produits[$key] ?? 0) * FESTIVAL_PRIX[$key];
     }
-    $port_posters = ($sous_total_posters > 0 && $sous_total_posters <= 10.0) ? 6.00 : 0.00;
+    $port_posters = ($sous_total_posters > 0 && $sous_total_posters <= 20.0) ? 7.00 : 0.00;
     $qty_usb      = (int)($produits['cle_usb'] ?? 0);
     $port_usb     = $qty_usb > 0 ? ceil($qty_usb / 2) * 3.00 : 0.00;
     return [
@@ -179,7 +179,7 @@ function festival_note_port($produits) {
     }
     $has_usb = (int)($produits['cle_usb'] ?? 0) > 0;
     $parts = ["Les frais de port seront calculés et répartis entre les musiciens au moment du lancement de la commande groupée."];
-    if ($has_posters) $parts[] = "Posters : port offert si la commande groupée de posters dépasse 10 €, sinon 6 € répartis entre les commandeurs.";
+    if ($has_posters) $parts[] = "Posters : port offert si la commande groupée de posters dépasse 20 €, sinon 7 € répartis entre les commandeurs.";
     if ($has_usb)     $parts[] = "Clé USB : expédition La Poste, 3 € par lot de 2 clés, répartis entre les commandeurs.";
     return implode("\n", $parts);
 }
