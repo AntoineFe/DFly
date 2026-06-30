@@ -73,7 +73,7 @@ export default function FestivalSaintJeoire2026() {
         <img
           src="https://dfly.fr/images/Pro/e_fesmus2026/galerie/00b_Ambiance/0572_DSC00041.jpeg"
           alt="190e Festival des Musiques du Faucigny — Saint-Jeoire 2026"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center 70%' }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.0) 100%)' }} />
         <div style={{ position: 'relative', padding: '0 var(--gutter) 48px', maxWidth: 'calc(min(1000px,100%) + 2*var(--gutter))', width: '100%', margin: '0 auto', boxSizing: 'border-box' }}>
