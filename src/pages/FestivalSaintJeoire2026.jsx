@@ -99,10 +99,10 @@ export default function FestivalSaintJeoire2026() {
 
       {/* ── Corps ── */}
       <div
-        style={{ maxWidth: 'min(1000px, 100%)', margin: '0 auto', padding: '28px var(--gutter) 100px', boxSizing: 'border-box', fontSize: 17, lineHeight: 1.7 }}
+        style={{ maxWidth: 'min(1000px, 100%)', margin: '0 auto', padding: '20px var(--gutter) 24px', boxSizing: 'border-box', fontSize: 17, lineHeight: 1.7 }}
         dangerouslySetInnerHTML={{ __html: BODY_HTML }}
       />
-      <div style={{ maxWidth: 'min(1000px, 100%)', margin: '0 auto', padding: '0 var(--gutter) 60px', boxSizing: 'border-box' }}>
+      <div style={{ maxWidth: 'min(1000px, 100%)', margin: '0 auto', padding: '0 var(--gutter) 40px', boxSizing: 'border-box' }}>
         <a href={`/galerie?cle=${CLE_GALERIE}#dossiers`} style={{
           display: 'inline-block', padding: '13px 32px',
           background: 'var(--fg)', color: 'var(--bg)',
