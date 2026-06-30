@@ -47,6 +47,11 @@ $PAGES = [
     'title'       => 'Contact & Devis Gratuit | DFly Photographe Vidéaste PACA',
     'description' => 'Contactez Antoine & Rémi Ferrera pour votre projet photo ou vidéo en PACA. Réponse sous 48h, devis gratuit et sans engagement.',
   ],
+  '/photos-190e-festival-des-musiques-du-faucigny-saint-jeoire-2026' => [
+    'image'       => 'og-accueil.jpg',
+    'title'       => 'Photos — 190e Festival des Musiques du Faucigny · Saint-Jeoire 2026',
+    'description' => 'Galerie photo officielle du 190e Festival des Musiques du Faucigny, 28 juin 2026 à Saint-Jeoire. Petit déjeuner, ambiance, cérémonie, vues aériennes et 27 orchestres.',
+  ],
 ];
 
 $page = $PAGES[$path] ?? $PAGES['/'];
