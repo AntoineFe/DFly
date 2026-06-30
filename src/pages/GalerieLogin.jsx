@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useGalerieAuth } from '../context/GalerieAuth'
 import useNoIndex from '../hooks/useNoIndex'
@@ -186,34 +186,49 @@ export default function GalerieLogin() {
   // Ne pas indéxer cette page
   useNoIndex()
 
-  // Déjà connecté → rediriger vers albums
-  useEffect(() => {
-    if (!authLoading && user) navigate(albumsDest, { replace: true })
-  }, [user, authLoading])
   const [login_,   setLogin]    = useState('')
   const [password, setPassword] = useState('')
   const [error,    setError]    = useState('')
   const [loading,  setLoading]  = useState(false)
 
   const redirect = searchParams.get('redirect')
-  function dest() {
+  const pendingHashRef = useRef(null)
+
+  // Déjà connecté → rediriger vers albums (préserve le hash si autologin ?cle=)
+  useEffect(() => {
+    if (!authLoading && user) {
+      const hash = pendingHashRef.current ?? null
+      if (hash !== null) {
+        pendingHashRef.current = null
+        navigate({ pathname: albumsDest, hash }, { replace: true })
+      } else {
+        navigate(albumsDest, { replace: true })
+      }
+    }
+  }, [user, authLoading])
+
+  function dest(hash) {
     if (redirect) {
       const decoded = decodeURIComponent(redirect)
-      if (isGalerieMode || decoded.startsWith('/galerie')) return decoded
+      if (isGalerieMode || decoded.startsWith('/galerie')) return { pathname: decoded, hash: hash || '' }
     }
-    return isGalerieMode ? '/albums' : '/galerie/albums'
+    const pathname = isGalerieMode ? '/albums' : '/galerie/albums'
+    return { pathname, hash: hash || '' }
   }
 
   // Connexion automatique via lien ?cle=
   useEffect(() => {
     const cle = searchParams.get('cle')
     if (!cle) return
-    const hash = window.location.hash  // préserver #dossiers etc.
     setLoading(true)
     loginWithCle(cle)
       .then(d => {
-        if (d.ok) navigate({ pathname: dest(), hash }, { replace: true })
-        else setError('Lien invalide ou expiré')
+        if (d.ok) {
+          // Stocker le hash pour que le user-watcher navigue avec
+          pendingHashRef.current = window.location.hash || ''
+        } else {
+          setError('Lien invalide ou expiré')
+        }
       })
       .catch(() => setError('Erreur de connexion'))
       .finally(() => setLoading(false))
