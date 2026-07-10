@@ -102,6 +102,14 @@ export default function Home({ lang, setLang }) {
                 'We adapt our approach to each situation: present when the image needs to be composed, and discreet to capture emotions as they happen. \nBeing a pair means we can adapt, give a different view.'
               )}
             </div>
+			<div style={{ textAlign: 'center', marginTop: 40 }}>
+              <img
+                src={IMG.duo}
+                alt="Antoine & Rémi Ferrera — DFly Photographes et vidéastes"
+                className="cine"
+                style={{ width: '100%', maxWidth: 320, aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }}
+              />
+            </div>
 			<div style={{ textAlign: 'center', marginTop: 36 }}>
 				<a href="#temoignages" style={{
 				  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em',
