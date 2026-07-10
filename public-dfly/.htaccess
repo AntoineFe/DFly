@@ -45,6 +45,9 @@ Options -MultiViews
   RewriteRule ^login\.php$ /galerie? [R=301,L]
   RewriteRule ^vosphotos\.php$ /galerie? [R=301,L]
 
+  # URL courte festival
+  RewriteRule ^fesmus2026$ /photos-190e-festival-des-musiques-du-faucigny-saint-jeoire-2026 [R=301,L]
+  
   # React Router - réécriture interne vers og-router.php (injection OG par page)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

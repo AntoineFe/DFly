@@ -85,22 +85,22 @@ export default function Home({ lang, setLang }) {
 
       </section>
 
-      {/* ── INTRO ── */}
+     {/* ── INTRO ── */}
       <section style={{ padding: 'var(--section-y) 0', background: 'var(--bg)' }}>
         <div className="container">
           <div style={{ maxWidth: 1100, margin: '0 auto' }}>
             <SectionLabel num="I" label={t('Bonjour', 'Hello')} align="center" />
             <div style={{ textAlign: 'center', marginTop: 28, fontFamily: 'var(--serif-display)', fontSize: 'clamp(34px,4vw,58px)', lineHeight: 1.18, fontWeight: 400, color: 'var(--fg)', letterSpacing: '-0.005em' }}>
               {t(
-                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Nous sommes Antoine et Rémi</em>, père et fils.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Nous réalisons des prestations photo & vidéo pour les particuliers et les professionnels.</span></>,
-                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Hello from Antoine and Rémi</em>,<br />father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Whether it is personal or professional, we'll deliver the right photography or film for you.</span></>
+                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Nous sommes Antoine et Rémi</em>, père et fils.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Tous deux photographes, vidéastes et télépilotes de drone, certifiés DSAC.</span></>,
+                <><em style={{ fontStyle: 'italic', fontWeight: 300 }}>Hello from Antoine and Rémi</em>,<br />father and son.<br /><span style={{ display: 'inline-block', marginTop: 24, fontSize: '0.5em', fontStyle: 'italic', fontWeight: 300, color: 'var(--fg-muted)', lineHeight: 1.55 }}>Both photographers, videographers, and DSAC-certified drone pilots.</span></>
               )}
             </div>
-            <div style={{ textAlign: 'center', maxWidth: 640, margin: '28px auto 0', fontFamily: 'var(--serif)', fontSize: 25, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
-              {t(
-                'Nous adaptons notre approche à la situation : présents quand l\’image doit être composée, discrets pour capter l\’émotion sur le vif. Selon le projet, nous intervenons à deux.',
-                'We adapt our approach to each situation: present when the image needs to be composed, and discreet to capture emotions as they happen. \nBeing a pair means we can adapt, give a different view.'
-              )}
+            <div style={{ textAlign: 'center', maxWidth: 740, margin: '28px auto 0', fontFamily: 'var(--serif)', fontSize: 25, lineHeight: 1.4, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)', whiteSpace: 'pre-line' }}>
+			{t(
+			  'Présents quand l\'image doit être composée, discrets pour capter l\'émotion sur le vif. \nSelon le projet, nous intervenons seuls ou à deux.',
+			  'Present when the image needs to be composed, discreet to capture emotion as it happens. \nDepending on the project, we work solo or as a pair.'
+			)}
             </div>
 			<div style={{ display: 'block', margin: '0 auto', width: '100%', maxWidth: 600, aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }}>
               <img
@@ -110,6 +110,12 @@ export default function Home({ lang, setLang }) {
                 style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }}
               />
             </div>
+			<div style={{ textAlign: 'center', maxWidth: 600, margin: '20px auto 0', fontFamily: 'var(--serif)', fontSize: 20, lineHeight: 1.5, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)' }}>
+			  {t(
+			    'Basés à Cagnes-sur-Mer, entre Nice et Cannes, nous intervenons dans toute la Provence-Alpes-Côte d\'Azur — et au-delà si besoin.',
+			    'Based in Cagnes-sur-Mer, between Nice and Cannes, we work throughout the Provence-Alpes-Côte d\'Azur region — and beyond if needed.'
+			  )}
+			</div>
 			<div style={{ textAlign: 'center', marginTop: 36 }}>
 				<a href="#temoignages" style={{
 				  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em',
@@ -117,7 +123,7 @@ export default function Home({ lang, setLang }) {
 				  borderBottom: '1px solid var(--fg)', paddingBottom: 8,
 				  display: 'inline-block',
 				}}>
-				  {t('Lisez ce qu\'ils dissent de nous', 'Read what they say about us')} &nbsp;→
+				  {t('Lisez ce qu\'ils disent de nous', 'Read what they say about us')} &nbsp;→
 				</a>
 			</div>			
           </div>
