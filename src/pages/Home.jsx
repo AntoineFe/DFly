@@ -22,6 +22,7 @@ const IMG = {
   portrait2:   `${BASE}images/portrait-couple-studio-nice.jpg`,
   drone:       `${BASE}images/drone-vue-aerienne-domaine-paca.jpg`,
   duo:         `${BASE}images/antoine-et-remi-photographes-videastes.jpg`,
+  duo2:         `${BASE}images/antoine-et-remi-photographes-videastes-telepilotes de drone.jpg`,
 }
 
 export default function Home({ lang, setLang }) {
@@ -112,7 +113,7 @@ export default function Home({ lang, setLang }) {
             </div>
 			<div style={{ textAlign: 'center', maxWidth: 600, margin: '20px auto 0', fontFamily: 'var(--serif)', fontSize: 20, lineHeight: 1.5, fontWeight: 300, fontStyle: 'italic', color: 'var(--fg-muted)' }}>
 			  {t(
-			    'Basés à Cagnes-sur-Mer, entre Nice et Cannes, nous intervenons dans toute la Provence-Alpes-Côte d\'Azur — et au-delà si besoin.',
+			    'Basés à Cagnes-sur-Mer, entre Nice et Cannes, nous intervenons dans toute la région Provence-Alpes-Côte d\'Azur — et au-delà si besoin.',
 			    'Based in Cagnes-sur-Mer, between Nice and Cannes, we work throughout the Provence-Alpes-Côte d\'Azur region — and beyond if needed.'
 			  )}
 			</div>
@@ -297,7 +298,7 @@ export default function Home({ lang, setLang }) {
         <div className="container">
           <div className="grid-duo">
             <div style={{ position: 'relative' }}>
-              <img src={IMG.duo} alt={t("Antoine & Rémi DFly - Photographes et vidéastes", "Antoine & Rémi DFly - Photographes et vidéastes")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
+              <img src={IMG.duo2} alt={t("Antoine & Rémi DFly - Photographes et vidéastes", "Antoine & Rémi DFly - Photographes et vidéastes")} className="cine" style={{ width: '100%', aspectRatio: '4/5', objectFit: 'cover', filter: 'saturate(0.85) contrast(1.02)' }} />
               <div style={{ position: 'absolute', top: 24, left: 24, fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 16, color: 'var(--ivory)', fontWeight: 300, textShadow: '0 1px 8px rgba(0,0,0,0.4)' }}>
                 .
               </div>
@@ -315,10 +316,16 @@ export default function Home({ lang, setLang }) {
                 )}
               </p>
               <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.75, fontWeight: 300, maxWidth: 460 }}>
-                {t(
-                  'Après un BTS bâtiment, Rémi a exercé comme dessinateur projeteur avant de se tourner vers le drone, puis la vidéo, puis la photo. Un œil formé aux volumes, aux lignes, à la précision. Ensemble, deux regards complémentaires, une même rigueur.',
-                  'After a construction degree, Rémi worked as a technical draughtsman before turning to drones, then film, then photography. An eye trained in volumes, lines and precision. Together, two complementary gazes, one shared rigour.'
-                )}
+				{t(
+				  'Après un BTS bâtiment, Rémi a exercé comme dessinateur projeteur avant de se tourner vers le drone, puis la vidéo, puis la photo. Aujourd\'hui, son œil formé aux volumes, aux lignes et à la précision fait toute la différence sur chaque prise de vue.',
+				  'After a construction degree, Rémi worked as a technical draughtsman before turning to drones, then film, then photography. Today, his eye — trained in volumes, lines and precision — makes all the difference on every shoot.'
+				)}
+              </p>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.75, fontWeight: 300, maxWidth: 460 }}>
+				{t(
+				  'Ensemble, deux regards complémentaires, une même rigueur.',
+				  'Together, two complementary gazes, one shared rigour.'
+				)}
               </p>
             </div>
           </div>
