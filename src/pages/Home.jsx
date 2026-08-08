@@ -39,7 +39,12 @@ export default function Home({ lang, setLang }) {
 
       {/* ── HERO ── */}
       <section className="hero-section" style={{ position: 'relative', minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', color: 'var(--ivory)' }}>
-        <img src={IMG.hero} alt="" className="cine" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: '53% center', filter: 'brightness(0.55) saturate(0.85) contrast(1.05)' }} />
+		  <style>{`
+			@media (max-width: 600px) and (orientation: portrait) {
+			  .hero-img { object-position: 38% center !important; }
+			}
+		  `}</style>
+        <img src={IMG.hero} alt="" className="cine hero-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: '53% center', filter: 'brightness(0.55) saturate(0.85) contrast(1.05)' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,22,18,0.55) 0%, rgba(20,22,18,0.25) 40%, rgba(20,22,18,0.7) 100%)' }} />
 
         <div className="hero-corner-label" style={{ position: 'absolute', top: 110, left: 'var(--gutter)', fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.85 }}>
@@ -76,7 +81,7 @@ export default function Home({ lang, setLang }) {
             whiteSpace: 'nowrap',
             background: 'rgba(20,22,18,0.3)', backdropFilter: 'blur(4px)',
           }}>
-            {t('Demander un devis', 'Request a quote')}
+            {t('Nous contacter', 'Contact Us')}
           </Link>
           <div style={{ marginTop: 48, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.4em', textTransform: 'uppercase', opacity: 0.7, textAlign: 'center' }}>
             <div style={{ marginBottom: 10 }}>{t('Découvrir', 'Scroll')}</div>

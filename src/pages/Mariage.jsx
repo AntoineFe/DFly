@@ -186,8 +186,8 @@ function Mariage({ lang, setLang }) {
                 opacity: 0.92,
               }}>
                 {t(
-                  "Antoine et Rémi, père et fils, photographes et vidéastes. Selon votre journée, nous intervenons en duo : deux photographes, deux vidéastes, ou photographe & vidéaste.",
-                  "Antoine and Rémi — father and son, photographers and filmmakers. We work as a duo, adapting to your day : two photographers, two filmmakers, or one of each."
+                  "Antoine et Rémi, photographes et vidéastes. Selon votre journée, nous intervenons en duo : deux photographes, deux vidéastes, ou photographe & vidéaste.",
+                  "Antoine and Rémi — photographers and filmmakers. We work as a duo, adapting to your day : two photographers, two filmmakers, or one of each."
                 )}
               </p>
             </div>
