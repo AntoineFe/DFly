@@ -411,8 +411,8 @@ export default function GalerieAlbums() {
     return null
   })
   const defaultCols = () => {
-    const available = Math.min(window.innerWidth, 1200) - 80
-    return Math.max(2, Math.floor(available / 200))
+    const available = Math.min(window.innerWidth, 3840) - 80
+    return Math.max(2, Math.floor(available / 230))
   }
 
   const clampCols = (n) => Math.max(2, Math.min(n, defaultCols() + 2))
