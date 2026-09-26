@@ -45,18 +45,39 @@ function spam_guard_rate_limit(string $scope, int $maxRequests = 5, int $windowS
 }
 
 /**
- * Plausibilité du texte : rejette silencieusement (comme le honeypot, aucun
- * indice renvoyé sur la règle testée) si le texte ressemble à du charabia
- * généré plutôt qu'à du langage naturel. Protège contre les bots qui postent
- * des chaînes aléatoires tout en évitant le honeypot (champ caché non rempli).
- *
- * Contrairement à un simple "contient au moins un mot connu" (facilement
- * contourné en ajoutant un seul mot-clé au charabia), on exige qu'une grosse
- * majorité des "mots" du texte soient structurellement plausibles (pas de
- * chiffres, pas d'alternance de casse aléatoire, présence de voyelles...),
- * en plus d'un mot courant reconnu.
+ * Rejette silencieusement (comme le honeypot, aucun indice renvoyé sur la
+ * règle testée) si la valeur contient un chiffre. Utilisé pour le prénom et
+ * le nom, qui n'ont légitimement jamais de chiffre.
  */
-function spam_guard_looks_human(string $text): void {
+function spam_guard_no_digits(string $value): void {
+    if (preg_match('/[0-9]/', $value)) {
+        http_response_code(200);
+        exit(json_encode(["ok" => true]));
+    }
+}
+
+/**
+ * Rejette silencieusement si le téléphone (facultatif) contient une lettre.
+ * Le champ HTML type="tel" n'impose aucun format, la validation se fait donc
+ * ici : un vrai numéro ne contient que des chiffres, espaces, +, -, ( et ).
+ */
+function spam_guard_phone_no_letters(string $tel): void {
+    if ($tel !== '' && preg_match('/\p{L}/u', $tel)) {
+        http_response_code(200);
+        exit(json_encode(["ok" => true]));
+    }
+}
+
+/**
+ * Rejette silencieusement le message s'il ressemble à du charabia généré :
+ * - nombre de mots / longueur moyenne de mot improbable pour du langage
+ *   humain (un texte réel en FR/EN fait en moyenne 4 à 6 caractères par mot ;
+ *   un bloc unique très long, ou une moyenne anormalement élevée, ne l'est
+ *   pas) ;
+ * - absence de tout mot courant reconnu (FR/EN), délimité par des espaces ou
+ *   de la ponctuation — pas une simple sous-chaîne.
+ */
+function spam_guard_message_plausible(string $message): void {
     static $commonWords = [
         // FR
         'le','la','les','de','des','du','un','une','et','je','tu','il','elle','nous','vous','ils','elles',
@@ -70,51 +91,32 @@ function spam_guard_looks_human(string $text): void {
         'quote','regards','best','are','is','have','has','this','that','from','would','like','need',
     ];
 
-    $tokens = preg_split('/[^\p{L}\p{N}]+/u', $text, -1, PREG_SPLIT_NO_EMPTY);
-    $tokens = array_values(array_filter($tokens, function ($t) {
-        return mb_strlen($t, 'UTF-8') >= 2;
-    }));
-
     $reject = function () {
         http_response_code(200);
         exit(json_encode(["ok" => true]));
     };
 
-    if (count($tokens) === 0) {
+    // mots = suites de lettres, séparées par tout ce qui n'est pas une lettre
+    // (espace, ponctuation, chiffre...)
+    $words = preg_split('/[^\p{L}]+/u', $message, -1, PREG_SPLIT_NO_EMPTY);
+    $count = count($words);
+
+    if ($count === 0) {
         $reject();
     }
 
-    $plausible = 0;
-    foreach ($tokens as $tok) {
-        if (spam_guard_token_plausible($tok)) $plausible++;
-    }
-    $ratio = $plausible / count($tokens);
+    $lengths = array_map(function ($w) { return mb_strlen($w, 'UTF-8'); }, $words);
+    $avgLen  = array_sum($lengths) / $count;
+    $maxLen  = max($lengths);
 
-    $blob      = mb_strtolower($text, 'UTF-8');
-    $wordsLow  = preg_split('/[^a-zàâäéèêëïîôöùûüÿçœ]+/u', $blob, -1, PREG_SPLIT_NO_EMPTY);
-    $hasRealWord = count(array_intersect($wordsLow, $commonWords)) >= 1;
-
-    if ($ratio < 0.7 || !$hasRealWord) {
+    // valeurs improbables pour du texte humain (moyenne FR/EN ~4-6 caractères/mot)
+    if ($avgLen > 12 || $maxLen > 25) {
         $reject();
     }
-}
 
-/**
- * Un "mot" est jugé structurellement plausible s'il n'a pas les
- * caractéristiques typiques d'une chaîne générée aléatoirement :
- * pas de chiffre mêlé aux lettres, pas d'alternance de casse en cours de
- * mot (type "aB1cD"), pas 4 consonnes d'affilée, au moins une voyelle,
- * longueur raisonnable.
- */
-function spam_guard_token_plausible(string $token): bool {
-    if (preg_match('/[0-9]/', $token)) return false;
-    if (mb_strlen($token, 'UTF-8') > 20) return false;
-
-    $rest = mb_substr($token, 1, null, 'UTF-8');
-    if (preg_match('/[A-ZÀ-Ý]/u', $rest)) return false; // majuscule ailleurs qu'en 1re position
-
-    if (!preg_match('/[aeiouyàâäéèêëïîôöùûüÿ]/ui', $token)) return false;
-    if (preg_match('/[bcdfghjklmnpqrstvwxz]{4,}/ui', $token)) return false;
-
-    return true;
+    $blob     = mb_strtolower($message, 'UTF-8');
+    $wordsLow = preg_split('/[^a-zàâäéèêëïîôöùûüÿçœ]+/u', $blob, -1, PREG_SPLIT_NO_EMPTY);
+    if (count(array_intersect($wordsLow, $commonWords)) < 1) {
+        $reject();
+    }
 }
