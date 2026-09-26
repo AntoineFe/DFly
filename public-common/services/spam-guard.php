@@ -43,3 +43,36 @@ function spam_guard_rate_limit(string $scope, int $maxRequests = 5, int $windowS
     $timestamps[] = $now;
     @file_put_contents($file, json_encode($timestamps));
 }
+
+/**
+ * Plausibilité du texte : rejette si le texte fourni ne contient aucun mot
+ * courant reconnu (FR/EN). Protège contre les bots qui postent du charabia
+ * aléatoire tout en évitant le honeypot (champ caché non rempli).
+ *
+ * Contrairement au honeypot, un vrai humain pourrait théoriquement déclencher
+ * ce contrôle (message très court, langue rare) : on renvoie donc une vraie
+ * erreur plutôt qu'un faux succès, pour ne jamais faire disparaître un
+ * message légitime sans que la personne ne le sache.
+ */
+function spam_guard_looks_human(string $text): void {
+    static $commonWords = [
+        // FR
+        'le','la','les','de','des','du','un','une','et','je','tu','il','elle','nous','vous','ils','elles',
+        'bonjour','merci','pour','avec','votre','vos','notre','nos','mon','ma','mes','au','aux',
+        'projet','mariage','photo','photos','video','vidéo','devis','date','contact','cordialement',
+        'suis','sommes','avons','avez','etre','être','est','sont','dans','sur','pas','plus','tres','très',
+        'que','qui','quoi','comment','pourquoi','quand','ou','où','cette','ces','cet','bien','tout',
+        'salut','bonsoir','svp','cher','chere','chère','disponible','possible','besoin','envie',
+        // EN
+        'the','and','you','your','for','with','hello','hi','hey','thanks','thank','please','wedding',
+        'quote','regards','best','are','is','have','has','this','that','from','would','like','need',
+    ];
+
+    $blob  = mb_strtolower($text, 'UTF-8');
+    $words = preg_split('/[^a-zàâäéèêëïîôöùûüÿçœ]+/u', $blob, -1, PREG_SPLIT_NO_EMPTY);
+
+    if (count(array_intersect($words, $commonWords)) < 1) {
+        http_response_code(400);
+        exit(json_encode(["ok" => false, "error" => "Merci de rédiger un message avec quelques mots (pas seulement des caractères aléatoires)."]));
+    }
+}

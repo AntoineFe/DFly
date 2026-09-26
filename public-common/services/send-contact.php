@@ -26,6 +26,7 @@ if (!$d || empty($d['email']) || empty($d['message'])) {
 require __DIR__ . '/spam-guard.php';
 spam_guard_honeypot($d);
 spam_guard_rate_limit('contact');
+spam_guard_looks_human(($d['prenom'] ?? '') . ' ' . ($d['nom'] ?? '') . ' ' . ($d['message'] ?? ''));
 
 $clientEmail = filter_var($d['email'], FILTER_VALIDATE_EMAIL);
 if (!$clientEmail) {
