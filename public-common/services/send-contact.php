@@ -23,7 +23,15 @@ if (!$d || empty($d['email']) || empty($d['message'])) {
     exit(json_encode(["ok" => false, "error" => "Données manquantes"]));
 }
 
-$clientEmail = filter_var($d['email'], FILTER_SANITIZE_EMAIL);
+require __DIR__ . '/spam-guard.php';
+spam_guard_honeypot($d);
+spam_guard_rate_limit('contact');
+
+$clientEmail = filter_var($d['email'], FILTER_VALIDATE_EMAIL);
+if (!$clientEmail) {
+    http_response_code(400);
+    exit(json_encode(["ok" => false, "error" => "Email invalide"]));
+}
 $prenom      = htmlspecialchars($d['prenom']  ?? '', ENT_QUOTES);
 $nom         = htmlspecialchars($d['nom']     ?? '', ENT_QUOTES);
 $tel         = htmlspecialchars($d['tel']     ?? '', ENT_QUOTES);

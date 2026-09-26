@@ -826,6 +826,7 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
       nom:         state.nom,
       email:       state.email,
       tel:         state.tel,
+      societe:     state.societe,
       demandes:    state.demandes,
       simulations:  allSimsEmail,
       simulation:   allSimsEmail[chosen],
@@ -892,6 +893,16 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
         {t("Vos coordonnées", "Your contact details")}
       </h3>
       <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          name="societe"
+          value={state.societe}
+          onChange={e => set("societe", e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+        />
         {FIELDS.map((row, ri) => (
           <div key={ri} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
             {row.map(f => (
@@ -1009,7 +1020,7 @@ const INIT = {
   hotelPrisEnCharge: false,
   demandes: "",
   intention: "",
-  prenom: "", nom: "", email: "", tel: "",
+  prenom: "", nom: "", email: "", tel: "", societe: "",
 };
 
 export default function DevisFunnel({ lang = "FR" }) {

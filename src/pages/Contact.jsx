@@ -32,7 +32,7 @@ export default function Contact({ lang, setLang }) {
 	  ogImage: 'og-accueil.jpg',
 	})
 
-  const [form, setForm] = useState({ prenom: '', nom: '', email: '', tel: '', sujet: '', message: '' })
+  const [form, setForm] = useState({ prenom: '', nom: '', email: '', tel: '', sujet: '', message: '', societe: '' })
   const [sending,  setSending]  = useState(false)
   const [sent,     setSent]     = useState(false)
   const [error,    setError]    = useState('')
@@ -152,6 +152,16 @@ export default function Contact({ lang, setLang }) {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                  <input
+                    type="text"
+                    name="societe"
+                    value={form.societe}
+                    onChange={e => set('societe', e.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    aria-hidden="true"
+                    style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                  />
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
                     <label style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
                       {t('Prénom', 'First name')} *
