@@ -2,13 +2,52 @@
 // Protection anti-spam partagée pour les endpoints publics (formulaire contact, devis…)
 
 /**
+ * Rejette silencieusement une requête : côté bot, la réponse reste "ok"
+ * (aucun indice sur la règle testée, pour ne pas faciliter son
+ * contournement) ; côté administrateur, trois traces distinctes sont
+ * laissées :
+ * - une ligne dans le même fichier que la log de navigation
+ *   (dfly-logs/navigation.log), visible dans la page Admin > Logs de
+ *   l'application ;
+ * - la raison précise en plus via error_log() (logs d'erreurs cPanel) ;
+ * - une réponse de taille fixe (17 octets), volontairement différente
+ *   d'un vrai envoi réussi (11 octets) ou d'un échec SMTP (12+ octets).
+ */
+function spam_guard_reject(string $rule, string $detail = ''): void {
+    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '?';
+    $ip = trim(explode(',', $ip)[0]);
+
+    error_log("[spam-guard] rejet ({$rule}) ip={$ip} detail=" . substr($detail, 0, 200));
+
+    require_once __DIR__ . '/galerie-auth.php';
+    $cfg     = galerie_load_config(true);
+    $log_dir = $cfg['log_dir'] ?? (dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-logs');
+    if (!is_dir($log_dir)) @mkdir($log_dir, 0755, true);
+
+    $log_file = $log_dir . '/navigation.log';
+    $old_file = $log_dir . '/navigation.old.log';
+
+    if (file_exists($log_file) && filesize($log_file) > 5 * 1024 * 1024) {
+        if (file_exists($old_file)) @unlink($old_file);
+        @rename($log_file, $old_file);
+        @file_put_contents($log_file, '');
+    }
+
+    $safeDetail = str_replace(["\r", "\n", '|'], ' ', substr($detail, 0, 150));
+    $line = '[' . date('Y-m-d H:i:s') . '] Anti-spam | [rejet] ' . $rule . ': ' . $safeDetail . ' | ' . $ip . PHP_EOL;
+    @file_put_contents($log_file, $line, FILE_APPEND | LOCK_EX);
+
+    http_response_code(200);
+    exit(json_encode(["ok" => true, "n" => 0])); // taille fixe volontaire : 17 octets
+}
+
+/**
  * Honeypot : si le champ piège (normalement invisible/vide pour un humain)
- * est rempli, on répond "ok" sans rien envoyer, pour ne pas alerter le bot.
+ * est rempli, on rejette silencieusement.
  */
 function spam_guard_honeypot(array $d, string $field = 'verif_interne_dfly') {
     if (!empty($d[$field])) {
-        http_response_code(200);
-        exit(json_encode(["ok" => true]));
+        spam_guard_reject('honeypot', (string) $d[$field]);
     }
 }
 
@@ -36,6 +75,7 @@ function spam_guard_rate_limit(string $scope, int $maxRequests = 5, int $windowS
     }));
 
     if (count($timestamps) >= $maxRequests) {
+        error_log("[spam-guard] rejet (rate-limit:{$scope}) ip={$ip} count=" . count($timestamps));
         http_response_code(429);
         exit(json_encode(["ok" => false, "error" => "Trop de requêtes, réessayez dans quelques minutes."]));
     }
@@ -51,8 +91,7 @@ function spam_guard_rate_limit(string $scope, int $maxRequests = 5, int $windowS
  */
 function spam_guard_no_digits(string $value): void {
     if (preg_match('/[0-9]/', $value)) {
-        http_response_code(200);
-        exit(json_encode(["ok" => true]));
+        spam_guard_reject('no-digits', $value);
     }
 }
 
@@ -63,8 +102,7 @@ function spam_guard_no_digits(string $value): void {
  */
 function spam_guard_phone_no_letters(string $tel): void {
     if ($tel !== '' && preg_match('/\p{L}/u', $tel)) {
-        http_response_code(200);
-        exit(json_encode(["ok" => true]));
+        spam_guard_reject('phone-letters', $tel);
     }
 }
 
@@ -91,18 +129,13 @@ function spam_guard_message_plausible(string $message): void {
         'quote','regards','best','are','is','have','has','this','that','from','would','like','need',
     ];
 
-    $reject = function () {
-        http_response_code(200);
-        exit(json_encode(["ok" => true]));
-    };
-
     // mots = suites de lettres, séparées par tout ce qui n'est pas une lettre
     // (espace, ponctuation, chiffre...)
     $words = preg_split('/[^\p{L}]+/u', $message, -1, PREG_SPLIT_NO_EMPTY);
     $count = count($words);
 
     if ($count === 0) {
-        $reject();
+        spam_guard_reject('message-empty', $message);
     }
 
     $lengths = array_map(function ($w) { return mb_strlen($w, 'UTF-8'); }, $words);
@@ -111,12 +144,12 @@ function spam_guard_message_plausible(string $message): void {
 
     // valeurs improbables pour du texte humain (moyenne FR/EN ~4-6 caractères/mot)
     if ($avgLen > 12 || $maxLen > 25) {
-        $reject();
+        spam_guard_reject('message-word-stats', "avg={$avgLen} max={$maxLen} msg=" . $message);
     }
 
     $blob     = mb_strtolower($message, 'UTF-8');
     $wordsLow = preg_split('/[^a-zàâäéèêëïîôöùûüÿçœ]+/u', $blob, -1, PREG_SPLIT_NO_EMPTY);
     if (count(array_intersect($wordsLow, $commonWords)) < 1) {
-        $reject();
+        spam_guard_reject('message-no-common-word', $message);
     }
 }
