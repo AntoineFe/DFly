@@ -1001,13 +1001,15 @@ function CreateClientForm({ authFetch, onCreated }) {
 const PER_PAGE = 25
 
 const EXCLUDED_IPS_KEY = 'dfly_logs_excluded_ips'
+const FILTER_NAME_KEY  = 'dfly_logs_filter_name'
+const FILTER_DATE_KEY  = 'dfly_logs_filter_date'
 
 function LogsViewer({ authFetch }) {
   const [lines,       setLines]       = useState([])
   const [loading,     setLoading]     = useState(true)
   const [error,       setError]       = useState(null)
-  const [filterName,  setFilterName]  = useState('')
-  const [filterDate,  setFilterDate]  = useState('')
+  const [filterName,  setFilterName]  = useState(() => localStorage.getItem(FILTER_NAME_KEY) || '')
+  const [filterDate,  setFilterDate]  = useState(() => localStorage.getItem(FILTER_DATE_KEY) || '')
   const [page,        setPage]        = useState(1)
   const [excludedIps, setExcludedIps] = useState(
     () => JSON.parse(localStorage.getItem(EXCLUDED_IPS_KEY) || '[]')
@@ -1035,6 +1037,9 @@ function LogsViewer({ authFetch }) {
   }, [authFetch])
 
   useEffect(() => setPage(1), [filterName, filterDate, excludedIps])
+
+  useEffect(() => { localStorage.setItem(FILTER_NAME_KEY, filterName) }, [filterName])
+  useEffect(() => { localStorage.setItem(FILTER_DATE_KEY, filterDate) }, [filterDate])
 
   // Fermer le menu contextuel au clic ailleurs
   useEffect(() => {
