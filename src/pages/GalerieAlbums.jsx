@@ -788,7 +788,7 @@ export default function GalerieAlbums() {
                       cursor: 'pointer', textAlign: 'left', padding: 0,
                       width: '100%', minWidth: 0, display: 'flex', flexDirection: 'column',
                     }}>
-                      <div style={{ aspectRatio: '4/3', width: '100%', overflow: 'hidden', background: 'var(--bg-alt)' }}>
+                      <div style={{ aspectRatio: '1/1', width: '100%', overflow: 'hidden', background: 'var(--bg-alt)' }}>
                         {dir.cover
                           ? <img src={dir.cover} alt="" className="no-protect" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                           : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center',
