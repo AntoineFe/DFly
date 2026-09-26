@@ -26,6 +26,10 @@ if (!$d || empty($d['email']) || empty($d['message'])) {
 require __DIR__ . '/spam-guard.php';
 spam_guard_honeypot($d);
 spam_guard_rate_limit('contact');
+spam_guard_no_digits($d['prenom'] ?? '');
+spam_guard_no_digits($d['nom'] ?? '');
+spam_guard_phone_no_letters($d['tel'] ?? '');
+spam_guard_message_plausible($d['message'] ?? '');
 
 $clientEmail = filter_var($d['email'], FILTER_VALIDATE_EMAIL);
 if (!$clientEmail) {
