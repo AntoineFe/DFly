@@ -826,7 +826,7 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
       nom:         state.nom,
       email:       state.email,
       tel:         state.tel,
-      societe:     state.societe,
+      verif_interne_dfly: state.verif_interne_dfly,
       demandes:    state.demandes,
       simulations:  allSimsEmail,
       simulation:   allSimsEmail[chosen],
@@ -895,9 +895,9 @@ function StepContact({ state, set, simulations, travel, onSubmit, lang }) {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          name="societe"
-          value={state.societe}
-          onChange={e => set("societe", e.target.value)}
+          name="verif_interne_dfly"
+          value={state.verif_interne_dfly}
+          onChange={e => set("verif_interne_dfly", e.target.value)}
           tabIndex={-1}
           autoComplete="off"
           aria-hidden="true"
@@ -1020,7 +1020,7 @@ const INIT = {
   hotelPrisEnCharge: false,
   demandes: "",
   intention: "",
-  prenom: "", nom: "", email: "", tel: "", societe: "",
+  prenom: "", nom: "", email: "", tel: "", verif_interne_dfly: "",
 };
 
 export default function DevisFunnel({ lang = "FR" }) {

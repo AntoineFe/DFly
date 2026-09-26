@@ -5,7 +5,7 @@
  * Honeypot : si le champ piège (normalement invisible/vide pour un humain)
  * est rempli, on répond "ok" sans rien envoyer, pour ne pas alerter le bot.
  */
-function spam_guard_honeypot(array $d, string $field = 'societe') {
+function spam_guard_honeypot(array $d, string $field = 'verif_interne_dfly') {
     if (!empty($d[$field])) {
         http_response_code(200);
         exit(json_encode(["ok" => true]));
