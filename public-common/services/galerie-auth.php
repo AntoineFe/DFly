@@ -1,4 +1,5 @@
 <?php
+mysqli_report(MYSQLI_REPORT_OFF);   // restaure le comportement mysqli attendu par les "if (!$result)" existants
 // Include partagé — valide le token Bearer et retourne les infos de session.
 // Usage : require 'galerie-auth.php'; -> $session disponible
 
