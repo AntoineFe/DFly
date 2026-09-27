@@ -102,20 +102,16 @@ function galerie_require_auth() {
              WHERE HPU.idUser = $uid";
     $pRes = mysqli_query($link, $pSql);
 
+    $auths = [];
     if (!$pRes) {
         $authLogFile = __DIR__ . '/galerie-auth.log';
         file_put_contents($authLogFile, date('Y-m-d H:i:s') . ' | profils query FAIL | uid=' . $uid . ' | ient=' . $ient . ' | error=' . mysqli_error($link) . PHP_EOL, FILE_APPEND | LOCK_EX);
     } else {
-        $rows = [];
-        while ($r = mysqli_fetch_assoc($pRes)) { $rows[] = $r; }
-        mysqli_data_seek($pRes, 0);
-    }
-
-    $auths = [];
-    while ($p = mysqli_fetch_assoc($pRes)) {
-        $decoded = json_decode($p['auths'], true) ?? [];
-        foreach ($decoded as $a) {
-            $auths[$a['rsrc']] = $a['levels'];
+        while ($p = mysqli_fetch_assoc($pRes)) {
+            $decoded = json_decode($p['auths'], true) ?? [];
+            foreach ($decoded as $a) {
+                $auths[$a['rsrc']] = $a['levels'];
+            }
         }
     }
 
