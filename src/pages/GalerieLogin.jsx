@@ -48,12 +48,13 @@ function CmsBlock({ html, top }) {
 // ── Bloc "renvoi de lien" ─────────────────────────────────────────────────────
 
 function ResendBlock() {
-  const [open,    setOpen]    = useState(false)
-  const [email,   setEmail]   = useState('')
-  const [name,    setName]    = useState('')
-  const [step,    setStep]    = useState('email')  // 'email' | 'name' | 'done'
-  const [busy,    setBusy]    = useState(false)
-  const [message, setMessage] = useState('')
+  const [open,      setOpen]      = useState(false)
+  const [email,     setEmail]     = useState('')
+  const [name,      setName]      = useState('')
+  const [context,   setContext]   = useState('')
+  const [step,      setStep]      = useState('email')  // 'email' | 'name' | 'done'
+  const [busy,      setBusy]      = useState(false)
+  const [statusMsg, setStatusMsg] = useState('')
 
   async function submitEmail(e) {
     e.preventDefault()
@@ -66,16 +67,16 @@ function ResendBlock() {
       })
       const d = await res.json()
       if (d.ok) {
-        setMessage(`Votre lien a été envoyé à ${email}. Pensez à vérifier vos spams.`)
+        setStatusMsg(`Votre lien a été envoyé à ${email}. Pensez à vérifier vos spams.`)
         setStep('done')
       } else if (d.notFound) {
         setStep('name')
       } else {
-        setMessage("Une erreur s'est produite. Contactez-nous directement.")
+        setStatusMsg("Une erreur s'est produite. Contactez-nous directement.")
         setStep('done')
       }
     } catch {
-      setMessage("Une erreur s'est produite. Contactez-nous directement.")
+      setStatusMsg("Une erreur s'est produite. Contactez-nous directement.")
       setStep('done')
     } finally {
       setBusy(false)
@@ -89,11 +90,11 @@ function ResendBlock() {
       await fetch(`${BASE}services/galerie-resend-link.php`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name }),
+        body: JSON.stringify({ email, name, context }),
       })
     } catch { /* best-effort */ }
     setBusy(false)
-    setMessage('Nous vous enverrons votre lien dans les meilleurs délais.')
+    setStatusMsg('Nous vous enverrons votre lien dans les meilleurs délais.')
     setStep('done')
   }
 
@@ -123,7 +124,7 @@ function ResendBlock() {
       ) : step === 'done' ? (
         <p style={{ fontFamily: 'var(--serif)', fontStyle: 'italic', fontSize: 19,
           color: 'var(--fg-muted)', lineHeight: 1.65, textAlign: 'center' }}>
-          {message}
+          {statusMsg}
         </p>
       ) : step === 'email' ? (
         <form onSubmit={submitEmail}>
@@ -156,13 +157,20 @@ function ResendBlock() {
             value={name} onChange={e => setName(e.target.value)}
             style={{ ...inputStyle, marginBottom: 16 }}
           />
-          <button type="submit" disabled={busy || !name} style={{
+          <label style={labelStyle}>Quelle prestation ? (mariage, date, lieu…)</label>
+          <textarea
+            required rows={3}
+            placeholder="Ex : mariage le 12 juin 2026 à Nice"
+            value={context} onChange={e => setContext(e.target.value)}
+            style={{ ...inputStyle, marginBottom: 16, resize: 'vertical', fontFamily: 'inherit' }}
+          />
+          <button type="submit" disabled={busy || !name || !context} style={{
             width: '100%', padding: '12px',
-            background: busy || !name ? 'var(--line)' : 'var(--fg)',
-            color: busy || !name ? 'var(--fg-muted)' : 'var(--bg)',
+            background: busy || !name || !context ? 'var(--line)' : 'var(--fg)',
+            color: busy || !name || !context ? 'var(--fg-muted)' : 'var(--bg)',
             border: 'none', fontFamily: 'var(--sans)', fontSize: 11,
             letterSpacing: '0.28em', textTransform: 'uppercase',
-            cursor: busy || !name ? 'default' : 'pointer',
+            cursor: busy || !name || !context ? 'default' : 'pointer',
           }}>
             {busy ? 'Envoi…' : 'Envoyer ma demande'}
           </button>

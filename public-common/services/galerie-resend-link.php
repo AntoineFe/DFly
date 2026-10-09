@@ -20,9 +20,10 @@ $smtp = [
     'cc'   => $cfg['smtp_cc'],
 ];
 
-$body  = json_decode(file_get_contents('php://input'), true);
-$email = trim(filter_var($body['email'] ?? '', FILTER_SANITIZE_EMAIL));
-$name  = trim($body['name'] ?? '');
+$body    = json_decode(file_get_contents('php://input'), true);
+$email   = trim(filter_var($body['email'] ?? '', FILTER_SANITIZE_EMAIL));
+$name    = trim($body['name'] ?? '');
+$context = trim($body['context'] ?? '');
 
 if (!$email) {
     http_response_code(400);
@@ -38,15 +39,18 @@ $log_file = $log_dir . '/navigation.log';
 // ── Cas 2 : email non trouvé, le client fournit son nom → notification à DFly ──
 if ($name !== '') {
     $n = htmlspecialchars($name);
+    $c = htmlspecialchars($context);
     $subject = "Demande de lien galerie — {$n}";
     $msgBody  = "Un client a demandé l'envoi de son lien d'accès à la galerie.\n\n";
-    $msgBody .= "Nom saisi   : {$n}\n";
-    $msgBody .= "Email saisi : {$email}\n\n";
+    $msgBody .= "Nom saisi      : {$n}\n";
+    $msgBody .= "Email saisi    : {$email}\n";
+    $msgBody .= "Prestation indiquée : {$c}\n\n";
     $msgBody .= "Cet email n'existe pas dans la base utilisateurs.\n";
     $msgBody .= "Retrouvez ce client et envoyez-lui son lien manuellement.";
     resend_smtp_send($smtp, $smtp['cc'], $subject, $msgBody);
+    $cLog = str_replace(["\r", "\n", '|'], ' ', $c);
     @file_put_contents($log_file,
-        '[' . date('Y-m-d H:i:s') . '] Anonyme | [resend-request] ' . $n . ' <' . $email . '> | ' . $ip . PHP_EOL,
+        '[' . date('Y-m-d H:i:s') . '] Anonyme | [resend-request] ' . $n . ' <' . $email . '> — ' . $cLog . ' | ' . $ip . PHP_EOL,
         FILE_APPEND | LOCK_EX);
     exit(json_encode(['ok' => true]));
 }
