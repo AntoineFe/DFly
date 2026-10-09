@@ -94,7 +94,7 @@ function ResendBlock() {
       })
     } catch { /* best-effort */ }
     setBusy(false)
-    setStatusMsg('Nous vous enverrons votre lien dans les meilleurs délais.')
+    setStatusMsg('Merci, nous avons bien reçu votre demande.')
     setStep('done')
   }
 
