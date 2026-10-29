@@ -488,9 +488,11 @@ export default function GalerieAlbums() {
 
   useEffect(() => { load() }, [load])
 
+  // Toujours inclure l'entité dans l'URL (même la sienne par défaut) pour que
+  // les liens partagés restent résolvables sans session (ex: aperçu WhatsApp).
   function entQs() {
-    if (!selectedEnt || entId) return ''
-    const found = user?.ents?.find(e => e.shortDesc === selectedEnt)
+    if (entId) return ''
+    const found = user?.ents?.find(e => e.shortDesc === activeEnt)
     return found ? `&i=${found.id}` : ''
   }
 
