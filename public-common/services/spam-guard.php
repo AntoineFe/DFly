@@ -115,6 +115,53 @@ function spam_guard_phone_no_letters(string $tel): void {
  * - absence de tout mot courant reconnu (FR/EN), délimité par des espaces ou
  *   de la ponctuation — pas une simple sous-chaîne.
  */
+/**
+ * Rejette silencieusement si l'adresse email figure dans la liste noire.
+ * Ajouter ici toute nouvelle adresse à bloquer définitivement.
+ */
+function spam_guard_email_blacklist(string $email) {
+    static $blacklist = [
+        'nicolas.hocquet3003@prodmail.online',
+    ];
+    $emailLow = strtolower(trim($email));
+    foreach ($blacklist as $blocked) {
+        if ($emailLow === strtolower($blocked)) {
+            spam_guard_reject('email-blacklist', $email);
+        }
+    }
+}
+
+/**
+ * Enregistre dans le journal chaque email entrant (avant toute décision
+ * anti-spam). Renseigne l'adresse email, l'IP et, si disponible, le texte
+ * du message.
+ */
+function spam_guard_log_incoming(string $email, string $message = '') {
+    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '?';
+    $ip = trim(explode(',', $ip)[0]);
+
+    require_once __DIR__ . '/galerie-auth.php';
+    $cfg     = galerie_load_config(true);
+    $log_dir = $cfg['log_dir'] ?? (dirname($_SERVER['DOCUMENT_ROOT']) . '/dfly-logs');
+    if (!is_dir($log_dir)) @mkdir($log_dir, 0755, true);
+
+    $log_file = $log_dir . '/navigation.log';
+    $old_file = $log_dir . '/navigation.old.log';
+
+    if (file_exists($log_file) && filesize($log_file) > 5 * 1024 * 1024) {
+        if (file_exists($old_file)) @unlink($old_file);
+        @rename($log_file, $old_file);
+        @file_put_contents($log_file, '');
+    }
+
+    $safeEmail   = str_replace(["\r", "\n", '|'], ' ', substr($email, 0, 150));
+    $safeMessage = $message !== ''
+        ? ' | msg=' . str_replace(["\r", "\n", '|'], ' ', substr($message, 0, 300))
+        : '';
+    $line = '[' . date('Y-m-d H:i:s') . '] Formulaire | email=' . $safeEmail . $safeMessage . ' | ip=' . $ip . PHP_EOL;
+    @file_put_contents($log_file, $line, FILE_APPEND | LOCK_EX);
+}
+
 function spam_guard_message_plausible(string $message): void {
     static $commonWords = [
         // FR

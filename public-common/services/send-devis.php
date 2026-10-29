@@ -27,6 +27,8 @@ if (!$d || empty($d['email'])) {
 
 require __DIR__ . '/spam-guard.php';
 spam_guard_honeypot($d);
+spam_guard_log_incoming($d['email'] ?? '', $d['demandes'] ?? '');
+spam_guard_email_blacklist($d['email'] ?? '');
 spam_guard_rate_limit('devis');
 
 $to = filter_var($d['email'], FILTER_VALIDATE_EMAIL);

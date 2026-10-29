@@ -25,6 +25,8 @@ if (!$d || empty($d['email']) || empty($d['message'])) {
 
 require __DIR__ . '/spam-guard.php';
 spam_guard_honeypot($d);
+spam_guard_log_incoming($d['email'] ?? '', $d['message'] ?? '');
+spam_guard_email_blacklist($d['email'] ?? '');
 spam_guard_rate_limit('contact');
 spam_guard_no_digits($d['prenom'] ?? '');
 spam_guard_no_digits($d['nom'] ?? '');
