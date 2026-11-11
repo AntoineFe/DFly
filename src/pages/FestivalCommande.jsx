@@ -6,7 +6,8 @@ const API       = path => `${BASE}services/${path}`
 const APP_NAME  = import.meta.env.VITE_APP_NAME     || 'DFly'
 const APP_TAGLINE = import.meta.env.VITE_APP_TAGLINE || ''
 const APP_HOME  = import.meta.env.VITE_APP_HOME_URL || '/'
-const LOGO_URL  = import.meta.env.VITE_APP_LOGO_URL || ''
+const _logoRaw  = import.meta.env.VITE_APP_LOGO_URL || ''
+const LOGO_URL  = !_logoRaw ? '' : _logoRaw.startsWith('http') ? _logoRaw : (import.meta.env.BASE_URL + _logoRaw.replace(/^\//, ''))
 
 const PRODUITS = [
   { key: 'poster_musicien_30x20',  label: 'Poster S - 20×30 cm',                             prix: 4.00 },

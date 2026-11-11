@@ -7,7 +7,8 @@ const BASE        = import.meta.env.BASE_URL
 const APP_NAME    = import.meta.env.VITE_APP_NAME       || 'Galerie'
 const APP_TAGLINE = import.meta.env.VITE_APP_TAGLINE    || 'Galerie privée'
 const APP_HOME    = import.meta.env.VITE_APP_HOME_URL   || '/'
-const LOGO_URL    = import.meta.env.VITE_APP_LOGO_URL   || ''
+const _logoRaw    = import.meta.env.VITE_APP_LOGO_URL   || ''
+const LOGO_URL    = !_logoRaw ? '' : _logoRaw.startsWith('http') ? _logoRaw : (import.meta.env.BASE_URL + _logoRaw.replace(/^\//, ''))
 const LOGO_EMOJI  = import.meta.env.VITE_APP_LOGO_EMOJI || ''
 
 const inputStyle = {
