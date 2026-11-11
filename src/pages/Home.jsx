@@ -21,8 +21,8 @@ const IMG = {
   portrait1:   `${BASE}images/famille-portrait-bord-de-mer-cote-dazur.jpeg`,
   portrait2:   `${BASE}images/portrait-couple-studio-nice.jpg`,
   drone:       `${BASE}images/drone-vue-aerienne-domaine-paca.jpg`,
-  duo:         `${BASE}images/antoine-et-remi-photographes-videastes.jpg`,
-  duo2:         `${BASE}images/antoine-et-remi-photographes-videastes-telepilotes de drone.jpg`,
+  duo:         `${BASE}images/antoine-et-remi-photographes-videastes-telepilotes de drone.jpg`, 
+  duo2:        `${BASE}images/antoine-et-remi-photographes-videastes.jpg`,
 }
 
 export default function Home({ lang, setLang }) {
