@@ -1353,7 +1353,7 @@ export default function GalerieAdmin() {
               {ents.map(e => (
                 <a key={e.id}
                   href={`#galerie/${encodeURIComponent(e.shortDesc)}`}
-                  onClick={ev => { ev.preventDefault(); setSelectedEnt(e.shortDesc); navigate({ hash: `galerie/${encodeURIComponent(e.shortDesc)}` }, { replace: true }) }}
+                  onClick={ev => { if (ev.button !== 0) return; ev.preventDefault(); setSelectedEnt(e.shortDesc); navigate({ hash: `galerie/${encodeURIComponent(e.shortDesc)}` }, { replace: true }) }}
                   style={{
                     display: 'inline-block', padding: '8px 16px', border: '1px solid var(--line)',
                     background: selectedEnt === e.shortDesc ? 'var(--fg)' : 'none',
