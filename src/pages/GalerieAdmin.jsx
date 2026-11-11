@@ -1250,7 +1250,10 @@ export default function GalerieAdmin() {
   const { user, logout, authFetch, hasAuth } = useGalerieAuth()
   const navigate = useNavigate()
   const [ents, setEnts] = useState([])
-  const [selectedEnt, setSelectedEnt] = useState(null)
+  const [selectedEnt, setSelectedEnt] = useState(() => {
+    const m = location.hash.match(/^#galerie\/(.+)$/)
+    return m ? decodeURIComponent(m[1]) : null
+  })
   const [entUsers, setEntUsers] = useState([])
   const [copiedId,   setCopiedId]   = useState(null)
   const rootRefresh = useRef(null)
@@ -1276,7 +1279,7 @@ export default function GalerieAdmin() {
       .then(d => {
         if (d.ok) {
           setEnts(d.ents)
-          if (d.ents.length === 1) setSelectedEnt(d.ents[0].shortDesc)
+          if (d.ents.length === 1) setSelectedEnt(prev => prev ?? d.ents[0].shortDesc)
         }
       })
       .catch(() => {})
@@ -1348,15 +1351,18 @@ export default function GalerieAdmin() {
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {ents.map(e => (
-                <button key={e.id} onClick={() => setSelectedEnt(e.shortDesc)} style={{
-                  padding: '8px 16px', border: '1px solid var(--line)',
-                  background: selectedEnt === e.shortDesc ? 'var(--fg)' : 'none',
-                  color: selectedEnt === e.shortDesc ? 'var(--bg)' : 'var(--fg)',
-                  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
-                  cursor: 'pointer', transition: 'all .15s',
-                }}>
+                <a key={e.id}
+                  href={`#galerie/${encodeURIComponent(e.shortDesc)}`}
+                  onClick={ev => { ev.preventDefault(); setSelectedEnt(e.shortDesc); navigate(`#galerie/${encodeURIComponent(e.shortDesc)}`, { replace: true }) }}
+                  style={{
+                    display: 'inline-block', padding: '8px 16px', border: '1px solid var(--line)',
+                    background: selectedEnt === e.shortDesc ? 'var(--fg)' : 'none',
+                    color: selectedEnt === e.shortDesc ? 'var(--bg)' : 'var(--fg)',
+                    fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.2em',
+                    cursor: 'pointer', transition: 'all .15s', textDecoration: 'none',
+                  }}>
                   {e.raiSoc || e.shortDesc}
-                </button>
+                </a>
               ))}
             </div>
           </div>
