@@ -1249,6 +1249,7 @@ function LogsViewer({ authFetch }) {
 export default function GalerieAdmin() {
   const { user, logout, authFetch, hasAuth } = useGalerieAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   const [ents, setEnts] = useState([])
   const [selectedEnt, setSelectedEnt] = useState(() => {
     const m = location.hash.match(/^#galerie\/(.+)$/)
@@ -1257,7 +1258,6 @@ export default function GalerieAdmin() {
   const [entUsers, setEntUsers] = useState([])
   const [copiedId,   setCopiedId]   = useState(null)
   const rootRefresh = useRef(null)
-  const location = useLocation()
   const [activeTab, setActiveTab] = useState(() => {
     if (location.hash === '#logs') return 'logs'
     if (location.hash === '#clients') return 'clients'
@@ -1353,7 +1353,7 @@ export default function GalerieAdmin() {
               {ents.map(e => (
                 <a key={e.id}
                   href={`#galerie/${encodeURIComponent(e.shortDesc)}`}
-                  onClick={ev => { ev.preventDefault(); setSelectedEnt(e.shortDesc); navigate(`#galerie/${encodeURIComponent(e.shortDesc)}`, { replace: true }) }}
+                  onClick={ev => { ev.preventDefault(); setSelectedEnt(e.shortDesc); navigate({ hash: `galerie/${encodeURIComponent(e.shortDesc)}` }, { replace: true }) }}
                   style={{
                     display: 'inline-block', padding: '8px 16px', border: '1px solid var(--line)',
                     background: selectedEnt === e.shortDesc ? 'var(--fg)' : 'none',
