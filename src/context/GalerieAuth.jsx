@@ -3,13 +3,19 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 const BASE = import.meta.env.BASE_URL
 const API  = path => `${BASE}services/${path}`
 
+// Nom du jeton dans le localStorage, propre au dossier d'installation :
+// alphox.fr/photos et alphox.fr/dflyclaude partagent le même localStorage
+// (même domaine) et s'écrasaient mutuellement le jeton.
+// À la racine (dfly.fr) le nom historique est conservé.
+export const TOKEN_KEY = BASE === '/' ? 'galerie_token' : `galerie_token${BASE}`
+
 const GalerieAuthContext = createContext(null)
 
 export function GalerieAuthProvider({ children }) {
   const [user,    setUser]    = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const token = () => localStorage.getItem('galerie_token')
+  const token = () => localStorage.getItem(TOKEN_KEY)
 
   const authFetch = useCallback((path, opts = {}) => {
     return fetch(API(path), {
@@ -40,7 +46,7 @@ export function GalerieAuthProvider({ children }) {
     })
     const d = await r.json()
     if (d.ok) {
-      localStorage.setItem('galerie_token', d.token)
+      localStorage.setItem(TOKEN_KEY, d.token)
       setUser(d.user)
     }
     return d
@@ -49,13 +55,13 @@ export function GalerieAuthProvider({ children }) {
   async function loginWithCle(cle) {
     if (token()) {
       await authFetch('galerie-logout.php', { method: 'POST' }).catch(() => {})
-      localStorage.removeItem('galerie_token')
+      localStorage.removeItem(TOKEN_KEY)
       setUser(null)
     }
     const r = await fetch(API(`galerie-autologin.php?cle=${encodeURIComponent(cle)}`))
     const d = await r.json()
     if (d.ok) {
-      localStorage.setItem('galerie_token', d.token)
+      localStorage.setItem(TOKEN_KEY, d.token)
       setUser(d.user)
     }
     return d
@@ -63,15 +69,15 @@ export function GalerieAuthProvider({ children }) {
 
   async function logout() {
     await authFetch('galerie-logout.php', { method: 'POST' }).catch(() => {})
-    localStorage.removeItem('galerie_token')
+    localStorage.removeItem(TOKEN_KEY)
     setUser(null)
   }
 
-  async function changePassword(currentPassword, newPassword) {
+  async function changePassword(newPassword) {
     const r = await authFetch('galerie-update-password.php', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ currentPassword, newPassword }),
+      body:    JSON.stringify({ newPassword }),
     })
     return r.json()
   }

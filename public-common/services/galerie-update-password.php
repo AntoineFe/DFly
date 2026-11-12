@@ -11,11 +11,10 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 require 'galerie-auth.php';
 $session = galerie_require_auth();
 
-$body            = json_decode(file_get_contents('php://input'), true);
-$currentPassword = trim($body['currentPassword'] ?? '');
-$newPassword     = trim($body['newPassword']     ?? '');
+$body        = json_decode(file_get_contents('php://input'), true);
+$newPassword = trim($body['newPassword'] ?? '');
 
-if ($currentPassword === '' || $newPassword === '') {
+if ($newPassword === '') {
     http_response_code(400);
     exit(json_encode(['ok' => false, 'error' => 'Paramètres manquants']));
 }
@@ -26,16 +25,9 @@ if (strlen($newPassword) < 8) {
 
 list($link) = galerie_db();
 
+// L'ancien mot de passe n'est plus demandé : un utilisateur connecté par
+// son lien ?cle= (mot de passe oublié) doit pouvoir en définir un nouveau.
 $uid     = (int)$session['userId'];
-$hashCur = hash('sha256', $currentPassword);
-
-$res = mysqli_query($link, "SELECT id FROM HabilUsers WHERE id = $uid AND password = '$hashCur'");
-if (!$res || mysqli_num_rows($res) === 0) {
-    mysqli_close($link);
-    http_response_code(401);
-    exit(json_encode(['ok' => false, 'error' => 'Mot de passe actuel incorrect']));
-}
-
 $hashNew = hash('sha256', $newPassword);
 mysqli_query($link, "UPDATE HabilUsers SET password = '$hashNew' WHERE id = $uid");
 mysqli_close($link);

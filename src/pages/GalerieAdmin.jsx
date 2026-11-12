@@ -1377,7 +1377,8 @@ export default function GalerieAdmin() {
               Liens de connexion · {selectedEnt}
             </div>
             {entUsers.map(u => {
-              const link = `${window.location.origin}${import.meta.env.BASE_URL}galerie?cle=${u.cle}`
+              const loginPath = import.meta.env.VITE_APP_MODE === 'galerie' ? '' : 'galerie'
+              const link = `${window.location.origin}${import.meta.env.BASE_URL}${loginPath}?cle=${u.cle}`
               const copied = copiedId === u.id
               return (
                 <div key={u.id} style={{ display: 'flex', justifyContent: 'space-between',

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 export default function ChangePasswordModal({ onClose, changePassword }) {
-  const [current, setCurrent] = useState('')
   const [next, setNext]       = useState('')
   const [confirm, setConfirm] = useState('')
   const [error, setError]     = useState(null)
@@ -14,7 +13,7 @@ export default function ChangePasswordModal({ onClose, changePassword }) {
     if (next !== confirm) { setError('Les mots de passe ne correspondent pas'); return }
     if (next.length < 8)  { setError('Le nouveau mot de passe doit contenir au moins 8 caractères'); return }
     setLoading(true)
-    const d = await changePassword(current, next)
+    const d = await changePassword(next)
     setLoading(false)
     if (d.ok) { setSuccess(true) }
     else { setError(d.error || 'Erreur') }
@@ -48,10 +47,6 @@ export default function ChangePasswordModal({ onClose, changePassword }) {
           </>
         ) : (
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <label style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
-              Mot de passe actuel
-              <input type="password" value={current} onChange={e => setCurrent(e.target.value)} required style={{ fontFamily: 'var(--serif)', fontSize: 16, padding: '10px 12px', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--fg)', outline: 'none' }} />
-            </label>
             <label style={{ display: 'flex', flexDirection: 'column', gap: 8, fontFamily: 'var(--sans)', fontSize: 10.5, letterSpacing: '0.28em', textTransform: 'uppercase', color: 'var(--fg-muted)' }}>
               Nouveau mot de passe
               <input type="password" value={next} onChange={e => setNext(e.target.value)} required style={{ fontFamily: 'var(--serif)', fontSize: 16, padding: '10px 12px', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--fg)', outline: 'none' }} />

@@ -617,11 +617,12 @@ export default function GalerieAlbums() {
           />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
             {filteredEnts.map(e => (
-              <button key={e.id} onClick={() => { setSelectedEnt(e.shortDesc); navigate(`${ALBUMS_BASE}?i=${e.id}`) }} style={{
+              // Vrai lien : clic molette / ctrl+clic = nouvel onglet (natif navigateur)
+              <Link key={e.id} to={`${ALBUMS_BASE}?i=${e.id}`} onClick={() => setSelectedEnt(e.shortDesc)} style={{
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                 padding: '20px 0',
                 background: 'none', border: 'none', borderBottom: '1px solid var(--line)',
-                cursor: 'pointer', textAlign: 'left', width: '100%',
+                cursor: 'pointer', textAlign: 'left', width: '100%', textDecoration: 'none',
               }}>
                 <div>
                   <div style={{ fontFamily: 'var(--serif-display)', fontSize: 22, color: 'var(--fg)' }}>{e.raiSoc}</div>
@@ -629,7 +630,7 @@ export default function GalerieAlbums() {
                     letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: 4 }}>{e.shortDesc}</div>
                 </div>
                 <span style={{ color: 'var(--fg-muted)', fontSize: 20 }}>→</span>
-              </button>
+              </Link>
             ))}
             {filteredEnts.length === 0 && (
               <div style={{ fontFamily: 'var(--sans)', fontSize: 13, color: 'var(--fg-muted)', padding: '20px 0' }}>

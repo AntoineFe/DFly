@@ -1,7 +1,9 @@
+import { TOKEN_KEY } from '../context/GalerieAuth'
+
 const BASE = import.meta.env.BASE_URL
 
 function post(url) {
-  const token = localStorage.getItem('galerie_token')
+  const token = localStorage.getItem(TOKEN_KEY)
   const headers = { 'Content-Type': 'application/json' }
   if (token) headers['Authorization'] = `Bearer ${token}`
   fetch(`${BASE}services/galerie-log.php`, {

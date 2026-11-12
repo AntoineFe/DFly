@@ -16,7 +16,7 @@ import FestivalAdmin from './pages/FestivalAdmin'
 import FestivalSaintJeoire2026 from './pages/FestivalSaintJeoire2026'
 import MentionsLegales from './pages/MentionsLegales'
 import Confidentialite from './pages/Confidentialite'
-import { GalerieAuthProvider, useGalerieAuth } from './context/GalerieAuth'
+import { GalerieAuthProvider, useGalerieAuth, TOKEN_KEY } from './context/GalerieAuth'
 import useImageProtection from './hooks/useImageProtection'
 
 function ScrollToTop() {
@@ -45,7 +45,7 @@ function NavLogger() {
   const { pathname } = useLocation()
   useEffect(() => {
     if (pathname.startsWith('/galerie')) return
-    const token = localStorage.getItem('galerie_token')
+    const token = localStorage.getItem(TOKEN_KEY)
     const headers = { 'Content-Type': 'application/json' }
     if (token) headers['Authorization'] = `Bearer ${token}`
     fetch(`${BASE}services/galerie-log.php`, {
