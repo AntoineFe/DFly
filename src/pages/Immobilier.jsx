@@ -15,6 +15,17 @@ const IMG = {
   drone: `${BASE}images/immobilier-drone-domaine-vignes-var.jpg`,
 }
 
+// Visite virtuelle d'exemple diffusée sur casambula.fr (section III).
+// ⚠ Quand on change de logement de démonstration, changer les DEUX :
+//   - url   : l'adresse de la page de la visite sur casambula.fr ;
+//   - image : recopier dans public-dfly/images/ l'image de partage de la nouvelle visite
+//             (https://medias.casambula.fr/visites/<id>/partage.jpg), sans la charger depuis Casambula.
+const VISITE_DEMO = {
+  url:   'https://casambula.fr/a-vendre/cagnes-sur-mer_le-beal-proche-musee-renoir/appartement-3-pieces',
+  image: `${BASE}images/immobilier-visite-virtuelle-360-cagnes-sur-mer.jpg`,
+  lieu:  'Cagnes-sur-Mer',
+}
+
 export default function Immobilier({ lang, setLang }) {
   const t = (fr, en) => lang === 'FR' ? fr : en
   usePageMeta({
@@ -169,8 +180,51 @@ export default function Immobilier({ lang, setLang }) {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Visite virtuelle (diffusée sur casambula.fr) */}
       <section style={{ padding: 'var(--section-y) 0', background: 'var(--bg)' }}>
+        <div className="container">
+          <SectionLabel num="III" label={t('Visite virtuelle', 'Virtual tour')} />
+          <div style={{ marginTop: 48, display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 48, alignItems: 'center' }}>
+            <a href={VISITE_DEMO.url} target="_blank" rel="noopener" style={{ display: 'block' }}
+               aria-label={t('Lancer la visite virtuelle d\'exemple sur casambula.fr', 'Open the sample virtual tour on casambula.fr')}>
+              <img src={VISITE_DEMO.image} loading="lazy"
+                alt={t(`Visite virtuelle 360° d'un appartement à ${VISITE_DEMO.lieu}`, `360° virtual tour of an apartment in ${VISITE_DEMO.lieu}`)}
+                style={{ width: '100%', aspectRatio: '16/10', objectFit: 'cover', display: 'block', filter: 'saturate(0.9) contrast(1.02)' }} />
+            </a>
+            <div>
+              <p style={{
+                fontFamily: 'var(--serif-display)', fontSize: 'clamp(26px, 3vw, 42px)',
+                lineHeight: 1.2, fontWeight: 400, color: 'var(--fg)', marginTop: 0, marginBottom: 24,
+              }}>
+                {t('Visiter le bien, pièce par pièce, avant même de se déplacer.', 'Walk through the property, room by room, before even travelling.')}
+              </p>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: 19, lineHeight: 1.75, fontWeight: 300, color: 'var(--fg-muted)', maxWidth: 520, marginBottom: 32 }}>
+                {t(
+                  'Nous réalisons les prises de vue 360° du bien. La visite est ensuite diffusée sur casambula.fr : consultable sur ordinateur, tablette et mobile, sans application.',
+                  'We shoot the property in 360°. The tour is then published on casambula.fr, viewable on computer, tablet and mobile, with no app to install.'
+                )}
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                <a href={VISITE_DEMO.url} target="_blank" rel="noopener" style={{
+                  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase',
+                  border: '1px solid var(--fg)', padding: '14px 28px', color: 'var(--fg)', display: 'inline-block',
+                }}>
+                  {t('Lancer la visite', 'Start the tour')} ↗
+                </a>
+                <a href="https://casambula.fr" target="_blank" rel="noopener" style={{
+                  fontFamily: 'var(--sans)', fontSize: 11, letterSpacing: '0.36em', textTransform: 'uppercase',
+                  padding: '14px 0', color: 'var(--fg-muted)', display: 'inline-block',
+                }}>
+                  {t('Découvrir Casambula', 'Discover Casambula')} ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section style={{ padding: 'var(--section-y) 0', background: 'var(--bg-alt)' }}>
         <div className="container" style={{ textAlign: 'center' }}>
           <div style={{ fontFamily: 'var(--serif-display)', fontSize: 'clamp(36px, 4vw, 56px)', fontStyle: 'italic', fontWeight: 300, marginBottom: 32 }}>
             {t('Parlons de votre bien.', "Let's talk about your property.")}
